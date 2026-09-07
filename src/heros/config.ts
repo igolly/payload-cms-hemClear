@@ -51,6 +51,9 @@ export const hero: Field = {
           ]
         },
       }),
+      admin: {
+        condition: (_, { type } = {}) => type !== 'highImpact',
+      },
       label: false,
     },
     linkGroup({
@@ -66,6 +69,121 @@ export const hero: Field = {
       },
       relationTo: 'media',
       required: true,
+    },
+    {
+      name: 'mediaPosition',
+      type: 'select',
+      defaultValue: 'left',
+      options: [
+        { label: 'Image on the left', value: 'left' },
+        { label: 'Image on the right', value: 'right' },
+      ],
+      admin: { condition: (_, { type } = {}) => type === 'highImpact' },
+      label: 'Image Position',
+    },
+    {
+      name: 'eyebrow',
+      type: 'text',
+      admin: {
+        condition: (_, { type } = {}) => type === 'highImpact',
+        description: 'Small caps line above the heading.',
+      },
+    },
+    {
+      name: 'subheading',
+      type: 'text',
+      admin: {
+        condition: (_, { type } = {}) => type === 'highImpact',
+        description: 'Serif line between the heading and the description.',
+      },
+    },
+    {
+      name: 'badgeTitle',
+      type: 'text',
+      admin: {
+        condition: (_, { type } = {}) => type === 'highImpact',
+        description: 'e.g. "Doctor\'s Choice". Use a line break for a two-line badge title.',
+      },
+      label: 'Badge Title',
+    },
+    {
+      name: 'badgeDescription',
+      type: 'textarea',
+      admin: {
+        condition: (_, { type } = {}) => type === 'highImpact',
+      },
+      label: 'Badge Description',
+    },
+    {
+      name: 'heading',
+      type: 'textarea',
+      admin: {
+        condition: (_, { type } = {}) => type === 'highImpact',
+        description: 'Use a line break to control where the heading wraps.',
+      },
+      label: 'Heading',
+    },
+    {
+      name: 'description',
+      type: 'textarea',
+      admin: {
+        condition: (_, { type } = {}) => type === 'highImpact',
+      },
+      label: 'Description',
+    },
+    {
+      name: 'benefits',
+      type: 'array',
+      admin: {
+        condition: (_, { type } = {}) => type === 'highImpact',
+      },
+      fields: [
+        {
+          name: 'text',
+          type: 'text',
+          required: true,
+        },
+      ],
+      label: 'Benefits',
+    },
+    {
+      name: 'calloutTitle',
+      type: 'text',
+      admin: {
+        condition: (_, { type } = {}) => type === 'highImpact',
+        description: 'Optional highlighted box below the benefits.',
+      },
+    },
+    {
+      name: 'calloutText',
+      type: 'textarea',
+      admin: { condition: (_, { type } = {}) => type === 'highImpact' },
+    },
+    {
+      name: 'trustPoints',
+      type: 'array',
+      admin: {
+        condition: (_, { type } = {}) => type === 'highImpact',
+      },
+      fields: [
+        {
+          name: 'icon',
+          type: 'select',
+          defaultValue: 'user',
+          options: [
+            { label: 'Doctor', value: 'user' },
+            { label: 'Flask', value: 'flask' },
+            { label: 'Package', value: 'package' },
+          ],
+          required: true,
+        },
+        {
+          name: 'label',
+          type: 'text',
+          required: true,
+        },
+      ],
+      label: 'Trust Points',
     },
   ],
   label: false,

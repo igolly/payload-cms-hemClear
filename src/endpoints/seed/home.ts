@@ -15,21 +15,37 @@ export const home: (args: HomeArgs) => RequiredDataFromCollectionSlug<'pages'> =
     _status: 'published',
     hero: {
       type: 'highImpact',
+      badgeTitle: "Doctor's\nChoice",
+      badgeDescription: 'Formulated by doctors and recommended by practitioners across the country.',
+      heading: 'Targeted\nHemorrhoid Support',
+      description:
+        'HemClear® is a doctor-formulated, two-part system designed to support hemorrhoidal flare-ups, healthy vein function, comfortable circulation, regularity, and soothing external comfort.',
+      benefits: [
+        { text: 'Supports healthy circulation and vein function' },
+        { text: 'Promotes comfortable bowel regularity' },
+        { text: 'Helps soothe occasional external itching and irritation' },
+        { text: 'Provides internal and external support' },
+      ],
+      trustPoints: [
+        { icon: 'user', label: 'Doctor Formulated' },
+        { icon: 'flask', label: '13 Researched Ingredients' },
+        { icon: 'package', label: 'Discreet Shipping' },
+      ],
       links: [
         {
           link: {
             type: 'custom',
             appearance: 'default',
-            label: 'All posts',
-            url: '/posts',
+            label: 'Save 65% + FREE Bottle of HemCream®',
+            url: '#',
           },
         },
         {
           link: {
             type: 'custom',
             appearance: 'outline',
-            label: 'Contact',
-            url: '/contact',
+            label: 'Upgrade to HemClear® + HemCream®',
+            url: '#',
           },
         },
       ],
@@ -663,6 +679,132 @@ export const home: (args: HomeArgs) => RequiredDataFromCollectionSlug<'pages'> =
             version: 1,
           },
         },
+      },
+      {
+        blockName: 'Reviews',
+        blockType: 'reviews',
+        heading: 'Trusted by Thousands.',
+        headingAccent: 'Recommended for Real Relief.',
+        description:
+          'HemClear\u00ae has helped many customers feel more supported, comfortable, and confident in their daily routine. See what real customers are saying about their experience.',
+        featured: [
+          {
+            score: '5.5',
+            stars: 5,
+            title: 'Finally, real relief.',
+            quote:
+              "I've tried everything for hemorrhoid discomfort, and HemClear\u00ae is the first product that made a real difference. Within the first week I noticed less irritation and more everyday comfort.",
+            author: 'Mark D.',
+            authorNote: 'Verified Buyer',
+          },
+          {
+            score: '5.5',
+            stars: 5,
+            title: 'Gentle, effective, and easy to follow.',
+            quote:
+              "What I like most is how simple HemClear\u00ae is to use every day. It fits easily into my routine, and I've felt more supported and comfortable overall.",
+            author: 'Jessica T.',
+            authorNote: 'Verified Buyer',
+          },
+          {
+            score: '5.5',
+            stars: 5,
+            title: 'Life changing.',
+            quote:
+              'After trying so many different options, HemClear\u00ae was one of the few products that seemed to support my comfort in a noticeable way. I feel much more confident day to day.',
+            author: 'Brian S.',
+            authorNote: 'Community Review',
+          },
+          {
+            score: '5.5',
+            stars: 5,
+            title: 'Great product and great company.',
+            quote:
+              "The formula feels high quality, shipping was smooth, and the routine has been easy to stick with. I'd definitely recommend it to anyone looking for better daily support.",
+            author: 'Laura M.',
+            authorNote: 'Verified Buyer',
+          },
+          {
+            score: '5.5',
+            stars: 5,
+            title: 'Noticeable results within weeks.',
+            quote:
+              "Within a couple of weeks I felt less discomfort and a lot more confidence in my everyday schedule. It's become part of my routine.",
+            author: 'Robert K.',
+            authorNote: 'Verified Buyer',
+          },
+        ],
+        reviews: [
+          {
+            stars: 5,
+            verified: true,
+            title: 'Pain Almost Gone. Swelling Greatly Reduced.',
+            quote:
+              'Within a day of starting to use them, the pain was almost gone, the swelling was greatly reduced. Within about 3 days, I felt normal.',
+            author: 'Dawn Melton',
+          },
+          {
+            stars: 5,
+            verified: true,
+            title: 'Almost 100% Better in Days.',
+            quote:
+              "I definitely didn't feel like I was in as much pain, and the swelling subsided slightly. It is now Friday and I feel almost 100% better.",
+            author: 'Caitlin Schneider',
+          },
+          {
+            stars: 5,
+            verified: true,
+            title: 'A Remarkable Difference in 3 Days.',
+            quote:
+              "I started taking these 3 days ago and I've noticed a REMARKABLE difference. At least a 50% reduction and the itchiness is gone.",
+            author: 'catlady',
+          },
+          {
+            stars: 5,
+            verified: true,
+            title: 'Reduced Swelling and Pain Quite a Lot.',
+            quote: 'I found out they reduced swelling and pain quite a lot. I quickly reordered.',
+            author: 'Linda Mullins',
+          },
+          {
+            stars: 5,
+            verified: true,
+            title: 'Gone by the Fourth Day.',
+            quote:
+              'I noticed a slight difference the next day and by the 4th day they were gone. I highly recommend this product.',
+            author: 'Happy customer',
+          },
+          {
+            stars: 5,
+            verified: true,
+            title: 'Already Feeling Relief.',
+            quote:
+              'I took a dose last night and have take a full days dose today and I am already feeling relief!! This product is AMAZING!!!!',
+            author: 'Lynn S',
+          },
+          {
+            stars: 5,
+            verified: true,
+            title: "The Best Thing I've Found for Discomfort.",
+            quote:
+              "This is the best thing I've found to relieve my discomfort. I've been using as needed for a handful of years, it's been a life saver.",
+            author: 'J. Whitt',
+          },
+          {
+            stars: 5,
+            verified: true,
+            title: 'Helped Reduce the Swelling a Lot.',
+            quote:
+              'So far, works great. It helped reduce the swelling a lot. Would recommend this to others with this problem.',
+            author: 'John F. Eakins',
+          },
+        ],
+        initialCount: 4,
+        showMoreLabel: 'Show More',
+        showLessLabel: 'Show Less',
+        verifiedLabel: 'Verified Purchase',
+        disclaimer:
+          'Individual results may vary. These statements have not been evaluated by the Food and Drug Administration.\nThis product is not intended to diagnose, treat, cure, or prevent any disease.',
       },
     ],
     meta: {

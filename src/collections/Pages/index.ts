@@ -7,6 +7,29 @@ import { CallToAction } from '../../blocks/CallToAction/config'
 import { Content } from '../../blocks/Content/config'
 import { FormBlock } from '../../blocks/Form/config'
 import { MediaBlock } from '../../blocks/MediaBlock/config'
+import { Causes } from '../../blocks/Causes/config'
+import { Comparison } from '../../blocks/Comparison/config'
+import { ClosingCta } from '../../blocks/ClosingCta/config'
+import { BenefitsCarousel } from '../../blocks/BenefitsCarousel/config'
+import { FormulaTable } from '../../blocks/FormulaTable/config'
+import { PricingOffer } from '../../blocks/PricingOffer/config'
+import { SavingsCompare } from '../../blocks/SavingsCompare/config'
+import { ScienceStats } from '../../blocks/ScienceStats/config'
+import { BannerHero } from '../../blocks/BannerHero/config'
+import { IngredientExplorer } from '../../blocks/IngredientExplorer/config'
+import { FeatureStrip } from '../../blocks/FeatureStrip/config'
+import { FAQ } from '../../blocks/FAQ/config'
+import { MedicalReview } from '../../blocks/MedicalReview/config'
+import { Guarantee } from '../../blocks/Guarantee/config'
+import { ProductSystem } from '../../blocks/ProductSystem/config'
+import { Pairing } from '../../blocks/Pairing/config'
+import { StatsBar } from '../../blocks/StatsBar/config'
+import { SupportTabs } from '../../blocks/SupportTabs/config'
+import { TotalCare } from '../../blocks/TotalCare/config'
+import { WhyDays } from '../../blocks/WhyDays/config'
+import { VideoStories } from '../../blocks/VideoStories/config'
+import { WaysGrid } from '../../blocks/WaysGrid/config'
+import { Reviews } from '../../blocks/Reviews/config'
 import { hero } from '@/heros/config'
 import { slugField } from 'payload'
 import { populatePublishedAt } from '../../hooks/populatePublishedAt'
@@ -72,7 +95,36 @@ export const Pages: CollectionConfig<'pages'> = {
             {
               name: 'layout',
               type: 'blocks',
-              blocks: [CallToAction, Content, MediaBlock, Archive, FormBlock],
+              blocks: [
+                CallToAction,
+                Content,
+                MediaBlock,
+                Archive,
+                FormBlock,
+                Reviews,
+                FAQ,
+                StatsBar,
+                Causes,
+                ProductSystem,
+                VideoStories,
+                WaysGrid,
+                ClosingCta,
+                Guarantee,
+                WhyDays,
+                Comparison,
+                SupportTabs,
+                Pairing,
+                TotalCare,
+                MedicalReview,
+                FeatureStrip,
+                BannerHero,
+                IngredientExplorer,
+                BenefitsCarousel,
+                FormulaTable,
+                PricingOffer,
+                SavingsCompare,
+                ScienceStats,
+              ],
               required: true,
               admin: {
                 initCollapsed: true,

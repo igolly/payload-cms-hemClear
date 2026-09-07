@@ -10,6 +10,27 @@ export const Header: GlobalConfig = {
   },
   fields: [
     {
+      type: 'collapsible',
+      label: 'Announcement Bar',
+      fields: [
+        { name: 'announcementEnabled', type: 'checkbox', label: 'Show the announcement bar' },
+        {
+          name: 'announcementTitle',
+          type: 'text',
+          admin: { description: 'e.g. "Free Offer" — rendered in yellow.' },
+        },
+        { name: 'announcementText', type: 'text' },
+        {
+          name: 'announcementEndsAt',
+          type: 'date',
+          admin: {
+            date: { pickerAppearance: 'dayAndTime' },
+            description: 'Countdown target. Leave empty to hide the timer.',
+          },
+        },
+      ],
+    },
+    {
       name: 'navItems',
       type: 'array',
       fields: [
@@ -17,7 +38,7 @@ export const Header: GlobalConfig = {
           appearances: false,
         }),
       ],
-      maxRows: 6,
+      maxRows: 8,
       admin: {
         initCollapsed: true,
         components: {

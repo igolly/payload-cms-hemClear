@@ -48,9 +48,10 @@ export const seed = async ({
     globals.map((global) =>
       payload.updateGlobal({
         slug: global,
-        data: {
-          navItems: [],
-        },
+        // The header is a simple nav list; the footer has its own richer shape.
+        data: (global === 'footer'
+          ? { columns: [], promiseItems: [], socialItems: [], legalLinks: [] }
+          : { navItems: [] }) as never,
         depth: 0,
         context: {
           disableRevalidate: true,
@@ -245,31 +246,64 @@ export const seed = async ({
     payload.updateGlobal({
       slug: 'footer',
       data: {
-        navItems: [
+        columns: [
           {
-            link: {
-              type: 'custom',
-              label: 'Admin',
-              url: '/admin',
-            },
+            title: 'Support',
+            items: [
+              { link: { type: 'custom', label: 'Contact Us', url: '/contact' } },
+              { link: { type: 'custom', label: 'Frequently Asked Questions', url: '/faq' } },
+              { link: { type: 'custom', label: 'Shipping Information', url: '/shipping' } },
+              { link: { type: 'custom', label: 'Returns and Refunds', url: '/returns' } },
+              { link: { type: 'custom', label: 'Track My Order', url: '/track' } },
+              { link: { type: 'custom', label: 'My Account', url: '/account' } },
+            ],
           },
           {
-            link: {
-              type: 'custom',
-              label: 'Source Code',
-              newTab: true,
-              url: 'https://github.com/payloadcms/payload/tree/3.x/templates/website',
-            },
+            title: 'Shop',
+            items: [
+              { link: { type: 'custom', label: 'HemClear® Capsules', url: '/shop/capsules' } },
+              { link: { type: 'custom', label: 'HemCream®', url: '/shop/hemcream' } },
+              { link: { type: 'custom', label: 'Complete Care System', url: '/shop/system' } },
+              { link: { type: 'custom', label: 'Current Offers', url: '/shop/offers' } },
+            ],
           },
           {
-            link: {
-              type: 'custom',
-              label: 'Payload',
-              newTab: true,
-              url: 'https://payloadcms.com/',
-            },
+            title: 'Learn',
+            items: [
+              { link: { type: 'custom', label: 'How HemClear® Works', url: '/how-it-works' } },
+              { link: { type: 'custom', label: 'Ingredient Research', url: '/research' } },
+              { link: { type: 'custom', label: 'Hemorrhoidal Comfort Guide', url: '/guide' } },
+              { link: { type: 'custom', label: 'Healthy Bowel Habits', url: '/habits' } },
+              { link: { type: 'custom', label: 'Customer Stories', url: '/stories' } },
+            ],
           },
         ],
+        promiseTitle: 'Our Promise',
+        promiseItems: [
+          { icon: 'stethoscope', label: 'Doctor-Formulated' },
+          { icon: 'madeInUsa', label: 'Made in the USA' },
+          { icon: 'gmp', label: 'GMP-Certified Manufacturing' },
+          { icon: 'packageBox', label: 'Discreet Packaging' },
+          { icon: 'guarantee', label: '90-Day Money-Back Guarantee' },
+        ],
+        socialTitle: 'Social Links',
+        socialItems: [
+          { platform: 'facebook', label: 'Facebook', url: '#' },
+          { platform: 'instagram', label: 'Instagram', url: '#' },
+          { platform: 'youtube', label: 'Youtube', url: '#' },
+          { platform: 'tiktok', label: 'Tik Tok', url: '#' },
+        ],
+        tagline: 'Targeted Internal & External\nSupport for Everyday Comfort',
+        copyright: '©2026 HemClear®. All rights reserved.',
+        legalLinks: [
+          { link: { type: 'custom', label: 'Terms and Conditions', url: '/terms' } },
+          { link: { type: 'custom', label: 'Privacy Policy', url: '/privacy-policy' } },
+          { link: { type: 'custom', label: 'Return Policy', url: '/returns' } },
+          { link: { type: 'custom', label: 'Accessibility', url: '/accessibility' } },
+          { link: { type: 'custom', label: 'Supplement Disclaimer', url: '/disclaimer' } },
+        ],
+        disclaimer:
+          'These statements have not been evaluated by the Food and Drug Administration. HemClear® is not intended to diagnose, treat, cure, or prevent any disease.\n\nInformation provided on this website is for educational purposes and is not a substitute for advice, diagnosis, or treatment from a qualified healthcare professional.\n\nResearch discussed on this website relates to individual ingredients or ingredient combinations. The finished HemClear® and HemCream® products have not been shown to produce identical outcomes.\n\nConsult a healthcare professional before using a dietary supplement, particularly if you are pregnant or nursing, take prescription medication, have a medical condition, or are scheduled for a medical procedure. Rectal bleeding can have causes other than hemorrhoids. Seek medical care for persistent or substantial bleeding, severe pain, abdominal pain, fever, dizziness, black stools, or symptoms that do not improve.',
       },
     }),
   ])

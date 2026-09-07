@@ -20,3 +20,13 @@ node_modules/
 /playwright-report/
 /blob-report/
 /playwright/.cache/
+
+# Build artifacts
+tsconfig.tsbuildinfo
+
+# Design references — mockups handed over for implementation, not site assets.
+# Keeping them out of the repo avoids ~25MB of images being deployed as static files.
+/public/design/
+/public/*.jpg
+/public/*.jpeg
+!/public/hero-image.jpg

@@ -22,9 +22,14 @@ const nextConfig: NextConfig = {
       {
         pathname: '/api/media/file/**',
       },
+      {
+        pathname: '/**',
+      },
     ],
     qualities: [100],
     remotePatterns: [
+      // Vercel Blob public URLs, used once BLOB_READ_WRITE_TOKEN is set.
+      { hostname: '*.public.blob.vercel-storage.com', protocol: 'https' },
       ...[NEXT_PUBLIC_SERVER_URL /* 'https://example.com' */].map((item) => {
         const url = new URL(item)
 

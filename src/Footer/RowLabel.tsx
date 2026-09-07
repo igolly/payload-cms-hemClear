@@ -1,13 +1,18 @@
 'use client'
-import { Header } from '@/payload-types'
+import type { Footer } from '@/payload-types'
 import { RowLabelProps, useRowLabel } from '@payloadcms/ui'
 
-export const RowLabel: React.FC<RowLabelProps> = () => {
-  const data = useRowLabel<NonNullable<Header['navItems']>[number]>()
+export const ColumnRowLabel: React.FC<RowLabelProps> = () => {
+  const { data } = useRowLabel<NonNullable<Footer['columns']>[number]>()
+  return <div>{data?.title || 'Column'}</div>
+}
 
-  const label = data?.data?.link?.label
-    ? `Nav item ${data.rowNumber !== undefined ? data.rowNumber + 1 : ''}: ${data?.data?.link?.label}`
-    : 'Row'
+export const PromiseRowLabel: React.FC<RowLabelProps> = () => {
+  const { data } = useRowLabel<NonNullable<Footer['promiseItems']>[number]>()
+  return <div>{data?.label || 'Promise'}</div>
+}
 
-  return <div>{label}</div>
+export const SocialRowLabel: React.FC<RowLabelProps> = () => {
+  const { data } = useRowLabel<NonNullable<Footer['socialItems']>[number]>()
+  return <div>{data?.label || 'Social Link'}</div>
 }

@@ -69,6 +69,7 @@ export interface Config {
   collections: {
     pages: Page;
     posts: Post;
+    products: Product;
     media: Media;
     categories: Category;
     users: User;
@@ -91,6 +92,7 @@ export interface Config {
   collectionsSelect: {
     pages: PagesSelect<false> | PagesSelect<true>;
     posts: PostsSelect<false> | PostsSelect<true>;
+    products: ProductsSelect<false> | ProductsSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
@@ -188,6 +190,10 @@ export interface Page {
               | ({
                   relationTo: 'posts';
                   value: string | Post;
+                } | null)
+              | ({
+                  relationTo: 'products';
+                  value: string | Product;
                 } | null);
             url?: string | null;
             label: string;
@@ -200,8 +206,74 @@ export interface Page {
         }[]
       | null;
     media?: (string | null) | Media;
+    mediaPosition?: ('left' | 'right') | null;
+    /**
+     * Small caps line above the heading.
+     */
+    eyebrow?: string | null;
+    /**
+     * Serif line between the heading and the description.
+     */
+    subheading?: string | null;
+    /**
+     * e.g. "Doctor's Choice". Use a line break for a two-line badge title.
+     */
+    badgeTitle?: string | null;
+    badgeDescription?: string | null;
+    /**
+     * Use a line break to control where the heading wraps.
+     */
+    heading?: string | null;
+    description?: string | null;
+    benefits?:
+      | {
+          text: string;
+          id?: string | null;
+        }[]
+      | null;
+    /**
+     * Optional highlighted box below the benefits.
+     */
+    calloutTitle?: string | null;
+    calloutText?: string | null;
+    trustPoints?:
+      | {
+          icon: 'user' | 'flask' | 'package';
+          label: string;
+          id?: string | null;
+        }[]
+      | null;
   };
-  layout: (CallToActionBlock | ContentBlock | MediaBlock | ArchiveBlock | FormBlock)[];
+  layout: (
+    | CallToActionBlock
+    | ContentBlock
+    | MediaBlock
+    | ArchiveBlock
+    | FormBlock
+    | ReviewsBlock
+    | FAQBlock
+    | StatsBarBlock
+    | CausesBlock
+    | ProductSystemBlock
+    | VideoStoriesBlock
+    | WaysGridBlock
+    | ClosingCtaBlock
+    | GuaranteeBlock
+    | WhyDaysBlock
+    | ComparisonBlock
+    | SupportTabsBlock
+    | PairingBlock
+    | TotalCareBlock
+    | MedicalReviewBlock
+    | FeatureStripBlock
+    | BannerHeroBlock
+    | IngredientExplorerBlock
+    | BenefitsCarouselBlock
+    | FormulaTableBlock
+    | PricingOfferBlock
+    | SavingsCompareBlock
+    | ScienceStatsBlock
+  )[];
   meta?: {
     title?: string | null;
     /**
@@ -441,6 +513,1757 @@ export interface User {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "products".
+ */
+export interface Product {
+  id: string;
+  title: string;
+  /**
+   * Small caps line above the title.
+   */
+  eyebrow?: string | null;
+  description?: string | null;
+  /**
+   * First image is shown by default.
+   */
+  gallery?:
+    | {
+        image?: (string | null) | Media;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Filled stars, 0–5.
+   */
+  rating?: number | null;
+  /**
+   * e.g. "4.8 from 5,864 Reviews".
+   */
+  ratingLabel?: string | null;
+  /**
+   * Separated by vertical rules, e.g. "500,000+ Orders".
+   */
+  ratingNotes?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  benefits?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Pill over the gallery, e.g. "1,100+ Customer Reviews".
+   */
+  badgeLabel?: string | null;
+  resultsTitle?: string | null;
+  results?:
+    | {
+        value: string;
+        label: string;
+        detail?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  resultsFootnote?: string | null;
+  feelTitle?: string | null;
+  feel?:
+    | {
+        icon:
+          | 'pregnancy'
+          | 'toilet'
+          | 'sitting'
+          | 'lifting'
+          | 'fiber'
+          | 'tissueChange'
+          | 'flask'
+          | 'supportSystem'
+          | 'stethoscope'
+          | 'research'
+          | 'madeInUsa'
+          | 'guarantee'
+          | 'clipboardCheck'
+          | 'clock'
+          | 'documentSearch'
+          | 'packageLock'
+          | 'gmp'
+          | 'packageBox'
+          | 'truck'
+          | 'calendar'
+          | 'refund'
+          | 'rotate'
+          | 'badgeAward'
+          | 'leaf'
+          | 'droplet'
+          | 'shieldCheck'
+          | 'snowflake'
+          | 'info';
+        title: string;
+        /**
+         * e.g. "92%"
+         */
+        percent?: string | null;
+        subtitle?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  variantsTitle?: string | null;
+  variants?:
+    | {
+        name: string;
+        image?: (string | null) | Media;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * The first plan is selected by default.
+   */
+  plans?:
+    | {
+        name: string;
+        /**
+         * e.g. "Save 30%"
+         */
+        saveLabel?: string | null;
+        price: string;
+        /**
+         * Struck through.
+         */
+        comparePrice?: string | null;
+        priceSuffix?: string | null;
+        billingNote?: string | null;
+        perServing?: string | null;
+        bestValue?: boolean | null;
+        bestValueLabel?: string | null;
+        features?:
+          | {
+              text: string;
+              id?: string | null;
+            }[]
+          | null;
+        bonusHeading?: string | null;
+        bonusHighlight?: string | null;
+        bonusTitle?: string | null;
+        bonusSubtitle?: string | null;
+        bonusImage?: (string | null) | Media;
+        id?: string | null;
+      }[]
+    | null;
+  oneTimeLabel?: string | null;
+  ctaLabel?: string | null;
+  notes?:
+    | {
+        icon:
+          | 'pregnancy'
+          | 'toilet'
+          | 'sitting'
+          | 'lifting'
+          | 'fiber'
+          | 'tissueChange'
+          | 'flask'
+          | 'supportSystem'
+          | 'stethoscope'
+          | 'research'
+          | 'madeInUsa'
+          | 'guarantee'
+          | 'clipboardCheck'
+          | 'clock'
+          | 'documentSearch'
+          | 'packageLock'
+          | 'gmp'
+          | 'packageBox'
+          | 'truck'
+          | 'calendar'
+          | 'refund'
+          | 'rotate'
+          | 'badgeAward'
+          | 'leaf'
+          | 'droplet'
+          | 'shieldCheck'
+          | 'snowflake'
+          | 'info';
+        lead?: string | null;
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  trustItems?:
+    | {
+        icon:
+          | 'pregnancy'
+          | 'toilet'
+          | 'sitting'
+          | 'lifting'
+          | 'fiber'
+          | 'tissueChange'
+          | 'flask'
+          | 'supportSystem'
+          | 'stethoscope'
+          | 'research'
+          | 'madeInUsa'
+          | 'guarantee'
+          | 'clipboardCheck'
+          | 'clock'
+          | 'documentSearch'
+          | 'packageLock'
+          | 'gmp'
+          | 'packageBox'
+          | 'truck'
+          | 'calendar'
+          | 'refund'
+          | 'rotate'
+          | 'badgeAward'
+          | 'leaf'
+          | 'droplet'
+          | 'shieldCheck'
+          | 'snowflake'
+          | 'info';
+        label: string;
+        id?: string | null;
+      }[]
+    | null;
+  compositionTitle?: string | null;
+  /**
+   * Centred line above the two columns.
+   */
+  compositionNote?: string | null;
+  containsTitle?: string | null;
+  notContainsTitle?: string | null;
+  contains?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  notContains?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  storiesTitle?: string | null;
+  /**
+   * Same carousel used by the Video Stories block.
+   */
+  stories?:
+    | {
+        poster?: (string | null) | Media;
+        name: string;
+        caption?: string | null;
+        badge?: string | null;
+        duration?: string | null;
+        video?: (string | null) | Media;
+        videoUrl?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Collapsible sections below the buy box, e.g. Ingredients.
+   */
+  sections?:
+    | {
+        title: string;
+        items?:
+          | {
+              text: string;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Full-width sections rendered below the product detail. Any site block can be used here.
+   */
+  layout?:
+    | (
+        | MedicalReviewBlock
+        | ReviewsBlock
+        | FAQBlock
+        | ComparisonBlock
+        | GuaranteeBlock
+        | WhyDaysBlock
+        | SupportTabsBlock
+        | PairingBlock
+        | TotalCareBlock
+        | ProductSystemBlock
+        | CausesBlock
+        | WaysGridBlock
+        | StatsBarBlock
+        | ClosingCtaBlock
+        | FeatureStripBlock
+        | BannerHeroBlock
+        | IngredientExplorerBlock
+        | BenefitsCarouselBlock
+        | FormulaTableBlock
+        | PricingOfferBlock
+        | SavingsCompareBlock
+        | ScienceStatsBlock
+      )[]
+    | null;
+  meta?: {
+    title?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (string | null) | Media;
+    description?: string | null;
+  };
+  publishedAt?: string | null;
+  /**
+   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   */
+  generateSlug?: boolean | null;
+  slug: string;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "MedicalReviewBlock".
+ */
+export interface MedicalReviewBlock {
+  /**
+   * Flanked by laurel marks, e.g. "HemClear® Medical Review".
+   */
+  eyebrow?: string | null;
+  heading?: string | null;
+  /**
+   * The row of points above the reviewer cards.
+   */
+  highlights?:
+    | {
+        icon:
+          | 'pregnancy'
+          | 'toilet'
+          | 'sitting'
+          | 'lifting'
+          | 'fiber'
+          | 'tissueChange'
+          | 'flask'
+          | 'supportSystem'
+          | 'stethoscope'
+          | 'research'
+          | 'madeInUsa'
+          | 'guarantee'
+          | 'clipboardCheck'
+          | 'clock'
+          | 'documentSearch'
+          | 'packageLock'
+          | 'gmp'
+          | 'packageBox'
+          | 'truck'
+          | 'calendar'
+          | 'refund'
+          | 'rotate'
+          | 'badgeAward'
+          | 'leaf'
+          | 'droplet'
+          | 'shieldCheck'
+          | 'snowflake'
+          | 'info';
+        title: string;
+        description?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  doctors?:
+    | {
+        photo?: (string | null) | Media;
+        name: string;
+        role?: string | null;
+        /**
+         * Pill beside the name.
+         */
+        tag?: string | null;
+        quoteHeading: string;
+        quote: string;
+        tags?:
+          | {
+              text: string;
+              id?: string | null;
+            }[]
+          | null;
+        readMoreLabel?: string | null;
+        verifiedLabel?: string | null;
+        profileLabel?: string | null;
+        profileUrl?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'medicalReview';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ReviewsBlock".
+ */
+export interface ReviewsBlock {
+  /**
+   * First line of the heading. Rendered in navy.
+   */
+  heading?: string | null;
+  /**
+   * Second line of the heading. Rendered in the lighter accent blue.
+   */
+  headingAccent?: string | null;
+  /**
+   * Intro paragraph below the heading.
+   */
+  description?: string | null;
+  /**
+   * The top row of highlighted reviews, each with a score and a source logo. Best with 4–5.
+   */
+  featured?:
+    | {
+        /**
+         * e.g. "5.5". Leave empty to hide.
+         */
+        score?: string | null;
+        /**
+         * Number of filled stars, 0–5.
+         */
+        stars: number;
+        title: string;
+        quote: string;
+        /**
+         * e.g. "Mark D."
+         */
+        author: string;
+        /**
+         * e.g. "Verified Buyer" or "Community Review".
+         */
+        authorNote?: string | null;
+        /**
+         * Logo of the platform the review came from (Amazon, Trustpilot, Google…). Upload a transparent PNG or SVG.
+         */
+        sourceLogo?: (string | null) | Media;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * The expandable grid below the featured row. Add as many as you like — the block only shows the first few until the visitor expands it.
+   */
+  reviews?:
+    | {
+        /**
+         * Number of filled stars, 0–5.
+         */
+        stars: number;
+        verified?: boolean | null;
+        /**
+         * Short pull-quote headline, e.g. "Pain Almost Gone."
+         */
+        title: string;
+        quote: string;
+        author: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * How many customer reviews to show before "Show More".
+   */
+  initialCount?: number | null;
+  showMoreLabel?: string | null;
+  showLessLabel?: string | null;
+  /**
+   * Text of the badge shown on customer reviews marked as verified.
+   */
+  verifiedLabel?: string | null;
+  /**
+   * Fine print rendered under the section, e.g. the FDA statement.
+   */
+  disclaimer?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'reviews';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FAQBlock".
+ */
+export interface FAQBlock {
+  /**
+   * Use a line break to control where the heading wraps.
+   */
+  heading?: string | null;
+  description?: string | null;
+  /**
+   * Product shot shown beside the heading. A placeholder renders until one is set.
+   */
+  image?: (string | null) | Media;
+  /**
+   * Decorative background behind the header band. Optional.
+   */
+  backgroundImage?: (string | null) | Media;
+  items?:
+    | {
+        question: string;
+        /**
+         * Blank lines become separate paragraphs.
+         */
+        answer: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * How the accordion appears before the visitor interacts with it.
+   */
+  defaultState?: ('allOpen' | 'firstOpen' | 'allClosed') | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'faq';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ComparisonBlock".
+ */
+export interface ComparisonBlock {
+  heading?: string | null;
+  subheading?: string | null;
+  /**
+   * One per product column, left to right. Mark your own product as highlighted.
+   */
+  products?:
+    | {
+        name: string;
+        image?: (string | null) | Media;
+        highlight?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Each row lists one value per column, in the same order as Columns above.
+   */
+  rows?:
+    | {
+        icon:
+          | 'pregnancy'
+          | 'toilet'
+          | 'sitting'
+          | 'lifting'
+          | 'fiber'
+          | 'tissueChange'
+          | 'flask'
+          | 'supportSystem'
+          | 'stethoscope'
+          | 'research'
+          | 'madeInUsa'
+          | 'guarantee'
+          | 'clipboardCheck'
+          | 'clock'
+          | 'documentSearch'
+          | 'packageLock'
+          | 'gmp'
+          | 'packageBox'
+          | 'truck'
+          | 'calendar'
+          | 'refund'
+          | 'rotate'
+          | 'badgeAward'
+          | 'leaf'
+          | 'droplet'
+          | 'shieldCheck'
+          | 'snowflake'
+          | 'info';
+        label: string;
+        /**
+         * One per column, in order.
+         */
+        values?:
+          | {
+              value: 'yes' | 'no';
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'comparison';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "GuaranteeBlock".
+ */
+export interface GuaranteeBlock {
+  badgeLabel?: string | null;
+  heading?: string | null;
+  subheading?: string | null;
+  /**
+   * Large number in the circular seal.
+   */
+  sealValue?: string | null;
+  sealLabel?: string | null;
+  points?:
+    | {
+        icon:
+          | 'pregnancy'
+          | 'toilet'
+          | 'sitting'
+          | 'lifting'
+          | 'fiber'
+          | 'tissueChange'
+          | 'flask'
+          | 'supportSystem'
+          | 'stethoscope'
+          | 'research'
+          | 'madeInUsa'
+          | 'guarantee'
+          | 'clipboardCheck'
+          | 'clock'
+          | 'documentSearch'
+          | 'packageLock'
+          | 'gmp'
+          | 'packageBox'
+          | 'truck'
+          | 'calendar'
+          | 'refund'
+          | 'rotate'
+          | 'badgeAward'
+          | 'leaf'
+          | 'droplet'
+          | 'shieldCheck'
+          | 'snowflake'
+          | 'info';
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Rendered as a centred, wrapping row of outlined pills.
+   */
+  badges?:
+    | {
+        icon:
+          | 'pregnancy'
+          | 'toilet'
+          | 'sitting'
+          | 'lifting'
+          | 'fiber'
+          | 'tissueChange'
+          | 'flask'
+          | 'supportSystem'
+          | 'stethoscope'
+          | 'research'
+          | 'madeInUsa'
+          | 'guarantee'
+          | 'clipboardCheck'
+          | 'clock'
+          | 'documentSearch'
+          | 'packageLock'
+          | 'gmp'
+          | 'packageBox'
+          | 'truck'
+          | 'calendar'
+          | 'refund'
+          | 'rotate'
+          | 'badgeAward'
+          | 'leaf'
+          | 'droplet'
+          | 'shieldCheck'
+          | 'snowflake'
+          | 'info';
+        label: string;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'guarantee';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "WhyDaysBlock".
+ */
+export interface WhyDaysBlock {
+  /**
+   * Large lifestyle image on the left.
+   */
+  image?: (string | null) | Media;
+  /**
+   * Use line breaks to control where the heading wraps.
+   */
+  heading?: string | null;
+  paragraphs?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  ctaHeading?: string | null;
+  ctaText?: string | null;
+  links?:
+    | {
+        link: {
+          type?: ('reference' | 'custom') | null;
+          newTab?: boolean | null;
+          reference?:
+            | ({
+                relationTo: 'pages';
+                value: string | Page;
+              } | null)
+            | ({
+                relationTo: 'posts';
+                value: string | Post;
+              } | null)
+            | ({
+                relationTo: 'products';
+                value: string | Product;
+              } | null);
+          url?: string | null;
+          label: string;
+        };
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Product shot beside the copy.
+   */
+  productImage?: (string | null) | Media;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'whyDays';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "SupportTabsBlock".
+ */
+export interface SupportTabsBlock {
+  /**
+   * Outlined pill above the heading.
+   */
+  eyebrow?: string | null;
+  heading?: string | null;
+  subheading?: string | null;
+  /**
+   * Each one becomes a tab and a card. Selecting a tab scrolls its card into view.
+   */
+  items?:
+    | {
+        /**
+         * Used when no icon image is uploaded.
+         */
+        icon:
+          | 'pregnancy'
+          | 'toilet'
+          | 'sitting'
+          | 'lifting'
+          | 'fiber'
+          | 'tissueChange'
+          | 'flask'
+          | 'supportSystem'
+          | 'stethoscope'
+          | 'research'
+          | 'madeInUsa'
+          | 'guarantee'
+          | 'clipboardCheck'
+          | 'clock'
+          | 'documentSearch'
+          | 'packageLock'
+          | 'gmp'
+          | 'packageBox'
+          | 'truck'
+          | 'calendar'
+          | 'refund'
+          | 'rotate'
+          | 'badgeAward'
+          | 'leaf'
+          | 'droplet'
+          | 'shieldCheck'
+          | 'snowflake'
+          | 'info';
+        title: string;
+        /**
+         * Optional illustrated icon; overrides the icon above.
+         */
+        image?: (string | null) | Media;
+        /**
+         * Line breaks are preserved.
+         */
+        description: string;
+        id?: string | null;
+      }[]
+    | null;
+  footerLine?: string | null;
+  disclaimer?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'supportTabs';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "PairingBlock".
+ */
+export interface PairingBlock {
+  heading?: string | null;
+  /**
+   * Second heading line, rendered in red.
+   */
+  headingAccent?: string | null;
+  /**
+   * Supports bold for the emphasised phrases.
+   */
+  intro?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * Product shot shown between the two feature columns.
+   */
+  image?: (string | null) | Media;
+  /**
+   * Split evenly down the middle — the first half sits left of the image, the rest right.
+   */
+  features?:
+    | {
+        icon:
+          | 'pregnancy'
+          | 'toilet'
+          | 'sitting'
+          | 'lifting'
+          | 'fiber'
+          | 'tissueChange'
+          | 'flask'
+          | 'supportSystem'
+          | 'stethoscope'
+          | 'research'
+          | 'madeInUsa'
+          | 'guarantee'
+          | 'clipboardCheck'
+          | 'clock'
+          | 'documentSearch'
+          | 'packageLock'
+          | 'gmp'
+          | 'packageBox'
+          | 'truck'
+          | 'calendar'
+          | 'refund'
+          | 'rotate'
+          | 'badgeAward'
+          | 'leaf'
+          | 'droplet'
+          | 'shieldCheck'
+          | 'snowflake'
+          | 'info';
+        title: string;
+        description?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'pairing';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TotalCareBlock".
+ */
+export interface TotalCareBlock {
+  /**
+   * Small caps line above the heading.
+   */
+  eyebrow?: string | null;
+  heading?: string | null;
+  /**
+   * Supports bold for the product names.
+   */
+  subheading?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  showConnector?: boolean | null;
+  /**
+   * Two sides of the system. A "+" is drawn between them automatically.
+   */
+  items?:
+    | {
+        label: string;
+        image?: (string | null) | Media;
+        caption?: string | null;
+        /**
+         * Listed beside the image.
+         */
+        features?:
+          | {
+              icon:
+                | 'pregnancy'
+                | 'toilet'
+                | 'sitting'
+                | 'lifting'
+                | 'fiber'
+                | 'tissueChange'
+                | 'flask'
+                | 'supportSystem'
+                | 'stethoscope'
+                | 'research'
+                | 'madeInUsa'
+                | 'guarantee'
+                | 'clipboardCheck'
+                | 'clock'
+                | 'documentSearch'
+                | 'packageLock'
+                | 'gmp'
+                | 'packageBox'
+                | 'truck'
+                | 'calendar'
+                | 'refund'
+                | 'rotate'
+                | 'badgeAward'
+                | 'leaf'
+                | 'droplet'
+                | 'shieldCheck'
+                | 'snowflake'
+                | 'info';
+              label: string;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'totalCare';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ProductSystemBlock".
+ */
+export interface ProductSystemBlock {
+  /**
+   * Use a line break to control where the heading wraps.
+   */
+  heading?: string | null;
+  subheading?: string | null;
+  /**
+   * e.g. "What Is
+   * HemClear®?"
+   */
+  columnHeading?: string | null;
+  paragraphs?:
+    | {
+        /**
+         * Bold blue lead-in, e.g. "HemClear®".
+         */
+        lead?: string | null;
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Centre diagram. A placeholder renders until one is set.
+   */
+  image?: (string | null) | Media;
+  /**
+   * Shown in the right column on desktop, below the diagram on mobile.
+   */
+  features?:
+    | {
+        icon:
+          | 'pregnancy'
+          | 'toilet'
+          | 'sitting'
+          | 'lifting'
+          | 'fiber'
+          | 'tissueChange'
+          | 'flask'
+          | 'supportSystem'
+          | 'stethoscope'
+          | 'research'
+          | 'madeInUsa'
+          | 'guarantee'
+          | 'clipboardCheck'
+          | 'clock'
+          | 'documentSearch'
+          | 'packageLock'
+          | 'gmp'
+          | 'packageBox'
+          | 'truck'
+          | 'calendar'
+          | 'refund'
+          | 'rotate'
+          | 'badgeAward'
+          | 'leaf'
+          | 'droplet'
+          | 'shieldCheck'
+          | 'snowflake'
+          | 'info';
+        /**
+         * Large lead-in number, e.g. "13".
+         */
+        stat?: string | null;
+        title: string;
+        subtitle?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'productSystem';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CausesBlock".
+ */
+export interface CausesBlock {
+  /**
+   * Illustration shown on the left. A placeholder renders until one is set.
+   */
+  image?: (string | null) | Media;
+  /**
+   * Which side the illustration sits on at desktop widths.
+   */
+  imagePosition?: ('left' | 'right' | 'none') | null;
+  /**
+   * Small caps line above the heading.
+   */
+  eyebrow?: string | null;
+  /**
+   * Use a line break to control where the heading wraps.
+   */
+  heading?: string | null;
+  description?: string | null;
+  /**
+   * Small blue line above the icon grid.
+   */
+  gridLabel?: string | null;
+  /**
+   * How the factor list is presented.
+   */
+  factorStyle?: ('cards' | 'checklist') | null;
+  factors?:
+    | {
+        icon:
+          | 'pregnancy'
+          | 'toilet'
+          | 'sitting'
+          | 'lifting'
+          | 'fiber'
+          | 'tissueChange'
+          | 'flask'
+          | 'supportSystem'
+          | 'stethoscope'
+          | 'research'
+          | 'madeInUsa'
+          | 'guarantee'
+          | 'clipboardCheck'
+          | 'clock'
+          | 'documentSearch'
+          | 'packageLock'
+          | 'gmp'
+          | 'packageBox'
+          | 'truck'
+          | 'calendar'
+          | 'refund'
+          | 'rotate'
+          | 'badgeAward'
+          | 'leaf'
+          | 'droplet'
+          | 'shieldCheck'
+          | 'snowflake'
+          | 'info';
+        label: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Fine print below the grid, shown with an info icon.
+   */
+  footnote?: string | null;
+  links?:
+    | {
+        link: {
+          type?: ('reference' | 'custom') | null;
+          newTab?: boolean | null;
+          reference?:
+            | ({
+                relationTo: 'pages';
+                value: string | Page;
+              } | null)
+            | ({
+                relationTo: 'posts';
+                value: string | Post;
+              } | null)
+            | ({
+                relationTo: 'products';
+                value: string | Product;
+              } | null);
+          url?: string | null;
+          label: string;
+          /**
+           * Choose how the link should be rendered.
+           */
+          appearance?: ('default' | 'outline') | null;
+        };
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'causes';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "WaysGridBlock".
+ */
+export interface WaysGridBlock {
+  /**
+   * Small caps line above the heading.
+   */
+  eyebrow?: string | null;
+  /**
+   * Navy text before the accent, e.g. "9 Ways".
+   */
+  headingBefore?: string | null;
+  /**
+   * Blue accent word, e.g. "HemClear®".
+   */
+  headingAccent?: string | null;
+  /**
+   * Navy text after the accent, e.g. "Supports You".
+   */
+  headingAfter?: string | null;
+  subheading?: string | null;
+  /**
+   * Numbered automatically in order — reordering renumbers them.
+   */
+  ways?:
+    | {
+        /**
+         * Circular icon illustration.
+         */
+        image?: (string | null) | Media;
+        title: string;
+        description?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Fine print below the grid, shown with a shield icon.
+   */
+  footnote?: string | null;
+  /**
+   * How many items sit in the top row on desktop; the rest flow into a second row. Ignored on smaller screens.
+   */
+  firstRowCount?: number | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'waysGrid';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "StatsBarBlock".
+ */
+export interface StatsBarBlock {
+  /**
+   * Rendered in a row on desktop, wrapping to two columns on mobile.
+   */
+  stats?:
+    | {
+        /**
+         * Small line above, e.g. "The".
+         */
+        topLabel?: string | null;
+        /**
+         * The large line, e.g. "20" or "500,000+".
+         */
+        value: string;
+        /**
+         * Small line below, e.g. "Years in Business".
+         */
+        label?: string | null;
+        showStar?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'statsBar';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ClosingCtaBlock".
+ */
+export interface ClosingCtaBlock {
+  /**
+   * Bold sans-serif first line, e.g. "Don't Let Hemorrhoids Win!"
+   */
+  headingTop?: string | null;
+  /**
+   * Serif second line.
+   */
+  heading?: string | null;
+  description?: string | null;
+  cards?:
+    | {
+        /**
+         * Lifestyle photo above the card body.
+         */
+        image?: (string | null) | Media;
+        icon:
+          | 'pregnancy'
+          | 'toilet'
+          | 'sitting'
+          | 'lifting'
+          | 'fiber'
+          | 'tissueChange'
+          | 'flask'
+          | 'supportSystem'
+          | 'stethoscope'
+          | 'research'
+          | 'madeInUsa'
+          | 'guarantee'
+          | 'clipboardCheck'
+          | 'clock'
+          | 'documentSearch'
+          | 'packageLock'
+          | 'gmp'
+          | 'packageBox'
+          | 'truck'
+          | 'calendar'
+          | 'refund'
+          | 'rotate'
+          | 'badgeAward'
+          | 'leaf'
+          | 'droplet'
+          | 'shieldCheck'
+          | 'snowflake'
+          | 'info';
+        title: string;
+        description?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  links?:
+    | {
+        link: {
+          type?: ('reference' | 'custom') | null;
+          newTab?: boolean | null;
+          reference?:
+            | ({
+                relationTo: 'pages';
+                value: string | Page;
+              } | null)
+            | ({
+                relationTo: 'posts';
+                value: string | Post;
+              } | null)
+            | ({
+                relationTo: 'products';
+                value: string | Product;
+              } | null);
+          url?: string | null;
+          label: string;
+          /**
+           * Choose how the link should be rendered.
+           */
+          appearance?: ('default' | 'outline') | null;
+        };
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'closingCta';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FeatureStripBlock".
+ */
+export interface FeatureStripBlock {
+  eyebrow?: string | null;
+  heading?: string | null;
+  subheading?: string | null;
+  /**
+   * Laid out in one divided row on desktop, stacking on smaller screens.
+   */
+  items?:
+    | {
+        icon:
+          | 'pregnancy'
+          | 'toilet'
+          | 'sitting'
+          | 'lifting'
+          | 'fiber'
+          | 'tissueChange'
+          | 'flask'
+          | 'supportSystem'
+          | 'stethoscope'
+          | 'research'
+          | 'madeInUsa'
+          | 'guarantee'
+          | 'clipboardCheck'
+          | 'clock'
+          | 'documentSearch'
+          | 'packageLock'
+          | 'gmp'
+          | 'packageBox'
+          | 'truck'
+          | 'calendar'
+          | 'refund'
+          | 'rotate'
+          | 'badgeAward'
+          | 'leaf'
+          | 'droplet'
+          | 'shieldCheck'
+          | 'snowflake'
+          | 'info';
+        title: string;
+        description?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * How the items are laid out.
+   */
+  variant?: ('divided' | 'cards' | 'pills' | 'checklist') | null;
+  background?: ('white' | 'light') | null;
+  /**
+   * Alignment of each item.
+   */
+  align?: ('center' | 'left') | null;
+  links?:
+    | {
+        link: {
+          type?: ('reference' | 'custom') | null;
+          newTab?: boolean | null;
+          reference?:
+            | ({
+                relationTo: 'pages';
+                value: string | Page;
+              } | null)
+            | ({
+                relationTo: 'posts';
+                value: string | Post;
+              } | null)
+            | ({
+                relationTo: 'products';
+                value: string | Product;
+              } | null);
+          url?: string | null;
+          label: string;
+          /**
+           * Choose how the link should be rendered.
+           */
+          appearance?: ('default' | 'outline') | null;
+        };
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Fine print below the row. In the Checklist variant it renders as a highlighted callout instead.
+   */
+  footnote?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'featureStrip';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "BannerHeroBlock".
+ */
+export interface BannerHeroBlock {
+  /**
+   * Full-bleed background. A deep navy gradient stands in until one is set.
+   */
+  backgroundImage?: (string | null) | Media;
+  eyebrow?: string | null;
+  /**
+   * Use line breaks to control where the heading wraps.
+   */
+  heading?: string | null;
+  description?: string | null;
+  links?:
+    | {
+        link: {
+          type?: ('reference' | 'custom') | null;
+          newTab?: boolean | null;
+          reference?:
+            | ({
+                relationTo: 'pages';
+                value: string | Page;
+              } | null)
+            | ({
+                relationTo: 'posts';
+                value: string | Post;
+              } | null)
+            | ({
+                relationTo: 'products';
+                value: string | Product;
+              } | null);
+          url?: string | null;
+          label: string;
+        };
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Darkening applied over the image so text stays readable.
+   */
+  overlay?: ('left' | 'even' | 'none') | null;
+  height?: ('tall' | 'short') | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'bannerHero';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "IngredientExplorerBlock".
+ */
+export interface IngredientExplorerBlock {
+  /**
+   * Each formula becomes one side of the toggle at the top. With a single formula the toggle is hidden.
+   */
+  groups?:
+    | {
+        /**
+         * Toggle label.
+         */
+        name: string;
+        heading?: string | null;
+        description?: string | null;
+        /**
+         * The filter pills are built from the categories used here, in the order they first appear — there is no separate list to keep in sync.
+         */
+        ingredients?:
+          | {
+              image?: (string | null) | Media;
+              name: string;
+              /**
+               * Shown in italics under the name.
+               */
+              latin?: string | null;
+              description?: string | null;
+              benefit?: string | null;
+              /**
+               * e.g. "Antioxidants". Drives the filter pills.
+               */
+              category?: string | null;
+              /**
+               * Revealed when the visitor expands the card.
+               */
+              details?: string | null;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+      }[]
+    | null;
+  allLabel?: string | null;
+  disclaimerTitle?: string | null;
+  disclaimer?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'ingredientExplorer';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "BenefitsCarouselBlock".
+ */
+export interface BenefitsCarouselBlock {
+  heading?: string | null;
+  subheading?: string | null;
+  items?:
+    | {
+        image?: (string | null) | Media;
+        icon:
+          | 'pregnancy'
+          | 'toilet'
+          | 'sitting'
+          | 'lifting'
+          | 'fiber'
+          | 'tissueChange'
+          | 'flask'
+          | 'supportSystem'
+          | 'stethoscope'
+          | 'research'
+          | 'madeInUsa'
+          | 'guarantee'
+          | 'clipboardCheck'
+          | 'clock'
+          | 'documentSearch'
+          | 'packageLock'
+          | 'gmp'
+          | 'packageBox'
+          | 'truck'
+          | 'calendar'
+          | 'refund'
+          | 'rotate'
+          | 'badgeAward'
+          | 'leaf'
+          | 'droplet'
+          | 'shieldCheck'
+          | 'snowflake'
+          | 'info';
+        title: string;
+        /**
+         * Revealed when the visitor expands the card.
+         */
+        details?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'benefitsCarousel';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FormulaTableBlock".
+ */
+export interface FormulaTableBlock {
+  /**
+   * Line above the product toggle.
+   */
+  heading?: string | null;
+  /**
+   * Each becomes one thumbnail in the toggle. With one formula the toggle is hidden.
+   */
+  formulas?:
+    | {
+        name: string;
+        image?: (string | null) | Media;
+        /**
+         * Navy text before the accent, e.g. "The".
+         */
+        titleBefore?: string | null;
+        /**
+         * Blue accent, e.g. "HemClear®".
+         */
+        titleAccent?: string | null;
+        /**
+         * e.g. "Formula".
+         */
+        titleAfter?: string | null;
+        subtitle?: string | null;
+        rows?:
+          | {
+              image?: (string | null) | Media;
+              name: string;
+              benefit: string;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+      }[]
+    | null;
+  footnote?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'formulaTable';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "PricingOfferBlock".
+ */
+export interface PricingOfferBlock {
+  /**
+   * e.g. "Limited Time Offer:"
+   */
+  bannerTitle?: string | null;
+  /**
+   * Wrap a word in *asterisks* to highlight it in yellow.
+   */
+  bannerText?: string | null;
+  bannerImage?: (string | null) | Media;
+  bannerValue?: string | null;
+  bannerValueLabel?: string | null;
+  plans?:
+    | {
+        name: string;
+        image?: (string | null) | Media;
+        priceLead?: string | null;
+        price: string;
+        priceSuffix?: string | null;
+        features?:
+          | {
+              text: string;
+              highlight?: boolean | null;
+              id?: string | null;
+            }[]
+          | null;
+        ctaLabel?: string | null;
+        ctaUrl?: string | null;
+        footnote?: string | null;
+        popular?: boolean | null;
+        popularLabel?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  trustItems?:
+    | {
+        icon:
+          | 'pregnancy'
+          | 'toilet'
+          | 'sitting'
+          | 'lifting'
+          | 'fiber'
+          | 'tissueChange'
+          | 'flask'
+          | 'supportSystem'
+          | 'stethoscope'
+          | 'research'
+          | 'madeInUsa'
+          | 'guarantee'
+          | 'clipboardCheck'
+          | 'clock'
+          | 'documentSearch'
+          | 'packageLock'
+          | 'gmp'
+          | 'packageBox'
+          | 'truck'
+          | 'calendar'
+          | 'refund'
+          | 'rotate'
+          | 'badgeAward'
+          | 'leaf'
+          | 'droplet'
+          | 'shieldCheck'
+          | 'snowflake'
+          | 'info';
+        label: string;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'pricingOffer';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "SavingsCompareBlock".
+ */
+export interface SavingsCompareBlock {
+  heading?: string | null;
+  subheading?: string | null;
+  savingsLabel?: string | null;
+  savingsValue?: string | null;
+  separateTitle?: string | null;
+  separateColLabel?: string | null;
+  separateCostLabel?: string | null;
+  separateRows?:
+    | {
+        name: string;
+        cost: string;
+        id?: string | null;
+      }[]
+    | null;
+  separateTotals?:
+    | {
+        label: string;
+        value: string;
+        id?: string | null;
+      }[]
+    | null;
+  formulaTitle?: string | null;
+  formulaBadge?: string | null;
+  formulaFeatures?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  formulaPriceLabel?: string | null;
+  formulaPrice?: string | null;
+  formulaAnnual?: string | null;
+  formulaSaveLabel?: string | null;
+  formulaSaveValue?: string | null;
+  formulaSaveNote?: string | null;
+  ctaLabel?: string | null;
+  ctaUrl?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'savingsCompare';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ScienceStatsBlock".
+ */
+export interface ScienceStatsBlock {
+  heading?: string | null;
+  subheading?: string | null;
+  image?: (string | null) | Media;
+  stats?:
+    | {
+        value: string;
+        title: string;
+        description?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  links?:
+    | {
+        link: {
+          type?: ('reference' | 'custom') | null;
+          newTab?: boolean | null;
+          reference?:
+            | ({
+                relationTo: 'pages';
+                value: string | Page;
+              } | null)
+            | ({
+                relationTo: 'posts';
+                value: string | Post;
+              } | null)
+            | ({
+                relationTo: 'products';
+                value: string | Product;
+              } | null);
+          url?: string | null;
+          label: string;
+          /**
+           * Choose how the link should be rendered.
+           */
+          appearance?: ('default' | 'outline') | null;
+        };
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * e.g. Gluten Free | Dairy Free.
+   */
+  badges?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  footnote?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'scienceStats';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "CallToActionBlock".
  */
 export interface CallToActionBlock {
@@ -472,6 +2295,10 @@ export interface CallToActionBlock {
             | ({
                 relationTo: 'posts';
                 value: string | Post;
+              } | null)
+            | ({
+                relationTo: 'products';
+                value: string | Product;
               } | null);
           url?: string | null;
           label: string;
@@ -522,6 +2349,10 @@ export interface ContentBlock {
             | ({
                 relationTo: 'posts';
                 value: string | Post;
+              } | null)
+            | ({
+                relationTo: 'products';
+                value: string | Product;
               } | null);
           url?: string | null;
           label: string;
@@ -724,9 +2555,6 @@ export interface Form {
       )[]
     | null;
   submitButtonLabel?: string | null;
-  /**
-   * Choose whether to display an on-page message or redirect to a different page after they submit the form.
-   */
   confirmationType?: ('message' | 'redirect') | null;
   confirmationMessage?: {
     root: {
@@ -746,9 +2574,6 @@ export interface Form {
   redirect?: {
     url: string;
   };
-  /**
-   * Send custom emails when the form submits. Use comma separated lists to send the same email to multiple recipients. To reference a value from this form, wrap that field's name with double curly brackets, i.e. {{firstName}}. You can use a wildcard {{*}} to output all data and {{*:table}} to format it as an HTML table in the email.
-   */
   emails?:
     | {
         emailTo?: string | null;
@@ -757,9 +2582,6 @@ export interface Form {
         replyTo?: string | null;
         emailFrom?: string | null;
         subject: string;
-        /**
-         * Enter the message that should be sent in this email.
-         */
         message?: {
           root: {
             type: string;
@@ -780,6 +2602,57 @@ export interface Form {
     | null;
   updatedAt: string;
   createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "VideoStoriesBlock".
+ */
+export interface VideoStoriesBlock {
+  /**
+   * Pill above the heading, e.g. "From the HemClear® Community".
+   */
+  eyebrow?: string | null;
+  heading?: string | null;
+  /**
+   * Italic line below the heading.
+   */
+  subheading?: string | null;
+  /**
+   * Shown in a swipeable carousel — five at a time on desktop, one on mobile. Add as many as you like.
+   */
+  stories?:
+    | {
+        /**
+         * Still frame shown before playback. Portrait crop works best.
+         */
+        poster?: (string | null) | Media;
+        /**
+         * e.g. "Lisa K."
+         */
+        name: string;
+        caption?: string | null;
+        /**
+         * Pill in the top-left corner.
+         */
+        badge?: string | null;
+        /**
+         * e.g. "0:28". Shown bottom-right.
+         */
+        duration?: string | null;
+        /**
+         * Uploaded video file. Plays inline when the visitor presses play.
+         */
+        video?: (string | null) | Media;
+        /**
+         * Embed URL, used only when no video file is uploaded (e.g. a YouTube/Vimeo embed link).
+         */
+        videoUrl?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'videoStories';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -980,6 +2853,10 @@ export interface PayloadLockedDocument {
         value: string | Post;
       } | null)
     | ({
+        relationTo: 'products';
+        value: string | Product;
+      } | null)
+    | ({
         relationTo: 'media';
         value: string | Media;
       } | null)
@@ -1080,6 +2957,28 @@ export interface PagesSelect<T extends boolean = true> {
               id?: T;
             };
         media?: T;
+        mediaPosition?: T;
+        eyebrow?: T;
+        subheading?: T;
+        badgeTitle?: T;
+        badgeDescription?: T;
+        heading?: T;
+        description?: T;
+        benefits?:
+          | T
+          | {
+              text?: T;
+              id?: T;
+            };
+        calloutTitle?: T;
+        calloutText?: T;
+        trustPoints?:
+          | T
+          | {
+              icon?: T;
+              label?: T;
+              id?: T;
+            };
       };
   layout?:
     | T
@@ -1089,6 +2988,29 @@ export interface PagesSelect<T extends boolean = true> {
         mediaBlock?: T | MediaBlockSelect<T>;
         archive?: T | ArchiveBlockSelect<T>;
         formBlock?: T | FormBlockSelect<T>;
+        reviews?: T | ReviewsBlockSelect<T>;
+        faq?: T | FAQBlockSelect<T>;
+        statsBar?: T | StatsBarBlockSelect<T>;
+        causes?: T | CausesBlockSelect<T>;
+        productSystem?: T | ProductSystemBlockSelect<T>;
+        videoStories?: T | VideoStoriesBlockSelect<T>;
+        waysGrid?: T | WaysGridBlockSelect<T>;
+        closingCta?: T | ClosingCtaBlockSelect<T>;
+        guarantee?: T | GuaranteeBlockSelect<T>;
+        whyDays?: T | WhyDaysBlockSelect<T>;
+        comparison?: T | ComparisonBlockSelect<T>;
+        supportTabs?: T | SupportTabsBlockSelect<T>;
+        pairing?: T | PairingBlockSelect<T>;
+        totalCare?: T | TotalCareBlockSelect<T>;
+        medicalReview?: T | MedicalReviewBlockSelect<T>;
+        featureStrip?: T | FeatureStripBlockSelect<T>;
+        bannerHero?: T | BannerHeroBlockSelect<T>;
+        ingredientExplorer?: T | IngredientExplorerBlockSelect<T>;
+        benefitsCarousel?: T | BenefitsCarouselBlockSelect<T>;
+        formulaTable?: T | FormulaTableBlockSelect<T>;
+        pricingOffer?: T | PricingOfferBlockSelect<T>;
+        savingsCompare?: T | SavingsCompareBlockSelect<T>;
+        scienceStats?: T | ScienceStatsBlockSelect<T>;
       };
   meta?:
     | T
@@ -1190,6 +3112,700 @@ export interface FormBlockSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ReviewsBlock_select".
+ */
+export interface ReviewsBlockSelect<T extends boolean = true> {
+  heading?: T;
+  headingAccent?: T;
+  description?: T;
+  featured?:
+    | T
+    | {
+        score?: T;
+        stars?: T;
+        title?: T;
+        quote?: T;
+        author?: T;
+        authorNote?: T;
+        sourceLogo?: T;
+        id?: T;
+      };
+  reviews?:
+    | T
+    | {
+        stars?: T;
+        verified?: T;
+        title?: T;
+        quote?: T;
+        author?: T;
+        id?: T;
+      };
+  initialCount?: T;
+  showMoreLabel?: T;
+  showLessLabel?: T;
+  verifiedLabel?: T;
+  disclaimer?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FAQBlock_select".
+ */
+export interface FAQBlockSelect<T extends boolean = true> {
+  heading?: T;
+  description?: T;
+  image?: T;
+  backgroundImage?: T;
+  items?:
+    | T
+    | {
+        question?: T;
+        answer?: T;
+        id?: T;
+      };
+  defaultState?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "StatsBarBlock_select".
+ */
+export interface StatsBarBlockSelect<T extends boolean = true> {
+  stats?:
+    | T
+    | {
+        topLabel?: T;
+        value?: T;
+        label?: T;
+        showStar?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CausesBlock_select".
+ */
+export interface CausesBlockSelect<T extends boolean = true> {
+  image?: T;
+  imagePosition?: T;
+  eyebrow?: T;
+  heading?: T;
+  description?: T;
+  gridLabel?: T;
+  factorStyle?: T;
+  factors?:
+    | T
+    | {
+        icon?: T;
+        label?: T;
+        id?: T;
+      };
+  footnote?: T;
+  links?:
+    | T
+    | {
+        link?:
+          | T
+          | {
+              type?: T;
+              newTab?: T;
+              reference?: T;
+              url?: T;
+              label?: T;
+              appearance?: T;
+            };
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ProductSystemBlock_select".
+ */
+export interface ProductSystemBlockSelect<T extends boolean = true> {
+  heading?: T;
+  subheading?: T;
+  columnHeading?: T;
+  paragraphs?:
+    | T
+    | {
+        lead?: T;
+        text?: T;
+        id?: T;
+      };
+  image?: T;
+  features?:
+    | T
+    | {
+        icon?: T;
+        stat?: T;
+        title?: T;
+        subtitle?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "VideoStoriesBlock_select".
+ */
+export interface VideoStoriesBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
+  heading?: T;
+  subheading?: T;
+  stories?:
+    | T
+    | {
+        poster?: T;
+        name?: T;
+        caption?: T;
+        badge?: T;
+        duration?: T;
+        video?: T;
+        videoUrl?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "WaysGridBlock_select".
+ */
+export interface WaysGridBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
+  headingBefore?: T;
+  headingAccent?: T;
+  headingAfter?: T;
+  subheading?: T;
+  ways?:
+    | T
+    | {
+        image?: T;
+        title?: T;
+        description?: T;
+        id?: T;
+      };
+  footnote?: T;
+  firstRowCount?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ClosingCtaBlock_select".
+ */
+export interface ClosingCtaBlockSelect<T extends boolean = true> {
+  headingTop?: T;
+  heading?: T;
+  description?: T;
+  cards?:
+    | T
+    | {
+        image?: T;
+        icon?: T;
+        title?: T;
+        description?: T;
+        id?: T;
+      };
+  links?:
+    | T
+    | {
+        link?:
+          | T
+          | {
+              type?: T;
+              newTab?: T;
+              reference?: T;
+              url?: T;
+              label?: T;
+              appearance?: T;
+            };
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "GuaranteeBlock_select".
+ */
+export interface GuaranteeBlockSelect<T extends boolean = true> {
+  badgeLabel?: T;
+  heading?: T;
+  subheading?: T;
+  sealValue?: T;
+  sealLabel?: T;
+  points?:
+    | T
+    | {
+        icon?: T;
+        text?: T;
+        id?: T;
+      };
+  badges?:
+    | T
+    | {
+        icon?: T;
+        label?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "WhyDaysBlock_select".
+ */
+export interface WhyDaysBlockSelect<T extends boolean = true> {
+  image?: T;
+  heading?: T;
+  paragraphs?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  ctaHeading?: T;
+  ctaText?: T;
+  links?:
+    | T
+    | {
+        link?:
+          | T
+          | {
+              type?: T;
+              newTab?: T;
+              reference?: T;
+              url?: T;
+              label?: T;
+            };
+        id?: T;
+      };
+  productImage?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ComparisonBlock_select".
+ */
+export interface ComparisonBlockSelect<T extends boolean = true> {
+  heading?: T;
+  subheading?: T;
+  products?:
+    | T
+    | {
+        name?: T;
+        image?: T;
+        highlight?: T;
+        id?: T;
+      };
+  rows?:
+    | T
+    | {
+        icon?: T;
+        label?: T;
+        values?:
+          | T
+          | {
+              value?: T;
+              id?: T;
+            };
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "SupportTabsBlock_select".
+ */
+export interface SupportTabsBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
+  heading?: T;
+  subheading?: T;
+  items?:
+    | T
+    | {
+        icon?: T;
+        title?: T;
+        image?: T;
+        description?: T;
+        id?: T;
+      };
+  footerLine?: T;
+  disclaimer?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "PairingBlock_select".
+ */
+export interface PairingBlockSelect<T extends boolean = true> {
+  heading?: T;
+  headingAccent?: T;
+  intro?: T;
+  image?: T;
+  features?:
+    | T
+    | {
+        icon?: T;
+        title?: T;
+        description?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TotalCareBlock_select".
+ */
+export interface TotalCareBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
+  heading?: T;
+  subheading?: T;
+  showConnector?: T;
+  items?:
+    | T
+    | {
+        label?: T;
+        image?: T;
+        caption?: T;
+        features?:
+          | T
+          | {
+              icon?: T;
+              label?: T;
+              id?: T;
+            };
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "MedicalReviewBlock_select".
+ */
+export interface MedicalReviewBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
+  heading?: T;
+  highlights?:
+    | T
+    | {
+        icon?: T;
+        title?: T;
+        description?: T;
+        id?: T;
+      };
+  doctors?:
+    | T
+    | {
+        photo?: T;
+        name?: T;
+        role?: T;
+        tag?: T;
+        quoteHeading?: T;
+        quote?: T;
+        tags?:
+          | T
+          | {
+              text?: T;
+              id?: T;
+            };
+        readMoreLabel?: T;
+        verifiedLabel?: T;
+        profileLabel?: T;
+        profileUrl?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FeatureStripBlock_select".
+ */
+export interface FeatureStripBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
+  heading?: T;
+  subheading?: T;
+  items?:
+    | T
+    | {
+        icon?: T;
+        title?: T;
+        description?: T;
+        id?: T;
+      };
+  variant?: T;
+  background?: T;
+  align?: T;
+  links?:
+    | T
+    | {
+        link?:
+          | T
+          | {
+              type?: T;
+              newTab?: T;
+              reference?: T;
+              url?: T;
+              label?: T;
+              appearance?: T;
+            };
+        id?: T;
+      };
+  footnote?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "BannerHeroBlock_select".
+ */
+export interface BannerHeroBlockSelect<T extends boolean = true> {
+  backgroundImage?: T;
+  eyebrow?: T;
+  heading?: T;
+  description?: T;
+  links?:
+    | T
+    | {
+        link?:
+          | T
+          | {
+              type?: T;
+              newTab?: T;
+              reference?: T;
+              url?: T;
+              label?: T;
+            };
+        id?: T;
+      };
+  overlay?: T;
+  height?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "IngredientExplorerBlock_select".
+ */
+export interface IngredientExplorerBlockSelect<T extends boolean = true> {
+  groups?:
+    | T
+    | {
+        name?: T;
+        heading?: T;
+        description?: T;
+        ingredients?:
+          | T
+          | {
+              image?: T;
+              name?: T;
+              latin?: T;
+              description?: T;
+              benefit?: T;
+              category?: T;
+              details?: T;
+              id?: T;
+            };
+        id?: T;
+      };
+  allLabel?: T;
+  disclaimerTitle?: T;
+  disclaimer?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "BenefitsCarouselBlock_select".
+ */
+export interface BenefitsCarouselBlockSelect<T extends boolean = true> {
+  heading?: T;
+  subheading?: T;
+  items?:
+    | T
+    | {
+        image?: T;
+        icon?: T;
+        title?: T;
+        details?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FormulaTableBlock_select".
+ */
+export interface FormulaTableBlockSelect<T extends boolean = true> {
+  heading?: T;
+  formulas?:
+    | T
+    | {
+        name?: T;
+        image?: T;
+        titleBefore?: T;
+        titleAccent?: T;
+        titleAfter?: T;
+        subtitle?: T;
+        rows?:
+          | T
+          | {
+              image?: T;
+              name?: T;
+              benefit?: T;
+              id?: T;
+            };
+        id?: T;
+      };
+  footnote?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "PricingOfferBlock_select".
+ */
+export interface PricingOfferBlockSelect<T extends boolean = true> {
+  bannerTitle?: T;
+  bannerText?: T;
+  bannerImage?: T;
+  bannerValue?: T;
+  bannerValueLabel?: T;
+  plans?:
+    | T
+    | {
+        name?: T;
+        image?: T;
+        priceLead?: T;
+        price?: T;
+        priceSuffix?: T;
+        features?:
+          | T
+          | {
+              text?: T;
+              highlight?: T;
+              id?: T;
+            };
+        ctaLabel?: T;
+        ctaUrl?: T;
+        footnote?: T;
+        popular?: T;
+        popularLabel?: T;
+        id?: T;
+      };
+  trustItems?:
+    | T
+    | {
+        icon?: T;
+        label?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "SavingsCompareBlock_select".
+ */
+export interface SavingsCompareBlockSelect<T extends boolean = true> {
+  heading?: T;
+  subheading?: T;
+  savingsLabel?: T;
+  savingsValue?: T;
+  separateTitle?: T;
+  separateColLabel?: T;
+  separateCostLabel?: T;
+  separateRows?:
+    | T
+    | {
+        name?: T;
+        cost?: T;
+        id?: T;
+      };
+  separateTotals?:
+    | T
+    | {
+        label?: T;
+        value?: T;
+        id?: T;
+      };
+  formulaTitle?: T;
+  formulaBadge?: T;
+  formulaFeatures?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  formulaPriceLabel?: T;
+  formulaPrice?: T;
+  formulaAnnual?: T;
+  formulaSaveLabel?: T;
+  formulaSaveValue?: T;
+  formulaSaveNote?: T;
+  ctaLabel?: T;
+  ctaUrl?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ScienceStatsBlock_select".
+ */
+export interface ScienceStatsBlockSelect<T extends boolean = true> {
+  heading?: T;
+  subheading?: T;
+  image?: T;
+  stats?:
+    | T
+    | {
+        value?: T;
+        title?: T;
+        description?: T;
+        id?: T;
+      };
+  links?:
+    | T
+    | {
+        link?:
+          | T
+          | {
+              type?: T;
+              newTab?: T;
+              reference?: T;
+              url?: T;
+              label?: T;
+              appearance?: T;
+            };
+        id?: T;
+      };
+  badges?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  footnote?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "posts_select".
  */
 export interface PostsSelect<T extends boolean = true> {
@@ -1213,6 +3829,186 @@ export interface PostsSelect<T extends boolean = true> {
         id?: T;
         name?: T;
       };
+  generateSlug?: T;
+  slug?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "products_select".
+ */
+export interface ProductsSelect<T extends boolean = true> {
+  title?: T;
+  eyebrow?: T;
+  description?: T;
+  gallery?:
+    | T
+    | {
+        image?: T;
+        id?: T;
+      };
+  rating?: T;
+  ratingLabel?: T;
+  ratingNotes?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  benefits?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  badgeLabel?: T;
+  resultsTitle?: T;
+  results?:
+    | T
+    | {
+        value?: T;
+        label?: T;
+        detail?: T;
+        id?: T;
+      };
+  resultsFootnote?: T;
+  feelTitle?: T;
+  feel?:
+    | T
+    | {
+        icon?: T;
+        title?: T;
+        percent?: T;
+        subtitle?: T;
+        id?: T;
+      };
+  variantsTitle?: T;
+  variants?:
+    | T
+    | {
+        name?: T;
+        image?: T;
+        id?: T;
+      };
+  plans?:
+    | T
+    | {
+        name?: T;
+        saveLabel?: T;
+        price?: T;
+        comparePrice?: T;
+        priceSuffix?: T;
+        billingNote?: T;
+        perServing?: T;
+        bestValue?: T;
+        bestValueLabel?: T;
+        features?:
+          | T
+          | {
+              text?: T;
+              id?: T;
+            };
+        bonusHeading?: T;
+        bonusHighlight?: T;
+        bonusTitle?: T;
+        bonusSubtitle?: T;
+        bonusImage?: T;
+        id?: T;
+      };
+  oneTimeLabel?: T;
+  ctaLabel?: T;
+  notes?:
+    | T
+    | {
+        icon?: T;
+        lead?: T;
+        text?: T;
+        id?: T;
+      };
+  trustItems?:
+    | T
+    | {
+        icon?: T;
+        label?: T;
+        id?: T;
+      };
+  compositionTitle?: T;
+  compositionNote?: T;
+  containsTitle?: T;
+  notContainsTitle?: T;
+  contains?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  notContains?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  storiesTitle?: T;
+  stories?:
+    | T
+    | {
+        poster?: T;
+        name?: T;
+        caption?: T;
+        badge?: T;
+        duration?: T;
+        video?: T;
+        videoUrl?: T;
+        id?: T;
+      };
+  sections?:
+    | T
+    | {
+        title?: T;
+        items?:
+          | T
+          | {
+              text?: T;
+              id?: T;
+            };
+        id?: T;
+      };
+  layout?:
+    | T
+    | {
+        medicalReview?: T | MedicalReviewBlockSelect<T>;
+        reviews?: T | ReviewsBlockSelect<T>;
+        faq?: T | FAQBlockSelect<T>;
+        comparison?: T | ComparisonBlockSelect<T>;
+        guarantee?: T | GuaranteeBlockSelect<T>;
+        whyDays?: T | WhyDaysBlockSelect<T>;
+        supportTabs?: T | SupportTabsBlockSelect<T>;
+        pairing?: T | PairingBlockSelect<T>;
+        totalCare?: T | TotalCareBlockSelect<T>;
+        productSystem?: T | ProductSystemBlockSelect<T>;
+        causes?: T | CausesBlockSelect<T>;
+        waysGrid?: T | WaysGridBlockSelect<T>;
+        statsBar?: T | StatsBarBlockSelect<T>;
+        closingCta?: T | ClosingCtaBlockSelect<T>;
+        featureStrip?: T | FeatureStripBlockSelect<T>;
+        bannerHero?: T | BannerHeroBlockSelect<T>;
+        ingredientExplorer?: T | IngredientExplorerBlockSelect<T>;
+        benefitsCarousel?: T | BenefitsCarouselBlockSelect<T>;
+        formulaTable?: T | FormulaTableBlockSelect<T>;
+        pricingOffer?: T | PricingOfferBlockSelect<T>;
+        savingsCompare?: T | SavingsCompareBlockSelect<T>;
+        scienceStats?: T | ScienceStatsBlockSelect<T>;
+      };
+  meta?:
+    | T
+    | {
+        title?: T;
+        image?: T;
+        description?: T;
+      };
+  publishedAt?: T;
   generateSlug?: T;
   slug?: T;
   updatedAt?: T;
@@ -1637,6 +4433,16 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
  */
 export interface Header {
   id: string;
+  announcementEnabled?: boolean | null;
+  /**
+   * e.g. "Free Offer" — rendered in yellow.
+   */
+  announcementTitle?: string | null;
+  announcementText?: string | null;
+  /**
+   * Countdown target. Leave empty to hide the timer.
+   */
+  announcementEndsAt?: string | null;
   navItems?:
     | {
         link: {
@@ -1650,6 +4456,10 @@ export interface Header {
             | ({
                 relationTo: 'posts';
                 value: string | Post;
+              } | null)
+            | ({
+                relationTo: 'products';
+                value: string | Product;
               } | null);
           url?: string | null;
           label: string;
@@ -1666,7 +4476,90 @@ export interface Header {
  */
 export interface Footer {
   id: string;
-  navItems?:
+  /**
+   * e.g. Support, Shop, Learn.
+   */
+  columns?:
+    | {
+        title: string;
+        items?:
+          | {
+              link: {
+                type?: ('reference' | 'custom') | null;
+                newTab?: boolean | null;
+                reference?:
+                  | ({
+                      relationTo: 'pages';
+                      value: string | Page;
+                    } | null)
+                  | ({
+                      relationTo: 'posts';
+                      value: string | Post;
+                    } | null)
+                  | ({
+                      relationTo: 'products';
+                      value: string | Product;
+                    } | null);
+                url?: string | null;
+                label: string;
+              };
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+      }[]
+    | null;
+  promiseTitle?: string | null;
+  promiseItems?:
+    | {
+        icon:
+          | 'pregnancy'
+          | 'toilet'
+          | 'sitting'
+          | 'lifting'
+          | 'fiber'
+          | 'tissueChange'
+          | 'flask'
+          | 'supportSystem'
+          | 'stethoscope'
+          | 'research'
+          | 'madeInUsa'
+          | 'guarantee'
+          | 'clipboardCheck'
+          | 'clock'
+          | 'documentSearch'
+          | 'packageLock'
+          | 'gmp'
+          | 'packageBox'
+          | 'truck'
+          | 'calendar'
+          | 'refund'
+          | 'rotate'
+          | 'badgeAward'
+          | 'leaf'
+          | 'droplet'
+          | 'shieldCheck'
+          | 'snowflake'
+          | 'info';
+        label: string;
+        id?: string | null;
+      }[]
+    | null;
+  socialTitle?: string | null;
+  socialItems?:
+    | {
+        platform: 'facebook' | 'instagram' | 'youtube' | 'tiktok';
+        label: string;
+        url?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Sits under the logo. Line breaks are preserved.
+   */
+  tagline?: string | null;
+  copyright?: string | null;
+  legalLinks?:
     | {
         link: {
           type?: ('reference' | 'custom') | null;
@@ -1679,6 +4572,10 @@ export interface Footer {
             | ({
                 relationTo: 'posts';
                 value: string | Post;
+              } | null)
+            | ({
+                relationTo: 'products';
+                value: string | Product;
               } | null);
           url?: string | null;
           label: string;
@@ -1686,6 +4583,10 @@ export interface Footer {
         id?: string | null;
       }[]
     | null;
+  /**
+   * Fine print. Blank lines become separate paragraphs.
+   */
+  disclaimer?: string | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -1694,6 +4595,10 @@ export interface Footer {
  * via the `definition` "header_select".
  */
 export interface HeaderSelect<T extends boolean = true> {
+  announcementEnabled?: T;
+  announcementTitle?: T;
+  announcementText?: T;
+  announcementEndsAt?: T;
   navItems?:
     | T
     | {
@@ -1717,7 +4622,46 @@ export interface HeaderSelect<T extends boolean = true> {
  * via the `definition` "footer_select".
  */
 export interface FooterSelect<T extends boolean = true> {
-  navItems?:
+  columns?:
+    | T
+    | {
+        title?: T;
+        items?:
+          | T
+          | {
+              link?:
+                | T
+                | {
+                    type?: T;
+                    newTab?: T;
+                    reference?: T;
+                    url?: T;
+                    label?: T;
+                  };
+              id?: T;
+            };
+        id?: T;
+      };
+  promiseTitle?: T;
+  promiseItems?:
+    | T
+    | {
+        icon?: T;
+        label?: T;
+        id?: T;
+      };
+  socialTitle?: T;
+  socialItems?:
+    | T
+    | {
+        platform?: T;
+        label?: T;
+        url?: T;
+        id?: T;
+      };
+  tagline?: T;
+  copyright?: T;
+  legalLinks?:
     | T
     | {
         link?:
@@ -1731,6 +4675,7 @@ export interface FooterSelect<T extends boolean = true> {
             };
         id?: T;
       };
+  disclaimer?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
@@ -1761,6 +4706,10 @@ export interface TaskSchedulePublish {
       | ({
           relationTo: 'posts';
           value: string | Post;
+        } | null)
+      | ({
+          relationTo: 'products';
+          value: string | Product;
         } | null);
     global?: string | null;
     user?: (string | null) | User;

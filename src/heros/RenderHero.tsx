@@ -21,5 +21,9 @@ export const RenderHero: React.FC<Page['hero']> = (props) => {
 
   if (!HeroToRender) return null
 
-  return <HeroToRender {...props} />
+  return (
+    <div data-payload-path="hero">
+      <HeroToRender {...props} />
+    </div>
+  )
 }

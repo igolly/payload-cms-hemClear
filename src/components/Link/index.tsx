@@ -3,7 +3,7 @@ import { cn } from '@/utilities/ui'
 import Link from 'next/link'
 import React from 'react'
 
-import type { Page, Post } from '@/payload-types'
+import type { Page, Post, Product } from '@/payload-types'
 
 type CMSLinkType = {
   appearance?: 'inline' | ButtonProps['variant']
@@ -12,8 +12,10 @@ type CMSLinkType = {
   label?: string | null
   newTab?: boolean | null
   reference?: {
-    relationTo: 'pages' | 'posts'
-    value: Page | Post | string | number
+    relationTo: 'pages' | 'posts' | 'products'
+    // `href` is built as `/<relationTo>/<slug>` for anything that isn't a page,
+    // so products resolve to /products/<slug> with no extra mapping.
+    value: number | Page | Post | Product | string
   } | null
   size?: ButtonProps['size'] | null
   type?: 'custom' | 'reference' | null
