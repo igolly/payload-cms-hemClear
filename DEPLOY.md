@@ -98,6 +98,13 @@ Vercel sends `Authorization: Bearer $CRON_SECRET`, which
 
 ---
 
+## Build note
+
+`postcss.config.mjs` **must keep the `.mjs` extension**. As `postcss.config.js` under
+`"type": "module"`, Turbopack fails to evaluate it and the build dies with
+`TypeError: __turbopack_context__.a is not a function`. This was the cause of the
+early Vercel build failures.
+
 ## Known issues to fix before launch
 
 1. **11 links have no destination** — Shipping Information, Returns and

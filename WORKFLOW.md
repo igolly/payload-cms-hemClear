@@ -36,7 +36,7 @@ Editor (admin UI)                  Database                 Frontend
 | Concern | Location |
 | --- | --- |
 | Payload config (entry point) | `src/payload.config.ts` |
-| Collections (repeatable content) | `src/collections/` — `Pages`, `Posts`, `Products`, `Media`, `Categories`, `Users` |
+| Collections (repeatable content) | `src/collections/` — `Pages`, `Products`, `Media`, `Users` |
 | Globals (site-wide singletons) | `src/Header/config.ts`, `src/Footer/config.ts` |
 | Blocks (page sections) | `src/blocks/<Name>/{config.ts,Component.tsx}` |
 | Heroes (top-of-page variants) | `src/heros/<Impact>/index.tsx` + `src/heros/config.ts` |
@@ -444,7 +444,6 @@ its own collection:
 | Collection | Route | Shape |
 | --- | --- | --- |
 | `pages` | `/[slug]` | hero + free-form `layout` blocks — use for marketing pages |
-| `posts` | `/posts/[slug]` | article |
 | `products` | `/products/[slug]` | fixed PDP: gallery, buy box, results, detail sections |
 
 `Products` is the worked example of a structured page type. Its fields are grouped into admin
@@ -467,6 +466,11 @@ nothing about the width of the container it was dropped into.
 A new collection needs a **revalidate hook** (`src/collections/Products/hooks/revalidateProduct.ts`)
 and an entry in the `collectionPrefixMap` in `src/utilities/generatePreviewPath.ts`, or live
 preview and draft preview will point at the wrong URL.
+
+**Gotcha — `postcss.config` must be `.mjs`.** With `"type": "module"`, Turbopack's PostCSS
+loader fails to evaluate a `postcss.config.js` and the build dies with
+`TypeError: __turbopack_context__.a is not a function`, pointing at whichever CSS file it hit
+first. The extension is the fix; don't rename it back.
 
 **Gotcha — creating the first document in a new Mongo collection fails inside a transaction.**
 MongoDB cannot implicitly create a collection within a multi-document transaction, so the very

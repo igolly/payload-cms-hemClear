@@ -2,9 +2,6 @@ import React, { Fragment } from 'react'
 
 import type { Page, Product } from '@/payload-types'
 
-import { ArchiveBlock } from '@/blocks/ArchiveBlock/Component'
-import { CallToActionBlock } from '@/blocks/CallToAction/Component'
-import { ContentBlock } from '@/blocks/Content/Component'
 import { BannerHeroBlock } from '@/blocks/BannerHero/Component'
 import { BenefitsCarouselBlock } from '@/blocks/BenefitsCarousel/Component'
 import { CausesBlock } from '@/blocks/Causes/Component'
@@ -28,13 +25,9 @@ import { VideoStoriesBlock } from '@/blocks/VideoStories/Component'
 import { WaysGridBlock } from '@/blocks/WaysGrid/Component'
 import { WhyDaysBlock } from '@/blocks/WhyDays/Component'
 import { FormBlock } from '@/blocks/Form/Component'
-import { MediaBlock } from '@/blocks/MediaBlock/Component'
 import { ReviewsBlock } from '@/blocks/Reviews/Component'
 
 const blockComponents = {
-  archive: ArchiveBlock,
-  content: ContentBlock,
-  cta: CallToActionBlock,
   bannerHero: BannerHeroBlock,
   benefitsCarousel: BenefitsCarouselBlock,
   causes: CausesBlock,
@@ -58,7 +51,6 @@ const blockComponents = {
   waysGrid: WaysGridBlock,
   whyDays: WhyDaysBlock,
   formBlock: FormBlock,
-  mediaBlock: MediaBlock,
   reviews: ReviewsBlock,
 }
 
