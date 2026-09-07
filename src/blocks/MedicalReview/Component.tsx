@@ -115,7 +115,7 @@ export const MedicalReviewBlock: React.FC<Props> = ({
                   )}
                 </div>
 
-                <h3 className="mt-4 font-serif text-lg font-bold leading-snug text-heading">
+                <h3 className="mt-4 font-serif text-lg font-bold leading-snug text-subheading">
                   &ldquo;{doctor.quoteHeading}&rdquo;
                 </h3>
 

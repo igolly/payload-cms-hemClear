@@ -25,7 +25,7 @@ const Row: React.FC<{ offset: number; ways: Way[] }> = ({ offset, ways }) => (
           />
         </div>
 
-        <h3 className="mt-4 text-sm font-bold leading-tight text-heading">
+        <h3 className="mt-4 text-sm font-bold leading-tight text-subheading">
           {offset + i + 1}. {way.title}
         </h3>
 

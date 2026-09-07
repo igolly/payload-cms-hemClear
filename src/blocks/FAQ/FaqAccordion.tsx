@@ -55,7 +55,7 @@ export const FaqAccordion: React.FC<{
                   {i + 1}
                 </span>
 
-                <span className="grow text-base font-bold text-heading">{item.question}</span>
+                <span className="grow text-base font-bold text-subheading">{item.question}</span>
 
                 <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-[#6279cf] text-[#6279cf]">
                   {isOpen ? <Minus className="h-4 w-4" /> : <Plus className="h-4 w-4" />}

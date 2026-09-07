@@ -61,7 +61,7 @@ export const WhyDaysBlock: React.FC<Props> = ({
 
             {ctaHeading && (
               <h3
-                className="mt-5 font-serif text-lg font-bold text-heading"
+                className="mt-5 font-serif text-lg font-bold text-subheading"
                 data-payload-subpath="ctaHeading"
               >
                 {ctaHeading}

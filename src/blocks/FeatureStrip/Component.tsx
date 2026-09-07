@@ -128,7 +128,7 @@ export const FeatureStripBlock: React.FC<Props> = ({
                   />
 
                   <div className={cn('min-w-0', (centred || style === 'cards') && 'mt-3')}>
-                    <h3 className="text-xs font-bold uppercase tracking-wide leading-tight text-heading">
+                    <h3 className="text-xs font-bold uppercase tracking-wide leading-tight text-subheading">
                       {item.title}
                     </h3>
                     {item.description && (

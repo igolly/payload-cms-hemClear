@@ -54,7 +54,7 @@ export const ReviewGrid: React.FC<Props> = ({
             )}
 
             <h3
-              className="mt-4 font-serif text-base font-bold leading-snug text-heading"
+              className="mt-4 font-serif text-base font-bold leading-snug text-subheading"
               data-payload-subpath={`reviews.${i}.title`}
             >
               &ldquo;{review.title}&rdquo;

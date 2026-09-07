@@ -52,7 +52,7 @@ export const ProductSystemBlock: React.FC<Props> = ({
         <div className="order-2 lg:order-1">
           {columnHeading && (
             <h3
-              className="font-serif text-2xl leading-tight text-heading"
+              className="font-serif text-2xl leading-tight text-subheading"
               data-payload-subpath="columnHeading"
             >
               {multiline(columnHeading)}

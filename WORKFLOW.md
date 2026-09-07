@@ -414,16 +414,19 @@ selectors first — grep `node_modules/@payloadcms/ui/dist` for `` id: `field-${
   `hover:bg-brand-dark`. Changing the brand colour is a one-line edit there; it used to be 176
   hardcoded hexes across 34 files. `--color-navy` (`#192f7c`) is the deeper band colour, used
   by `bg-navy` where the brand blue reads too bright — currently the announcement bar and the
-  Video Stories section. `--color-heading` (`#0329b2`) is the heading colour: use `text-heading`
-  on every `h1`–`h4`, except headings on a dark band, which stay `text-white`. Light section
+  Video Stories section. Headings use two tokens: `text-heading`
+  (`#192f7c`) for main section headings — `h1`/`h2` and any full-width section title — and
+  `text-subheading` (`#0329b2`) for smaller card titles (`h3`/`h4`). Headings on a dark band
+  stay `text-white`. Light section
   background `#F4F8FF`, borders `#DBE8FA`.
 
   The three colour tokens live together in the `@theme` block:
 
   ```css
-  --color-brand:   #0023a3;  /* CTAs, icons, UI accents */
-  --color-navy:    #192f7c;  /* full-width dark bands */
-  --color-heading: #0329b2;  /* h1–h4 */
+  --color-brand:      #0023a3;  /* CTAs, icons, UI accents */
+  --color-navy:       #192f7c;  /* full-width dark bands */
+  --color-heading:    #192f7c;  /* main section headings (h1/h2) */
+  --color-subheading: #0329b2;  /* card titles (h3/h4) */
   ```
 - **Icons:** `lucide-react` for standard icons; hand-rolled inline SVG only when lucide has
   no equivalent (as in the `Laurel` mark and the medical icons).

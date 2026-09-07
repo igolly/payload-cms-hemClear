@@ -71,7 +71,7 @@ export const ReviewsBlock: React.FC<Props> = ({
                 </div>
 
                 <h3
-                  className="mt-5 font-serif text-xl font-bold leading-snug text-heading"
+                  className="mt-5 font-serif text-xl font-bold leading-snug text-subheading"
                   data-payload-subpath={`featured.${i}.title`}
                 >
                   {item.title}

@@ -71,7 +71,7 @@ export const ClosingCtaBlock: React.FC<Props> = ({
                     name={card.icon}
                   />
                   <div className="min-w-0">
-                    <h3 className="font-serif text-sm font-bold leading-tight text-heading">
+                    <h3 className="font-serif text-sm font-bold leading-tight text-subheading">
                       {card.title}
                     </h3>
                     {card.description && (

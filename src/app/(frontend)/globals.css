@@ -43,8 +43,9 @@
   --color-brand-dark: #001a7d;
   /* Deep navy for full-width dark bands, where the brand blue reads too bright. */
   --color-navy: #192f7c;
-  /* Headings. Kept separate from --color-brand so type and UI can move apart. */
-  --color-heading: #0329b2;
+  /* Main section headings (h1/h2) and smaller card titles (h3/h4). */
+  --color-heading: #192f7c;
+  --color-subheading: #0329b2;
 
   --breakpoint-sm: 40rem;
   --breakpoint-md: 48rem;

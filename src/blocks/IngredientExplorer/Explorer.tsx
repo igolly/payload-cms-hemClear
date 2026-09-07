@@ -136,7 +136,7 @@ export const Explorer: React.FC<{ allLabel?: string | null; groups: Group[] }> =
               </div>
 
               <div className="flex grow flex-col p-4">
-                <h3 className="text-base font-bold leading-tight text-heading">{item.name}</h3>
+                <h3 className="text-base font-bold leading-tight text-subheading">{item.name}</h3>
                 {item.latin && <p className="text-xs italic text-slate-500">{item.latin}</p>}
 
                 {item.description && (

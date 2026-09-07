@@ -123,9 +123,10 @@ The brand colours are declared once in the `@theme` block of
 (`bg-brand`, `text-heading`, `bg-navy`):
 
 ```css
---color-brand:   #0023a3;  /* CTAs, icons, UI accents */
---color-navy:    #192f7c;  /* full-width dark bands */
---color-heading: #0329b2;  /* h1–h4 */
+--color-brand:      #0023a3;  /* CTAs, icons, UI accents */
+--color-navy:       #192f7c;  /* full-width dark bands */
+--color-heading:    #192f7c;  /* main section headings (h1/h2) */
+--color-subheading: #0329b2;  /* card titles (h3/h4) */
 ```
 
 Changing a brand colour is a one-line edit here, not a find-and-replace.
