@@ -15,7 +15,7 @@ Every section of every page is editable in the CMS. There is no hardcoded page c
 | Framework | Next.js 16.3 (App Router, React 19) |
 | Database | MongoDB (Mongoose adapter) |
 | Styling | Tailwind CSS 4 |
-| Uploads | local disk in dev, Vercel Blob in production |
+| Uploads | local disk in dev, Supabase Storage (S3 API) in production |
 | Package manager | pnpm |
 
 ---
@@ -151,8 +151,9 @@ Changing a brand colour is a one-line edit here, not a find-and-replace.
 See [`DEPLOY.md`](./DEPLOY.md) for the full Vercel guide. In short:
 
 1. Set `DATABASE_URL`, `PAYLOAD_SECRET`, `PREVIEW_SECRET`, `CRON_SECRET`
-2. Create a **Vercel Blob** store — the serverless filesystem is read-only, so
-   uploads fail without it
+2. Configure Supabase Storage (`S3_BUCKET`, `S3_ENDPOINT`, `S3_REGION`,
+   `S3_ACCESS_KEY_ID`, `S3_SECRET_ACCESS_KEY`) — the serverless filesystem is
+   read-only, so uploads fail without it
 3. Allow Vercel's IPs in MongoDB Atlas network access
 
 ---

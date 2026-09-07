@@ -31,31 +31,49 @@ which case use the full origin with no trailing slash (e.g. `https://hemclear.co
 
 ---
 
-## 2. Blob storage — required, not optional
+## 2. Object storage — required, not optional
 
 Vercel's filesystem is **read-only**, so Payload cannot write uploads to
 `public/media` in production. Without this step the admin appears to work but
-every upload fails.
+every upload returns a 500.
 
-1. Vercel dashboard → **Storage** → **Create Database** → **Blob**
-2. Connect it to this project
-3. Vercel injects `BLOB_READ_WRITE_TOKEN` automatically
-4. Redeploy
+Uploads go to **Supabase Storage**, which speaks the S3 API, through Payload's
+official S3 adapter. The same configuration works unchanged for Cloudflare R2 or
+AWS S3 if you ever move.
 
-`src/plugins/index.ts` always registers the adapter; it disables itself and falls
-back to `public/media` when no token is present, so local development is unchanged
-and the collection schema stays identical across environments.
+### Set up the bucket
 
-`clientUploads: true` is set, which matters: Vercel caps a serverless function's
-request body at **4.5MB**. Without it the file is proxied through the function and
-anything larger fails to upload. With it, the browser uploads straight to Blob.
+1. Supabase → **Storage** → **New bucket** → name it e.g. `media` → **Public**
+2. Supabase → **Project Settings** → **Storage** → **S3 access keys** →
+   **New access key**. Copy both halves — the secret is shown once.
+3. Note your S3 endpoint and region from the same page. The endpoint looks like
+   `https://<project-ref>.supabase.co/storage/v1/s3`
 
-**Existing images will not carry over.** `public/media/` is gitignored, so the
-files uploaded locally are not in the repo. After the first deploy, re-upload
-them through `/admin` → Media. The Media documents already exist in the
-database; re-uploading repoints them at Blob URLs.
+### Add the variables in Vercel
 
----
+Settings → Environment Variables. **Tick Production on every one** — this is the
+step that is easy to miss, and a variable that isn't scoped to Production is
+invisible to the production build.
+
+| Variable | Example |
+| --- | --- |
+| `S3_BUCKET` | `media` |
+| `S3_ENDPOINT` | `https://abcdefgh.supabase.co/storage/v1/s3` |
+| `S3_REGION` | `us-east-1` (whatever your project reports) |
+| `S3_ACCESS_KEY_ID` | from the S3 access key |
+| `S3_SECRET_ACCESS_KEY` | from the S3 access key |
+
+Then **redeploy** — environment variables are read at build start.
+
+`src/plugins/index.ts` enables the adapter only when `S3_BUCKET` and
+`S3_ACCESS_KEY_ID` are both set, so local development keeps writing to
+`public/media` with no configuration. The plugin is registered either way, so the
+collection schema is identical across environments.
+
+**Existing images will not carry over.** `public/media/` is gitignored, so files
+uploaded locally are not in the repo. After the first deploy, re-upload them
+through `/admin` → Media. The Media documents already exist and blocks reference
+them by ID, so re-uploading repoints them at storage URLs.
 
 ## 3. MongoDB network access
 

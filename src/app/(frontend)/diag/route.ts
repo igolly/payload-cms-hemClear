@@ -6,11 +6,11 @@ import { NextResponse } from 'next/server'
  * Blob storage question is settled.
  */
 export function GET() {
-  const token = process.env.BLOB_READ_WRITE_TOKEN
-
   return NextResponse.json({
-    blobTokenPresent: Boolean(token),
-    blobTokenLength: token ? token.length : 0,
+    s3BucketPresent: Boolean(process.env.S3_BUCKET),
+    s3EndpointPresent: Boolean(process.env.S3_ENDPOINT),
+    s3KeyPresent: Boolean(process.env.S3_ACCESS_KEY_ID),
+    s3SecretPresent: Boolean(process.env.S3_SECRET_ACCESS_KEY),
     databaseUrlPresent: Boolean(process.env.DATABASE_URL),
     payloadSecretPresent: Boolean(process.env.PAYLOAD_SECRET),
     vercelEnv: process.env.VERCEL_ENV ?? null,

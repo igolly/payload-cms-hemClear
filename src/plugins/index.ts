@@ -1,7 +1,7 @@
 import { formBuilderPlugin } from '@payloadcms/plugin-form-builder'
 import { redirectsPlugin } from '@payloadcms/plugin-redirects'
 import { seoPlugin } from '@payloadcms/plugin-seo'
-import { vercelBlobStorage } from '@payloadcms/storage-vercel-blob'
+import { s3Storage } from '@payloadcms/storage-s3'
 import { Plugin } from 'payload'
 import { revalidateRedirects } from '@/hooks/revalidateRedirects'
 import { GenerateTitle, GenerateURL } from '@payloadcms/plugin-seo/types'
@@ -21,17 +21,28 @@ const generateURL: GenerateURL<Page> = ({ doc }) => {
 }
 
 export const plugins: Plugin[] = [
-  // Vercel's filesystem is read-only, so uploads must go to Blob storage there.
-  // The adapter disables itself and falls back to public/media when no token is
-  // set, so this stays in the plugin list unconditionally — a conditional spread
-  // would give local and production different collection schemas.
-  vercelBlobStorage({
+  // Serverless filesystems are read-only, so uploads must go to object storage in
+  // production. Supabase Storage speaks the S3 API, so this is the standard S3
+  // adapter pointed at a Supabase endpoint — the same config works for R2 or AWS.
+  //
+  // `enabled` is driven by env: with no bucket configured the adapter stands down
+  // and Payload writes to public/media, which is what we want locally. It stays in
+  // the plugin list either way so the collection schema is identical everywhere.
+  s3Storage({
     alwaysInsertFields: true,
-    // Vercel caps a serverless function's request body at 4.5MB. Without this the
-    // file is proxied through the function and anything larger fails to upload.
-    clientUploads: true,
+    bucket: process.env.S3_BUCKET || '',
     collections: { media: true },
-    token: process.env.BLOB_READ_WRITE_TOKEN,
+    config: {
+      credentials: {
+        accessKeyId: process.env.S3_ACCESS_KEY_ID || '',
+        secretAccessKey: process.env.S3_SECRET_ACCESS_KEY || '',
+      },
+      endpoint: process.env.S3_ENDPOINT,
+      // Supabase (and R2/MinIO) address buckets by path, not by subdomain.
+      forcePathStyle: true,
+      region: process.env.S3_REGION || 'us-east-1',
+    },
+    enabled: Boolean(process.env.S3_BUCKET && process.env.S3_ACCESS_KEY_ID),
   }),
   redirectsPlugin({
     collections: ['pages', 'products'],
