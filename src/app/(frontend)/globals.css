@@ -41,6 +41,8 @@
   /* Brand blue. Defined once so it can be changed here rather than in 30+ files. */
   --color-brand: #0023a3;
   --color-brand-dark: #001a7d;
+  /* Deep navy for full-width dark bands, where the brand blue reads too bright. */
+  --color-navy: #192f7c;
 
   --breakpoint-sm: 40rem;
   --breakpoint-md: 48rem;

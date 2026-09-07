@@ -412,7 +412,9 @@ selectors first — grep `node_modules/@payloadcms/ui/dist` for `` id: `field-${
   `--color-brand` (`#0023a3`) and `--color-brand-dark` are declared in the `@theme` block of
   `src/app/(frontend)/globals.css`, so use `bg-brand`, `text-brand`, `border-brand` and
   `hover:bg-brand-dark`. Changing the brand colour is a one-line edit there; it used to be 176
-  hardcoded hexes across 34 files. Light section background `#F4F8FF`, borders `#DBE8FA`.
+  hardcoded hexes across 34 files. `--color-navy` (`#192f7c`) is the deeper band colour, used
+  by `bg-navy` where the brand blue reads too bright — currently the announcement bar and the
+  Video Stories section. Light section background `#F4F8FF`, borders `#DBE8FA`.
 - **Icons:** `lucide-react` for standard icons; hand-rolled inline SVG only when lucide has
   no equivalent (as in the `Laurel` mark and the medical icons).
 - **Do not edit:** `src/payload-types.ts`, `src/app/(payload)/**` (except via
