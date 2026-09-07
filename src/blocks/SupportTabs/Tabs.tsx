@@ -107,7 +107,7 @@ export const Tabs: React.FC<{ items: Item[] }> = ({ items }) => {
                   item={item}
                 />
                 <div className="min-w-0">
-                  <h3 className="font-serif text-2xl text-[#0052cc]">{item.title}</h3>
+                  <h3 className="font-serif text-2xl text-heading">{item.title}</h3>
                   <p
                     className="mt-1 whitespace-pre-line text-sm leading-relaxed text-brand"
                     data-payload-subpath={`items.${i}.description`}

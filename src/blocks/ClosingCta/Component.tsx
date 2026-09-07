@@ -21,7 +21,7 @@ export const ClosingCtaBlock: React.FC<Props> = ({
         <header className="text-center">
           {headingTop && (
             <h2
-              className="text-3xl font-extrabold leading-tight text-brand sm:text-4xl"
+              className="text-3xl font-extrabold leading-tight text-heading sm:text-4xl"
               data-payload-subpath="headingTop"
             >
               {headingTop}
@@ -30,7 +30,7 @@ export const ClosingCtaBlock: React.FC<Props> = ({
 
           {heading && (
             <p
-              className="mt-1 font-serif text-3xl leading-tight text-brand sm:text-4xl"
+              className="mt-1 font-serif text-3xl leading-tight text-heading sm:text-4xl"
               data-payload-subpath="heading"
             >
               {heading}
@@ -71,7 +71,7 @@ export const ClosingCtaBlock: React.FC<Props> = ({
                     name={card.icon}
                   />
                   <div className="min-w-0">
-                    <h3 className="font-serif text-sm font-bold leading-tight text-[#1a2f7c]">
+                    <h3 className="font-serif text-sm font-bold leading-tight text-heading">
                       {card.title}
                     </h3>
                     {card.description && (

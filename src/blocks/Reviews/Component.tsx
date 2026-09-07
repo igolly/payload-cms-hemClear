@@ -28,7 +28,7 @@ export const ReviewsBlock: React.FC<Props> = ({
         {(heading || headingAccent) && (
           <h2 className="text-center font-serif text-3xl leading-tight sm:text-4xl lg:text-5xl">
             {heading && (
-              <span className="block text-brand" data-payload-subpath="heading">
+              <span className="block text-heading" data-payload-subpath="heading">
                 {heading}
               </span>
             )}
@@ -71,7 +71,7 @@ export const ReviewsBlock: React.FC<Props> = ({
                 </div>
 
                 <h3
-                  className="mt-5 font-serif text-xl font-bold leading-snug text-brand"
+                  className="mt-5 font-serif text-xl font-bold leading-snug text-heading"
                   data-payload-subpath={`featured.${i}.title`}
                 >
                   {item.title}

@@ -30,7 +30,7 @@ export const ProductSystemBlock: React.FC<Props> = ({
         <header className="mx-auto max-w-3xl text-center">
           {heading && (
             <h2
-              className="font-serif text-3xl leading-tight text-[#123A6B] sm:text-4xl"
+              className="font-serif text-3xl leading-tight text-heading sm:text-4xl"
               data-payload-subpath="heading"
             >
               {multiline(heading)}
@@ -52,7 +52,7 @@ export const ProductSystemBlock: React.FC<Props> = ({
         <div className="order-2 lg:order-1">
           {columnHeading && (
             <h3
-              className="font-serif text-2xl leading-tight text-[#123A6B]"
+              className="font-serif text-2xl leading-tight text-heading"
               data-payload-subpath="columnHeading"
             >
               {multiline(columnHeading)}

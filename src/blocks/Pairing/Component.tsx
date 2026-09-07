@@ -20,7 +20,7 @@ const FeatureList: React.FC<{ features: Feature[]; offset: number }> = ({ featur
           <BrandIcon name={feature.icon} />
         </span>
         <div className="min-w-0">
-          <h3 className="text-base font-bold leading-snug text-brand">{feature.title}</h3>
+          <h3 className="text-base font-bold leading-snug text-heading">{feature.title}</h3>
           {feature.description && (
             <p
               className="mt-2 text-sm leading-relaxed text-[#1a2f7c]"
@@ -53,7 +53,7 @@ export const PairingBlock: React.FC<Props> = ({
         <header className="text-center">
           {heading && (
             <h2
-              className="font-serif text-3xl leading-tight text-brand sm:text-4xl"
+              className="font-serif text-3xl leading-tight text-heading sm:text-4xl"
               data-payload-subpath="heading"
             >
               {heading}

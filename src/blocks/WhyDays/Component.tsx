@@ -35,7 +35,7 @@ export const WhyDaysBlock: React.FC<Props> = ({
           <div>
             {heading && (
               <h2
-                className="font-serif text-3xl leading-tight text-brand sm:text-4xl"
+                className="font-serif text-3xl leading-tight text-heading sm:text-4xl"
                 data-payload-subpath="heading"
               >
                 {heading.split('\n').map((line, i) => (
@@ -61,7 +61,7 @@ export const WhyDaysBlock: React.FC<Props> = ({
 
             {ctaHeading && (
               <h3
-                className="mt-5 font-serif text-lg font-bold text-brand"
+                className="mt-5 font-serif text-lg font-bold text-heading"
                 data-payload-subpath="ctaHeading"
               >
                 {ctaHeading}

@@ -51,7 +51,7 @@ export const FAQBlock: React.FC<Props> = ({
             <div>
               {heading && (
                 <h2
-                  className="font-serif text-4xl leading-tight text-brand sm:text-5xl"
+                  className="font-serif text-4xl leading-tight text-heading sm:text-5xl"
                   data-payload-subpath="heading"
                 >
                   {heading.split('\n').map((line, i) => (

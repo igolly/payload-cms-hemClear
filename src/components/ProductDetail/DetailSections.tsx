@@ -33,7 +33,7 @@ export const DetailSections: React.FC<{ sections: Section[] }> = ({ sections }) 
                 onClick={() => toggle(i)}
                 type="button"
               >
-                <span className="font-serif text-xl text-brand">{section.title}</span>
+                <span className="font-serif text-xl text-heading">{section.title}</span>
                 {isOpen ? (
                   <Minus className="h-5 w-5 shrink-0 text-brand" />
                 ) : (

@@ -80,7 +80,7 @@ export const ProductDetail: React.FC<{ product: Product }> = ({ product }) => {
               </p>
             )}
 
-            <h1 className="mt-1 font-serif text-3xl leading-tight text-brand sm:text-4xl">
+            <h1 className="mt-1 font-serif text-3xl leading-tight text-heading sm:text-4xl">
               {product.title}
             </h1>
 
@@ -231,7 +231,7 @@ export const ProductDetail: React.FC<{ product: Product }> = ({ product }) => {
             {stories.length > 0 && (
               <div className="border-t border-[#dbe8fa] py-6">
                 {product.storiesTitle && (
-                  <h2 className="font-serif text-xl text-brand">{product.storiesTitle}</h2>
+                  <h2 className="font-serif text-xl text-heading">{product.storiesTitle}</h2>
                 )}
                 <div className="mt-4">
                   <Carousel itemClassName="w-[62%] sm:w-[38%] lg:w-[30%]" stories={stories} />

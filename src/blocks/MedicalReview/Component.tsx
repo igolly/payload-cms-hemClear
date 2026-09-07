@@ -50,7 +50,7 @@ export const MedicalReviewBlock: React.FC<Props> = ({
 
           {heading && (
             <h2
-              className="mt-3 font-serif text-3xl leading-tight text-[#1c3f9e] sm:text-4xl"
+              className="mt-3 font-serif text-3xl leading-tight text-heading sm:text-4xl"
               data-payload-subpath="heading"
             >
               {heading}
@@ -115,7 +115,7 @@ export const MedicalReviewBlock: React.FC<Props> = ({
                   )}
                 </div>
 
-                <h3 className="mt-4 font-serif text-lg font-bold leading-snug text-brand">
+                <h3 className="mt-4 font-serif text-lg font-bold leading-snug text-heading">
                   &ldquo;{doctor.quoteHeading}&rdquo;
                 </h3>
 

@@ -31,7 +31,7 @@ export const TotalCareBlock: React.FC<Props> = ({
 
           {heading && (
             <h2
-              className="mt-2 font-serif text-3xl leading-tight text-brand sm:text-4xl"
+              className="mt-2 font-serif text-3xl leading-tight text-heading sm:text-4xl"
               data-payload-subpath="heading"
             >
               {heading}

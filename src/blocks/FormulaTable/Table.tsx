@@ -61,9 +61,9 @@ export const Table: React.FC<{ formulas: Formula[] }> = ({ formulas }) => {
         <>
           <header className="mt-8 text-center">
             <h3 className="font-serif text-3xl leading-tight sm:text-4xl">
-              {formula.titleBefore && <span className="text-brand">{formula.titleBefore} </span>}
+              {formula.titleBefore && <span className="text-heading">{formula.titleBefore} </span>}
               {formula.titleAccent && <span className="text-[#2d80e2]">{formula.titleAccent}</span>}
-              {formula.titleAfter && <span className="text-brand"> {formula.titleAfter}</span>}
+              {formula.titleAfter && <span className="text-heading"> {formula.titleAfter}</span>}
             </h3>
             {formula.subtitle && (
               <>

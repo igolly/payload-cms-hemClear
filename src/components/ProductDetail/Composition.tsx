@@ -27,7 +27,7 @@ export const Composition: React.FC<{
           onClick={() => setOpen((v) => !v)}
           type="button"
         >
-          <span className="font-serif text-xl text-brand">{title}</span>
+          <span className="font-serif text-xl text-heading">{title}</span>
           {open ? (
             <Minus className="h-5 w-5 shrink-0 text-brand" />
           ) : (

@@ -50,7 +50,7 @@ export const FeatureStripBlock: React.FC<Props> = ({
 
             {heading && (
               <h2
-                className="mt-3 font-serif text-3xl leading-tight text-brand sm:text-4xl"
+                className="mt-3 font-serif text-3xl leading-tight text-heading sm:text-4xl"
                 data-payload-subpath="heading"
               >
                 {heading.split('\n').map((line, i) => (
@@ -128,7 +128,7 @@ export const FeatureStripBlock: React.FC<Props> = ({
                   />
 
                   <div className={cn('min-w-0', (centred || style === 'cards') && 'mt-3')}>
-                    <h3 className="text-xs font-bold uppercase tracking-wide leading-tight text-[#0052cc]">
+                    <h3 className="text-xs font-bold uppercase tracking-wide leading-tight text-heading">
                       {item.title}
                     </h3>
                     {item.description && (

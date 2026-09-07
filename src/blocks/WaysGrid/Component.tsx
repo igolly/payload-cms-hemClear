@@ -25,7 +25,7 @@ const Row: React.FC<{ offset: number; ways: Way[] }> = ({ offset, ways }) => (
           />
         </div>
 
-        <h3 className="mt-4 text-sm font-bold leading-tight text-[#0329b2]">
+        <h3 className="mt-4 text-sm font-bold leading-tight text-heading">
           {offset + i + 1}. {way.title}
         </h3>
 
@@ -74,7 +74,7 @@ export const WaysGridBlock: React.FC<Props> = ({
           {(headingBefore || headingAccent || headingAfter) && (
             <h2 className="font-serif text-3xl leading-tight sm:text-4xl">
               {headingBefore && (
-                <span className="text-brand" data-payload-subpath="headingBefore">
+                <span className="text-heading" data-payload-subpath="headingBefore">
                   {headingBefore}{' '}
                 </span>
               )}
@@ -84,7 +84,7 @@ export const WaysGridBlock: React.FC<Props> = ({
                 </span>
               )}
               {headingAfter && (
-                <span className="text-brand" data-payload-subpath="headingAfter">
+                <span className="text-heading" data-payload-subpath="headingAfter">
                   {' '}
                   {headingAfter}
                 </span>

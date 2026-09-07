@@ -13,7 +13,7 @@ export const FormulaTableBlock: React.FC<Props> = ({ footnote, formulas, heading
       <div className="mx-auto max-w-5xl">
         {heading && (
           <h2
-            className="mb-8 text-center font-serif text-3xl leading-tight text-brand sm:text-4xl"
+            className="mb-8 text-center font-serif text-3xl leading-tight text-heading sm:text-4xl"
             data-payload-subpath="heading"
           >
             {heading}

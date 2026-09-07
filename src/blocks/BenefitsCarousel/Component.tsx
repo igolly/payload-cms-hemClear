@@ -13,7 +13,7 @@ export const BenefitsCarouselBlock: React.FC<Props> = ({ heading, items, subhead
         <header className="text-center">
           {heading && (
             <h2
-              className="font-serif text-3xl leading-tight text-brand sm:text-4xl"
+              className="font-serif text-3xl leading-tight text-heading sm:text-4xl"
               data-payload-subpath="heading"
             >
               {heading}

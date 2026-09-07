@@ -60,7 +60,7 @@ export const CausesBlock: React.FC<Props> = ({
 
           {heading && (
             <h2
-              className="mt-2 font-serif text-3xl leading-tight text-[#123A6B] sm:text-4xl"
+              className="mt-2 font-serif text-3xl leading-tight text-heading sm:text-4xl"
               data-payload-subpath="heading"
             >
               {heading.split('\n').map((line, i) => (

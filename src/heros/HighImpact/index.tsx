@@ -119,7 +119,7 @@ export const HighImpactHero: React.FC<Page['hero']> = ({
           {/* Headline */}
           {heading && (
             <h1
-              className="font-serif text-4xl leading-[1.1] text-brand sm:text-5xl"
+              className="font-serif text-4xl leading-[1.1] text-heading sm:text-5xl"
               data-payload-subpath="heading"
             >
               {heading.split('\n').map((line, i) => (

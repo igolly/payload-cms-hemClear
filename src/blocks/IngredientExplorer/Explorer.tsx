@@ -98,7 +98,7 @@ export const Explorer: React.FC<{ allLabel?: string | null; groups: Group[] }> =
       {(group?.heading || group?.description) && (
         <header className="mt-8 text-center">
           {group.heading && (
-            <h2 className="font-serif text-3xl leading-tight text-brand sm:text-4xl">
+            <h2 className="font-serif text-3xl leading-tight text-heading sm:text-4xl">
               {group.heading}
             </h2>
           )}
@@ -136,7 +136,7 @@ export const Explorer: React.FC<{ allLabel?: string | null; groups: Group[] }> =
               </div>
 
               <div className="flex grow flex-col p-4">
-                <h3 className="text-base font-bold leading-tight text-brand">{item.name}</h3>
+                <h3 className="text-base font-bold leading-tight text-heading">{item.name}</h3>
                 {item.latin && <p className="text-xs italic text-slate-500">{item.latin}</p>}
 
                 {item.description && (

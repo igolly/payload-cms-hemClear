@@ -89,7 +89,7 @@ export const Cards: React.FC<{ items: Item[] }> = ({ items }) => {
                       <BrandIcon name={item.icon} />
                     </span>
 
-                    <h3 className="font-serif text-base leading-tight text-brand">
+                    <h3 className="font-serif text-base leading-tight text-heading">
                       {item.title}
                     </h3>
 
