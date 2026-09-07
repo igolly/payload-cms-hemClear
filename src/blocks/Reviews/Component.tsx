@@ -28,7 +28,7 @@ export const ReviewsBlock: React.FC<Props> = ({
         {(heading || headingAccent) && (
           <h2 className="text-center font-serif text-3xl leading-tight sm:text-4xl lg:text-5xl">
             {heading && (
-              <span className="block text-[#1c2f6e]" data-payload-subpath="heading">
+              <span className="block text-brand" data-payload-subpath="heading">
                 {heading}
               </span>
             )}
@@ -42,7 +42,7 @@ export const ReviewsBlock: React.FC<Props> = ({
 
         {description && (
           <p
-            className="mx-auto mt-4 max-w-2xl whitespace-pre-line text-center text-sm leading-relaxed text-[#1c2f6e]"
+            className="mx-auto mt-4 max-w-2xl whitespace-pre-line text-center text-sm leading-relaxed text-brand"
             data-payload-subpath="description"
           >
             {description}
@@ -61,7 +61,7 @@ export const ReviewsBlock: React.FC<Props> = ({
                 <div className="flex items-center gap-2">
                   {item.score && (
                     <span
-                      className="font-serif text-xl font-semibold text-[#1c2f6e]"
+                      className="font-serif text-xl font-semibold text-brand"
                       data-payload-subpath={`featured.${i}.score`}
                     >
                       {item.score}
@@ -71,25 +71,25 @@ export const ReviewsBlock: React.FC<Props> = ({
                 </div>
 
                 <h3
-                  className="mt-5 font-serif text-xl font-bold leading-snug text-[#1c2f6e]"
+                  className="mt-5 font-serif text-xl font-bold leading-snug text-brand"
                   data-payload-subpath={`featured.${i}.title`}
                 >
                   {item.title}
                 </h3>
 
                 <p
-                  className="mt-4 whitespace-pre-line text-sm leading-relaxed text-[#1c2f6e]"
+                  className="mt-4 whitespace-pre-line text-sm leading-relaxed text-brand"
                   data-payload-subpath={`featured.${i}.quote`}
                 >
                   {item.quote}
                 </p>
 
                 <div className="mt-auto pt-6">
-                  <p className="text-sm font-bold text-[#1c2f6e]" data-payload-subpath={`featured.${i}.author`}>
+                  <p className="text-sm font-bold text-brand" data-payload-subpath={`featured.${i}.author`}>
                     &mdash; {item.author}
                   </p>
                   {item.authorNote && (
-                    <p className="text-sm text-[#1c2f6e]" data-payload-subpath={`featured.${i}.authorNote`}>
+                    <p className="text-sm text-brand" data-payload-subpath={`featured.${i}.authorNote`}>
                       {item.authorNote}
                     </p>
                   )}

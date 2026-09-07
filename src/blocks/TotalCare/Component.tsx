@@ -31,7 +31,7 @@ export const TotalCareBlock: React.FC<Props> = ({
 
           {heading && (
             <h2
-              className="mt-2 font-serif text-3xl leading-tight text-[#1c2f6e] sm:text-4xl"
+              className="mt-2 font-serif text-3xl leading-tight text-brand sm:text-4xl"
               data-payload-subpath="heading"
             >
               {heading}
@@ -43,7 +43,7 @@ export const TotalCareBlock: React.FC<Props> = ({
           {subheading && (
             <div data-payload-subpath="subheading">
               <RichText
-                className="mx-auto mt-4 max-w-3xl text-base text-[#1c2f6e]"
+                className="mx-auto mt-4 max-w-3xl text-base text-brand"
                 data={subheading}
                 enableGutter={false}
               />
@@ -59,7 +59,7 @@ export const TotalCareBlock: React.FC<Props> = ({
                   {i > 0 && showConnector !== false && (
                     <span
                       aria-hidden="true"
-                      className="flex h-9 w-9 shrink-0 items-center justify-center self-center rounded-full bg-[#1c2f6e] text-white"
+                      className="flex h-9 w-9 shrink-0 items-center justify-center self-center rounded-full bg-brand text-white"
                     >
                       <Plus className="h-5 w-5" strokeWidth={3} />
                     </span>
@@ -69,7 +69,7 @@ export const TotalCareBlock: React.FC<Props> = ({
                     className="flex-1 rounded-xl border border-[#dbe8fa] p-5 text-center"
                     data-payload-subpath={`items.${i}.label`}
                   >
-                    <p className="text-xs font-bold uppercase tracking-wide text-[#1c2f6e]">
+                    <p className="text-xs font-bold uppercase tracking-wide text-brand">
                       {side.label}
                     </p>
 
@@ -90,7 +90,7 @@ export const TotalCareBlock: React.FC<Props> = ({
                               className="shrink-0 text-[#1668C4] [&>svg]:h-5 [&>svg]:w-5"
                               name={feature.icon}
                             />
-                            <span className="text-xs font-medium text-[#1c2f6e]">
+                            <span className="text-xs font-medium text-brand">
                               {feature.label}
                             </span>
                           </li>

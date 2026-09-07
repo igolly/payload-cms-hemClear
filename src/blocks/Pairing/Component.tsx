@@ -16,11 +16,11 @@ const FeatureList: React.FC<{ features: Feature[]; offset: number }> = ({ featur
         data-payload-subpath={`features.${offset + i}.title`}
         key={feature.id ?? i}
       >
-        <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-[#e8effb] text-[#1c2f6e] [&>span>svg]:h-7 [&>span>svg]:w-7">
+        <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-[#e8effb] text-brand [&>span>svg]:h-7 [&>span>svg]:w-7">
           <BrandIcon name={feature.icon} />
         </span>
         <div className="min-w-0">
-          <h3 className="text-base font-bold leading-snug text-[#1c2f6e]">{feature.title}</h3>
+          <h3 className="text-base font-bold leading-snug text-brand">{feature.title}</h3>
           {feature.description && (
             <p
               className="mt-2 text-sm leading-relaxed text-[#1a2f7c]"
@@ -53,7 +53,7 @@ export const PairingBlock: React.FC<Props> = ({
         <header className="text-center">
           {heading && (
             <h2
-              className="font-serif text-3xl leading-tight text-[#1c2f6e] sm:text-4xl"
+              className="font-serif text-3xl leading-tight text-brand sm:text-4xl"
               data-payload-subpath="heading"
             >
               {heading}
@@ -69,12 +69,12 @@ export const PairingBlock: React.FC<Props> = ({
             </p>
           )}
 
-          <span aria-hidden="true" className="mx-auto mt-4 block h-0.5 w-80 max-w-full bg-[#1c2f6e]" />
+          <span aria-hidden="true" className="mx-auto mt-4 block h-0.5 w-80 max-w-full bg-brand" />
 
           {intro && (
             <div data-payload-subpath="intro">
               <RichText
-                className="mx-auto mt-4 max-w-3xl text-base text-[#1c2f6e]"
+                className="mx-auto mt-4 max-w-3xl text-base text-brand"
                 data={intro}
                 enableGutter={false}
               />

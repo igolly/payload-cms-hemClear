@@ -151,8 +151,8 @@ export const CausesBlock: React.FC<Props> = ({
                   appearance="inline"
                   className={
                     link.appearance === 'outline'
-                      ? 'inline-flex items-center rounded-md border border-[#1c2f6e] px-6 py-3 text-sm font-semibold text-[#1c2f6e] transition-colors hover:bg-slate-50'
-                      : 'inline-flex items-center rounded-md bg-[#1c2f6e] px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-[#162456]'
+                      ? 'inline-flex items-center rounded-md border border-brand px-6 py-3 text-sm font-semibold text-brand transition-colors hover:bg-slate-50'
+                      : 'inline-flex items-center rounded-md bg-brand px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-brand-dark'
                   }
                   key={i}
                 />

@@ -42,7 +42,7 @@ export const ProductDetail: React.FC<{ product: Product }> = ({ product }) => {
           <div>
             {/* Review bar */}
             {(product.ratingLabel || ratingNotes.length > 0) && (
-              <div className="flex flex-wrap items-center gap-x-3 gap-y-1 border-b border-[#dbe8fa] pb-3 text-xs text-[#1c2f6e]">
+              <div className="flex flex-wrap items-center gap-x-3 gap-y-1 border-b border-[#dbe8fa] pb-3 text-xs text-brand">
                 <span
                   aria-label={`${stars} out of 5 stars`}
                   className="flex items-center"
@@ -52,7 +52,7 @@ export const ProductDetail: React.FC<{ product: Product }> = ({ product }) => {
                     <Star
                       aria-hidden="true"
                       className={
-                        i < stars ? 'h-3.5 w-3.5 text-[#1c2f6e]' : 'h-3.5 w-3.5 text-slate-200'
+                        i < stars ? 'h-3.5 w-3.5 text-brand' : 'h-3.5 w-3.5 text-slate-200'
                       }
                       fill="currentColor"
                       key={i}
@@ -80,7 +80,7 @@ export const ProductDetail: React.FC<{ product: Product }> = ({ product }) => {
               </p>
             )}
 
-            <h1 className="mt-1 font-serif text-3xl leading-tight text-[#1c2f6e] sm:text-4xl">
+            <h1 className="mt-1 font-serif text-3xl leading-tight text-brand sm:text-4xl">
               {product.title}
             </h1>
 
@@ -95,8 +95,8 @@ export const ProductDetail: React.FC<{ product: Product }> = ({ product }) => {
                     className="flex items-center gap-2 rounded-full border border-[#dbe8fa] px-3 py-1.5"
                     key={benefit.id ?? i}
                   >
-                    <Check className="h-3.5 w-3.5 shrink-0 text-[#1c2f6e]" strokeWidth={3} />
-                    <span className="text-xs text-[#1c2f6e]">{benefit.text}</span>
+                    <Check className="h-3.5 w-3.5 shrink-0 text-brand" strokeWidth={3} />
+                    <span className="text-xs text-brand">{benefit.text}</span>
                   </li>
                 ))}
               </ul>
@@ -106,7 +106,7 @@ export const ProductDetail: React.FC<{ product: Product }> = ({ product }) => {
             {results.length > 0 && (
               <div className="mt-6 rounded-xl border border-[#dbe8fa] bg-[#f7faff] p-5">
                 {product.resultsTitle && (
-                  <p className="text-center text-sm font-bold uppercase tracking-wide text-[#1c2f6e]">
+                  <p className="text-center text-sm font-bold uppercase tracking-wide text-brand">
                     {product.resultsTitle}
                   </p>
                 )}
@@ -114,8 +114,8 @@ export const ProductDetail: React.FC<{ product: Product }> = ({ product }) => {
                 <ul className="mt-4 grid grid-cols-2 gap-4 sm:grid-cols-4">
                   {results.map((result, i) => (
                     <li className="text-center" key={result.id ?? i}>
-                      <p className="text-3xl font-extrabold text-[#1c2f6e]">{result.value}</p>
-                      <p className="mt-1 text-[11px] font-bold text-[#1c2f6e]">{result.label}</p>
+                      <p className="text-3xl font-extrabold text-brand">{result.value}</p>
+                      <p className="mt-1 text-[11px] font-bold text-brand">{result.label}</p>
                       {result.detail && (
                         <p className="mt-1 text-[10px] leading-tight text-[#0052cc]">
                           {result.detail}
@@ -152,7 +152,7 @@ export const ProductDetail: React.FC<{ product: Product }> = ({ product }) => {
                     key={note.id ?? i}
                   >
                     <BrandIcon
-                      className="shrink-0 text-[#1c2f6e] [&>svg]:h-6 [&>svg]:w-6"
+                      className="shrink-0 text-brand [&>svg]:h-6 [&>svg]:w-6"
                       name={note.icon}
                     />
                     <p className="text-xs leading-relaxed text-[#1a2f7c]">
@@ -172,10 +172,10 @@ export const ProductDetail: React.FC<{ product: Product }> = ({ product }) => {
                     className="flex w-28 flex-col items-center gap-2 text-center"
                     key={item.id ?? i}
                   >
-                    <span className="flex h-11 w-11 items-center justify-center rounded-full border border-[#dbe8fa] text-[#1c2f6e] [&>span>svg]:h-5 [&>span>svg]:w-5">
+                    <span className="flex h-11 w-11 items-center justify-center rounded-full border border-[#dbe8fa] text-brand [&>span>svg]:h-5 [&>span>svg]:w-5">
                       <BrandIcon name={item.icon} />
                     </span>
-                    <span className="text-xs font-semibold text-[#1c2f6e]">{item.label}</span>
+                    <span className="text-xs font-semibold text-brand">{item.label}</span>
                   </li>
                 ))}
               </ul>
@@ -185,7 +185,7 @@ export const ProductDetail: React.FC<{ product: Product }> = ({ product }) => {
             {feel.length > 0 && (
               <div className="mt-6 rounded-xl border border-[#dbe8fa] bg-[#f7faff] p-5">
                 {product.feelTitle && (
-                  <p className="text-center text-base font-bold text-[#1c2f6e]">
+                  <p className="text-center text-base font-bold text-brand">
                     {product.feelTitle}
                   </p>
                 )}
@@ -201,13 +201,13 @@ export const ProductDetail: React.FC<{ product: Product }> = ({ product }) => {
                         name={row.icon}
                       />
                       <span className="min-w-0 grow">
-                        <span className="block text-sm font-bold text-[#1c2f6e]">{row.title}</span>
+                        <span className="block text-sm font-bold text-brand">{row.title}</span>
                         {row.subtitle && (
                           <span className="block text-[11px] text-[#0052cc]">{row.subtitle}</span>
                         )}
                       </span>
                       {row.percent && (
-                        <span className="text-sm font-bold text-[#1c2f6e]">{row.percent}</span>
+                        <span className="text-sm font-bold text-brand">{row.percent}</span>
                       )}
                     </li>
                   ))}
@@ -231,7 +231,7 @@ export const ProductDetail: React.FC<{ product: Product }> = ({ product }) => {
             {stories.length > 0 && (
               <div className="border-t border-[#dbe8fa] py-6">
                 {product.storiesTitle && (
-                  <h2 className="font-serif text-xl text-[#1c2f6e]">{product.storiesTitle}</h2>
+                  <h2 className="font-serif text-xl text-brand">{product.storiesTitle}</h2>
                 )}
                 <div className="mt-4">
                   <Carousel itemClassName="w-[62%] sm:w-[38%] lg:w-[30%]" stories={stories} />

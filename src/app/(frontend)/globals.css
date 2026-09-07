@@ -38,6 +38,10 @@
 @source inline("bg-warning/30");
 
 @theme {
+  /* Brand blue. Defined once so it can be changed here rather than in 30+ files. */
+  --color-brand: #0023a3;
+  --color-brand-dark: #001a7d;
+
   --breakpoint-sm: 40rem;
   --breakpoint-md: 48rem;
   --breakpoint-lg: 64rem;

@@ -23,7 +23,7 @@ export const ScienceStatsBlock: React.FC<Props> = ({
         <header className="text-center">
           {heading && (
             <h2
-              className="font-serif text-3xl leading-tight text-[#1c2f6e] sm:text-4xl"
+              className="font-serif text-3xl leading-tight text-brand sm:text-4xl"
               data-payload-subpath="heading"
             >
               {heading}
@@ -57,7 +57,7 @@ export const ScienceStatsBlock: React.FC<Props> = ({
                   data-payload-subpath={`stats.${i}.title`}
                   key={stat.id ?? i}
                 >
-                  <span className="w-24 shrink-0 font-serif text-3xl font-bold leading-none text-[#1c2f6e]">
+                  <span className="w-24 shrink-0 font-serif text-3xl font-bold leading-none text-brand">
                     {stat.value}
                   </span>
                   <span className="min-w-0">
@@ -80,8 +80,8 @@ export const ScienceStatsBlock: React.FC<Props> = ({
                     appearance="inline"
                     className={
                       link.appearance === 'outline'
-                        ? 'inline-flex items-center rounded-full border border-[#1c2f6e] px-5 py-2 text-xs font-semibold text-[#1c2f6e] transition-colors hover:bg-white'
-                        : 'inline-flex items-center rounded-full bg-[#1c2f6e] px-5 py-2 text-xs font-semibold text-white transition-colors hover:bg-[#162456]'
+                        ? 'inline-flex items-center rounded-full border border-brand px-5 py-2 text-xs font-semibold text-brand transition-colors hover:bg-white'
+                        : 'inline-flex items-center rounded-full bg-brand px-5 py-2 text-xs font-semibold text-white transition-colors hover:bg-brand-dark'
                     }
                     key={i}
                   />
@@ -95,7 +95,7 @@ export const ScienceStatsBlock: React.FC<Props> = ({
           <ul className="mt-10 flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
             {chips.map((chip, i) => (
               <li
-                className="border-[#c9dcf5] pl-6 text-sm font-semibold text-[#1c2f6e] first:pl-0 sm:border-l sm:first:border-l-0"
+                className="border-[#c9dcf5] pl-6 text-sm font-semibold text-brand first:pl-0 sm:border-l sm:first:border-l-0"
                 key={chip.id ?? i}
               >
                 {chip.text}

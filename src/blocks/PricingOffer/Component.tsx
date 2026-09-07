@@ -32,7 +32,7 @@ export const PricingOfferBlock: React.FC<Props> = ({
   const trust = Array.isArray(trustItems) ? trustItems : []
 
   return (
-    <section className="w-full bg-[#1c2f6e] px-4 py-12 sm:px-6 lg:px-8">
+    <section className="w-full bg-brand px-4 py-12 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-5xl">
         {(bannerTitle || bannerText) && (
           <div className="flex flex-col items-center gap-4 rounded-xl bg-[#2a3f86] px-6 py-5 sm:flex-row sm:gap-6">
@@ -58,7 +58,7 @@ export const PricingOfferBlock: React.FC<Props> = ({
             )}
 
             {bannerValue && (
-              <span className="flex h-20 w-20 shrink-0 flex-col items-center justify-center rounded-full bg-white text-[#1c2f6e]">
+              <span className="flex h-20 w-20 shrink-0 flex-col items-center justify-center rounded-full bg-white text-brand">
                 <span className="text-base font-extrabold leading-none">{bannerValue}</span>
                 <span className="text-[10px] font-bold uppercase">{bannerValueLabel}</span>
               </span>
@@ -84,7 +84,7 @@ export const PricingOfferBlock: React.FC<Props> = ({
                 )}
 
                 <div className="p-5 text-center">
-                  <p className="font-serif text-lg font-bold text-[#1c2f6e]">{plan.name}</p>
+                  <p className="font-serif text-lg font-bold text-brand">{plan.name}</p>
 
                   <div className="relative mx-auto mt-3 h-28 w-full">
                     {plan.image && typeof plan.image === 'object' ? (
@@ -100,7 +100,7 @@ export const PricingOfferBlock: React.FC<Props> = ({
                     <p className="mt-3 text-[11px] text-slate-500">{plan.priceLead}</p>
                   )}
                   <p className="flex items-baseline justify-center gap-1">
-                    <span className="text-3xl font-extrabold text-[#1c2f6e]">{plan.price}</span>
+                    <span className="text-3xl font-extrabold text-brand">{plan.price}</span>
                     {plan.priceSuffix && (
                       <span className="text-xs text-slate-500">{plan.priceSuffix}</span>
                     )}
@@ -111,7 +111,7 @@ export const PricingOfferBlock: React.FC<Props> = ({
                       {plan.features.map((feature, f) => (
                         <li className="flex items-start gap-2" key={feature.id ?? f}>
                           <Check
-                            className="mt-0.5 h-3.5 w-3.5 shrink-0 text-[#1c2f6e]"
+                            className="mt-0.5 h-3.5 w-3.5 shrink-0 text-brand"
                             strokeWidth={3}
                           />
                           <span
@@ -132,7 +132,7 @@ export const PricingOfferBlock: React.FC<Props> = ({
                       'mt-5 block rounded-md py-3 text-sm font-bold uppercase tracking-wide text-white transition-colors',
                       plan.popular
                         ? 'bg-[#1a7f37] hover:bg-[#166b2e]'
-                        : 'bg-[#1c2f6e] hover:bg-[#162456]',
+                        : 'bg-brand hover:bg-brand-dark',
                     )}
                     href={plan.ctaUrl || '#'}
                   >
@@ -159,7 +159,7 @@ export const PricingOfferBlock: React.FC<Props> = ({
                   className="shrink-0 text-[#1668C4] [&>svg]:h-6 [&>svg]:w-6"
                   name={item.icon}
                 />
-                <span className="whitespace-pre-line text-xs font-bold leading-tight text-[#1c2f6e]">
+                <span className="whitespace-pre-line text-xs font-bold leading-tight text-brand">
                   {item.label}
                 </span>
               </li>

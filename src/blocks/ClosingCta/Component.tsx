@@ -21,7 +21,7 @@ export const ClosingCtaBlock: React.FC<Props> = ({
         <header className="text-center">
           {headingTop && (
             <h2
-              className="text-3xl font-extrabold leading-tight text-[#1c2f6e] sm:text-4xl"
+              className="text-3xl font-extrabold leading-tight text-brand sm:text-4xl"
               data-payload-subpath="headingTop"
             >
               {headingTop}
@@ -30,7 +30,7 @@ export const ClosingCtaBlock: React.FC<Props> = ({
 
           {heading && (
             <p
-              className="mt-1 font-serif text-3xl leading-tight text-[#1c2f6e] sm:text-4xl"
+              className="mt-1 font-serif text-3xl leading-tight text-brand sm:text-4xl"
               data-payload-subpath="heading"
             >
               {heading}
@@ -67,7 +67,7 @@ export const ClosingCtaBlock: React.FC<Props> = ({
 
                 <div className="flex gap-3 p-4">
                   <BrandIcon
-                    className="shrink-0 text-[#1c2f6e] [&>svg]:h-9 [&>svg]:w-9"
+                    className="shrink-0 text-brand [&>svg]:h-9 [&>svg]:w-9"
                     name={card.icon}
                   />
                   <div className="min-w-0">
@@ -97,8 +97,8 @@ export const ClosingCtaBlock: React.FC<Props> = ({
                 appearance="inline"
                 className={
                   link.appearance === 'outline'
-                    ? 'inline-flex w-full items-center justify-center rounded-md border border-[#9dbde8] bg-white/60 px-10 py-4 text-base text-[#1c2f6e] transition-colors hover:bg-white sm:w-auto'
-                    : 'inline-flex w-full items-center justify-center rounded-md bg-[#1c2f6e] px-10 py-4 text-base text-white transition-colors hover:bg-[#162456] sm:w-auto'
+                    ? 'inline-flex w-full items-center justify-center rounded-md border border-[#9dbde8] bg-white/60 px-10 py-4 text-base text-brand transition-colors hover:bg-white sm:w-auto'
+                    : 'inline-flex w-full items-center justify-center rounded-md bg-brand px-10 py-4 text-base text-white transition-colors hover:bg-brand-dark sm:w-auto'
                 }
                 key={i}
               />

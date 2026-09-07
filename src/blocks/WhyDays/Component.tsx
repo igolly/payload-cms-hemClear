@@ -35,7 +35,7 @@ export const WhyDaysBlock: React.FC<Props> = ({
           <div>
             {heading && (
               <h2
-                className="font-serif text-3xl leading-tight text-[#1c2f6e] sm:text-4xl"
+                className="font-serif text-3xl leading-tight text-brand sm:text-4xl"
                 data-payload-subpath="heading"
               >
                 {heading.split('\n').map((line, i) => (
@@ -61,7 +61,7 @@ export const WhyDaysBlock: React.FC<Props> = ({
 
             {ctaHeading && (
               <h3
-                className="mt-5 font-serif text-lg font-bold text-[#1c2f6e]"
+                className="mt-5 font-serif text-lg font-bold text-brand"
                 data-payload-subpath="ctaHeading"
               >
                 {ctaHeading}
@@ -83,10 +83,10 @@ export const WhyDaysBlock: React.FC<Props> = ({
                   <CMSLink
                     {...link}
                     appearance="inline"
-                    className="inline-flex items-center gap-3 rounded-full bg-[#1c2f6e] py-1.5 pl-6 pr-1.5 text-xs font-bold uppercase tracking-wide text-white transition-colors hover:bg-[#162456]"
+                    className="inline-flex items-center gap-3 rounded-full bg-brand py-1.5 pl-6 pr-1.5 text-xs font-bold uppercase tracking-wide text-white transition-colors hover:bg-brand-dark"
                     key={i}
                   >
-                    <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-white text-[#1c2f6e]">
+                    <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-white text-brand">
                       <ArrowRight className="h-4 w-4" />
                     </span>
                   </CMSLink>

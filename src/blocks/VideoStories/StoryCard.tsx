@@ -85,7 +85,7 @@ export const StoryCard: React.FC<{ index: number; story: Story }> = ({ index, st
 
           {/* Badge */}
           {story.badge && (
-            <span className="absolute left-3 top-9 z-20 flex items-center gap-1.5 rounded-md bg-[#1c2f6e]/90 px-2 py-1 text-[9px] font-bold uppercase tracking-wide text-white">
+            <span className="absolute left-3 top-9 z-20 flex items-center gap-1.5 rounded-md bg-brand/90 px-2 py-1 text-[9px] font-bold uppercase tracking-wide text-white">
               <span className="h-1.5 w-1.5 rounded-full bg-[#4da3ff]" />
               {story.badge}
             </span>
@@ -100,7 +100,7 @@ export const StoryCard: React.FC<{ index: number; story: Story }> = ({ index, st
             type="button"
           >
             <span className="flex h-14 w-14 items-center justify-center rounded-full bg-white/95 shadow-lg transition-transform hover:scale-105">
-              <Play className="ml-0.5 h-6 w-6 text-[#1c2f6e]" fill="currentColor" strokeWidth={0} />
+              <Play className="ml-0.5 h-6 w-6 text-brand" fill="currentColor" strokeWidth={0} />
             </span>
           </button>
 

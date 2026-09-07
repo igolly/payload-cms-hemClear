@@ -11,7 +11,7 @@ export const ComparisonBlock: React.FC<Props> = ({ heading, products, rows, subh
   const featureRows = Array.isArray(rows) ? rows : []
 
   return (
-    <section className="w-full bg-[#1c2f6e] px-4 py-14 sm:px-6 lg:px-8">
+    <section className="w-full bg-brand px-4 py-14 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-5xl">
         <header className="text-center">
           {heading && (
@@ -57,7 +57,7 @@ export const ComparisonBlock: React.FC<Props> = ({ heading, products, rows, subh
                           resource={product.image}
                         />
                       </div>
-                      <span className="mt-2 block text-xs font-bold uppercase tracking-wide text-[#1c2f6e]">
+                      <span className="mt-2 block text-xs font-bold uppercase tracking-wide text-brand">
                         {product.name}
                       </span>
                     </th>
@@ -78,7 +78,7 @@ export const ComparisonBlock: React.FC<Props> = ({ heading, products, rows, subh
                           className="shrink-0 text-[#1668C4] [&>svg]:h-5 [&>svg]:w-5"
                           name={row.icon}
                         />
-                        <span className="text-xs font-bold leading-tight text-[#1c2f6e]">
+                        <span className="text-xs font-bold leading-tight text-brand">
                           {row.label}
                         </span>
                       </span>
@@ -93,8 +93,8 @@ export const ComparisonBlock: React.FC<Props> = ({ heading, products, rows, subh
                           className={cn(
                             'border-l border-[#e7edf7] px-4 py-3 text-xs font-bold',
                             product.highlight
-                              ? 'bg-[#1c2f6e] text-white'
-                              : 'bg-white text-[#1c2f6e]',
+                              ? 'bg-brand text-white'
+                              : 'bg-white text-brand',
                           )}
                           key={product.id ?? c}
                         >

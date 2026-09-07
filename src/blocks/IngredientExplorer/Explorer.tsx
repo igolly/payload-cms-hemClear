@@ -55,7 +55,7 @@ export const Explorer: React.FC<{ allLabel?: string | null; groups: Group[] }> =
                 aria-pressed={i === groupIndex}
                 className={cn(
                   'rounded-full px-8 py-2.5 text-sm font-bold transition-colors',
-                  i === groupIndex ? 'bg-[#1c2f6e] text-white' : 'text-[#1c2f6e] hover:bg-slate-50',
+                  i === groupIndex ? 'bg-brand text-white' : 'text-brand hover:bg-slate-50',
                 )}
                 key={item.id ?? i}
                 onClick={() => selectGroup(i)}
@@ -80,8 +80,8 @@ export const Explorer: React.FC<{ allLabel?: string | null; groups: Group[] }> =
                   className={cn(
                     'rounded-full border px-4 py-1.5 text-xs font-semibold transition-colors',
                     active
-                      ? 'border-[#1c2f6e] bg-[#1c2f6e] text-white'
-                      : 'border-[#c9dcf5] bg-white text-[#1c2f6e] hover:bg-slate-50',
+                      ? 'border-brand bg-brand text-white'
+                      : 'border-[#c9dcf5] bg-white text-brand hover:bg-slate-50',
                   )}
                   onClick={() => setCategory(value)}
                   type="button"
@@ -98,7 +98,7 @@ export const Explorer: React.FC<{ allLabel?: string | null; groups: Group[] }> =
       {(group?.heading || group?.description) && (
         <header className="mt-8 text-center">
           {group.heading && (
-            <h2 className="font-serif text-3xl leading-tight text-[#1c2f6e] sm:text-4xl">
+            <h2 className="font-serif text-3xl leading-tight text-brand sm:text-4xl">
               {group.heading}
             </h2>
           )}
@@ -136,7 +136,7 @@ export const Explorer: React.FC<{ allLabel?: string | null; groups: Group[] }> =
               </div>
 
               <div className="flex grow flex-col p-4">
-                <h3 className="text-base font-bold leading-tight text-[#1c2f6e]">{item.name}</h3>
+                <h3 className="text-base font-bold leading-tight text-brand">{item.name}</h3>
                 {item.latin && <p className="text-xs italic text-slate-500">{item.latin}</p>}
 
                 {item.description && (
@@ -158,7 +158,7 @@ export const Explorer: React.FC<{ allLabel?: string | null; groups: Group[] }> =
                     <button
                       aria-expanded={isOpen}
                       aria-label={`${isOpen ? 'Hide' : 'Show'} more about ${item.name}`}
-                      className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-[#1c2f6e] text-[#1c2f6e] transition-colors hover:bg-[#1c2f6e] hover:text-white"
+                      className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-brand text-brand transition-colors hover:bg-brand hover:text-white"
                       onClick={() => setExpanded(isOpen ? null : key)}
                       type="button"
                     >

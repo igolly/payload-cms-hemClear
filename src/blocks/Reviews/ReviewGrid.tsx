@@ -39,14 +39,14 @@ export const ReviewGrid: React.FC<Props> = ({
             data-payload-subpath={`reviews.${i}.title`}
             key={review.id ?? i}
           >
-            <Stars className="text-[#1c2f6e]" count={review.stars} />
+            <Stars className="text-brand" count={review.stars} />
 
             {review.verified && (
               <p
-                className="mt-3 flex items-center gap-2 text-sm font-medium text-[#1c2f6e]"
+                className="mt-3 flex items-center gap-2 text-sm font-medium text-brand"
                 data-payload-subpath={`reviews.${i}.verified`}
               >
-                <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#1c2f6e]">
+                <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-brand">
                   <Check className="h-3 w-3 text-white" strokeWidth={3} />
                 </span>
                 {verifiedLabel || 'Verified Purchase'}
@@ -54,21 +54,21 @@ export const ReviewGrid: React.FC<Props> = ({
             )}
 
             <h3
-              className="mt-4 font-serif text-base font-bold leading-snug text-[#1c2f6e]"
+              className="mt-4 font-serif text-base font-bold leading-snug text-brand"
               data-payload-subpath={`reviews.${i}.title`}
             >
               &ldquo;{review.title}&rdquo;
             </h3>
 
             <p
-              className="mt-3 whitespace-pre-line text-sm leading-relaxed text-[#1c2f6e]"
+              className="mt-3 whitespace-pre-line text-sm leading-relaxed text-brand"
               data-payload-subpath={`reviews.${i}.quote`}
             >
               &ldquo;{review.quote}&rdquo;
             </p>
 
             <p
-              className="mt-auto pt-6 text-sm font-bold text-[#1c2f6e]"
+              className="mt-auto pt-6 text-sm font-bold text-brand"
               data-payload-subpath={`reviews.${i}.author`}
             >
               {review.author}
@@ -81,7 +81,7 @@ export const ReviewGrid: React.FC<Props> = ({
         <div className="mt-8 flex justify-center">
           <button
             aria-expanded={expanded}
-            className="inline-flex items-center gap-3 rounded-lg border border-[#e7e7e7] bg-white px-10 py-3 text-sm font-semibold uppercase tracking-wide text-[#1c2f6e] transition-colors hover:bg-slate-50"
+            className="inline-flex items-center gap-3 rounded-lg border border-[#e7e7e7] bg-white px-10 py-3 text-sm font-semibold uppercase tracking-wide text-brand transition-colors hover:bg-slate-50"
             onClick={() => setExpanded((value) => !value)}
             type="button"
           >

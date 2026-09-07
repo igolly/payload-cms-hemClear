@@ -13,7 +13,7 @@ export const VideoStoriesBlock: React.FC<Props> = ({
   const items = Array.isArray(stories) ? stories : []
 
   return (
-    <section className="w-full bg-[#1c2f6e] px-4 py-14 sm:px-6 lg:px-8">
+    <section className="w-full bg-brand px-4 py-14 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-7xl">
         <header className="text-center">
           {eyebrow && (

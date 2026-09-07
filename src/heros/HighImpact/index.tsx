@@ -89,9 +89,9 @@ export const HighImpactHero: React.FC<Page['hero']> = ({
             <div className="mb-6 flex items-center gap-3 rounded-lg border border-slate-200 px-4 py-2.5">
               {badgeTitle && (
                 <>
-                  <Laurel className="h-6 w-3.5 shrink-0 text-[#1c2f6e]" />
+                  <Laurel className="h-6 w-3.5 shrink-0 text-brand" />
                   <span
-                    className="font-serif text-sm font-semibold leading-tight text-[#1c2f6e]"
+                    className="font-serif text-sm font-semibold leading-tight text-brand"
                     data-payload-subpath="badgeTitle"
                   >
                     {badgeTitle.split('\n').map((line, i) => (
@@ -101,7 +101,7 @@ export const HighImpactHero: React.FC<Page['hero']> = ({
                       </React.Fragment>
                     ))}
                   </span>
-                  <Laurel className="h-6 w-3.5 shrink-0 -scale-x-100 text-[#1c2f6e]" />
+                  <Laurel className="h-6 w-3.5 shrink-0 -scale-x-100 text-brand" />
                 </>
               )}
               {badgeTitle && badgeDescription && <span className="h-8 w-px bg-slate-200" />}
@@ -119,7 +119,7 @@ export const HighImpactHero: React.FC<Page['hero']> = ({
           {/* Headline */}
           {heading && (
             <h1
-              className="font-serif text-4xl leading-[1.1] text-[#1c2f6e] sm:text-5xl"
+              className="font-serif text-4xl leading-[1.1] text-brand sm:text-5xl"
               data-payload-subpath="heading"
             >
               {heading.split('\n').map((line, i) => (
@@ -133,7 +133,7 @@ export const HighImpactHero: React.FC<Page['hero']> = ({
 
           {subheading && (
             <p
-              className="mt-3 font-serif text-lg text-[#1c2f6e]"
+              className="mt-3 font-serif text-lg text-brand"
               data-payload-subpath="subheading"
             >
               {subheading}
@@ -159,7 +159,7 @@ export const HighImpactHero: React.FC<Page['hero']> = ({
                   data-payload-subpath={`benefits.${i}.text`}
                   key={benefit.id ?? i}
                 >
-                  <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#1c2f6e]">
+                  <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-brand">
                     <Check className="h-3 w-3 text-white" strokeWidth={3} />
                   </span>
                   <span className="text-[15px] font-medium text-slate-900">{benefit.text}</span>
@@ -170,12 +170,12 @@ export const HighImpactHero: React.FC<Page['hero']> = ({
 
           {(calloutTitle || calloutText) && (
             <div className="mt-6 flex items-start gap-3 rounded-lg bg-[#eef4fd] px-4 py-3">
-              <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#1c2f6e] text-white">
+              <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-brand text-white">
                 <Check className="h-4 w-4" strokeWidth={3} />
               </span>
               <span className="min-w-0">
                 {calloutTitle && (
-                  <span className="block text-sm font-bold text-[#1c2f6e]">{calloutTitle}</span>
+                  <span className="block text-sm font-bold text-brand">{calloutTitle}</span>
                 )}
                 {calloutText && (
                   <span className="mt-0.5 block text-xs leading-relaxed text-[#1a2f7c]">
@@ -198,15 +198,15 @@ export const HighImpactHero: React.FC<Page['hero']> = ({
                     appearance="inline"
                     className={
                       isOutline
-                        ? 'inline-flex items-center gap-3 whitespace-nowrap rounded-full border border-[#1c2f6e] py-1.5 pl-6 pr-1.5 text-sm font-semibold text-[#1c2f6e] transition-colors hover:bg-slate-50'
-                        : 'inline-flex items-center gap-3 whitespace-nowrap rounded-full bg-[#1c2f6e] py-1.5 pl-6 pr-1.5 text-sm font-semibold text-white transition-colors hover:bg-[#162456]'
+                        ? 'inline-flex items-center gap-3 whitespace-nowrap rounded-full border border-brand py-1.5 pl-6 pr-1.5 text-sm font-semibold text-brand transition-colors hover:bg-slate-50'
+                        : 'inline-flex items-center gap-3 whitespace-nowrap rounded-full bg-brand py-1.5 pl-6 pr-1.5 text-sm font-semibold text-white transition-colors hover:bg-brand-dark'
                     }
                   >
                     <span
                       className={
                         isOutline
-                          ? 'flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-[#1c2f6e] text-[#1c2f6e]'
-                          : 'flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-white text-[#1c2f6e]'
+                          ? 'flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-brand text-brand'
+                          : 'flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-white text-brand'
                       }
                     >
                       <ArrowRight className="h-4 w-4" />

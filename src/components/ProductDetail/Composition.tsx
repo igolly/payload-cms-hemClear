@@ -27,11 +27,11 @@ export const Composition: React.FC<{
           onClick={() => setOpen((v) => !v)}
           type="button"
         >
-          <span className="font-serif text-xl text-[#1c2f6e]">{title}</span>
+          <span className="font-serif text-xl text-brand">{title}</span>
           {open ? (
-            <Minus className="h-5 w-5 shrink-0 text-[#1c2f6e]" />
+            <Minus className="h-5 w-5 shrink-0 text-brand" />
           ) : (
-            <Plus className="h-5 w-5 shrink-0 text-[#1c2f6e]" />
+            <Plus className="h-5 w-5 shrink-0 text-brand" />
           )}
         </button>
       </h2>
@@ -39,7 +39,7 @@ export const Composition: React.FC<{
       {open && (
         <div id={panelId}>
           {note && (
-            <p className="mt-3 text-center text-xs font-bold text-[#1c2f6e]">{note}</p>
+            <p className="mt-3 text-center text-xs font-bold text-brand">{note}</p>
           )}
 
           <div className="mt-4 grid grid-cols-1 gap-6 sm:grid-cols-2">
@@ -61,7 +61,7 @@ export const Composition: React.FC<{
                       className="mt-0.5 h-3.5 w-3.5 shrink-0 text-[#1a8a3c]"
                       strokeWidth={3}
                     />
-                    <span className="text-xs leading-snug text-[#1c2f6e]">{item.text}</span>
+                    <span className="text-xs leading-snug text-brand">{item.text}</span>
                   </li>
                 ))}
               </ul>

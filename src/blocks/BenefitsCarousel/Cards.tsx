@@ -42,7 +42,7 @@ export const Cards: React.FC<{ items: Item[] }> = ({ items }) => {
   }
 
   const arrow =
-    'flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white text-[#1c2f6e] shadow-sm transition-colors hover:bg-slate-50 disabled:opacity-40'
+    'flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white text-brand shadow-sm transition-colors hover:bg-slate-50 disabled:opacity-40'
 
   return (
     <div>
@@ -85,11 +85,11 @@ export const Cards: React.FC<{ items: Item[] }> = ({ items }) => {
                   </div>
 
                   <div className="relative flex grow flex-col items-center px-3 pb-6 pt-8 text-center">
-                    <span className="absolute -top-6 flex h-12 w-12 items-center justify-center rounded-full border border-[#dbe8fa] bg-white text-[#1c2f6e] [&>span>svg]:h-6 [&>span>svg]:w-6">
+                    <span className="absolute -top-6 flex h-12 w-12 items-center justify-center rounded-full border border-[#dbe8fa] bg-white text-brand [&>span>svg]:h-6 [&>span>svg]:w-6">
                       <BrandIcon name={item.icon} />
                     </span>
 
-                    <h3 className="font-serif text-base leading-tight text-[#1c2f6e]">
+                    <h3 className="font-serif text-base leading-tight text-brand">
                       {item.title}
                     </h3>
 
@@ -101,7 +101,7 @@ export const Cards: React.FC<{ items: Item[] }> = ({ items }) => {
                       <button
                         aria-expanded={isOpen}
                         aria-label={`${isOpen ? 'Hide' : 'Show'} more about ${item.title}`}
-                        className="mt-3 flex h-7 w-7 items-center justify-center rounded-full bg-[#1c2f6e] text-white transition-colors hover:bg-[#162456]"
+                        className="mt-3 flex h-7 w-7 items-center justify-center rounded-full bg-brand text-white transition-colors hover:bg-brand-dark"
                         onClick={() => setOpen(isOpen ? null : key)}
                         type="button"
                       >
@@ -133,7 +133,7 @@ export const Cards: React.FC<{ items: Item[] }> = ({ items }) => {
               aria-label={`Go to ${i + 1}`}
               className={cn(
                 'h-2 rounded-full transition-all',
-                i === active ? 'w-5 bg-[#1c2f6e]' : 'w-2 bg-[#a9c5ea] hover:bg-[#7fa8dd]',
+                i === active ? 'w-5 bg-brand' : 'w-2 bg-[#a9c5ea] hover:bg-[#7fa8dd]',
               )}
               key={item.id ?? i}
               onClick={() => scrollToIndex(i)}

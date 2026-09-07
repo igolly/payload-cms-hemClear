@@ -30,7 +30,7 @@ export const SavingsCompareBlock: React.FC<Props> = ({
   const features = Array.isArray(formulaFeatures) ? formulaFeatures : []
 
   return (
-    <section className="w-full bg-[#1c2f6e] px-4 py-14 sm:px-6 lg:px-8">
+    <section className="w-full bg-brand px-4 py-14 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-4xl">
         <header className="text-center">
           {heading && (
@@ -63,7 +63,7 @@ export const SavingsCompareBlock: React.FC<Props> = ({
           {/* Buying separately */}
           <div className="rounded-xl bg-white p-5">
             {separateTitle && (
-              <p className="text-sm font-bold text-[#1c2f6e]">{separateTitle}</p>
+              <p className="text-sm font-bold text-brand">{separateTitle}</p>
             )}
 
             <table className="mt-3 w-full border-collapse text-left text-[11px]">
@@ -81,7 +81,7 @@ export const SavingsCompareBlock: React.FC<Props> = ({
                   </tr>
                 ))}
                 {totals.map((total, i) => (
-                  <tr className="border-b border-[#e2ecf9] font-bold text-[#1c2f6e]" key={total.id ?? i}>
+                  <tr className="border-b border-[#e2ecf9] font-bold text-brand" key={total.id ?? i}>
                     <td className="py-1.5">{total.label}</td>
                     <td className="py-1.5 text-right">{total.value}</td>
                   </tr>
@@ -122,7 +122,7 @@ export const SavingsCompareBlock: React.FC<Props> = ({
                   <p className="text-[11px] font-semibold text-[#0052cc]">{formulaPriceLabel}</p>
                 )}
                 {formulaPrice && (
-                  <p className="text-2xl font-extrabold text-[#1c2f6e]">{formulaPrice}</p>
+                  <p className="text-2xl font-extrabold text-brand">{formulaPrice}</p>
                 )}
                 {formulaAnnual && <p className="text-[11px] text-slate-500">{formulaAnnual}</p>}
               </div>
@@ -133,14 +133,14 @@ export const SavingsCompareBlock: React.FC<Props> = ({
                     <p className="text-[11px] font-semibold text-[#0052cc]">{formulaSaveLabel}</p>
                   )}
                   {formulaSaveValue && (
-                    <p className="text-xl font-extrabold text-[#1c2f6e]">{formulaSaveValue}</p>
+                    <p className="text-xl font-extrabold text-brand">{formulaSaveValue}</p>
                   )}
                   {formulaSaveNote && (
                     <p className="text-[11px] text-[#0052cc]">{formulaSaveNote}</p>
                   )}
                   {ctaLabel && (
                     <a
-                      className="mt-3 inline-block rounded-md bg-[#1c2f6e] px-5 py-2 text-xs font-bold text-white transition-colors hover:bg-[#162456]"
+                      className="mt-3 inline-block rounded-md bg-brand px-5 py-2 text-xs font-bold text-white transition-colors hover:bg-brand-dark"
                       href={ctaUrl || '#'}
                     >
                       {ctaLabel}

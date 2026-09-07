@@ -74,7 +74,7 @@ export const WaysGridBlock: React.FC<Props> = ({
           {(headingBefore || headingAccent || headingAfter) && (
             <h2 className="font-serif text-3xl leading-tight sm:text-4xl">
               {headingBefore && (
-                <span className="text-[#1c2f6e]" data-payload-subpath="headingBefore">
+                <span className="text-brand" data-payload-subpath="headingBefore">
                   {headingBefore}{' '}
                 </span>
               )}
@@ -84,7 +84,7 @@ export const WaysGridBlock: React.FC<Props> = ({
                 </span>
               )}
               {headingAfter && (
-                <span className="text-[#1c2f6e]" data-payload-subpath="headingAfter">
+                <span className="text-brand" data-payload-subpath="headingAfter">
                   {' '}
                   {headingAfter}
                 </span>

@@ -27,7 +27,7 @@ export const GuaranteeBlock: React.FC<Props> = ({
 
           {badgeLabel && (
             <span
-              className="-mt-2 rounded-full bg-[#1c2f6e] px-4 py-1 text-[10px] font-bold uppercase tracking-wider text-white"
+              className="-mt-2 rounded-full bg-brand px-4 py-1 text-[10px] font-bold uppercase tracking-wider text-white"
               data-payload-subpath="badgeLabel"
             >
               {badgeLabel}
@@ -36,7 +36,7 @@ export const GuaranteeBlock: React.FC<Props> = ({
 
           {heading && (
             <h2
-              className="mt-4 font-serif text-3xl leading-tight text-[#1c2f6e] sm:text-4xl"
+              className="mt-4 font-serif text-3xl leading-tight text-brand sm:text-4xl"
               data-payload-subpath="heading"
             >
               {heading}
@@ -78,7 +78,7 @@ export const GuaranteeBlock: React.FC<Props> = ({
                     className="shrink-0 text-[#1668C4] [&>svg]:h-6 [&>svg]:w-6"
                     name={point.icon}
                   />
-                  <span className="font-serif text-sm text-[#1c2f6e]">{point.text}</span>
+                  <span className="font-serif text-sm text-brand">{point.text}</span>
                 </li>
               ))}
             </ul>
@@ -97,7 +97,7 @@ export const GuaranteeBlock: React.FC<Props> = ({
                   className="shrink-0 text-[#1668C4] [&>svg]:h-5 [&>svg]:w-5"
                   name={pill.icon}
                 />
-                <span className="text-xs font-bold uppercase tracking-wide text-[#1c2f6e]">
+                <span className="text-xs font-bold uppercase tracking-wide text-brand">
                   {pill.label}
                 </span>
               </li>

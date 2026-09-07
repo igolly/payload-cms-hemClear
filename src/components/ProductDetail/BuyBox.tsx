@@ -25,7 +25,7 @@ export const BuyBox: React.FC<{
       {variants.length > 0 && (
         <div>
           {variantsTitle && (
-            <p className="text-sm font-semibold text-[#1c2f6e]">{variantsTitle}</p>
+            <p className="text-sm font-semibold text-brand">{variantsTitle}</p>
           )}
 
           <ul className="mt-3 flex flex-wrap gap-6">
@@ -40,7 +40,7 @@ export const BuyBox: React.FC<{
                   <span
                     className={cn(
                       'relative flex h-20 w-20 items-center justify-center overflow-hidden rounded-full border-2 bg-white',
-                      i === variant ? 'border-[#1c2f6e]' : 'border-[#dbe8fa]',
+                      i === variant ? 'border-brand' : 'border-[#dbe8fa]',
                     )}
                   >
                     {item.image && typeof item.image === 'object' ? (
@@ -49,7 +49,7 @@ export const BuyBox: React.FC<{
                       <span className="text-[10px] text-slate-400">No image</span>
                     )}
                   </span>
-                  <span className="text-center text-xs font-semibold text-[#1c2f6e]">
+                  <span className="text-center text-xs font-semibold text-brand">
                     {item.name}
                   </span>
                 </button>
@@ -69,7 +69,7 @@ export const BuyBox: React.FC<{
                 <div
                   className={cn(
                     'rounded-xl border p-5',
-                    selected ? 'border-[#1c2f6e] bg-[#f4f8ff]' : 'border-[#dbe8fa] bg-white',
+                    selected ? 'border-brand bg-[#f4f8ff]' : 'border-[#dbe8fa] bg-white',
                   )}
                 >
                   <button
@@ -81,29 +81,29 @@ export const BuyBox: React.FC<{
                     <span
                       className={cn(
                         'flex h-4 w-4 shrink-0 items-center justify-center rounded-full border-2',
-                        selected ? 'border-[#1c2f6e]' : 'border-[#9dbde8]',
+                        selected ? 'border-brand' : 'border-[#9dbde8]',
                       )}
                     >
-                      {selected && <span className="h-2 w-2 rounded-full bg-[#1c2f6e]" />}
+                      {selected && <span className="h-2 w-2 rounded-full bg-brand" />}
                     </span>
 
-                    <span className="text-lg font-bold text-[#1c2f6e]">{item.name}</span>
+                    <span className="text-lg font-bold text-brand">{item.name}</span>
 
                     {item.saveLabel && (
-                      <span className="rounded-full border border-[#1c2f6e] px-2.5 py-0.5 text-[11px] font-bold text-[#1c2f6e]">
+                      <span className="rounded-full border border-brand px-2.5 py-0.5 text-[11px] font-bold text-brand">
                         {item.saveLabel}
                       </span>
                     )}
 
                     {item.bestValue && (
-                      <span className="ml-auto rounded bg-[#1c2f6e] px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-white">
+                      <span className="ml-auto rounded bg-brand px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-white">
                         {item.bestValueLabel || 'Best Value'}
                       </span>
                     )}
                   </button>
 
                   <div className="mt-3 flex flex-wrap items-baseline gap-2">
-                    <span className="text-4xl font-extrabold text-[#1c2f6e]">{item.price}</span>
+                    <span className="text-4xl font-extrabold text-brand">{item.price}</span>
                     {item.comparePrice && (
                       <span className="text-lg text-slate-400 line-through">
                         {item.comparePrice}
@@ -117,7 +117,7 @@ export const BuyBox: React.FC<{
                   <div className="mt-1 flex flex-wrap justify-between gap-2 text-xs text-[#0052cc]">
                     {item.billingNote && <span>{item.billingNote}</span>}
                     {item.perServing && (
-                      <span className="font-semibold text-[#1c2f6e]">{item.perServing}</span>
+                      <span className="font-semibold text-brand">{item.perServing}</span>
                     )}
                   </div>
 
@@ -125,8 +125,8 @@ export const BuyBox: React.FC<{
                     <ul className="mt-4 flex flex-col gap-2 border-t border-[#dbe8fa] pt-4">
                       {item.features.map((feature, f) => (
                         <li className="flex items-start gap-2" key={feature.id ?? f}>
-                          <Check className="mt-0.5 h-4 w-4 shrink-0 text-[#1c2f6e]" strokeWidth={3} />
-                          <span className="text-xs font-semibold text-[#1c2f6e]">
+                          <Check className="mt-0.5 h-4 w-4 shrink-0 text-brand" strokeWidth={3} />
+                          <span className="text-xs font-semibold text-brand">
                             {feature.text}
                           </span>
                         </li>
@@ -137,11 +137,11 @@ export const BuyBox: React.FC<{
                   {selected && (item.bonusTitle || item.bonusImage) && (
                     <div className="mt-4">
                       {item.bonusHeading && (
-                        <p className="text-center text-[10px] font-bold uppercase tracking-wide text-[#1c2f6e]">
+                        <p className="text-center text-[10px] font-bold uppercase tracking-wide text-brand">
                           {item.bonusHeading}
                         </p>
                       )}
-                      <div className="mt-2 flex items-center gap-4 rounded-lg bg-[#1c2f6e] p-4">
+                      <div className="mt-2 flex items-center gap-4 rounded-lg bg-brand p-4">
                         <span className="relative h-16 w-16 shrink-0 overflow-hidden rounded">
                           {item.bonusImage && typeof item.bonusImage === 'object' && (
                             <Media fill imgClassName="object-contain" resource={item.bonusImage} />
@@ -171,11 +171,11 @@ export const BuyBox: React.FC<{
       )}
 
       {oneTimeLabel && (
-        <p className="mt-4 text-sm font-semibold text-[#1c2f6e] underline">{oneTimeLabel}</p>
+        <p className="mt-4 text-sm font-semibold text-brand underline">{oneTimeLabel}</p>
       )}
 
       <button
-        className="mt-4 w-full rounded-lg bg-[#1c2f6e] px-6 py-4 text-base font-bold uppercase tracking-wide text-white transition-colors hover:bg-[#162456]"
+        className="mt-4 w-full rounded-lg bg-brand px-6 py-4 text-base font-bold uppercase tracking-wide text-white transition-colors hover:bg-brand-dark"
         type="button"
       >
         {ctaLabel || 'Add to Cart'}

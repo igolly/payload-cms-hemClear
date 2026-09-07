@@ -39,12 +39,12 @@ export const MedicalReviewBlock: React.FC<Props> = ({
         <header className="text-center">
           {eyebrow && (
             <p
-              className="flex items-center justify-center gap-3 font-serif text-xl text-[#1c2f6e]"
+              className="flex items-center justify-center gap-3 font-serif text-xl text-brand"
               data-payload-subpath="eyebrow"
             >
-              <Laurel className="h-8 w-5 text-[#1c2f6e]" />
+              <Laurel className="h-8 w-5 text-brand" />
               {eyebrow}
-              <Laurel className="h-8 w-5 -scale-x-100 text-[#1c2f6e]" />
+              <Laurel className="h-8 w-5 -scale-x-100 text-brand" />
             </p>
           )}
 
@@ -66,11 +66,11 @@ export const MedicalReviewBlock: React.FC<Props> = ({
                 data-payload-subpath={`highlights.${i}.title`}
                 key={point.id ?? i}
               >
-                <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#eef4fd] text-[#1c2f6e] [&>span>svg]:h-5 [&>span>svg]:w-5">
+                <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#eef4fd] text-brand [&>span>svg]:h-5 [&>span>svg]:w-5">
                   <BrandIcon name={point.icon} />
                 </span>
                 <span className="min-w-0">
-                  <span className="block text-sm font-bold leading-tight text-[#1c2f6e]">
+                  <span className="block text-sm font-bold leading-tight text-brand">
                     {point.title}
                   </span>
                   {point.description && (
@@ -100,7 +100,7 @@ export const MedicalReviewBlock: React.FC<Props> = ({
                   </span>
 
                   <span className="min-w-0 grow">
-                    <span className="block text-sm font-bold leading-tight text-[#1c2f6e]">
+                    <span className="block text-sm font-bold leading-tight text-brand">
                       {doctor.name}
                     </span>
                     {doctor.role && (
@@ -109,13 +109,13 @@ export const MedicalReviewBlock: React.FC<Props> = ({
                   </span>
 
                   {doctor.tag && (
-                    <span className="shrink-0 rounded-full bg-[#eef4fd] px-2.5 py-1 text-[10px] font-semibold text-[#1c2f6e]">
+                    <span className="shrink-0 rounded-full bg-[#eef4fd] px-2.5 py-1 text-[10px] font-semibold text-brand">
                       {doctor.tag}
                     </span>
                   )}
                 </div>
 
-                <h3 className="mt-4 font-serif text-lg font-bold leading-snug text-[#1c2f6e]">
+                <h3 className="mt-4 font-serif text-lg font-bold leading-snug text-brand">
                   &ldquo;{doctor.quoteHeading}&rdquo;
                 </h3>
 
@@ -137,7 +137,7 @@ export const MedicalReviewBlock: React.FC<Props> = ({
                   <ul className="mt-3 flex flex-wrap gap-1.5">
                     {doctor.tags.map((tag, t) => (
                       <li
-                        className="rounded bg-[#f2f6fd] px-2 py-1 text-[10px] font-medium text-[#1c2f6e]"
+                        className="rounded bg-[#f2f6fd] px-2 py-1 text-[10px] font-medium text-brand"
                         key={tag.id ?? t}
                       >
                         {tag.text}
@@ -156,7 +156,7 @@ export const MedicalReviewBlock: React.FC<Props> = ({
 
                   {doctor.profileLabel && (
                     <a
-                      className="flex items-center gap-0.5 font-semibold text-slate-600 transition-colors hover:text-[#1c2f6e]"
+                      className="flex items-center gap-0.5 font-semibold text-slate-600 transition-colors hover:text-brand"
                       href={doctor.profileUrl || '#'}
                     >
                       {doctor.profileLabel}

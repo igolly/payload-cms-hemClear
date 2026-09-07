@@ -24,7 +24,7 @@ export const Table: React.FC<{ formulas: Formula[] }> = ({ formulas }) => {
               className={cn(
                 'relative flex h-24 w-24 items-center justify-center rounded-lg border-2 transition-colors',
                 i === index
-                  ? 'border-[#1c2f6e] bg-[#1c2f6e]'
+                  ? 'border-brand bg-brand'
                   : 'border-[#dbe8fa] bg-white hover:border-[#9dbde8]',
               )}
               key={item.id ?? i}
@@ -50,7 +50,7 @@ export const Table: React.FC<{ formulas: Formula[] }> = ({ formulas }) => {
                   i === index ? 'border-white bg-white' : 'border-[#c9dcf5] bg-white',
                 )}
               >
-                {i === index && <Check className="h-3 w-3 text-[#1c2f6e]" strokeWidth={3} />}
+                {i === index && <Check className="h-3 w-3 text-brand" strokeWidth={3} />}
               </span>
             </button>
           ))}
@@ -61,9 +61,9 @@ export const Table: React.FC<{ formulas: Formula[] }> = ({ formulas }) => {
         <>
           <header className="mt-8 text-center">
             <h3 className="font-serif text-3xl leading-tight sm:text-4xl">
-              {formula.titleBefore && <span className="text-[#1c2f6e]">{formula.titleBefore} </span>}
+              {formula.titleBefore && <span className="text-brand">{formula.titleBefore} </span>}
               {formula.titleAccent && <span className="text-[#2d80e2]">{formula.titleAccent}</span>}
-              {formula.titleAfter && <span className="text-[#1c2f6e]"> {formula.titleAfter}</span>}
+              {formula.titleAfter && <span className="text-brand"> {formula.titleAfter}</span>}
             </h3>
             {formula.subtitle && (
               <>

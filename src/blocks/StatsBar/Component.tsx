@@ -19,7 +19,7 @@ export const StatsBarBlock: React.FC<Props> = ({ stats }) => {
           >
             {stat.topLabel && (
               <span
-                className="font-serif text-lg leading-none text-[#1c2f6e]"
+                className="font-serif text-lg leading-none text-brand"
                 data-payload-subpath={`stats.${i}.topLabel`}
               >
                 {stat.topLabel}
@@ -27,17 +27,17 @@ export const StatsBarBlock: React.FC<Props> = ({ stats }) => {
             )}
 
             <span className="flex items-center gap-1">
-              <span className="font-serif text-3xl leading-tight text-[#1c2f6e] sm:text-4xl">
+              <span className="font-serif text-3xl leading-tight text-brand sm:text-4xl">
                 {stat.value}
               </span>
               {stat.showStar && (
-                <Star className="h-6 w-6 text-[#1c2f6e] sm:h-7 sm:w-7" fill="currentColor" strokeWidth={0} />
+                <Star className="h-6 w-6 text-brand sm:h-7 sm:w-7" fill="currentColor" strokeWidth={0} />
               )}
             </span>
 
             {stat.label && (
               <span
-                className="font-serif text-sm text-[#1c2f6e] sm:text-base"
+                className="font-serif text-sm text-brand sm:text-base"
                 data-payload-subpath={`stats.${i}.label`}
               >
                 {stat.label}

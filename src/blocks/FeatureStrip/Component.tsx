@@ -50,7 +50,7 @@ export const FeatureStripBlock: React.FC<Props> = ({
 
             {heading && (
               <h2
-                className="mt-3 font-serif text-3xl leading-tight text-[#1c2f6e] sm:text-4xl"
+                className="mt-3 font-serif text-3xl leading-tight text-brand sm:text-4xl"
                 data-payload-subpath="heading"
               >
                 {heading.split('\n').map((line, i) => (
@@ -104,7 +104,7 @@ export const FeatureStripBlock: React.FC<Props> = ({
                     <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#1668C4]">
                       <Check className="h-3 w-3 text-white" strokeWidth={3} />
                     </span>
-                    <span className="text-sm text-[#1c2f6e]">{item.title}</span>
+                    <span className="text-sm text-brand">{item.title}</span>
                   </li>
                 )
               }
@@ -154,7 +154,7 @@ export const FeatureStripBlock: React.FC<Props> = ({
                 appearance="inline"
                 className={
                   link.appearance === 'outline'
-                    ? 'inline-flex items-center gap-3 rounded-full border border-[#1c2f6e] py-3 pl-8 pr-4 text-sm font-bold uppercase tracking-wide text-[#1c2f6e] transition-colors hover:bg-slate-50'
+                    ? 'inline-flex items-center gap-3 rounded-full border border-brand py-3 pl-8 pr-4 text-sm font-bold uppercase tracking-wide text-brand transition-colors hover:bg-slate-50'
                     : 'inline-flex items-center gap-3 rounded-full bg-[#1a7f37] py-3 pl-8 pr-4 text-sm font-bold uppercase tracking-wide text-white transition-colors hover:bg-[#166b2e]'
                 }
                 key={i}
@@ -168,7 +168,7 @@ export const FeatureStripBlock: React.FC<Props> = ({
         {footnote &&
           (style === 'checklist' ? (
             <p
-              className="mx-auto mt-8 max-w-md rounded-lg bg-[#dfeafb] px-5 py-4 text-center text-sm leading-relaxed text-[#1c2f6e]"
+              className="mx-auto mt-8 max-w-md rounded-lg bg-[#dfeafb] px-5 py-4 text-center text-sm leading-relaxed text-brand"
               data-payload-subpath="footnote"
             >
               {footnote}

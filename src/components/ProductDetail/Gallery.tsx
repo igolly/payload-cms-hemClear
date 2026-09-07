@@ -27,7 +27,7 @@ export const Gallery: React.FC<{ badgeLabel?: string | null; slides: Slide[] }> 
         )}
 
         {badgeLabel && (
-          <span className="absolute left-4 top-4 rounded-full bg-white px-4 py-2 text-xs font-bold text-[#1c2f6e] shadow">
+          <span className="absolute left-4 top-4 rounded-full bg-white px-4 py-2 text-xs font-bold text-brand shadow">
             {badgeLabel}
           </span>
         )}
@@ -62,7 +62,7 @@ export const Gallery: React.FC<{ badgeLabel?: string | null; slides: Slide[] }> 
                 aria-label={`Go to image ${i + 1}`}
                 className={cn(
                   'h-2 w-2 rounded-full transition-colors',
-                  i === active ? 'bg-[#1c2f6e]' : 'bg-[#c9dcf5]',
+                  i === active ? 'bg-brand' : 'bg-[#c9dcf5]',
                 )}
                 key={slide.id ?? i}
                 onClick={() => setActive(i)}

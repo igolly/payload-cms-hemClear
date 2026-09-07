@@ -54,7 +54,7 @@ export const Tabs: React.FC<{ items: Item[] }> = ({ items }) => {
   }
 
   const arrow =
-    'flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white text-[#1c2f6e] shadow-sm transition-colors hover:bg-slate-50 disabled:opacity-40'
+    'flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white text-brand shadow-sm transition-colors hover:bg-slate-50 disabled:opacity-40'
 
   return (
     <div>
@@ -67,8 +67,8 @@ export const Tabs: React.FC<{ items: Item[] }> = ({ items }) => {
               className={cn(
                 'flex items-center gap-2 rounded-lg border px-3 py-2 text-xs font-semibold transition-colors',
                 i === active
-                  ? 'border-[#1c2f6e] bg-[#1c2f6e] text-white'
-                  : 'border-[#dbe8fa] bg-white text-[#1c2f6e] hover:bg-slate-50',
+                  ? 'border-brand bg-brand text-white'
+                  : 'border-[#dbe8fa] bg-white text-brand hover:bg-slate-50',
               )}
               onClick={() => scrollToIndex(i)}
               type="button"
@@ -109,7 +109,7 @@ export const Tabs: React.FC<{ items: Item[] }> = ({ items }) => {
                 <div className="min-w-0">
                   <h3 className="font-serif text-2xl text-[#0052cc]">{item.title}</h3>
                   <p
-                    className="mt-1 whitespace-pre-line text-sm leading-relaxed text-[#1c2f6e]"
+                    className="mt-1 whitespace-pre-line text-sm leading-relaxed text-brand"
                     data-payload-subpath={`items.${i}.description`}
                   >
                     {item.description}

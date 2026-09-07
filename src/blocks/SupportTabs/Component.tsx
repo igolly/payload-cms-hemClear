@@ -29,7 +29,7 @@ export const SupportTabsBlock: React.FC<Props> = ({
 
           {heading && (
             <h2
-              className="mt-5 font-serif text-3xl leading-tight text-[#1c2f6e] sm:text-4xl"
+              className="mt-5 font-serif text-3xl leading-tight text-brand sm:text-4xl"
               data-payload-subpath="heading"
             >
               {heading}

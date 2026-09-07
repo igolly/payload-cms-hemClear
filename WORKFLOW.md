@@ -408,8 +408,11 @@ selectors first — grep `node_modules/@payloadcms/ui/dist` for `` id: `field-${
 - **Formatting:** Prettier — single quotes, no semicolons, 100 print width (see
   `.prettierrc.json`). `HemClearSections.tsx` uses double quotes and semicolons because it
   was pasted in from elsewhere; new files follow the repo style.
-- **Styling:** Tailwind 4 utility classes inline. Brand navy is `#1c2f6e` (hover `#162456`),
-  light section background `#F4F8FF`, borders `#DBE8FA`. Prefer these over new one-off hexes.
+- **Styling:** Tailwind 4 utility classes inline. **The brand blue is a token, not a hex** —
+  `--color-brand` (`#0023a3`) and `--color-brand-dark` are declared in the `@theme` block of
+  `src/app/(frontend)/globals.css`, so use `bg-brand`, `text-brand`, `border-brand` and
+  `hover:bg-brand-dark`. Changing the brand colour is a one-line edit there; it used to be 176
+  hardcoded hexes across 34 files. Light section background `#F4F8FF`, borders `#DBE8FA`.
 - **Icons:** `lucide-react` for standard icons; hand-rolled inline SVG only when lucide has
   no equivalent (as in the `Laurel` mark and the medical icons).
 - **Do not edit:** `src/payload-types.ts`, `src/app/(payload)/**` (except via

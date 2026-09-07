@@ -26,7 +26,7 @@ export const IngredientExplorerBlock: React.FC<Props> = ({
             />
             <div className="min-w-0">
               {disclaimerTitle && (
-                <p className="text-xs font-bold text-[#1c2f6e]">{disclaimerTitle}</p>
+                <p className="text-xs font-bold text-brand">{disclaimerTitle}</p>
               )}
               {disclaimer && (
                 <p
