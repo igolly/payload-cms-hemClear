@@ -42,8 +42,13 @@ every upload fails.
 3. Vercel injects `BLOB_READ_WRITE_TOKEN` automatically
 4. Redeploy
 
-`src/plugins/index.ts` enables the Blob adapter **only when that token is
-present**, so local development keeps writing to `public/media` unchanged.
+`src/plugins/index.ts` always registers the adapter; it disables itself and falls
+back to `public/media` when no token is present, so local development is unchanged
+and the collection schema stays identical across environments.
+
+`clientUploads: true` is set, which matters: Vercel caps a serverless function's
+request body at **4.5MB**. Without it the file is proxied through the function and
+anything larger fails to upload. With it, the browser uploads straight to Blob.
 
 **Existing images will not carry over.** `public/media/` is gitignored, so the
 files uploaded locally are not in the repo. After the first deploy, re-upload
@@ -97,6 +102,20 @@ Vercel sends `Authorization: Bearer $CRON_SECRET`, which
 `src/payload.config.ts` already checks. Cron jobs need a Pro plan.
 
 ---
+
+### Uploads still failing?
+
+Work through these in order:
+
+1. **Is the Blob store connected?** Vercel → Storage. If not, uploads have nowhere
+   to go and Payload falls back to the read-only filesystem.
+2. **Is `BLOB_READ_WRITE_TOKEN` in the project's environment variables**, ticked for
+   Production? Connecting the store adds it, but only to the environments you select.
+3. **Did you redeploy after connecting?** Environment variables are read at build
+   start; connecting a store does not retrigger a build.
+4. **Check the function logs** (Vercel → Logs) while uploading. `EROFS: read-only
+   file system` means the token is missing. `413` means the body limit — confirm
+   `clientUploads: true` shipped.
 
 ## Build note
 

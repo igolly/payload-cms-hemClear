@@ -22,15 +22,17 @@ const generateURL: GenerateURL<Page> = ({ doc }) => {
 
 export const plugins: Plugin[] = [
   // Vercel's filesystem is read-only, so uploads must go to Blob storage there.
-  // Locally there is no token, so Payload keeps writing to public/media as before.
-  ...(process.env.BLOB_READ_WRITE_TOKEN
-    ? [
-        vercelBlobStorage({
-          collections: { media: true },
-          token: process.env.BLOB_READ_WRITE_TOKEN,
-        }),
-      ]
-    : []),
+  // The adapter disables itself and falls back to public/media when no token is
+  // set, so this stays in the plugin list unconditionally — a conditional spread
+  // would give local and production different collection schemas.
+  vercelBlobStorage({
+    alwaysInsertFields: true,
+    // Vercel caps a serverless function's request body at 4.5MB. Without this the
+    // file is proxied through the function and anything larger fails to upload.
+    clientUploads: true,
+    collections: { media: true },
+    token: process.env.BLOB_READ_WRITE_TOKEN,
+  }),
   redirectsPlugin({
     collections: ['pages', 'products'],
     overrides: {
