@@ -5,8 +5,12 @@ import type { FAQBlock as Props } from '@/payload-types'
 import { Media } from '@/components/Media'
 import { FaqAccordion } from './FaqAccordion'
 import { ImageSlot } from './ImagePlaceholder'
+import { backgroundStyle } from '@/fields/background'
+import { marks, multiline } from '@/utilities/marks'
 
 export const FAQBlock: React.FC<Props> = ({
+  bgColor,
+  bgColorCustom,
   backgroundImage,
   defaultState,
   description,
@@ -18,7 +22,7 @@ export const FAQBlock: React.FC<Props> = ({
   const hasHeader = Boolean(heading || description || image || backgroundImage)
 
   return (
-    <section className="w-full">
+    <section className="w-full" style={backgroundStyle(bgColor, bgColorCustom)}>
       {hasHeader && (
         <div className="relative overflow-hidden border-b-2 border-[#0d8ce9] bg-white">
           {/* Decorative background — falls back to a soft brand gradient until one is set. */}
@@ -54,12 +58,7 @@ export const FAQBlock: React.FC<Props> = ({
                   className="font-serif text-4xl leading-tight text-heading sm:text-5xl"
                   data-payload-subpath="heading"
                 >
-                  {heading.split('\n').map((line, i) => (
-                    <React.Fragment key={i}>
-                      {i > 0 && <br />}
-                      {line}
-                    </React.Fragment>
-                  ))}
+                  {multiline(heading)}
                 </h2>
               )}
 
@@ -68,7 +67,7 @@ export const FAQBlock: React.FC<Props> = ({
                   className="mt-6 max-w-2xl whitespace-pre-line text-[15px] leading-relaxed text-slate-800"
                   data-payload-subpath="description"
                 >
-                  {description}
+                  {marks(description)}
                 </p>
               )}
             </div>

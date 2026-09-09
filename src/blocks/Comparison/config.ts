@@ -2,6 +2,8 @@ import type { Block } from 'payload'
 
 import { brandIconOptions } from '@/components/BrandIcons'
 
+import { backgroundField } from '@/fields/background'
+
 export const Comparison: Block = {
   slug: 'comparison',
   interfaceName: 'ComparisonBlock',
@@ -80,5 +82,6 @@ export const Comparison: Block = {
         },
       ],
     },
+    backgroundField(),
   ],
 }

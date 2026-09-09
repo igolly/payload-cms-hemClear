@@ -2,6 +2,8 @@ import type { Block } from 'payload'
 
 import { brandIconOptions } from '@/components/BrandIcons'
 
+import { backgroundField } from '@/fields/background'
+
 export const MedicalReview: Block = {
   slug: 'medicalReview',
   interfaceName: 'MedicalReviewBlock',
@@ -105,5 +107,6 @@ export const MedicalReview: Block = {
         { name: 'profileUrl', type: 'text' },
       ],
     },
+    backgroundField(),
   ],
 }

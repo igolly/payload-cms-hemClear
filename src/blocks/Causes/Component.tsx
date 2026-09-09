@@ -8,8 +8,12 @@ import { BrandIcon } from '@/components/BrandIcons'
 import { CMSLink } from '@/components/Link'
 import { cn } from '@/utilities/ui'
 import { ImageSlot } from '@/blocks/FAQ/ImagePlaceholder'
+import { backgroundStyle } from '@/fields/background'
+import { marks, multiline } from '@/utilities/marks'
 
 export const CausesBlock: React.FC<Props> = ({
+  bgColor,
+  bgColorCustom,
   description,
   eyebrow,
   factorStyle,
@@ -27,7 +31,7 @@ export const CausesBlock: React.FC<Props> = ({
   const checklist = factorStyle === 'checklist'
 
   return (
-    <section className="w-full bg-white px-4 py-14 sm:px-6 lg:px-8">
+    <section className="w-full bg-white px-4 py-14 sm:px-6 lg:px-8" style={backgroundStyle(bgColor, bgColorCustom)}>
       <div
         className={cn(
           'mx-auto max-w-6xl items-center gap-10 lg:gap-14',
@@ -54,7 +58,7 @@ export const CausesBlock: React.FC<Props> = ({
               className="text-xs font-bold uppercase tracking-[0.15em] text-[#0052cc]"
               data-payload-subpath="eyebrow"
             >
-              {eyebrow}
+              {marks(eyebrow)}
             </p>
           )}
 
@@ -63,12 +67,7 @@ export const CausesBlock: React.FC<Props> = ({
               className="mt-2 font-serif text-3xl leading-tight text-heading sm:text-4xl"
               data-payload-subpath="heading"
             >
-              {heading.split('\n').map((line, i) => (
-                <React.Fragment key={i}>
-                  {i > 0 && <br />}
-                  {line}
-                </React.Fragment>
-              ))}
+              {multiline(heading)}
             </h2>
           )}
 
@@ -77,13 +76,13 @@ export const CausesBlock: React.FC<Props> = ({
               className="mt-5 max-w-xl whitespace-pre-line text-sm leading-relaxed text-[#4A5B72]"
               data-payload-subpath="description"
             >
-              {description}
+              {marks(description)}
             </p>
           )}
 
           {gridLabel && (
             <p className="mt-6 text-sm font-semibold text-[#1668C4]" data-payload-subpath="gridLabel">
-              {gridLabel}
+              {marks(gridLabel)}
             </p>
           )}
 
@@ -109,7 +108,7 @@ export const CausesBlock: React.FC<Props> = ({
                     <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#1668C4]">
                       <Check className="h-3 w-3 text-white" strokeWidth={3} />
                     </span>
-                    <span className="text-sm text-[#123A6B]">{factor.label}</span>
+                    <span className="text-sm text-[#123A6B]">{marks(factor.label)}</span>
                   </li>
                 ) : (
                   <li
@@ -122,7 +121,7 @@ export const CausesBlock: React.FC<Props> = ({
                       name={factor.icon}
                     />
                     <span className="text-[11px] font-semibold leading-tight text-[#123A6B]">
-                      {factor.label}
+                      {marks(factor.label)}
                     </span>
                   </li>
                 ),
@@ -139,7 +138,7 @@ export const CausesBlock: React.FC<Props> = ({
                 className="mt-px shrink-0 text-[#1668C4] [&>svg]:h-4 [&>svg]:w-4"
                 name="info"
               />
-              {footnote}
+              {marks(footnote)}
             </p>
           )}
 

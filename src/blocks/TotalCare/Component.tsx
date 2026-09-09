@@ -1,13 +1,17 @@
 import React from 'react'
-import { Plus } from 'lucide-react'
 
 import type { TotalCareBlock as Props } from '@/payload-types'
 
 import { BrandIcon } from '@/components/BrandIcons'
 import RichText from '@/components/RichText'
 import { ImageSlot } from '@/blocks/FAQ/ImagePlaceholder'
+import { PlusIcon } from '@/components/PlusIcon'
+import { backgroundStyle } from '@/fields/background'
+import { marks } from '@/utilities/marks'
 
 export const TotalCareBlock: React.FC<Props> = ({
+  bgColor,
+  bgColorCustom,
   eyebrow,
   heading,
   items,
@@ -17,7 +21,7 @@ export const TotalCareBlock: React.FC<Props> = ({
   const sides = Array.isArray(items) ? items : []
 
   return (
-    <section className="w-full bg-[#f4f7fc] px-4 py-14 sm:px-6 lg:px-8">
+    <section className="w-full bg-[#f4f7fc] px-4 py-14 sm:px-6 lg:px-8" style={backgroundStyle(bgColor, bgColorCustom)}>
       <div className="mx-auto max-w-4xl">
         <header className="text-center">
           {eyebrow && (
@@ -25,7 +29,7 @@ export const TotalCareBlock: React.FC<Props> = ({
               className="text-xs font-bold uppercase tracking-[0.15em] text-[#0052cc]"
               data-payload-subpath="eyebrow"
             >
-              {eyebrow}
+              {marks(eyebrow)}
             </p>
           )}
 
@@ -34,7 +38,7 @@ export const TotalCareBlock: React.FC<Props> = ({
               className="mt-2 font-serif text-3xl leading-tight text-heading sm:text-4xl"
               data-payload-subpath="heading"
             >
-              {heading}
+              {marks(heading)}
             </h2>
           )}
 
@@ -61,7 +65,7 @@ export const TotalCareBlock: React.FC<Props> = ({
                       aria-hidden="true"
                       className="flex h-9 w-9 shrink-0 items-center justify-center self-center rounded-full bg-brand text-white"
                     >
-                      <Plus className="h-5 w-5" strokeWidth={3} />
+                      <PlusIcon className="h-3.5 w-3.5" />
                     </span>
                   )}
 
@@ -70,7 +74,7 @@ export const TotalCareBlock: React.FC<Props> = ({
                     data-payload-subpath={`items.${i}.label`}
                   >
                     <p className="text-xs font-bold uppercase tracking-wide text-brand">
-                      {side.label}
+                      {marks(side.label)}
                     </p>
 
                     <div className="relative mx-auto mt-4 aspect-square w-40 overflow-hidden rounded-full bg-[#f4f8ff]">
@@ -91,7 +95,7 @@ export const TotalCareBlock: React.FC<Props> = ({
                               name={feature.icon}
                             />
                             <span className="text-xs font-medium text-brand">
-                              {feature.label}
+                              {marks(feature.label)}
                             </span>
                           </li>
                         ))}
@@ -103,7 +107,7 @@ export const TotalCareBlock: React.FC<Props> = ({
                         className="mt-4 text-xs leading-relaxed text-[#1a2f7c]"
                         data-payload-subpath={`items.${i}.caption`}
                       >
-                        {side.caption}
+                        {marks(side.caption)}
                       </p>
                     )}
                   </div>

@@ -168,14 +168,12 @@ export const hero: Field = {
       fields: [
         {
           name: 'icon',
-          type: 'select',
-          defaultValue: 'user',
-          options: [
-            { label: 'Doctor', value: 'user' },
-            { label: 'Flask', value: 'flask' },
-            { label: 'Package', value: 'package' },
-          ],
-          required: true,
+          type: 'upload',
+          relationTo: 'media',
+          admin: {
+            description:
+              'Small square icon image. A dashed placeholder holds the space until one is set.',
+          },
         },
         {
           name: 'label',

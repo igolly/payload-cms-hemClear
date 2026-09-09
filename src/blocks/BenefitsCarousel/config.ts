@@ -2,6 +2,8 @@ import type { Block } from 'payload'
 
 import { brandIconOptions } from '@/components/BrandIcons'
 
+import { backgroundField } from '@/fields/background'
+
 export const BenefitsCarousel: Block = {
   slug: 'benefitsCarousel',
   interfaceName: 'BenefitsCarouselBlock',
@@ -42,5 +44,6 @@ export const BenefitsCarousel: Block = {
         },
       ],
     },
+    backgroundField(),
   ],
 }

@@ -7,6 +7,7 @@ import React from 'react'
 
 import { Error } from '../Error'
 import { Width } from '../Width'
+import { marks } from '@/utilities/marks'
 
 export const Text: React.FC<
   TextField & {
@@ -17,7 +18,7 @@ export const Text: React.FC<
   return (
     <Width width={width}>
       <Label htmlFor={name}>
-        {label}
+        {marks(label)}
 
         {required && (
           <span className="required">

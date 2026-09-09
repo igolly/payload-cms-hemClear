@@ -2,6 +2,8 @@ import type { Block } from 'payload'
 
 import { linkGroup } from '@/fields/linkGroup'
 
+import { backgroundField } from '@/fields/background'
+
 export const ScienceStats: Block = {
   slug: 'scienceStats',
   interfaceName: 'ScienceStatsBlock',
@@ -39,5 +41,6 @@ export const ScienceStats: Block = {
       fields: [{ name: 'text', type: 'text', required: true }],
     },
     { name: 'footnote', type: 'textarea' },
+    backgroundField(),
   ],
 }

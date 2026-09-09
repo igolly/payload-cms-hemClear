@@ -1,17 +1,37 @@
 import React from 'react'
-import { ArrowRight, Check, User, FlaskConical, Package } from 'lucide-react'
+import { ArrowRight, Check } from 'lucide-react'
 
 import type { Page } from '@/payload-types'
 
 import { CMSLink } from '@/components/Link'
 import { Media } from '@/components/Media'
 import { cn } from '@/utilities/ui'
+import { marks, multiline } from '@/utilities/marks'
 
-const trustIcons = {
-  user: User,
-  flask: FlaskConical,
-  package: Package,
-} as const
+/**
+ * Trust point icons are uploaded images. Until an editor sets one, a dashed square holds
+ * the icon's space so the row keeps its rhythm rather than collapsing.
+ */
+const TrustIcon: React.FC<{ resource: NonNullable<Page['hero']['trustPoints']>[number]['icon'] }> = ({
+  resource,
+}) => {
+  if (resource && typeof resource === 'object') {
+    return (
+      <Media
+        className="h-6 w-6 shrink-0"
+        imgClassName="h-full w-full object-contain"
+        resource={resource}
+      />
+    )
+  }
+
+  return (
+    <span
+      aria-hidden="true"
+      className="block h-6 w-6 shrink-0 rounded-md border-2 border-dashed border-[#C6DAF6] bg-[#F7FAFF]"
+    />
+  )
+}
 
 const Laurel = ({ className }: { className?: string }) => (
   <svg viewBox="0 0 24 40" fill="none" className={className} aria-hidden="true">
@@ -52,19 +72,59 @@ export const HighImpactHero: React.FC<Page['hero']> = ({
   trustPoints,
 }) => {
   const mediaRight = mediaPosition === 'right'
+  const hasMedia = media && typeof media === 'object'
+
+  /*
+   * The 562.5px track has to be the one the image lands in, so the template flips with
+   * the media position rather than staying fixed. `order-2` alone is not enough: it
+   * moves the image into the *second* track, so with a `562.5px 1fr` template a
+   * right-hand image would take the flexible column and leave the copy in the narrow
+   * fixed one. `minmax(0, 1fr)` rather than plain `1fr` so long words cannot force the
+   * copy column wider than its share.
+   */
+  const columns = mediaRight
+    ? 'lg:grid-cols-[minmax(0,1fr)_562.5px]'
+    : 'lg:grid-cols-[562.5px_minmax(0,1fr)]'
+
   return (
     <section className="w-full bg-white">
-      <div className="mx-auto grid max-w-7xl grid-cols-1 items-stretch px-6 lg:grid-cols-[3fr_4fr] lg:gap-10 lg:px-8">
-        {/* Left: product image */}
+      <div
+        className={cn(
+          'mx-auto grid max-w-[1400px] grid-cols-1 items-stretch px-6 lg:gap-10 lg:px-8',
+          columns,
+        )}
+      >
+        {/*
+         * Left: product image.
+         *
+         * Rendered at its own aspect ratio — the column fixes the width (562.5px on
+         * desktop, per the design) and the height simply follows. Nothing is cropped.
+         *
+         * The alternative, stretching the photo to fill the column with `object-cover`,
+         * makes it sit flush to the top and bottom of the band, but the copy column then
+         * dictates the height and the crop grows with it: at 1024px the column runs to
+         * ~986px tall against an 890x931 source, which cuts the product shot away
+         * entirely. Fitting the image wins over filling the band.
+         *
+         * The column still stretches to the copy beside it, so the image is centred in
+         * whatever height that comes to. The placeholder tint is drawn only while no
+         * image is set, otherwise it would show as bands around the photo.
+         */}
         <div
           className={cn(
-            'relative min-h-105 w-full overflow-hidden bg-slate-100',
+            'relative flex w-full items-center overflow-hidden',
+            !hasMedia && 'min-h-105 bg-slate-100',
             mediaRight && 'lg:order-2',
           )}
         >
-          {media && typeof media === 'object' && (
-            <div className="absolute inset-0" data-payload-subpath="media">
-              <Media fill imgClassName="object-cover" priority resource={media} />
+          {hasMedia && (
+            <div className="w-full" data-payload-subpath="media">
+              <Media
+                imgClassName="h-auto w-full object-contain"
+                pictureClassName="block"
+                priority
+                resource={media}
+              />
             </div>
           )}
         </div>
@@ -81,7 +141,7 @@ export const HighImpactHero: React.FC<Page['hero']> = ({
               className="mb-3 text-xs font-bold uppercase tracking-[0.15em] text-[#0052cc]"
               data-payload-subpath="eyebrow"
             >
-              {eyebrow}
+              {marks(eyebrow)}
             </p>
           )}
           {/* Badge */}
@@ -94,12 +154,7 @@ export const HighImpactHero: React.FC<Page['hero']> = ({
                     className="font-serif text-sm font-semibold leading-tight text-brand"
                     data-payload-subpath="badgeTitle"
                   >
-                    {badgeTitle.split('\n').map((line, i) => (
-                      <React.Fragment key={i}>
-                        {i > 0 && <br />}
-                        {line}
-                      </React.Fragment>
-                    ))}
+                    {multiline(badgeTitle)}
                   </span>
                   <Laurel className="h-6 w-3.5 shrink-0 -scale-x-100 text-brand" />
                 </>
@@ -110,7 +165,7 @@ export const HighImpactHero: React.FC<Page['hero']> = ({
                   className="max-w-55 text-xs font-medium leading-snug text-slate-700"
                   data-payload-subpath="badgeDescription"
                 >
-                  {badgeDescription}
+                  {marks(badgeDescription)}
                 </span>
               )}
             </div>
@@ -119,15 +174,10 @@ export const HighImpactHero: React.FC<Page['hero']> = ({
           {/* Headline */}
           {heading && (
             <h1
-              className="font-serif text-4xl leading-[1.1] text-heading sm:text-5xl"
+              className="hero-heading text-heading"
               data-payload-subpath="heading"
             >
-              {heading.split('\n').map((line, i) => (
-                <React.Fragment key={i}>
-                  {i > 0 && <br />}
-                  {line}
-                </React.Fragment>
-              ))}
+              {multiline(heading)}
             </h1>
           )}
 
@@ -136,7 +186,7 @@ export const HighImpactHero: React.FC<Page['hero']> = ({
               className="mt-3 font-serif text-lg text-brand"
               data-payload-subpath="subheading"
             >
-              {subheading}
+              {marks(subheading)}
             </p>
           )}
 
@@ -146,7 +196,7 @@ export const HighImpactHero: React.FC<Page['hero']> = ({
               className="mt-5 max-w-xl whitespace-pre-line text-[15px] leading-relaxed text-slate-700"
               data-payload-subpath="description"
             >
-              {description}
+              {marks(description)}
             </p>
           )}
 
@@ -162,7 +212,7 @@ export const HighImpactHero: React.FC<Page['hero']> = ({
                   <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-brand">
                     <Check className="h-3 w-3 text-white" strokeWidth={3} />
                   </span>
-                  <span className="text-[15px] font-medium text-slate-900">{benefit.text}</span>
+                  <span className="text-[15px] font-medium text-slate-900">{marks(benefit.text)}</span>
                 </li>
               ))}
             </ul>
@@ -175,11 +225,11 @@ export const HighImpactHero: React.FC<Page['hero']> = ({
               </span>
               <span className="min-w-0">
                 {calloutTitle && (
-                  <span className="block text-sm font-bold text-brand">{calloutTitle}</span>
+                  <span className="block text-sm font-bold text-brand">{marks(calloutTitle)}</span>
                 )}
                 {calloutText && (
                   <span className="mt-0.5 block text-xs leading-relaxed text-[#1a2f7c]">
-                    {calloutText}
+                    {marks(calloutText)}
                   </span>
                 )}
               </span>
@@ -220,22 +270,19 @@ export const HighImpactHero: React.FC<Page['hero']> = ({
           {/* Trust points */}
           {Array.isArray(trustPoints) && trustPoints.length > 0 && (
             <div className="mt-8 flex flex-wrap items-center gap-4 sm:gap-6">
-              {trustPoints.map((point, i) => {
-                const Icon = trustIcons[point.icon]
-                return (
-                  <div
-                    className="flex items-center gap-4 sm:gap-6"
-                    data-payload-subpath={`trustPoints.${i}.label`}
-                    key={point.id ?? i}
-                  >
-                    {i !== 0 && <span className="h-8 w-px bg-slate-200" />}
-                    <div className="flex items-center gap-2">
-                      <Icon className="h-5 w-5 text-slate-900" strokeWidth={1.5} />
-                      <span className="text-sm font-semibold text-slate-900">{point.label}</span>
-                    </div>
+              {trustPoints.map((point, i) => (
+                <div
+                  className="flex items-center gap-4 sm:gap-6"
+                  data-payload-subpath={`trustPoints.${i}.label`}
+                  key={point.id ?? i}
+                >
+                  {i !== 0 && <span className="h-8 w-px bg-slate-200" />}
+                  <div className="flex items-center gap-2">
+                    <TrustIcon resource={point.icon} />
+                    <span className="text-sm font-semibold text-slate-900">{marks(point.label)}</span>
                   </div>
-                )
-              })}
+                </div>
+              ))}
             </div>
           )}
         </div>

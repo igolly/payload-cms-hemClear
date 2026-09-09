@@ -1,45 +1,22 @@
-import type { CollectionConfig } from 'payload'
-import { slugField } from 'payload'
+import type { Block } from 'payload'
 
-import {
-  MetaDescriptionField,
-  MetaImageField,
-  MetaTitleField,
-  OverviewField,
-  PreviewField,
-} from '@payloadcms/plugin-seo/fields'
-
-import { authenticated } from '../../access/authenticated'
-import { authenticatedOrPublished } from '../../access/authenticatedOrPublished'
 import { brandIconOptions } from '@/components/BrandIcons'
-import { generatePreviewPath } from '../../utilities/generatePreviewPath'
-import { populatePublishedAt } from '../../hooks/populatePublishedAt'
-import { productBlocks } from './blocks'
-import { revalidateProduct, revalidateProductDelete } from './hooks/revalidateProduct'
 
-export const Products: CollectionConfig<'products'> = {
-  slug: 'products',
-  labels: { singular: 'Product', plural: 'Products' },
-  access: {
-    create: authenticated,
-    delete: authenticated,
-    read: authenticatedOrPublished,
-    update: authenticated,
-  },
-  defaultPopulate: {
-    title: true,
-    slug: true,
-  },
-  admin: {
-    defaultColumns: ['title', 'slug', 'updatedAt'],
-    useAsTitle: 'title',
-    livePreview: {
-      url: ({ data, req }) =>
-        generatePreviewPath({ collection: 'products', req, slug: data?.slug as string }),
-    },
-    preview: (data, { req }) =>
-      generatePreviewPath({ collection: 'products', req, slug: data?.slug as string }),
-  },
+/**
+ * The product detail — gallery, buy box, results, detail sections — as a block.
+ *
+ * This used to be its own `products` collection with a fixed `/products/[slug]` route.
+ * It is a block now so a product page is an ordinary Pages doc: the detail is one
+ * section in `layout`, and anything that should run below it is simply the next block
+ * in the same list. That also drops the collection's own nested `layout` field, which
+ * existed only to let site blocks run under a product.
+ *
+ * The fields are grouped into tabs because a flat list of ~30 is unusable in the admin.
+ */
+export const ProductDetail: Block = {
+  slug: 'productDetail',
+  interfaceName: 'ProductDetailBlock',
+  labels: { singular: 'Product Detail', plural: 'Product Details' },
   fields: [
     { name: 'title', type: 'text', required: true },
     {
@@ -189,7 +166,7 @@ export const Products: CollectionConfig<'products'> = {
               admin: {
                 description: 'The first plan is selected by default.',
                 initCollapsed: true,
-                components: { RowLabel: '@/collections/Products/RowLabel#PlanRowLabel' },
+                components: { RowLabel: '@/blocks/ProductDetail/RowLabel#PlanRowLabel' },
               },
               fields: [
                 {
@@ -263,7 +240,12 @@ export const Products: CollectionConfig<'products'> = {
               type: 'row',
               fields: [
                 { name: 'oneTimeLabel', type: 'text', admin: { width: '50%' } },
-                { name: 'ctaLabel', type: 'text', defaultValue: 'Add to Cart', admin: { width: '50%' } },
+                {
+                  name: 'ctaLabel',
+                  type: 'text',
+                  defaultValue: 'Add to Cart',
+                  admin: { width: '50%' },
+                },
               ],
             },
             {
@@ -374,7 +356,7 @@ export const Products: CollectionConfig<'products'> = {
                   admin: {
                     description: 'Same carousel used by the Video Stories block.',
                     initCollapsed: true,
-                    components: { RowLabel: '@/collections/Products/RowLabel#StoryRowLabel' },
+                    components: { RowLabel: '@/blocks/ProductDetail/RowLabel#StoryRowLabel' },
                   },
                   fields: [
                     { name: 'poster', type: 'upload', relationTo: 'media' },
@@ -388,7 +370,12 @@ export const Products: CollectionConfig<'products'> = {
                     {
                       type: 'row',
                       fields: [
-                        { name: 'badge', type: 'text', defaultValue: 'Customer Video', admin: { width: '50%' } },
+                        {
+                          name: 'badge',
+                          type: 'text',
+                          defaultValue: 'Customer Video',
+                          admin: { width: '50%' },
+                        },
                         { name: 'duration', type: 'text', admin: { width: '50%' } },
                       ],
                     },
@@ -406,7 +393,7 @@ export const Products: CollectionConfig<'products'> = {
               admin: {
                 description: 'Collapsible sections below the buy box, e.g. Ingredients.',
                 initCollapsed: true,
-                components: { RowLabel: '@/collections/Products/RowLabel#SectionRowLabel' },
+                components: { RowLabel: '@/blocks/ProductDetail/RowLabel#SectionRowLabel' },
               },
               fields: [
                 { name: 'title', type: 'text', required: true },
@@ -421,54 +408,7 @@ export const Products: CollectionConfig<'products'> = {
             },
           ],
         },
-        // ---------------------------------------------------------------- Sections
-        {
-          label: 'Sections',
-          fields: [
-            {
-              name: 'layout',
-              type: 'blocks',
-              blocks: productBlocks,
-              admin: {
-                description:
-                  'Full-width sections rendered below the product detail. Any site block can be used here.',
-                initCollapsed: true,
-              },
-            },
-          ],
-        },
-        // ---------------------------------------------------------------- SEO
-        {
-          name: 'meta',
-          label: 'SEO',
-          fields: [
-            OverviewField({
-              descriptionPath: 'meta.description',
-              imagePath: 'meta.image',
-              titlePath: 'meta.title',
-            }),
-            MetaTitleField({ hasGenerateFn: true }),
-            MetaImageField({ relationTo: 'media' }),
-            MetaDescriptionField({}),
-            PreviewField({
-              descriptionPath: 'meta.description',
-              hasGenerateFn: true,
-              titlePath: 'meta.title',
-            }),
-          ],
-        },
       ],
     },
-    { name: 'publishedAt', type: 'date', admin: { position: 'sidebar' } },
-    slugField(),
   ],
-  hooks: {
-    afterChange: [revalidateProduct],
-    afterDelete: [revalidateProductDelete],
-    beforeChange: [populatePublishedAt],
-  },
-  versions: {
-    drafts: { autosave: { interval: 100 }, schedulePublish: true },
-    maxPerDoc: 50,
-  },
 }

@@ -5,6 +5,8 @@ import type { PairingBlock as Props } from '@/payload-types'
 import { BrandIcon } from '@/components/BrandIcons'
 import RichText from '@/components/RichText'
 import { ImageSlot } from '@/blocks/FAQ/ImagePlaceholder'
+import { backgroundStyle } from '@/fields/background'
+import { marks } from '@/utilities/marks'
 
 type Feature = NonNullable<Props['features']>[number]
 
@@ -20,13 +22,13 @@ const FeatureList: React.FC<{ features: Feature[]; offset: number }> = ({ featur
           <BrandIcon name={feature.icon} />
         </span>
         <div className="min-w-0">
-          <h3 className="text-base font-bold leading-snug text-subheading">{feature.title}</h3>
+          <h3 className="text-base font-bold leading-snug text-subheading">{marks(feature.title)}</h3>
           {feature.description && (
             <p
               className="mt-2 text-sm leading-relaxed text-[#1a2f7c]"
               data-payload-subpath={`features.${offset + i}.description`}
             >
-              {feature.description}
+              {marks(feature.description)}
             </p>
           )}
         </div>
@@ -36,6 +38,8 @@ const FeatureList: React.FC<{ features: Feature[]; offset: number }> = ({ featur
 )
 
 export const PairingBlock: React.FC<Props> = ({
+  bgColor,
+  bgColorCustom,
   features,
   heading,
   headingAccent,
@@ -48,7 +52,7 @@ export const PairingBlock: React.FC<Props> = ({
   const right = items.slice(half)
 
   return (
-    <section className="w-full bg-white px-4 py-14 sm:px-6 lg:px-8">
+    <section className="w-full bg-white px-4 py-14 sm:px-6 lg:px-8" style={backgroundStyle(bgColor, bgColorCustom)}>
       <div className="mx-auto max-w-6xl">
         <header className="text-center">
           {heading && (
@@ -56,7 +60,7 @@ export const PairingBlock: React.FC<Props> = ({
               className="font-serif text-3xl leading-tight text-heading sm:text-4xl"
               data-payload-subpath="heading"
             >
-              {heading}
+              {marks(heading)}
             </h2>
           )}
 
@@ -65,7 +69,7 @@ export const PairingBlock: React.FC<Props> = ({
               className="mt-1 font-serif text-2xl leading-tight text-[#c91b00] sm:text-3xl"
               data-payload-subpath="headingAccent"
             >
-              {headingAccent}
+              {marks(headingAccent)}
             </p>
           )}
 

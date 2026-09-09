@@ -2,13 +2,14 @@
 import React, { useState } from 'react'
 import { Check } from 'lucide-react'
 
-import type { Product } from '@/payload-types'
+import type { ProductDetailBlock } from '@/payload-types'
 
 import { Media } from '@/components/Media'
 import { cn } from '@/utilities/ui'
+import { marks } from '@/utilities/marks'
 
-type Variant = NonNullable<Product['variants']>[number]
-type Plan = NonNullable<Product['plans']>[number]
+type Variant = NonNullable<ProductDetailBlock['variants']>[number]
+type Plan = NonNullable<ProductDetailBlock['plans']>[number]
 
 export const BuyBox: React.FC<{
   ctaLabel?: string | null
@@ -25,7 +26,7 @@ export const BuyBox: React.FC<{
       {variants.length > 0 && (
         <div>
           {variantsTitle && (
-            <p className="text-sm font-semibold text-brand">{variantsTitle}</p>
+            <p className="text-sm font-semibold text-brand">{marks(variantsTitle)}</p>
           )}
 
           <ul className="mt-3 flex flex-wrap gap-6">
@@ -50,7 +51,7 @@ export const BuyBox: React.FC<{
                     )}
                   </span>
                   <span className="text-center text-xs font-semibold text-brand">
-                    {item.name}
+                    {marks(item.name)}
                   </span>
                 </button>
               </li>
@@ -87,11 +88,11 @@ export const BuyBox: React.FC<{
                       {selected && <span className="h-2 w-2 rounded-full bg-brand" />}
                     </span>
 
-                    <span className="text-lg font-bold text-brand">{item.name}</span>
+                    <span className="text-lg font-bold text-brand">{marks(item.name)}</span>
 
                     {item.saveLabel && (
                       <span className="rounded-full border border-brand px-2.5 py-0.5 text-[11px] font-bold text-brand">
-                        {item.saveLabel}
+                        {marks(item.saveLabel)}
                       </span>
                     )}
 
@@ -103,21 +104,21 @@ export const BuyBox: React.FC<{
                   </button>
 
                   <div className="mt-3 flex flex-wrap items-baseline gap-2">
-                    <span className="text-4xl font-extrabold text-brand">{item.price}</span>
+                    <span className="text-4xl font-extrabold text-brand">{marks(item.price)}</span>
                     {item.comparePrice && (
                       <span className="text-lg text-slate-400 line-through">
-                        {item.comparePrice}
+                        {marks(item.comparePrice)}
                       </span>
                     )}
                     {item.priceSuffix && (
-                      <span className="text-lg text-slate-500">{item.priceSuffix}</span>
+                      <span className="text-lg text-slate-500">{marks(item.priceSuffix)}</span>
                     )}
                   </div>
 
                   <div className="mt-1 flex flex-wrap justify-between gap-2 text-xs text-[#0052cc]">
-                    {item.billingNote && <span>{item.billingNote}</span>}
+                    {item.billingNote && <span>{marks(item.billingNote)}</span>}
                     {item.perServing && (
-                      <span className="font-semibold text-brand">{item.perServing}</span>
+                      <span className="font-semibold text-brand">{marks(item.perServing)}</span>
                     )}
                   </div>
 
@@ -127,7 +128,7 @@ export const BuyBox: React.FC<{
                         <li className="flex items-start gap-2" key={feature.id ?? f}>
                           <Check className="mt-0.5 h-4 w-4 shrink-0 text-brand" strokeWidth={3} />
                           <span className="text-xs font-semibold text-brand">
-                            {feature.text}
+                            {marks(feature.text)}
                           </span>
                         </li>
                       ))}
@@ -138,7 +139,7 @@ export const BuyBox: React.FC<{
                     <div className="mt-4">
                       {item.bonusHeading && (
                         <p className="text-center text-[10px] font-bold uppercase tracking-wide text-brand">
-                          {item.bonusHeading}
+                          {marks(item.bonusHeading)}
                         </p>
                       )}
                       <div className="mt-2 flex items-center gap-4 rounded-lg bg-brand p-4">
@@ -150,13 +151,13 @@ export const BuyBox: React.FC<{
                         <span className="min-w-0">
                           <span className="block text-lg font-extrabold text-white">
                             {item.bonusHighlight && (
-                              <span className="text-[#ffe066]">{item.bonusHighlight} </span>
+                              <span className="text-[#ffe066]">{marks(item.bonusHighlight)} </span>
                             )}
-                            {item.bonusTitle}
+                            {marks(item.bonusTitle)}
                           </span>
                           {item.bonusSubtitle && (
                             <span className="block text-xs text-white/80">
-                              {item.bonusSubtitle}
+                              {marks(item.bonusSubtitle)}
                             </span>
                           )}
                         </span>
@@ -171,7 +172,7 @@ export const BuyBox: React.FC<{
       )}
 
       {oneTimeLabel && (
-        <p className="mt-4 text-sm font-semibold text-brand underline">{oneTimeLabel}</p>
+        <p className="mt-4 text-sm font-semibold text-brand underline">{marks(oneTimeLabel)}</p>
       )}
 
       <button

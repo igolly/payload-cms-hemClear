@@ -5,8 +5,12 @@ import type { WhyDaysBlock as Props } from '@/payload-types'
 
 import { CMSLink } from '@/components/Link'
 import { ImageSlot } from '@/blocks/FAQ/ImagePlaceholder'
+import { backgroundStyle } from '@/fields/background'
+import { marks, multiline } from '@/utilities/marks'
 
 export const WhyDaysBlock: React.FC<Props> = ({
+  bgColor,
+  bgColorCustom,
   ctaHeading,
   ctaText,
   heading,
@@ -18,7 +22,7 @@ export const WhyDaysBlock: React.FC<Props> = ({
   const paras = Array.isArray(paragraphs) ? paragraphs : []
 
   return (
-    <section className="w-full bg-[#f2f5fa]">
+    <section className="w-full bg-[#f2f5fa]" style={backgroundStyle(bgColor, bgColorCustom)}>
       <div className="mx-auto grid max-w-7xl grid-cols-1 items-center gap-8 px-4 py-12 sm:px-6 lg:grid-cols-2 lg:gap-12 lg:px-8">
         {/* Left image */}
         <div className="relative aspect-[4/3] w-full" data-payload-subpath="image">
@@ -38,12 +42,7 @@ export const WhyDaysBlock: React.FC<Props> = ({
                 className="font-serif text-3xl leading-tight text-heading sm:text-4xl"
                 data-payload-subpath="heading"
               >
-                {heading.split('\n').map((line, i) => (
-                  <React.Fragment key={i}>
-                    {i > 0 && <br />}
-                    {line}
-                  </React.Fragment>
-                ))}
+                {multiline(heading)}
               </h2>
             )}
 
@@ -53,7 +52,7 @@ export const WhyDaysBlock: React.FC<Props> = ({
               <div className="mt-4 space-y-3 text-sm leading-relaxed text-[#1a2f7c]">
                 {paras.map((paragraph, i) => (
                   <p data-payload-subpath={`paragraphs.${i}.text`} key={paragraph.id ?? i}>
-                    {paragraph.text}
+                    {marks(paragraph.text)}
                   </p>
                 ))}
               </div>
@@ -64,7 +63,7 @@ export const WhyDaysBlock: React.FC<Props> = ({
                 className="mt-5 font-serif text-lg font-bold text-subheading"
                 data-payload-subpath="ctaHeading"
               >
-                {ctaHeading}
+                {marks(ctaHeading)}
               </h3>
             )}
 
@@ -73,7 +72,7 @@ export const WhyDaysBlock: React.FC<Props> = ({
                 className="mt-1 text-sm leading-relaxed text-[#1a2f7c]"
                 data-payload-subpath="ctaText"
               >
-                {ctaText}
+                {marks(ctaText)}
               </p>
             )}
 

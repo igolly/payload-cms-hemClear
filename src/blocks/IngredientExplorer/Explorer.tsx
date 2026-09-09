@@ -1,11 +1,13 @@
 'use client'
 import React, { useMemo, useState } from 'react'
-import { Minus, Plus } from 'lucide-react'
+import { Minus } from 'lucide-react'
 
 import type { IngredientExplorerBlock } from '@/payload-types'
 
 import { Media } from '@/components/Media'
 import { cn } from '@/utilities/ui'
+import { PlusIcon } from '@/components/PlusIcon'
+import { marks } from '@/utilities/marks'
 
 type Group = NonNullable<IngredientExplorerBlock['groups']>[number]
 
@@ -61,7 +63,7 @@ export const Explorer: React.FC<{ allLabel?: string | null; groups: Group[] }> =
                 onClick={() => selectGroup(i)}
                 type="button"
               >
-                {item.name}
+                {marks(item.name)}
               </button>
             ))}
           </div>
@@ -99,13 +101,13 @@ export const Explorer: React.FC<{ allLabel?: string | null; groups: Group[] }> =
         <header className="mt-8 text-center">
           {group.heading && (
             <h2 className="font-serif text-3xl leading-tight text-heading sm:text-4xl">
-              {group.heading}
+              {marks(group.heading)}
             </h2>
           )}
           <span aria-hidden="true" className="mx-auto mt-3 block h-0.5 w-16 bg-[#2d80e2]" />
           {group.description && (
             <p className="mx-auto mt-4 max-w-3xl text-sm leading-relaxed text-[#0052cc]">
-              {group.description}
+              {marks(group.description)}
             </p>
           )}
         </header>
@@ -136,15 +138,15 @@ export const Explorer: React.FC<{ allLabel?: string | null; groups: Group[] }> =
               </div>
 
               <div className="flex grow flex-col p-4">
-                <h3 className="text-base font-bold leading-tight text-subheading">{item.name}</h3>
-                {item.latin && <p className="text-xs italic text-slate-500">{item.latin}</p>}
+                <h3 className="text-base font-bold leading-tight text-subheading">{marks(item.name)}</h3>
+                {item.latin && <p className="text-xs italic text-slate-500">{marks(item.latin)}</p>}
 
                 {item.description && (
-                  <p className="mt-3 text-xs leading-relaxed text-[#1a2f7c]">{item.description}</p>
+                  <p className="mt-3 text-xs leading-relaxed text-[#1a2f7c]">{marks(item.description)}</p>
                 )}
 
                 {isOpen && item.details && (
-                  <p className="mt-2 text-xs leading-relaxed text-slate-600">{item.details}</p>
+                  <p className="mt-2 text-xs leading-relaxed text-slate-600">{marks(item.details)}</p>
                 )}
 
                 <div className="mt-auto flex items-end justify-between gap-3 pt-4">
@@ -165,7 +167,7 @@ export const Explorer: React.FC<{ allLabel?: string | null; groups: Group[] }> =
                       {isOpen ? (
                         <Minus className="h-3.5 w-3.5" />
                       ) : (
-                        <Plus className="h-3.5 w-3.5" />
+                        <PlusIcon className="h-2.5 w-2.5" />
                       )}
                     </button>
                   )}

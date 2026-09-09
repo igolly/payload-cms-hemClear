@@ -1,6 +1,7 @@
 'use client'
 import type { ReviewsBlock } from '@/payload-types'
 import { RowLabelProps, useRowLabel } from '@payloadcms/ui'
+import { marks } from '@/utilities/marks'
 
 const rowNumber = (n?: number) => (n !== undefined ? `${n + 1}. ` : '')
 
@@ -11,7 +12,7 @@ export const FeaturedRowLabel: React.FC<RowLabelProps> = () => {
     ? `${rowNumber(index)}${data.title}${data.author ? ` — ${data.author}` : ''}`
     : 'Featured Review'
 
-  return <div>{label}</div>
+  return <div>{marks(label)}</div>
 }
 
 export const ReviewRowLabel: React.FC<RowLabelProps> = () => {
@@ -21,5 +22,5 @@ export const ReviewRowLabel: React.FC<RowLabelProps> = () => {
     ? `${rowNumber(index)}${data.title}${data.author ? ` — ${data.author}` : ''}`
     : 'Customer Review'
 
-  return <div>{label}</div>
+  return <div>{marks(label)}</div>
 }

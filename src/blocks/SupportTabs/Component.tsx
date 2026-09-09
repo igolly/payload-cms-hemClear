@@ -3,8 +3,12 @@ import React from 'react'
 import type { SupportTabsBlock as Props } from '@/payload-types'
 
 import { Tabs } from './Tabs'
+import { backgroundStyle } from '@/fields/background'
+import { marks } from '@/utilities/marks'
 
 export const SupportTabsBlock: React.FC<Props> = ({
+  bgColor,
+  bgColorCustom,
   disclaimer,
   eyebrow,
   footerLine,
@@ -15,7 +19,7 @@ export const SupportTabsBlock: React.FC<Props> = ({
   const areas = Array.isArray(items) ? items : []
 
   return (
-    <section className="w-full bg-[#f5f8fd] px-4 py-14 sm:px-6 lg:px-8">
+    <section className="w-full bg-[#f5f8fd] px-4 py-14 sm:px-6 lg:px-8" style={backgroundStyle(bgColor, bgColorCustom)}>
       <div className="mx-auto max-w-5xl">
         <header className="text-center">
           {eyebrow && (
@@ -23,7 +27,7 @@ export const SupportTabsBlock: React.FC<Props> = ({
               className="inline-block rounded-full border border-[#9dc0ee] px-5 py-1.5 text-[10px] font-bold uppercase tracking-[0.15em] text-[#0052cc]"
               data-payload-subpath="eyebrow"
             >
-              {eyebrow}
+              {marks(eyebrow)}
             </span>
           )}
 
@@ -32,7 +36,7 @@ export const SupportTabsBlock: React.FC<Props> = ({
               className="mt-5 font-serif text-3xl leading-tight text-heading sm:text-4xl"
               data-payload-subpath="heading"
             >
-              {heading}
+              {marks(heading)}
             </h2>
           )}
 
@@ -41,7 +45,7 @@ export const SupportTabsBlock: React.FC<Props> = ({
               className="mt-2 whitespace-pre-line text-base font-semibold text-[#0052cc]"
               data-payload-subpath="subheading"
             >
-              {subheading}
+              {marks(subheading)}
             </p>
           )}
         </header>
@@ -57,7 +61,7 @@ export const SupportTabsBlock: React.FC<Props> = ({
             className="mt-8 text-center text-base font-semibold text-[#0052cc]"
             data-payload-subpath="footerLine"
           >
-            {footerLine}
+            {marks(footerLine)}
           </p>
         )}
 
@@ -66,7 +70,7 @@ export const SupportTabsBlock: React.FC<Props> = ({
             className="mx-auto mt-3 max-w-2xl whitespace-pre-line text-center text-[11px] leading-relaxed text-slate-500"
             data-payload-subpath="disclaimer"
           >
-            {disclaimer}
+            {marks(disclaimer)}
           </p>
         )}
       </div>

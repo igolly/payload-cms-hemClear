@@ -3,6 +3,8 @@ import type { Block } from 'payload'
 import { brandIconOptions } from '@/components/BrandIcons'
 import { linkGroup } from '@/fields/linkGroup'
 
+import { backgroundField } from '@/fields/background'
+
 export const Causes: Block = {
   slug: 'causes',
   interfaceName: 'CausesBlock',
@@ -87,5 +89,6 @@ export const Causes: Block = {
       admin: { description: 'Fine print below the grid, shown with an info icon.' },
     },
     linkGroup({ appearances: ['default', 'outline'], overrides: { maxRows: 2 } }),
+    backgroundField(),
   ],
 }

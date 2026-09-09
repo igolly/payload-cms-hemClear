@@ -4,6 +4,8 @@ import type { WaysGridBlock as Props } from '@/payload-types'
 
 import { BrandIcon } from '@/components/BrandIcons'
 import { ImageSlot } from '@/blocks/FAQ/ImagePlaceholder'
+import { backgroundStyle } from '@/fields/background'
+import { marks } from '@/utilities/marks'
 
 type Way = NonNullable<Props['ways']>[number]
 
@@ -34,7 +36,7 @@ const Row: React.FC<{ offset: number; ways: Way[] }> = ({ offset, ways }) => (
             className="mt-2 text-xs leading-relaxed text-[#1236b6]"
             data-payload-subpath={`ways.${offset + i}.description`}
           >
-            {way.description}
+            {marks(way.description)}
           </p>
         )}
       </li>
@@ -43,6 +45,8 @@ const Row: React.FC<{ offset: number; ways: Way[] }> = ({ offset, ways }) => (
 )
 
 export const WaysGridBlock: React.FC<Props> = ({
+  bgColor,
+  bgColorCustom,
   eyebrow,
   firstRowCount,
   footnote,
@@ -59,7 +63,7 @@ export const WaysGridBlock: React.FC<Props> = ({
   const secondRow = items.slice(split)
 
   return (
-    <section className="w-full bg-[#F4F8FF] px-4 py-16 sm:px-6 lg:px-8">
+    <section className="w-full bg-[#F4F8FF] px-4 py-16 sm:px-6 lg:px-8" style={backgroundStyle(bgColor, bgColorCustom)}>
       <div className="mx-auto max-w-7xl">
         <header className="text-center">
           {eyebrow && (
@@ -67,7 +71,7 @@ export const WaysGridBlock: React.FC<Props> = ({
               className="mb-3 text-xs font-bold uppercase tracking-[0.15em] text-[#0052cc]"
               data-payload-subpath="eyebrow"
             >
-              {eyebrow}
+              {marks(eyebrow)}
             </p>
           )}
 
@@ -80,13 +84,13 @@ export const WaysGridBlock: React.FC<Props> = ({
               )}
               {headingAccent && (
                 <span className="text-[#2d80e2]" data-payload-subpath="headingAccent">
-                  {headingAccent}
+                  {marks(headingAccent)}
                 </span>
               )}
               {headingAfter && (
                 <span className="text-heading" data-payload-subpath="headingAfter">
                   {' '}
-                  {headingAfter}
+                  {marks(headingAfter)}
                 </span>
               )}
             </h2>
@@ -99,7 +103,7 @@ export const WaysGridBlock: React.FC<Props> = ({
               className="mx-auto mt-5 max-w-3xl whitespace-pre-line text-base font-semibold text-[#0052cc]"
               data-payload-subpath="subheading"
             >
-              {subheading}
+              {marks(subheading)}
             </p>
           )}
         </header>
@@ -122,7 +126,7 @@ export const WaysGridBlock: React.FC<Props> = ({
             data-payload-subpath="footnote"
           >
             <BrandIcon className="shrink-0 text-[#1668C4] [&>svg]:h-4 [&>svg]:w-4" name="shieldCheck" />
-            {footnote}
+            {marks(footnote)}
           </p>
         )}
       </div>

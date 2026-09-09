@@ -6,8 +6,12 @@ import type { BannerHeroBlock as Props } from '@/payload-types'
 import { CMSLink } from '@/components/Link'
 import { Media } from '@/components/Media'
 import { cn } from '@/utilities/ui'
+import { backgroundStyle } from '@/fields/background'
+import { marks, multiline } from '@/utilities/marks'
 
 export const BannerHeroBlock: React.FC<Props> = ({
+  bgColor,
+  bgColorCustom,
   backgroundImage,
   description,
   eyebrow,
@@ -24,12 +28,13 @@ export const BannerHeroBlock: React.FC<Props> = ({
         'relative w-full overflow-hidden bg-[#0d2050]',
         height === 'short' ? 'min-h-72' : 'min-h-[26rem]',
       )}
+      style={backgroundStyle(bgColor, bgColorCustom)}
     >
       {hasImage ? (
         <Media
           className="absolute inset-0"
           fill
-          imgClassName="object-cover"
+          // imgClassName="object-cover"
           priority
           resource={backgroundImage}
         />
@@ -61,21 +66,16 @@ export const BannerHeroBlock: React.FC<Props> = ({
               className="text-xs font-bold uppercase tracking-[0.15em] text-[#7fb2ff]"
               data-payload-subpath="eyebrow"
             >
-              {eyebrow}
+              {marks(eyebrow)}
             </p>
           )}
 
           {heading && (
             <h2
-              className="mt-4 font-serif text-4xl leading-tight text-white sm:text-5xl"
+              className="hero-heading mt-4 text-white"
               data-payload-subpath="heading"
             >
-              {heading.split('\n').map((line, i) => (
-                <React.Fragment key={i}>
-                  {i > 0 && <br />}
-                  {line}
-                </React.Fragment>
-              ))}
+              {multiline(heading)}
             </h2>
           )}
 
@@ -86,7 +86,7 @@ export const BannerHeroBlock: React.FC<Props> = ({
               className="mt-5 max-w-md whitespace-pre-line text-sm leading-relaxed text-white/85"
               data-payload-subpath="description"
             >
-              {description}
+              {marks(description)}
             </p>
           )}
 

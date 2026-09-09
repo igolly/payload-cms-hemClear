@@ -15,6 +15,7 @@ import { Controller } from 'react-hook-form'
 import { Error } from '../Error'
 import { Width } from '../Width'
 import { countryOptions } from './options'
+import { marks } from '@/utilities/marks'
 
 export const Country: React.FC<
   CountryField & {
@@ -25,7 +26,7 @@ export const Country: React.FC<
   return (
     <Width width={width}>
       <Label className="" htmlFor={name}>
-        {label}
+        {marks(label)}
 
         {required && (
           <span className="required">
@@ -49,7 +50,7 @@ export const Country: React.FC<
                 {countryOptions.map(({ label, value }) => {
                   return (
                     <SelectItem key={value} value={value}>
-                      {label}
+                      {marks(label)}
                     </SelectItem>
                   )
                 })}

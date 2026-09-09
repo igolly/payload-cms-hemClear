@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react'
 
-import type { Page, Product } from '@/payload-types'
+import type { Page } from '@/payload-types'
 
 import { BannerHeroBlock } from '@/blocks/BannerHero/Component'
 import { BenefitsCarouselBlock } from '@/blocks/BenefitsCarousel/Component'
@@ -12,6 +12,7 @@ import { FeatureStripBlock } from '@/blocks/FeatureStrip/Component'
 import { FormulaTableBlock } from '@/blocks/FormulaTable/Component'
 import { GuaranteeBlock } from '@/blocks/Guarantee/Component'
 import { IngredientExplorerBlock } from '@/blocks/IngredientExplorer/Component'
+import { ProductDetailBlockComponent } from '@/blocks/ProductDetail/Component'
 import { ProductSystemBlock } from '@/blocks/ProductSystem/Component'
 import { MedicalReviewBlock } from '@/blocks/MedicalReview/Component'
 import { PairingBlock } from '@/blocks/Pairing/Component'
@@ -38,6 +39,7 @@ const blockComponents = {
   formulaTable: FormulaTableBlock,
   guarantee: GuaranteeBlock,
   ingredientExplorer: IngredientExplorerBlock,
+  productDetail: ProductDetailBlockComponent,
   productSystem: ProductSystemBlock,
   medicalReview: MedicalReviewBlock,
   pairing: PairingBlock,
@@ -59,8 +61,9 @@ const blockComponents = {
  * blocks sit in a centred container and rely on the `my-16` wrapper for spacing; these
  * would render a stripe of page background between every section if wrapped the same way.
  */
-const fullBleed = new Set([
+export const fullBleed = new Set([
   'bannerHero',
+  'productDetail',
   'benefitsCarousel',
   'causes',
   'closingCta',
@@ -86,8 +89,7 @@ const fullBleed = new Set([
 ])
 
 export const RenderBlocks: React.FC<{
-  // Pages and Products share this renderer, so accept either collection's layout.
-  blocks: (NonNullable<Product['layout']>[0] | Page['layout'][0])[]
+  blocks: NonNullable<Page['layout']>[0][]
 }> = (props) => {
   const { blocks } = props
 

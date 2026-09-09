@@ -36,7 +36,7 @@ Editor (admin UI)                  Database                 Frontend
 | Concern | Location |
 | --- | --- |
 | Payload config (entry point) | `src/payload.config.ts` |
-| Collections (repeatable content) | `src/collections/` — `Pages`, `Products`, `Media`, `Users` |
+| Collections (repeatable content) | `src/collections/` — `Pages`, `Media`, `Users` |
 | Globals (site-wide singletons) | `src/Header/config.ts`, `src/Footer/config.ts` |
 | Blocks (page sections) | `src/blocks/<Name>/{config.ts,Component.tsx}` |
 | Heroes (top-of-page variants) | `src/heros/<Impact>/index.tsx` + `src/heros/config.ts` |
@@ -57,6 +57,8 @@ pnpm generate:importmap   # REQUIRED after adding/moving an admin-side React com
 pnpm lint / pnpm lint:fix
 pnpm test                 # vitest (int) + playwright (e2e)
 pnpm build                # production build + next-sitemap
+pnpm build:puck-css       # rebuilds the visual editor's stylesheet (runs inside dev/build)
+pnpm dev:puck-css         # same, in watch mode, for when you are editing globals.css
 ```
 
 `pnpm generate:types` is not optional. Field config is the source of truth; TypeScript
@@ -302,9 +304,9 @@ in this project paints edge-to-edge and owns its own `py-*`. **Add your block's 
 set** or it renders with a stripe of page background above and below it.
 
 **Nav and footer links are internal references, not typed URLs.** `src/fields/link.ts` allows
-`pages`, `posts` and `products`; `CMSLink` builds the href as `/<relationTo>/<slug>` (pages get
-no prefix), so a reference link follows the document if its slug changes. Only use a custom URL
-for a destination that has no document.
+`pages` — the only linkable collection — and `CMSLink` builds the href as `/<slug>`, so a
+reference link follows the document if its slug changes. Only use a custom URL for a
+destination that has no document.
 
 **The announcement bar is a Header global field**, not a block — it belongs to the site
 chrome, not to a page. `announcementEnabled`, `announcementTitle`, `announcementText` and
@@ -446,29 +448,34 @@ its own collection:
 
 | Collection | Route | Shape |
 | --- | --- | --- |
-| `pages` | `/[slug]` | hero + free-form `layout` blocks — use for marketing pages |
-| `products` | `/products/[slug]` | fixed PDP: gallery, buy box, results, detail sections |
+| `pages` | `/[slug]` | hero + free-form `layout` blocks — every page on the site |
 
-`Products` is the worked example of a structured page type. Its fields are grouped into admin
-**tabs** (Overview / Results / Buy Box / Details / SEO) because a flat list of ~30 fields is
-unusable. The page itself is `src/app/(frontend)/products/[slug]/page.tsx`, composed in
-`src/components/ProductDetail/` from one server component plus three small client islands
-(`Gallery`, `BuyBox`, `DetailSections`) — only the interactive parts ship JS.
+`pages` is the only page-shaped collection. A **structured page type is a block**, not a
+collection of its own: the product detail used to be a `products` collection on a fixed
+`/products/[slug]` route, and is now the `productDetail` block
+(`src/blocks/ProductDetail/`). A product page is an ordinary Pages doc whose `layout` opens
+with that block; anything that should run below it is simply the next block in the same
+list, which is why the block has no nested `layout` field of its own.
 
-`Products` also has its own `layout` blocks field (Sections tab), so **every site block can
-run below the product detail** — the list lives in `src/collections/Products/blocks.ts`.
-`RenderBlocks` accepts either collection's layout, so the renderer is shared rather than
-duplicated. Full-bleed blocks must render *outside* the product's padded container, which is
-why `ProductDetail` closes its `<section>` before calling `RenderBlocks`.
+Its ~30 fields are grouped into **tabs** (Overview / Results / Buy Box / Details) inside the
+block, because a flat list that long is unusable in the admin. The component is
+`src/blocks/ProductDetail/Component.tsx` — one server component plus four client islands in
+`src/components/ProductDetail/` (`Gallery`, `BuyBox`, `Composition`, `DetailSections`), so
+only the interactive parts ship JS. It is listed in `fullBleed` because it owns its own
+padded container and vertical rhythm.
+
+Old `/products/:slug` URLs 308 to `/:slug` — see `redirects.ts`.
 
 **Components take layout classes as props rather than hard-coding them.** `Carousel` is used
 full-width on the home page and inside the narrow product column; it takes `itemClassName`
 for card width instead of guessing from the viewport, because a viewport breakpoint says
 nothing about the width of the container it was dropped into.
 
-A new collection needs a **revalidate hook** (`src/collections/Products/hooks/revalidateProduct.ts`)
+A new collection needs a **revalidate hook** (`src/collections/Pages/hooks/revalidatePage.ts`)
 and an entry in the `collectionPrefixMap` in `src/utilities/generatePreviewPath.ts`, or live
-preview and draft preview will point at the wrong URL.
+preview and draft preview will point at the wrong URL. That hook calls `revalidatePath`, which
+only works inside a Next request context — a script that writes through the Local API must pass
+`context: { disableRevalidate: true }` or the whole create rolls back.
 
 **Gotcha — `postcss.config` must be `.mjs`.** With `"type": "module"`, Turbopack's PostCSS
 loader fails to evaluate a `postcss.config.js` and the build dies with
@@ -500,7 +507,70 @@ reference it by import path string (`'@/Header/RowLabel#RowLabel'`), then
 
 ---
 
-## 9. Definition of done
+## 9. The visual editor (Puck)
+
+Pages can be built either way, and both are first-class:
+
+| | Payload block editor | Puck visual editor |
+| --- | --- | --- |
+| Where | `/admin` → Pages → Content tab | "Visual Editor" button in the page sidebar |
+| Stored in | `layout` (blocks array) | `puckData` (JSON) |
+| Rendered by | `RenderBlocks` | `PageRenderer`, via the same block components |
+
+`src/app/(frontend)/[slug]/page.tsx` renders through `HybridPageRenderer`, which picks per
+page. `editorVersion` is the discriminator and is **derived, never hand-set**
+(`src/fields/puckEditorVersion.ts`): a page switches to Puck the moment the visual editor
+holds content, and renders its blocks otherwise. `layout` is never touched by any of this,
+so the switch is reversible — empty a page in Puck and its original blocks come back.
+
+**Existing pages open with their existing content.** The plugin's editor view shows
+whatever is in `puckData`, so a block-authored page would open on a blank canvas. The
+conversion is `src/puck/blocksToPuck.ts`, and it reaches the editor by two independent
+read-only paths — either one alone is enough, and neither writes to the database:
+
+1. **Server (primary)** — `src/puck/editorPreviewUrl.ts`, wired in as the plugin's
+   `previewUrl`. The view calls it with the page immediately before it computes the
+   editor's initial data, which is the only server-side hook into that data the plugin
+   offers. Read the file before changing it; it explains why it lives there.
+2. **Browser (fallback)** — the `seed-from-blocks` Puck plugin
+   (`src/puck/seedFromBlocks.tsx`) fetches `GET /api/pages/:id/puck-seed`
+   (`src/collections/Pages/endpoints/puckSeed.ts`) and fills the canvas if it is still
+   empty.
+
+The redundancy is deliberate: path 1 depends on the order of statements inside a
+third-party view, path 2 on Puck's plugin overrides. Both fail safe to an empty canvas, so
+if the editor ever opens blank again, check them in that order.
+
+**You do not maintain a second component library.** `src/puck/config.tsx` builds the Puck
+component list from the very same `src/blocks/<Name>/config.ts` definitions, translating
+Payload fields to Puck fields in `src/puck/fields.tsx`. Adding a block the way section 3
+describes therefore adds it to Puck too — the only manual step is dropping its slug into a
+category in `src/puck/config.tsx` so it appears under the right heading.
+
+Things worth knowing before you touch this:
+
+- **`src/puck/config.tsx` is evaluated on the server** as well as in the editor, so it must
+  not call into a `'use client'` module at import time. That is why the rich text field is
+  Puck's built-in one rather than the plugin's `createRichTextField()`.
+- **`src/blocks/Form/config.ts` is deliberately not imported there** — it pulls in the
+  Lexical editor at runtime, which must not reach the browser bundle. The Form block's
+  three Puck fields are declared by hand instead.
+- **Rich text has two shapes.** Payload writes Lexical JSON, Puck writes an HTML string.
+  `src/components/RichText` renders both, so the three blocks with rich text fields
+  (`pairing`, `totalCare`, `formBlock`) work in either editor.
+- **The editor's stylesheet is a build artifact.** `public/puck-editor-styles.css` is
+  compiled from `globals.css` by `pnpm build:puck-css`, which `dev` and `build` both run.
+  It is gitignored. Without it the editor canvas renders unstyled.
+- **Seeding cannot be a hook on `puckData`.** The editor view reads the page through the
+  Local API without passing the request, so a field hook cannot tell the editor apart from
+  the site or the REST API — and seeding on every read would put a copy of every page's
+  layout into every API response.
+- After changing anything under `src/puck/`, re-run `pnpm generate:importmap` only if you
+  added an admin-side component; the config itself needs no regeneration.
+
+---
+
+## 10. Definition of done
 
 1. `pnpm generate:types` run and `src/payload-types.ts` committed.
 2. Feature verified in `/admin` (create it, save it, empty-field case doesn't crash) and on

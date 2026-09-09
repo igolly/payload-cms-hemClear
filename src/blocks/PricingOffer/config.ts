@@ -2,6 +2,8 @@ import type { Block } from 'payload'
 
 import { brandIconOptions } from '@/components/BrandIcons'
 
+import { backgroundField } from '@/fields/background'
+
 export const PricingOffer: Block = {
   slug: 'pricingOffer',
   interfaceName: 'PricingOfferBlock',
@@ -15,7 +17,7 @@ export const PricingOffer: Block = {
         {
           name: 'bannerText',
           type: 'textarea',
-          admin: { description: 'Wrap a word in *asterisks* to highlight it in yellow.' },
+          admin: { description: 'Wrap a word in *asterisks* to highlight it in light blue.' },
         },
         { name: 'bannerImage', type: 'upload', relationTo: 'media' },
         {
@@ -98,5 +100,6 @@ export const PricingOffer: Block = {
         },
       ],
     },
+    backgroundField(),
   ],
 }

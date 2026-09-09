@@ -5,8 +5,12 @@ import type { ClosingCtaBlock as Props } from '@/payload-types'
 import { BrandIcon } from '@/components/BrandIcons'
 import { CMSLink } from '@/components/Link'
 import { ImageSlot } from '@/blocks/FAQ/ImagePlaceholder'
+import { backgroundStyle } from '@/fields/background'
+import { marks } from '@/utilities/marks'
 
 export const ClosingCtaBlock: React.FC<Props> = ({
+  bgColor,
+  bgColorCustom,
   cards,
   description,
   heading,
@@ -16,7 +20,7 @@ export const ClosingCtaBlock: React.FC<Props> = ({
   const items = Array.isArray(cards) ? cards : []
 
   return (
-    <section className="w-full bg-[#e0ecfc] px-4 py-16 sm:px-6 lg:px-8">
+    <section className="w-full bg-[#e0ecfc] px-4 py-16 sm:px-6 lg:px-8" style={backgroundStyle(bgColor, bgColorCustom)}>
       <div className="mx-auto max-w-7xl">
         <header className="text-center">
           {headingTop && (
@@ -24,7 +28,7 @@ export const ClosingCtaBlock: React.FC<Props> = ({
               className="text-3xl font-extrabold leading-tight text-heading sm:text-4xl"
               data-payload-subpath="headingTop"
             >
-              {headingTop}
+              {marks(headingTop)}
             </h2>
           )}
 
@@ -33,7 +37,7 @@ export const ClosingCtaBlock: React.FC<Props> = ({
               className="mt-1 font-serif text-3xl leading-tight text-heading sm:text-4xl"
               data-payload-subpath="heading"
             >
-              {heading}
+              {marks(heading)}
             </p>
           )}
 
@@ -42,7 +46,7 @@ export const ClosingCtaBlock: React.FC<Props> = ({
               className="mx-auto mt-5 max-w-4xl whitespace-pre-line text-sm leading-relaxed text-[#1a2f7c]"
               data-payload-subpath="description"
             >
-              {description}
+              {marks(description)}
             </p>
           )}
         </header>
@@ -72,14 +76,14 @@ export const ClosingCtaBlock: React.FC<Props> = ({
                   />
                   <div className="min-w-0">
                     <h3 className="font-serif text-sm font-bold leading-tight text-subheading">
-                      {card.title}
+                      {marks(card.title)}
                     </h3>
                     {card.description && (
                       <p
                         className="mt-1 text-xs leading-relaxed text-slate-700"
                         data-payload-subpath={`cards.${i}.description`}
                       >
-                        {card.description}
+                        {marks(card.description)}
                       </p>
                     )}
                   </div>

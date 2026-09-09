@@ -1,13 +1,18 @@
 import type { Metadata } from 'next'
 
+import type { Page } from '@/payload-types'
+
 import { PayloadRedirects } from '@/components/PayloadRedirects'
 import configPromise from '@payload-config'
-import { getPayload, type RequiredDataFromCollectionSlug } from 'payload'
+import { getPayload } from 'payload'
 import { draftMode } from 'next/headers'
 import React, { cache } from 'react'
 
+import { HybridPageRenderer, toHybridPageData } from '@delmaredigital/payload-puck/render'
+
 import { RenderBlocks } from '@/blocks/RenderBlocks'
 import { RenderHero } from '@/heros/RenderHero'
+import { puckConfig } from '@/puck/config'
 import { generateMeta } from '@/utilities/generateMeta'
 import PageClient from './page.client'
 import { LivePreviewListener } from '@/components/LivePreviewListener'
@@ -57,7 +62,7 @@ export default async function Page({ params: paramsPromise }: Args) {
     return <PayloadRedirects url={url} />
   }
 
-  const { hero, layout } = page
+  const { hero } = page
 
   return (
     <article>
@@ -73,7 +78,13 @@ export default async function Page({ params: paramsPromise }: Args) {
       )}
 
       <RenderHero {...hero} />
-      <RenderBlocks blocks={layout} />
+      {/* Pages built in the visual editor render from `puckData`; every other page keeps
+          rendering its Payload `layout` blocks through the original renderer. */}
+      <HybridPageRenderer<Page['layout']>
+        config={puckConfig}
+        legacyRenderer={(blocks) => <RenderBlocks blocks={blocks ?? []} />}
+        page={toHybridPageData({ ...page })}
+      />
     </article>
   )
 }

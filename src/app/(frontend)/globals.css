@@ -20,6 +20,16 @@
     font-weight: unset;
     font-size: unset;
   }
+
+  /*
+   * Every paragraph and description on the site is body copy, so Inter is applied to
+   * `p` here rather than to ~30 block components one class at a time. An element rule
+   * loses to a class, so the handful of paragraphs that carry `font-serif` (display
+   * headings marked up as `<p>`) keep their serif face.
+   */
+  p {
+    font-family: var(--font-inter);
+  }
 }
 
 @plugin "@tailwindcss/typography";
@@ -54,6 +64,10 @@
   --breakpoint-2xl: 86rem;
   --font-mono: var(--font-geist-mono);
   --font-sans: var(--font-geist-sans);
+  /* Body copy. Loaded in the frontend layout as `--font-inter-sans`. */
+  --font-inter: var(--font-inter-sans), ui-sans-serif, system-ui, sans-serif;
+  /* Hero display face. Loaded in the frontend layout as `--font-marcellus-display`. */
+  --font-marcellus: var(--font-marcellus-display), ui-serif, Georgia, serif;
 }
 
 @layer utilities {
@@ -91,6 +105,51 @@
   @variant 2xl {
     .container {
       max-width: var(--breakpoint-2xl);
+    }
+  }
+}
+
+/*
+ * The one display style every hero headline uses, on every page: Marcellus 400 with a
+ * 1.0 line-height, topping out at the 50px design size on large screens and stepping
+ * down below it so a long headline still fits a phone. Defined here once rather than
+ * repeated across the three hero variants and the Banner Hero block, so the scale is
+ * changed in a single place.
+ *
+ * The selector is qualified by element on purpose. The rich-text heroes render their
+ * `h1` inside `RichText`, so the class can only go on the wrapper — and a bare
+ * `.hero-heading` there would size the body copy in that wrapper at 50px too. Matching
+ * `h1`/`h2` only means the class is safe on a heading and on a wrapper alike.
+ *
+ * It also has to sit in the `utilities` layer rather than `components`:
+ * `@tailwindcss/typography` emits `prose` into `utilities`, which the cascade resolves
+ * ahead of `components` whatever the specificity. Within the one layer these
+ * element-qualified selectors outweigh prose's zero-specificity `:where(h1)`.
+ */
+@layer utilities {
+  h1.hero-heading,
+  h2.hero-heading,
+  .hero-heading h1 {
+    font-family: var(--font-marcellus);
+    font-weight: 400;
+    font-size: 2.25rem; /* 36px */
+    line-height: 1;
+    letter-spacing: 0;
+  }
+
+  @variant sm {
+    h1.hero-heading,
+    h2.hero-heading,
+    .hero-heading h1 {
+      font-size: 2.625rem; /* 42px */
+    }
+  }
+
+  @variant lg {
+    h1.hero-heading,
+    h2.hero-heading,
+    .hero-heading h1 {
+      font-size: 3.125rem; /* 50px */
     }
   }
 }

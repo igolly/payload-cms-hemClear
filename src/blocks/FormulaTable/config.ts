@@ -1,5 +1,7 @@
 import type { Block } from 'payload'
 
+import { backgroundField } from '@/fields/background'
+
 export const FormulaTable: Block = {
   slug: 'formulaTable',
   interfaceName: 'FormulaTableBlock',
@@ -63,5 +65,6 @@ export const FormulaTable: Block = {
       ],
     },
     { name: 'footnote', type: 'textarea' },
+    backgroundField(),
   ],
 }

@@ -5,6 +5,7 @@ import { Play } from 'lucide-react'
 import type { VideoStoriesBlock } from '@/payload-types'
 
 import { Media } from '@/components/Media'
+import { marks } from '@/utilities/marks'
 
 type Story = NonNullable<VideoStoriesBlock['stories']>[number]
 
@@ -87,7 +88,7 @@ export const StoryCard: React.FC<{ index: number; story: Story }> = ({ index, st
           {story.badge && (
             <span className="absolute left-3 top-9 z-20 flex items-center gap-1.5 rounded-md bg-brand/90 px-2 py-1 text-[9px] font-bold uppercase tracking-wide text-white">
               <span className="h-1.5 w-1.5 rounded-full bg-[#4da3ff]" />
-              {story.badge}
+              {marks(story.badge)}
             </span>
           )}
 
@@ -109,14 +110,14 @@ export const StoryCard: React.FC<{ index: number; story: Story }> = ({ index, st
           <div className="absolute inset-x-0 bottom-0 z-20 bg-gradient-to-t from-black/80 to-transparent px-4 pb-4 pt-10">
             {story.duration && (
               <span className="absolute right-3 top-2 rounded bg-black/70 px-1.5 py-0.5 text-[10px] font-medium text-white">
-                {story.duration}
+                {marks(story.duration)}
               </span>
             )}
 
-            <p className="font-serif text-lg leading-tight text-white">{story.name}</p>
+            <p className="font-serif text-lg leading-tight text-white">{marks(story.name)}</p>
             {story.caption && (
               <p className="text-[9px] font-semibold uppercase tracking-wide text-white/80">
-                {story.caption}
+                {marks(story.caption)}
               </p>
             )}
           </div>

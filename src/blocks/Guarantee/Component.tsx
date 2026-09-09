@@ -3,8 +3,12 @@ import React from 'react'
 import type { GuaranteeBlock as Props } from '@/payload-types'
 
 import { BrandIcon } from '@/components/BrandIcons'
+import { backgroundStyle } from '@/fields/background'
+import { marks } from '@/utilities/marks'
 
 export const GuaranteeBlock: React.FC<Props> = ({
+  bgColor,
+  bgColorCustom,
   badgeLabel,
   badges,
   heading,
@@ -17,7 +21,7 @@ export const GuaranteeBlock: React.FC<Props> = ({
   const pills = Array.isArray(badges) ? badges : []
 
   return (
-    <section className="w-full bg-white px-4 py-14 sm:px-6 lg:px-8">
+    <section className="w-full bg-white px-4 py-14 sm:px-6 lg:px-8" style={backgroundStyle(bgColor, bgColorCustom)}>
       <div className="mx-auto max-w-4xl">
         <header className="flex flex-col items-center text-center">
           <BrandIcon
@@ -30,7 +34,7 @@ export const GuaranteeBlock: React.FC<Props> = ({
               className="-mt-2 rounded-full bg-brand px-4 py-1 text-[10px] font-bold uppercase tracking-wider text-white"
               data-payload-subpath="badgeLabel"
             >
-              {badgeLabel}
+              {marks(badgeLabel)}
             </span>
           )}
 
@@ -39,7 +43,7 @@ export const GuaranteeBlock: React.FC<Props> = ({
               className="mt-4 font-serif text-3xl leading-tight text-heading sm:text-4xl"
               data-payload-subpath="heading"
             >
-              {heading}
+              {marks(heading)}
             </h2>
           )}
 
@@ -48,7 +52,7 @@ export const GuaranteeBlock: React.FC<Props> = ({
               className="mt-2 text-base font-semibold text-[#0052cc]"
               data-payload-subpath="subheading"
             >
-              {subheading}
+              {marks(subheading)}
             </p>
           )}
         </header>
@@ -62,8 +66,8 @@ export const GuaranteeBlock: React.FC<Props> = ({
                 className="absolute inset-0 rounded-full border-2 border-dotted border-[#9dc0ee]"
               />
               <span className="flex h-20 w-20 flex-col items-center justify-center rounded-full bg-[#1668C4] leading-none text-white">
-                <span className="font-serif text-2xl font-bold">{sealValue}</span>
-                <span className="mt-0.5 text-[10px] font-bold tracking-widest">{sealLabel}</span>
+                <span className="font-serif text-2xl font-bold">{marks(sealValue)}</span>
+                <span className="mt-0.5 text-[10px] font-bold tracking-widest">{marks(sealLabel)}</span>
               </span>
             </div>
 
@@ -78,7 +82,7 @@ export const GuaranteeBlock: React.FC<Props> = ({
                     className="shrink-0 text-[#1668C4] [&>svg]:h-6 [&>svg]:w-6"
                     name={point.icon}
                   />
-                  <span className="font-serif text-sm text-brand">{point.text}</span>
+                  <span className="font-serif text-sm text-brand">{marks(point.text)}</span>
                 </li>
               ))}
             </ul>
@@ -98,7 +102,7 @@ export const GuaranteeBlock: React.FC<Props> = ({
                   name={pill.icon}
                 />
                 <span className="text-xs font-bold uppercase tracking-wide text-brand">
-                  {pill.label}
+                  {marks(pill.label)}
                 </span>
               </li>
             ))}

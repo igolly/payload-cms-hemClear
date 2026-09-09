@@ -1,5 +1,7 @@
 import type { Block } from 'payload'
 
+import { backgroundField } from '@/fields/background'
+
 const starsField = {
   name: 'stars',
   type: 'number' as const,
@@ -228,5 +230,6 @@ export const Reviews: Block = {
         },
       ],
     },
+    backgroundField(),
   ],
 }

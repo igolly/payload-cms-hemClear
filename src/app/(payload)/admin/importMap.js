@@ -9,6 +9,9 @@ import { UnderlineFeatureClient as UnderlineFeatureClient_e70f5e05f09f93e00b997e
 import { BoldFeatureClient as BoldFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
 import { ItalicFeatureClient as ItalicFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
 import { LinkFeatureClient as LinkFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
+import { PlanRowLabel as PlanRowLabel_037531769fa81ee3ede4b3daf04ae43b } from '@/blocks/ProductDetail/RowLabel'
+import { StoryRowLabel as StoryRowLabel_037531769fa81ee3ede4b3daf04ae43b } from '@/blocks/ProductDetail/RowLabel'
+import { SectionRowLabel as SectionRowLabel_037531769fa81ee3ede4b3daf04ae43b } from '@/blocks/ProductDetail/RowLabel'
 import { FeaturedRowLabel as FeaturedRowLabel_29eb3efd14cc16327e9559d61007eed3 } from '@/blocks/Reviews/RowLabel'
 import { ReviewRowLabel as ReviewRowLabel_29eb3efd14cc16327e9559d61007eed3 } from '@/blocks/Reviews/RowLabel'
 import { FaqRowLabel as FaqRowLabel_7a0a1ede3caede510531ae1d1981b8cd } from '@/blocks/FAQ/RowLabel'
@@ -42,9 +45,7 @@ import { MetaImageComponent as MetaImageComponent_a8a977ebc872c5d5ea7ee689724c08
 import { MetaDescriptionComponent as MetaDescriptionComponent_a8a977ebc872c5d5ea7ee689724c0860 } from '@payloadcms/plugin-seo/client'
 import { PreviewComponent as PreviewComponent_a8a977ebc872c5d5ea7ee689724c0860 } from '@payloadcms/plugin-seo/client'
 import { SlugField as SlugField_2b8867833a34864a02ddf429b0728a40 } from '@payloadcms/next/client'
-import { PlanRowLabel as PlanRowLabel_b2ed09be18c247e15e2803da80f11867 } from '@/collections/Products/RowLabel'
-import { StoryRowLabel as StoryRowLabel_b2ed09be18c247e15e2803da80f11867 } from '@/collections/Products/RowLabel'
-import { SectionRowLabel as SectionRowLabel_b2ed09be18c247e15e2803da80f11867 } from '@/collections/Products/RowLabel'
+import { EditWithPuckButton as EditWithPuckButton_d72027e0f0541e23dd1e340e47e71267 } from '@delmaredigital/payload-puck/admin/client'
 import { FolderTableCell as FolderTableCell_f9c02e79a4aed9a3924487c0cd4cafb1 } from '@payloadcms/next/rsc'
 import { FolderField as FolderField_f9c02e79a4aed9a3924487c0cd4cafb1 } from '@payloadcms/next/rsc'
 import { FolderTypeField as FolderTypeField_2b8867833a34864a02ddf429b0728a40 } from '@payloadcms/next/client'
@@ -54,7 +55,9 @@ import { PromiseRowLabel as PromiseRowLabel_1f6ff6ff633e3695d348f4f3c58f1466 } f
 import { SocialRowLabel as SocialRowLabel_1f6ff6ff633e3695d348f4f3c58f1466 } from '@/Footer/RowLabel'
 import { default as default_8a7ab0eb7ab5c511aba12e68480bfe5e } from '@/components/BeforeLogin'
 import { VisualEditorTarget as VisualEditorTarget_ebf3a4779280beee4ed58dea103c7294 } from '@/components/VisualEditorTarget'
+import { PuckProvider as PuckProvider_7f291320451bf56fb84d4fca8253f6d6 } from '@/components/PuckProvider'
 import { S3ClientUploadHandler as S3ClientUploadHandler_f97aa6c64367fa259c5bc0567239ef24 } from '@payloadcms/storage-s3/client'
+import { PuckEditorView as PuckEditorView_3b27b37268b8e78cccc06ea6de889aa6 } from '@delmaredigital/payload-puck/rsc'
 import { CollectionCards as CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1 } from '@payloadcms/next/rsc'
 
 /** @type import('payload').ImportMap */
@@ -70,6 +73,9 @@ export const importMap = {
   "@payloadcms/richtext-lexical/client#BoldFeatureClient": BoldFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
   "@payloadcms/richtext-lexical/client#ItalicFeatureClient": ItalicFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
   "@payloadcms/richtext-lexical/client#LinkFeatureClient": LinkFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
+  "@/blocks/ProductDetail/RowLabel#PlanRowLabel": PlanRowLabel_037531769fa81ee3ede4b3daf04ae43b,
+  "@/blocks/ProductDetail/RowLabel#StoryRowLabel": StoryRowLabel_037531769fa81ee3ede4b3daf04ae43b,
+  "@/blocks/ProductDetail/RowLabel#SectionRowLabel": SectionRowLabel_037531769fa81ee3ede4b3daf04ae43b,
   "@/blocks/Reviews/RowLabel#FeaturedRowLabel": FeaturedRowLabel_29eb3efd14cc16327e9559d61007eed3,
   "@/blocks/Reviews/RowLabel#ReviewRowLabel": ReviewRowLabel_29eb3efd14cc16327e9559d61007eed3,
   "@/blocks/FAQ/RowLabel#FaqRowLabel": FaqRowLabel_7a0a1ede3caede510531ae1d1981b8cd,
@@ -103,9 +109,7 @@ export const importMap = {
   "@payloadcms/plugin-seo/client#MetaDescriptionComponent": MetaDescriptionComponent_a8a977ebc872c5d5ea7ee689724c0860,
   "@payloadcms/plugin-seo/client#PreviewComponent": PreviewComponent_a8a977ebc872c5d5ea7ee689724c0860,
   "@payloadcms/next/client#SlugField": SlugField_2b8867833a34864a02ddf429b0728a40,
-  "@/collections/Products/RowLabel#PlanRowLabel": PlanRowLabel_b2ed09be18c247e15e2803da80f11867,
-  "@/collections/Products/RowLabel#StoryRowLabel": StoryRowLabel_b2ed09be18c247e15e2803da80f11867,
-  "@/collections/Products/RowLabel#SectionRowLabel": SectionRowLabel_b2ed09be18c247e15e2803da80f11867,
+  "@delmaredigital/payload-puck/admin/client#EditWithPuckButton": EditWithPuckButton_d72027e0f0541e23dd1e340e47e71267,
   "@payloadcms/next/rsc#FolderTableCell": FolderTableCell_f9c02e79a4aed9a3924487c0cd4cafb1,
   "@payloadcms/next/rsc#FolderField": FolderField_f9c02e79a4aed9a3924487c0cd4cafb1,
   "@payloadcms/next/client#FolderTypeField": FolderTypeField_2b8867833a34864a02ddf429b0728a40,
@@ -115,6 +119,8 @@ export const importMap = {
   "@/Footer/RowLabel#SocialRowLabel": SocialRowLabel_1f6ff6ff633e3695d348f4f3c58f1466,
   "@/components/BeforeLogin#default": default_8a7ab0eb7ab5c511aba12e68480bfe5e,
   "@/components/VisualEditorTarget#VisualEditorTarget": VisualEditorTarget_ebf3a4779280beee4ed58dea103c7294,
+  "@/components/PuckProvider#PuckProvider": PuckProvider_7f291320451bf56fb84d4fca8253f6d6,
   "@payloadcms/storage-s3/client#S3ClientUploadHandler": S3ClientUploadHandler_f97aa6c64367fa259c5bc0567239ef24,
+  "@delmaredigital/payload-puck/rsc#PuckEditorView": PuckEditorView_3b27b37268b8e78cccc06ea6de889aa6,
   "@payloadcms/next/rsc#CollectionCards": CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1
 }

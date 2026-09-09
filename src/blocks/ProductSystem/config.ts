@@ -1,6 +1,6 @@
 import type { Block } from 'payload'
 
-import { brandIconOptions } from '@/components/BrandIcons'
+import { backgroundField } from '@/fields/background'
 
 export const ProductSystem: Block = {
   slug: 'productSystem',
@@ -71,12 +71,13 @@ export const ProductSystem: Block = {
           type: 'row',
           fields: [
             {
-              name: 'icon',
-              type: 'select',
-              defaultValue: 'flask',
-              options: brandIconOptions,
-              required: true,
-              admin: { width: '50%' },
+              name: 'image',
+              type: 'upload',
+              relationTo: 'media',
+              admin: {
+                description: 'Card visual. A dashed placeholder holds its space until set.',
+                width: '50%',
+              },
             },
             {
               name: 'stat',
@@ -89,5 +90,6 @@ export const ProductSystem: Block = {
         { name: 'subtitle', type: 'text' },
       ],
     },
+    backgroundField(),
   ],
 }

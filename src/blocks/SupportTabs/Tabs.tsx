@@ -7,6 +7,7 @@ import type { SupportTabsBlock } from '@/payload-types'
 import { BrandIcon } from '@/components/BrandIcons'
 import { Media } from '@/components/Media'
 import { cn } from '@/utilities/ui'
+import { marks } from '@/utilities/marks'
 
 type Item = NonNullable<SupportTabsBlock['items']>[number]
 
@@ -74,7 +75,7 @@ export const Tabs: React.FC<{ items: Item[] }> = ({ items }) => {
               type="button"
             >
               <ItemIcon className="[&>svg]:h-4 [&>svg]:w-4 [&_img]:h-4 [&_img]:w-4" item={item} />
-              {item.title}
+              {marks(item.title)}
             </button>
           </li>
         ))}
@@ -107,12 +108,12 @@ export const Tabs: React.FC<{ items: Item[] }> = ({ items }) => {
                   item={item}
                 />
                 <div className="min-w-0">
-                  <h3 className="font-serif text-2xl text-subheading">{item.title}</h3>
+                  <h3 className="font-serif text-2xl text-subheading">{marks(item.title)}</h3>
                   <p
                     className="mt-1 whitespace-pre-line text-sm leading-relaxed text-brand"
                     data-payload-subpath={`items.${i}.description`}
                   >
-                    {item.description}
+                    {marks(item.description)}
                   </p>
                 </div>
               </div>

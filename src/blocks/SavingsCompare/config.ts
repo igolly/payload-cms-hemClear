@@ -1,5 +1,7 @@
 import type { Block } from 'payload'
 
+import { backgroundField } from '@/fields/background'
+
 export const SavingsCompare: Block = {
   slug: 'savingsCompare',
   interfaceName: 'SavingsCompareBlock',
@@ -102,5 +104,6 @@ export const SavingsCompare: Block = {
         },
       ],
     },
+    backgroundField(),
   ],
 }

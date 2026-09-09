@@ -3,8 +3,12 @@ import React from 'react'
 import type { VideoStoriesBlock as Props } from '@/payload-types'
 
 import { Carousel } from './Carousel'
+import { backgroundStyle } from '@/fields/background'
+import { marks } from '@/utilities/marks'
 
 export const VideoStoriesBlock: React.FC<Props> = ({
+  bgColor,
+  bgColorCustom,
   eyebrow,
   heading,
   stories,
@@ -13,7 +17,7 @@ export const VideoStoriesBlock: React.FC<Props> = ({
   const items = Array.isArray(stories) ? stories : []
 
   return (
-    <section className="w-full bg-navy px-4 py-14 sm:px-6 lg:px-8">
+    <section className="w-full bg-navy px-4 py-14 sm:px-6 lg:px-8" style={backgroundStyle(bgColor, bgColorCustom)}>
       <div className="mx-auto max-w-7xl">
         <header className="text-center">
           {eyebrow && (
@@ -21,7 +25,7 @@ export const VideoStoriesBlock: React.FC<Props> = ({
               className="inline-block rounded-full border border-white/40 px-5 py-1.5 text-[11px] font-bold uppercase tracking-[0.15em] text-white"
               data-payload-subpath="eyebrow"
             >
-              {eyebrow}
+              {marks(eyebrow)}
             </span>
           )}
 
@@ -30,7 +34,7 @@ export const VideoStoriesBlock: React.FC<Props> = ({
               className="mt-6 font-serif text-3xl leading-tight text-white sm:text-4xl"
               data-payload-subpath="heading"
             >
-              {heading}
+              {marks(heading)}
             </h2>
           )}
 
@@ -39,7 +43,7 @@ export const VideoStoriesBlock: React.FC<Props> = ({
               className="mt-3 font-serif text-lg italic text-[#69aeff]"
               data-payload-subpath="subheading"
             >
-              {subheading}
+              {marks(subheading)}
             </p>
           )}
         </header>

@@ -1,5 +1,7 @@
 import type { Block } from 'payload'
 
+import { backgroundField } from '@/fields/background'
+
 export const StatsBar: Block = {
   slug: 'statsBar',
   interfaceName: 'StatsBarBlock',
@@ -52,5 +54,6 @@ export const StatsBar: Block = {
         },
       ],
     },
+    backgroundField(),
   ],
 }

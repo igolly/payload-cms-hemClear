@@ -10,6 +10,7 @@ import type { DefaultTypedEditorState } from '@payloadcms/richtext-lexical'
 
 import { fields } from './fields'
 import { getClientSideURL } from '@/utilities/getURL'
+import { marks } from '@/utilities/marks'
 
 export type FormBlockType = {
   blockName?: string
@@ -152,7 +153,7 @@ export const FormBlock: React.FC<
               </div>
 
               <Button form={formID} type="submit" variant="default">
-                {submitButtonLabel}
+                {marks(submitButtonLabel)}
               </Button>
             </form>
           )}

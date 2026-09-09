@@ -9,6 +9,7 @@ import React from 'react'
 
 import { Error } from '../Error'
 import { Width } from '../Width'
+import { marks } from '@/utilities/marks'
 
 export const Checkbox: React.FC<
   CheckboxField & {
@@ -36,7 +37,7 @@ export const Checkbox: React.FC<
               * <span className="sr-only">(required)</span>
             </span>
           )}
-          {label}
+          {marks(label)}
         </Label>
       </div>
       {errors[name] && <Error name={name} />}

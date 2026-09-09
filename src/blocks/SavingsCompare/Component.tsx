@@ -2,8 +2,12 @@ import React from 'react'
 import { Check } from 'lucide-react'
 
 import type { SavingsCompareBlock as Props } from '@/payload-types'
+import { backgroundStyle } from '@/fields/background'
+import { marks } from '@/utilities/marks'
 
 export const SavingsCompareBlock: React.FC<Props> = ({
+  bgColor,
+  bgColorCustom,
   ctaLabel,
   ctaUrl,
   formulaAnnual,
@@ -30,7 +34,7 @@ export const SavingsCompareBlock: React.FC<Props> = ({
   const features = Array.isArray(formulaFeatures) ? formulaFeatures : []
 
   return (
-    <section className="w-full bg-brand px-4 py-14 sm:px-6 lg:px-8">
+    <section className="w-full bg-brand px-4 py-14 sm:px-6 lg:px-8" style={backgroundStyle(bgColor, bgColorCustom)}>
       <div className="mx-auto max-w-4xl">
         <header className="text-center">
           {heading && (
@@ -38,12 +42,12 @@ export const SavingsCompareBlock: React.FC<Props> = ({
               className="font-serif text-3xl leading-tight text-white sm:text-4xl"
               data-payload-subpath="heading"
             >
-              {heading}
+              {marks(heading)}
             </h2>
           )}
           {subheading && (
             <p className="mt-2 text-sm text-white/85" data-payload-subpath="subheading">
-              {subheading}
+              {marks(subheading)}
             </p>
           )}
         </header>
@@ -51,10 +55,10 @@ export const SavingsCompareBlock: React.FC<Props> = ({
         {(savingsLabel || savingsValue) && (
           <div className="mx-auto mt-8 max-w-md rounded-xl bg-white px-6 py-5 text-center">
             {savingsLabel && (
-              <p className="text-sm font-bold text-[#0052cc]">{savingsLabel}</p>
+              <p className="text-sm font-bold text-[#0052cc]">{marks(savingsLabel)}</p>
             )}
             {savingsValue && (
-              <p className="mt-1 text-3xl font-extrabold text-[#1a7f37]">{savingsValue}</p>
+              <p className="mt-1 text-3xl font-extrabold text-[#1a7f37]">{marks(savingsValue)}</p>
             )}
           </div>
         )}
@@ -63,27 +67,27 @@ export const SavingsCompareBlock: React.FC<Props> = ({
           {/* Buying separately */}
           <div className="rounded-xl bg-white p-5">
             {separateTitle && (
-              <p className="text-sm font-bold text-brand">{separateTitle}</p>
+              <p className="text-sm font-bold text-brand">{marks(separateTitle)}</p>
             )}
 
             <table className="mt-3 w-full border-collapse text-left text-[11px]">
               <thead>
                 <tr className="border-b border-[#e2ecf9] text-slate-500">
-                  <th className="py-1.5 font-semibold" scope="col">{separateColLabel}</th>
-                  <th className="py-1.5 text-right font-semibold" scope="col">{separateCostLabel}</th>
+                  <th className="py-1.5 font-semibold" scope="col">{marks(separateColLabel)}</th>
+                  <th className="py-1.5 text-right font-semibold" scope="col">{marks(separateCostLabel)}</th>
                 </tr>
               </thead>
               <tbody>
                 {rows.map((row, i) => (
                   <tr className="border-b border-[#f0f5fc]" key={row.id ?? i}>
-                    <td className="py-1.5 text-slate-700">{row.name}</td>
-                    <td className="py-1.5 text-right text-slate-700">{row.cost}</td>
+                    <td className="py-1.5 text-slate-700">{marks(row.name)}</td>
+                    <td className="py-1.5 text-right text-slate-700">{marks(row.cost)}</td>
                   </tr>
                 ))}
                 {totals.map((total, i) => (
                   <tr className="border-b border-[#e2ecf9] font-bold text-brand" key={total.id ?? i}>
-                    <td className="py-1.5">{total.label}</td>
-                    <td className="py-1.5 text-right">{total.value}</td>
+                    <td className="py-1.5">{marks(total.label)}</td>
+                    <td className="py-1.5 text-right">{marks(total.value)}</td>
                   </tr>
                 ))}
               </tbody>
@@ -96,7 +100,7 @@ export const SavingsCompareBlock: React.FC<Props> = ({
           <div className="overflow-hidden rounded-xl bg-white">
             {formulaTitle && (
               <p className="bg-[#123a8a] py-2 text-center text-sm font-bold text-white">
-                {formulaTitle}
+                {marks(formulaTitle)}
               </p>
             )}
 
@@ -104,7 +108,7 @@ export const SavingsCompareBlock: React.FC<Props> = ({
               {formulaBadge && (
                 <p className="flex items-center gap-2 text-xs font-bold text-[#0052cc]">
                   <Check className="h-4 w-4 shrink-0" strokeWidth={3} />
-                  {formulaBadge}
+                  {marks(formulaBadge)}
                 </p>
               )}
 
@@ -112,38 +116,38 @@ export const SavingsCompareBlock: React.FC<Props> = ({
                 {features.map((feature, i) => (
                   <li className="flex items-start gap-2" key={feature.id ?? i}>
                     <Check className="mt-0.5 h-3.5 w-3.5 shrink-0 text-[#1a7f37]" strokeWidth={3} />
-                    <span className="text-[11px] leading-snug text-slate-700">{feature.text}</span>
+                    <span className="text-[11px] leading-snug text-slate-700">{marks(feature.text)}</span>
                   </li>
                 ))}
               </ul>
 
               <div className="mt-4 border-t border-[#e2ecf9] pt-3 text-center">
                 {formulaPriceLabel && (
-                  <p className="text-[11px] font-semibold text-[#0052cc]">{formulaPriceLabel}</p>
+                  <p className="text-[11px] font-semibold text-[#0052cc]">{marks(formulaPriceLabel)}</p>
                 )}
                 {formulaPrice && (
-                  <p className="text-2xl font-extrabold text-brand">{formulaPrice}</p>
+                  <p className="text-2xl font-extrabold text-brand">{marks(formulaPrice)}</p>
                 )}
-                {formulaAnnual && <p className="text-[11px] text-slate-500">{formulaAnnual}</p>}
+                {formulaAnnual && <p className="text-[11px] text-slate-500">{marks(formulaAnnual)}</p>}
               </div>
 
               {(formulaSaveLabel || formulaSaveValue) && (
                 <div className="mt-3 rounded-lg bg-[#eef4fd] px-4 py-3 text-center">
                   {formulaSaveLabel && (
-                    <p className="text-[11px] font-semibold text-[#0052cc]">{formulaSaveLabel}</p>
+                    <p className="text-[11px] font-semibold text-[#0052cc]">{marks(formulaSaveLabel)}</p>
                   )}
                   {formulaSaveValue && (
-                    <p className="text-xl font-extrabold text-brand">{formulaSaveValue}</p>
+                    <p className="text-xl font-extrabold text-brand">{marks(formulaSaveValue)}</p>
                   )}
                   {formulaSaveNote && (
-                    <p className="text-[11px] text-[#0052cc]">{formulaSaveNote}</p>
+                    <p className="text-[11px] text-[#0052cc]">{marks(formulaSaveNote)}</p>
                   )}
                   {ctaLabel && (
                     <a
                       className="mt-3 inline-block rounded-md bg-brand px-5 py-2 text-xs font-bold text-white transition-colors hover:bg-brand-dark"
                       href={ctaUrl || '#'}
                     >
-                      {ctaLabel}
+                      {marks(ctaLabel)}
                     </a>
                   )}
                 </div>

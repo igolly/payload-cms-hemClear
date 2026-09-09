@@ -5,13 +5,15 @@ import type { ComparisonBlock as Props } from '@/payload-types'
 import { BrandIcon } from '@/components/BrandIcons'
 import { ImageSlot } from '@/blocks/FAQ/ImagePlaceholder'
 import { cn } from '@/utilities/ui'
+import { backgroundStyle } from '@/fields/background'
+import { marks } from '@/utilities/marks'
 
-export const ComparisonBlock: React.FC<Props> = ({ heading, products, rows, subheading }) => {
+export const ComparisonBlock: React.FC<Props> = ({ bgColor, bgColorCustom, heading, products, rows, subheading }) => {
   const columns = Array.isArray(products) ? products : []
   const featureRows = Array.isArray(rows) ? rows : []
 
   return (
-    <section className="w-full bg-brand px-4 py-14 sm:px-6 lg:px-8">
+    <section className="w-full bg-brand px-4 py-14 sm:px-6 lg:px-8" style={backgroundStyle(bgColor, bgColorCustom)}>
       <div className="mx-auto max-w-5xl">
         <header className="text-center">
           {heading && (
@@ -19,12 +21,12 @@ export const ComparisonBlock: React.FC<Props> = ({ heading, products, rows, subh
               className="font-serif text-3xl leading-tight text-white sm:text-4xl"
               data-payload-subpath="heading"
             >
-              {heading}
+              {marks(heading)}
             </h2>
           )}
           {subheading && (
             <p className="mt-2 text-sm text-white/85" data-payload-subpath="subheading">
-              {subheading}
+              {marks(subheading)}
             </p>
           )}
         </header>
@@ -58,7 +60,7 @@ export const ComparisonBlock: React.FC<Props> = ({ heading, products, rows, subh
                         />
                       </div>
                       <span className="mt-2 block text-xs font-bold uppercase tracking-wide text-brand">
-                        {product.name}
+                        {marks(product.name)}
                       </span>
                     </th>
                   ))}
@@ -79,7 +81,7 @@ export const ComparisonBlock: React.FC<Props> = ({ heading, products, rows, subh
                           name={row.icon}
                         />
                         <span className="text-xs font-bold leading-tight text-brand">
-                          {row.label}
+                          {marks(row.label)}
                         </span>
                       </span>
                     </th>

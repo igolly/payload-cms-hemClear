@@ -2,6 +2,8 @@ import type { Block } from 'payload'
 
 import { brandIconOptions } from '@/components/BrandIcons'
 
+import { backgroundField } from '@/fields/background'
+
 export const Pairing: Block = {
   slug: 'pairing',
   interfaceName: 'PairingBlock',
@@ -59,5 +61,6 @@ export const Pairing: Block = {
         { name: 'description', type: 'textarea' },
       ],
     },
+    backgroundField(),
   ],
 }

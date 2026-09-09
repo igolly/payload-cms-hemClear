@@ -3,6 +3,8 @@ import type { Block } from 'payload'
 import { brandIconOptions } from '@/components/BrandIcons'
 import { linkGroup } from '@/fields/linkGroup'
 
+import { backgroundField } from '@/fields/background'
+
 export const ClosingCta: Block = {
   slug: 'closingCta',
   interfaceName: 'ClosingCtaBlock',
@@ -62,5 +64,6 @@ export const ClosingCta: Block = {
       appearances: ['default', 'outline'],
       overrides: { maxRows: 2 },
     }),
+    backgroundField(),
   ],
 }

@@ -6,11 +6,12 @@ import { fileURLToPath } from 'url'
 
 import { Media } from './collections/Media'
 import { Pages } from './collections/Pages'
-import { Products } from './collections/Products'
 import { Users } from './collections/Users'
 import { Footer } from './Footer/config'
 import { Header } from './Header/config'
 import { plugins } from './plugins'
+import { createPuckPlugin } from '@delmaredigital/payload-puck/plugin'
+import { editorPreviewUrl } from '@/puck/editorPreviewUrl'
 import { defaultLexical } from '@/fields/defaultLexical'
 import { getServerSideURL } from './utilities/getURL'
 
@@ -24,7 +25,11 @@ export default buildConfig({
       // Feel free to delete this at any time. Simply remove the line below.
       beforeLogin: ['@/components/BeforeLogin'],
       // Listens for click-to-edit messages posted by the live-preview iframe.
-      providers: ['@/components/VisualEditorTarget#VisualEditorTarget'],
+      providers: [
+        '@/components/VisualEditorTarget#VisualEditorTarget',
+        // Supplies the Puck component config to the visual editor view.
+        '@/components/PuckProvider#PuckProvider',
+      ],
     },
     importMap: {
       baseDir: path.resolve(dirname),
@@ -58,10 +63,24 @@ export default buildConfig({
   db: mongooseAdapter({
     url: process.env.DATABASE_URL || '',
   }),
-  collections: [Pages, Products, Media, Users],
+  collections: [Pages, Media, Users],
   cors: [getServerSideURL()].filter(Boolean),
   globals: [Header, Footer],
-  plugins,
+  plugins: [
+    ...plugins,
+    createPuckPlugin({
+      pagesCollection: 'pages',
+      // The Pages collection declares its own Puck fields, so the plugin must not append
+      // its opinionated extras (isHomepage, conversion tracking) on top of them.
+      autoGenerateCollection: false,
+      // Built by `pnpm build:puck-css` from the frontend's globals.css, so the editor
+      // iframe is styled identically in development and production.
+      editorStylesheets: ['/puck-editor-styles.css'],
+      // Also the point where a block-authored page is handed to the editor with its
+      // existing sections — see the file for why it lives here.
+      previewUrl: editorPreviewUrl,
+    }),
+  ],
   secret: process.env.PAYLOAD_SECRET,
   sharp,
   typescript: {

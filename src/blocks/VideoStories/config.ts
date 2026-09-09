@@ -1,5 +1,7 @@
 import type { Block } from 'payload'
 
+import { backgroundField } from '@/fields/background'
+
 export const VideoStories: Block = {
   slug: 'videoStories',
   interfaceName: 'VideoStoriesBlock',
@@ -90,5 +92,6 @@ export const VideoStories: Block = {
         },
       ],
     },
+    backgroundField(),
   ],
 }

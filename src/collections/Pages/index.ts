@@ -17,6 +17,7 @@ import { FeatureStrip } from '../../blocks/FeatureStrip/config'
 import { FAQ } from '../../blocks/FAQ/config'
 import { MedicalReview } from '../../blocks/MedicalReview/config'
 import { Guarantee } from '../../blocks/Guarantee/config'
+import { ProductDetail } from '../../blocks/ProductDetail/config'
 import { ProductSystem } from '../../blocks/ProductSystem/config'
 import { Pairing } from '../../blocks/Pairing/config'
 import { StatsBar } from '../../blocks/StatsBar/config'
@@ -27,10 +28,13 @@ import { VideoStories } from '../../blocks/VideoStories/config'
 import { WaysGrid } from '../../blocks/WaysGrid/config'
 import { Reviews } from '../../blocks/Reviews/config'
 import { hero } from '@/heros/config'
+import { puckEditorVersion } from '@/fields/puckEditorVersion'
+import { puckData } from '@/fields/puckData'
 import { slugField } from 'payload'
 import { populatePublishedAt } from '../../hooks/populatePublishedAt'
 import { generatePreviewPath } from '../../utilities/generatePreviewPath'
 import { revalidateDelete, revalidatePage } from './hooks/revalidatePage'
+import { puckSeed } from './endpoints/puckSeed'
 
 import {
   MetaDescriptionField,
@@ -92,6 +96,7 @@ export const Pages: CollectionConfig<'pages'> = {
               name: 'layout',
               type: 'blocks',
               blocks: [
+                ProductDetail,
                 FormBlock,
                 Reviews,
                 FAQ,
@@ -117,7 +122,8 @@ export const Pages: CollectionConfig<'pages'> = {
                 SavingsCompare,
                 ScienceStats,
               ],
-              required: true,
+              // Not required: a page built in the visual editor stores its sections in
+              // `puckData` instead. Existing pages keep their blocks either way.
               admin: {
                 initCollapsed: true,
               },
@@ -162,7 +168,31 @@ export const Pages: CollectionConfig<'pages'> = {
       },
     },
     slugField(),
+    // Visual editor. `puckData` holds the Puck document, `editorVersion` decides which
+    // renderer a page uses, and `puckEdit` is the "Visual Editor" button in the sidebar.
+    puckData,
+    puckEditorVersion,
+    {
+      // Declared here rather than via the plugin's `generatePuckEditField`, which always
+      // stamps a default `editorPathPattern` of `/pages/{id}/edit` — that sends the button
+      // back to this same view instead of the editor. With no pattern set, the button
+      // falls through to `/admin/puck-editor/pages/:id`.
+      name: 'puckEdit',
+      type: 'ui',
+      admin: {
+        position: 'sidebar',
+        components: {
+          Field: '@delmaredigital/payload-puck/admin/client#EditWithPuckButton',
+        },
+        custom: {
+          collectionSlug: 'pages',
+          label: 'Visual Editor',
+        },
+      },
+    },
   ],
+  // Lets the visual editor open a block-authored page with its existing content.
+  endpoints: [puckSeed],
   hooks: {
     afterChange: [revalidatePage],
     beforeChange: [populatePublishedAt],

@@ -2,6 +2,8 @@ import type { Block } from 'payload'
 
 import { brandIconOptions } from '@/components/BrandIcons'
 
+import { backgroundField } from '@/fields/background'
+
 export const TotalCare: Block = {
   slug: 'totalCare',
   interfaceName: 'TotalCareBlock',
@@ -62,5 +64,6 @@ export const TotalCare: Block = {
         },
       ],
     },
+    backgroundField(),
   ],
 }

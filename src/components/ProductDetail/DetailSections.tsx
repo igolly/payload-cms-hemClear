@@ -1,10 +1,12 @@
 'use client'
 import React, { useState } from 'react'
-import { Minus, Plus } from 'lucide-react'
+import { Minus } from 'lucide-react'
 
-import type { Product } from '@/payload-types'
+import type { ProductDetailBlock } from '@/payload-types'
+import { PlusIcon } from '@/components/PlusIcon'
+import { marks } from '@/utilities/marks'
 
-type Section = NonNullable<Product['sections']>[number]
+type Section = NonNullable<ProductDetailBlock['sections']>[number]
 
 export const DetailSections: React.FC<{ sections: Section[] }> = ({ sections }) => {
   const [open, setOpen] = useState<Set<number>>(() => new Set(sections.map((_, i) => i)))
@@ -33,11 +35,11 @@ export const DetailSections: React.FC<{ sections: Section[] }> = ({ sections }) 
                 onClick={() => toggle(i)}
                 type="button"
               >
-                <span className="font-serif text-xl text-heading">{section.title}</span>
+                <span className="font-serif text-xl text-heading">{marks(section.title)}</span>
                 {isOpen ? (
                   <Minus className="h-5 w-5 shrink-0 text-brand" />
                 ) : (
-                  <Plus className="h-5 w-5 shrink-0 text-brand" />
+                  <PlusIcon className="h-3.5 w-3.5 shrink-0 text-brand" />
                 )}
               </button>
             </h2>
@@ -46,7 +48,7 @@ export const DetailSections: React.FC<{ sections: Section[] }> = ({ sections }) 
               <ul className="mt-3 list-disc space-y-1.5 pl-5" id={panelId}>
                 {section.items.map((item, j) => (
                   <li className="text-sm leading-relaxed text-[#1a2f7c]" key={item.id ?? j}>
-                    {item.text}
+                    {marks(item.text)}
                   </li>
                 ))}
               </ul>

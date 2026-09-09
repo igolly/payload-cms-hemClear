@@ -1,8 +1,10 @@
 'use client'
 import React, { useState } from 'react'
-import { Minus, Plus } from 'lucide-react'
+import { Minus } from 'lucide-react'
 
 import type { FAQBlock } from '@/payload-types'
+import { PlusIcon } from '@/components/PlusIcon'
+import { marks } from '@/utilities/marks'
 
 type Item = NonNullable<FAQBlock['items']>[number]
 
@@ -55,10 +57,10 @@ export const FaqAccordion: React.FC<{
                   {i + 1}
                 </span>
 
-                <span className="grow text-base font-bold text-subheading">{item.question}</span>
+                <span className="grow text-base font-bold text-subheading">{marks(item.question)}</span>
 
                 <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-[#6279cf] text-[#6279cf]">
-                  {isOpen ? <Minus className="h-4 w-4" /> : <Plus className="h-4 w-4" />}
+                  {isOpen ? <Minus className="h-4 w-4" /> : <PlusIcon className="h-3 w-3" />}
                 </span>
               </button>
             </h3>
@@ -73,7 +75,7 @@ export const FaqAccordion: React.FC<{
               >
                 {item.answer.split('\n\n').map((paragraph, p) => (
                   <p className={p > 0 ? 'mt-4' : undefined} key={p}>
-                    {paragraph}
+                    {marks(paragraph)}
                   </p>
                 ))}
               </div>

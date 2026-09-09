@@ -45,7 +45,7 @@ export const plugins: Plugin[] = [
     enabled: Boolean(process.env.S3_BUCKET && process.env.S3_ACCESS_KEY_ID),
   }),
   redirectsPlugin({
-    collections: ['pages', 'products'],
+    collections: ['pages'],
     overrides: {
       // @ts-expect-error - This is a valid override, mapped fields don't resolve to the same type
       fields: ({ defaultFields }) => {

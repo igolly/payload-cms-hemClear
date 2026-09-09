@@ -1,12 +1,14 @@
 'use client'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
-import { ChevronLeft, ChevronRight, Minus, Plus } from 'lucide-react'
+import { ChevronLeft, ChevronRight, Minus } from 'lucide-react'
 
 import type { BenefitsCarouselBlock } from '@/payload-types'
 
 import { BrandIcon } from '@/components/BrandIcons'
 import { Media } from '@/components/Media'
 import { cn } from '@/utilities/ui'
+import { PlusIcon } from '@/components/PlusIcon'
+import { marks } from '@/utilities/marks'
 
 type Item = NonNullable<BenefitsCarouselBlock['items']>[number]
 
@@ -58,7 +60,7 @@ export const Cards: React.FC<{ items: Item[] }> = ({ items }) => {
         </button>
 
         <ul
-          className="flex grow snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth pb-2 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+          className="flex grow snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth pb-7 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
           ref={trackRef}
         >
           {items.map((item, i) => {
@@ -67,14 +69,16 @@ export const Cards: React.FC<{ items: Item[] }> = ({ items }) => {
 
             return (
               <li
-                className="w-[70%] flex-none snap-start sm:w-[44%] md:w-[30%] lg:w-[calc((100%-3rem)/5)]"
+                className="w-[70%] flex-none snap-start sm:w-[44%] md:w-[30%] lg:w-[calc((100%-2.25rem)/4)]"
                 key={key}
               >
-                <div
-                  className="flex h-full flex-col overflow-hidden rounded-xl bg-white"
-                  data-payload-subpath={`items.${i}.title`}
-                >
-                  <div className="relative aspect-[4/5] w-full bg-[#e8f0fc]">
+                <div className="relative" data-payload-subpath={`items.${i}.title`}>
+                  {/*
+                   * The photo fills the whole card. The white panel is laid over its lower
+                   * third rather than stacked beneath it, so the icon badge can straddle the
+                   * seam and the panel can grow upward over the photo when details expand.
+                   */}
+                  <div className="relative aspect-[10/19] w-full overflow-hidden rounded-3xl bg-[#e8f0fc]">
                     {item.image && typeof item.image === 'object' ? (
                       <Media fill imgClassName="object-cover" resource={item.image} />
                     ) : (
@@ -82,33 +86,36 @@ export const Cards: React.FC<{ items: Item[] }> = ({ items }) => {
                         Photo
                       </span>
                     )}
+
+                    <div className="absolute inset-x-0 bottom-0 flex min-h-[38%] flex-col items-center justify-center rounded-t-3xl bg-white px-4 pb-8 pt-12 text-center">
+                      <span className="absolute -top-9 left-1/2 flex h-[4.5rem] w-[4.5rem] -translate-x-1/2 items-center justify-center rounded-full border border-[#dbe8fa] bg-white text-brand [&>span>svg]:h-8 [&>span>svg]:w-8">
+                        <BrandIcon name={item.icon} />
+                      </span>
+
+                      <h3 className="font-serif text-xl leading-tight text-subheading">
+                        {marks(item.title)}
+                      </h3>
+
+                      {isOpen && item.details && (
+                        <p className="mt-2 text-xs leading-relaxed text-slate-600">
+                          {marks(item.details)}
+                        </p>
+                      )}
+                    </div>
                   </div>
 
-                  <div className="relative flex grow flex-col items-center px-3 pb-6 pt-8 text-center">
-                    <span className="absolute -top-6 flex h-12 w-12 items-center justify-center rounded-full border border-[#dbe8fa] bg-white text-brand [&>span>svg]:h-6 [&>span>svg]:w-6">
-                      <BrandIcon name={item.icon} />
-                    </span>
-
-                    <h3 className="font-serif text-base leading-tight text-subheading">
-                      {item.title}
-                    </h3>
-
-                    {isOpen && item.details && (
-                      <p className="mt-2 text-xs leading-relaxed text-slate-600">{item.details}</p>
-                    )}
-
-                    {item.details && (
-                      <button
-                        aria-expanded={isOpen}
-                        aria-label={`${isOpen ? 'Hide' : 'Show'} more about ${item.title}`}
-                        className="mt-3 flex h-7 w-7 items-center justify-center rounded-full bg-brand text-white transition-colors hover:bg-brand-dark"
-                        onClick={() => setOpen(isOpen ? null : key)}
-                        type="button"
-                      >
-                        {isOpen ? <Minus className="h-4 w-4" /> : <Plus className="h-4 w-4" />}
-                      </button>
-                    )}
-                  </div>
+                  {/* Sits on the card's bottom edge, half outside it, as in the design. */}
+                  {item.details && (
+                    <button
+                      aria-expanded={isOpen}
+                      aria-label={`${isOpen ? 'Hide' : 'Show'} more about ${item.title}`}
+                      className="absolute bottom-0 left-1/2 flex h-10 w-10 -translate-x-1/2 translate-y-1/2 items-center justify-center rounded-full bg-brand text-white shadow-md transition-colors hover:bg-brand-dark"
+                      onClick={() => setOpen(isOpen ? null : key)}
+                      type="button"
+                    >
+                      {isOpen ? <Minus className="h-5 w-5" /> : <PlusIcon className="h-3.5 w-3.5" />}
+                    </button>
+                  )}
                 </div>
               </li>
             )

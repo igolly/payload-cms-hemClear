@@ -6,6 +6,7 @@ import type { ReviewsBlock } from '@/payload-types'
 
 import { cn } from '@/utilities/ui'
 import { Stars } from './Stars'
+import { marks } from '@/utilities/marks'
 
 type Review = NonNullable<ReviewsBlock['reviews']>[number]
 
@@ -71,7 +72,7 @@ export const ReviewGrid: React.FC<Props> = ({
               className="mt-auto pt-6 text-sm font-bold text-brand"
               data-payload-subpath={`reviews.${i}.author`}
             >
-              {review.author}
+              {marks(review.author)}
             </p>
           </li>
         ))}

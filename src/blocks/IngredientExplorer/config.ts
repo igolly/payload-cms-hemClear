@@ -1,5 +1,7 @@
 import type { Block } from 'payload'
 
+import { backgroundField } from '@/fields/background'
+
 export const IngredientExplorer: Block = {
   slug: 'ingredientExplorer',
   interfaceName: 'IngredientExplorerBlock',
@@ -74,5 +76,6 @@ export const IngredientExplorer: Block = {
         { name: 'disclaimer', type: 'textarea' },
       ],
     },
+    backgroundField(),
   ],
 }

@@ -6,6 +6,7 @@ import type { FormulaTableBlock } from '@/payload-types'
 
 import { Media } from '@/components/Media'
 import { cn } from '@/utilities/ui'
+import { marks } from '@/utilities/marks'
 
 type Formula = NonNullable<FormulaTableBlock['formulas']>[number]
 
@@ -40,7 +41,7 @@ export const Table: React.FC<{ formulas: Formula[] }> = ({ formulas }) => {
                 />
               ) : (
                 <span className={cn('text-[10px]', i === index ? 'text-white' : 'text-[#8AA6C8]')}>
-                  {item.name}
+                  {marks(item.name)}
                 </span>
               )}
 
@@ -61,13 +62,13 @@ export const Table: React.FC<{ formulas: Formula[] }> = ({ formulas }) => {
         <>
           <header className="mt-8 text-center">
             <h3 className="font-serif text-3xl leading-tight sm:text-4xl">
-              {formula.titleBefore && <span className="text-heading">{formula.titleBefore} </span>}
-              {formula.titleAccent && <span className="text-[#2d80e2]">{formula.titleAccent}</span>}
-              {formula.titleAfter && <span className="text-heading"> {formula.titleAfter}</span>}
+              {formula.titleBefore && <span className="text-heading">{marks(formula.titleBefore)} </span>}
+              {formula.titleAccent && <span className="text-[#2d80e2]">{marks(formula.titleAccent)}</span>}
+              {formula.titleAfter && <span className="text-heading"> {marks(formula.titleAfter)}</span>}
             </h3>
             {formula.subtitle && (
               <>
-                <p className="mt-3 text-sm font-semibold text-[#0052cc]">{formula.subtitle}</p>
+                <p className="mt-3 text-sm font-semibold text-[#0052cc]">{marks(formula.subtitle)}</p>
                 <span aria-hidden="true" className="mx-auto mt-3 block h-0.5 w-16 bg-[#2d80e2]" />
               </>
             )}
@@ -90,10 +91,10 @@ export const Table: React.FC<{ formulas: Formula[] }> = ({ formulas }) => {
                         </span>
                       </td>
                       <th className="p-2 font-serif text-base font-semibold text-[#0052cc]" scope="row">
-                        {row.name}
+                        {marks(row.name)}
                       </th>
                       <td className="p-2 text-right text-xs text-slate-600 sm:text-left">
-                        {row.benefit}
+                        {marks(row.benefit)}
                       </td>
                     </tr>
                   ))}

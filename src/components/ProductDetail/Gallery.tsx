@@ -1,12 +1,13 @@
 'use client'
 import React, { useState } from 'react'
 
-import type { Product } from '@/payload-types'
+import type { ProductDetailBlock } from '@/payload-types'
 
 import { Media } from '@/components/Media'
 import { cn } from '@/utilities/ui'
+import { marks } from '@/utilities/marks'
 
-type Slide = NonNullable<Product['gallery']>[number]
+type Slide = NonNullable<ProductDetailBlock['gallery']>[number]
 
 export const Gallery: React.FC<{ badgeLabel?: string | null; slides: Slide[] }> = ({
   badgeLabel,
@@ -28,7 +29,7 @@ export const Gallery: React.FC<{ badgeLabel?: string | null; slides: Slide[] }> 
 
         {badgeLabel && (
           <span className="absolute left-4 top-4 rounded-full bg-white px-4 py-2 text-xs font-bold text-brand shadow">
-            {badgeLabel}
+            {marks(badgeLabel)}
           </span>
         )}
       </div>

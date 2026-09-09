@@ -1,10 +1,12 @@
 'use client'
 import React, { useState } from 'react'
-import { Check, Minus, Plus, X } from 'lucide-react'
+import { Check, Minus, X } from 'lucide-react'
 
-import type { Product } from '@/payload-types'
+import type { ProductDetailBlock } from '@/payload-types'
+import { PlusIcon } from '@/components/PlusIcon'
+import { marks } from '@/utilities/marks'
 
-type Item = NonNullable<Product['contains']>[number]
+type Item = NonNullable<ProductDetailBlock['contains']>[number]
 
 export const Composition: React.FC<{
   contains: Item[]
@@ -27,11 +29,11 @@ export const Composition: React.FC<{
           onClick={() => setOpen((v) => !v)}
           type="button"
         >
-          <span className="font-serif text-xl text-heading">{title}</span>
+          <span className="font-serif text-xl text-heading">{marks(title)}</span>
           {open ? (
             <Minus className="h-5 w-5 shrink-0 text-brand" />
           ) : (
-            <Plus className="h-5 w-5 shrink-0 text-brand" />
+            <PlusIcon className="h-3.5 w-3.5 shrink-0 text-brand" />
           )}
         </button>
       </h2>
@@ -39,7 +41,7 @@ export const Composition: React.FC<{
       {open && (
         <div id={panelId}>
           {note && (
-            <p className="mt-3 text-center text-xs font-bold text-brand">{note}</p>
+            <p className="mt-3 text-center text-xs font-bold text-brand">{marks(note)}</p>
           )}
 
           <div className="mt-4 grid grid-cols-1 gap-6 sm:grid-cols-2">
@@ -47,7 +49,7 @@ export const Composition: React.FC<{
               {containsTitle && (
                 <p className="flex items-center gap-2 text-xs font-bold uppercase tracking-wide text-[#1a8a3c]">
                   <Check aria-hidden="true" className="h-4 w-4" strokeWidth={3} />
-                  {containsTitle}
+                  {marks(containsTitle)}
                 </p>
               )}
               <ul className="mt-3 flex flex-col gap-2">
@@ -61,7 +63,7 @@ export const Composition: React.FC<{
                       className="mt-0.5 h-3.5 w-3.5 shrink-0 text-[#1a8a3c]"
                       strokeWidth={3}
                     />
-                    <span className="text-xs leading-snug text-brand">{item.text}</span>
+                    <span className="text-xs leading-snug text-brand">{marks(item.text)}</span>
                   </li>
                 ))}
               </ul>
@@ -71,7 +73,7 @@ export const Composition: React.FC<{
               {notContainsTitle && (
                 <p className="flex items-center gap-2 text-xs font-bold uppercase tracking-wide text-[#c0392b]">
                   <X aria-hidden="true" className="h-4 w-4" strokeWidth={3} />
-                  {notContainsTitle}
+                  {marks(notContainsTitle)}
                 </p>
               )}
               <ul className="mt-3 grid grid-cols-2 gap-2">
@@ -85,7 +87,7 @@ export const Composition: React.FC<{
                       className="mt-0.5 h-3.5 w-3.5 shrink-0 text-[#c0392b]"
                       strokeWidth={3}
                     />
-                    <span className="text-xs leading-snug text-[#c0392b]">{item.text}</span>
+                    <span className="text-xs leading-snug text-[#c0392b]">{marks(item.text)}</span>
                   </li>
                 ))}
               </ul>

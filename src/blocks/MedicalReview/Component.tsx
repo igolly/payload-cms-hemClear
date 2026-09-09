@@ -5,6 +5,8 @@ import type { MedicalReviewBlock as Props } from '@/payload-types'
 
 import { BrandIcon } from '@/components/BrandIcons'
 import { Media } from '@/components/Media'
+import { backgroundStyle } from '@/fields/background'
+import { marks } from '@/utilities/marks'
 
 const Laurel: React.FC<{ className?: string }> = ({ className }) => (
   <svg aria-hidden="true" className={className} fill="none" viewBox="0 0 24 40">
@@ -25,6 +27,8 @@ const Laurel: React.FC<{ className?: string }> = ({ className }) => (
 )
 
 export const MedicalReviewBlock: React.FC<Props> = ({
+  bgColor,
+  bgColorCustom,
   doctors,
   eyebrow,
   heading,
@@ -34,7 +38,7 @@ export const MedicalReviewBlock: React.FC<Props> = ({
   const reviewers = Array.isArray(doctors) ? doctors : []
 
   return (
-    <section className="w-full bg-[#f5f5f5] px-4 py-14 sm:px-6 lg:px-8">
+    <section className="w-full bg-[#f5f5f5] px-4 py-14 sm:px-6 lg:px-8" style={backgroundStyle(bgColor, bgColorCustom)}>
       <div className="mx-auto max-w-6xl">
         <header className="text-center">
           {eyebrow && (
@@ -43,7 +47,7 @@ export const MedicalReviewBlock: React.FC<Props> = ({
               data-payload-subpath="eyebrow"
             >
               <Laurel className="h-8 w-5 text-brand" />
-              {eyebrow}
+              {marks(eyebrow)}
               <Laurel className="h-8 w-5 -scale-x-100 text-brand" />
             </p>
           )}
@@ -53,7 +57,7 @@ export const MedicalReviewBlock: React.FC<Props> = ({
               className="mt-3 font-serif text-3xl leading-tight text-heading sm:text-4xl"
               data-payload-subpath="heading"
             >
-              {heading}
+              {marks(heading)}
             </h2>
           )}
         </header>
@@ -71,11 +75,11 @@ export const MedicalReviewBlock: React.FC<Props> = ({
                 </span>
                 <span className="min-w-0">
                   <span className="block text-sm font-bold leading-tight text-brand">
-                    {point.title}
+                    {marks(point.title)}
                   </span>
                   {point.description && (
                     <span className="mt-1 block text-xs leading-snug text-slate-600">
-                      {point.description}
+                      {marks(point.description)}
                     </span>
                   )}
                 </span>
@@ -101,16 +105,16 @@ export const MedicalReviewBlock: React.FC<Props> = ({
 
                   <span className="min-w-0 grow">
                     <span className="block text-sm font-bold leading-tight text-brand">
-                      {doctor.name}
+                      {marks(doctor.name)}
                     </span>
                     {doctor.role && (
-                      <span className="block text-xs text-slate-500">{doctor.role}</span>
+                      <span className="block text-xs text-slate-500">{marks(doctor.role)}</span>
                     )}
                   </span>
 
                   {doctor.tag && (
                     <span className="shrink-0 rounded-full bg-[#eef4fd] px-2.5 py-1 text-[10px] font-semibold text-brand">
-                      {doctor.tag}
+                      {marks(doctor.tag)}
                     </span>
                   )}
                 </div>
@@ -128,7 +132,7 @@ export const MedicalReviewBlock: React.FC<Props> = ({
 
                 {doctor.readMoreLabel && (
                   <p className="mt-3 flex items-center gap-1 text-xs font-bold text-[#0052cc]">
-                    {doctor.readMoreLabel}
+                    {marks(doctor.readMoreLabel)}
                     <ChevronDown aria-hidden="true" className="h-3 w-3" />
                   </p>
                 )}
@@ -140,7 +144,7 @@ export const MedicalReviewBlock: React.FC<Props> = ({
                         className="rounded bg-[#f2f6fd] px-2 py-1 text-[10px] font-medium text-brand"
                         key={tag.id ?? t}
                       >
-                        {tag.text}
+                        {marks(tag.text)}
                       </li>
                     ))}
                   </ul>
@@ -150,7 +154,7 @@ export const MedicalReviewBlock: React.FC<Props> = ({
                   {doctor.verifiedLabel && (
                     <span className="flex items-center gap-1 font-semibold text-[#1a8a3c]">
                       <Check aria-hidden="true" className="h-3 w-3" strokeWidth={3} />
-                      {doctor.verifiedLabel}
+                      {marks(doctor.verifiedLabel)}
                     </span>
                   )}
 
@@ -159,7 +163,7 @@ export const MedicalReviewBlock: React.FC<Props> = ({
                       className="flex items-center gap-0.5 font-semibold text-slate-600 transition-colors hover:text-brand"
                       href={doctor.profileUrl || '#'}
                     >
-                      {doctor.profileLabel}
+                      {marks(doctor.profileLabel)}
                       <ChevronRight aria-hidden="true" className="h-3 w-3" />
                     </a>
                   )}

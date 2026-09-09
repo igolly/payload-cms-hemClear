@@ -3,6 +3,7 @@ import React from 'react'
 import type { Media as MediaType } from '@/payload-types'
 
 import { Media } from '@/components/Media'
+import { marks } from '@/utilities/marks'
 
 type Resource = MediaType | number | string | null | undefined
 
@@ -46,8 +47,8 @@ export const ImageSlot: React.FC<{
           strokeWidth="1.5"
         />
       </svg>
-      <span className="text-sm font-semibold text-[#3F6FA8]">{label}</span>
-      <span className="text-xs text-[#8AA6C8]">{hint}</span>
+      <span className="text-sm font-semibold text-[#3F6FA8]">{marks(label)}</span>
+      <span className="text-xs text-[#8AA6C8]">{marks(hint)}</span>
     </div>
   )
 }

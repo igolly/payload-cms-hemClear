@@ -2,6 +2,8 @@ import type { Block } from 'payload'
 
 import { linkGroup } from '@/fields/linkGroup'
 
+import { backgroundField } from '@/fields/background'
+
 export const WhyDays: Block = {
   slug: 'whyDays',
   interfaceName: 'WhyDaysBlock',
@@ -40,5 +42,6 @@ export const WhyDays: Block = {
       relationTo: 'media',
       admin: { description: 'Product shot beside the copy.' },
     },
+    backgroundField(),
   ],
 }

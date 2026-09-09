@@ -2,6 +2,8 @@ import type { Block } from 'payload'
 
 import { linkGroup } from '@/fields/linkGroup'
 
+import { backgroundField } from '@/fields/background'
+
 export const BannerHero: Block = {
   slug: 'bannerHero',
   interfaceName: 'BannerHeroBlock',
@@ -49,5 +51,6 @@ export const BannerHero: Block = {
         },
       ],
     },
+    backgroundField(),
   ],
 }

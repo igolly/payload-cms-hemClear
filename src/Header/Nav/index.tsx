@@ -19,14 +19,14 @@ export const HeaderNav: React.FC<{ data: HeaderType }> = ({ data }) => {
             key={i}
             {...link}
             appearance="link"
-            className="text-sm font-bold text-[#182F7C] hover:text-[#0057A0]"
+            className="font-inter text-sm font-bold text-[#182F7C] hover:text-[#0057A0]"
           />
         )
       })}
 
       <Link
         href="#"
-        className="hidden items-center gap-1.5 text-sm font-bold text-[#182F7C] hover:text-[#0057A0] sm:flex"
+        className="hidden items-center gap-1.5 font-inter text-sm font-bold text-[#182F7C] hover:text-[#0057A0] sm:flex"
       >
         <User className="size-5" />
         Sign In

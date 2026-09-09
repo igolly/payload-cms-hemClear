@@ -6,8 +6,12 @@ import type { FeatureStripBlock as Props } from '@/payload-types'
 import { BrandIcon } from '@/components/BrandIcons'
 import { CMSLink } from '@/components/Link'
 import { cn } from '@/utilities/ui'
+import { backgroundStyle } from '@/fields/background'
+import { marks, multiline } from '@/utilities/marks'
 
 export const FeatureStripBlock: React.FC<Props> = ({
+  bgColor,
+  bgColorCustom,
   align,
   background,
   eyebrow,
@@ -35,6 +39,7 @@ export const FeatureStripBlock: React.FC<Props> = ({
         'w-full px-4 py-12 sm:px-6 lg:px-8',
         background === 'light' ? 'bg-[#f2f6fd]' : 'bg-white',
       )}
+      style={backgroundStyle(bgColor, bgColorCustom)}
     >
       <div className="mx-auto max-w-6xl">
         {(eyebrow || heading || subheading) && (
@@ -44,7 +49,7 @@ export const FeatureStripBlock: React.FC<Props> = ({
                 className="text-xs font-bold uppercase tracking-[0.15em] text-[#0052cc]"
                 data-payload-subpath="eyebrow"
               >
-                {eyebrow}
+                {marks(eyebrow)}
               </p>
             )}
 
@@ -53,12 +58,7 @@ export const FeatureStripBlock: React.FC<Props> = ({
                 className="mt-3 font-serif text-3xl leading-tight text-heading sm:text-4xl"
                 data-payload-subpath="heading"
               >
-                {heading.split('\n').map((line, i) => (
-                  <React.Fragment key={i}>
-                    {i > 0 && <br />}
-                    {line}
-                  </React.Fragment>
-                ))}
+                {multiline(heading)}
               </h2>
             )}
 
@@ -67,7 +67,7 @@ export const FeatureStripBlock: React.FC<Props> = ({
                 className="mx-auto mt-3 max-w-3xl whitespace-pre-line text-sm text-[#1a2f7c]"
                 data-payload-subpath="subheading"
               >
-                {subheading}
+                {marks(subheading)}
               </p>
             )}
           </header>
@@ -89,7 +89,7 @@ export const FeatureStripBlock: React.FC<Props> = ({
                       className="shrink-0 text-[#1668C4] [&>svg]:h-6 [&>svg]:w-6"
                       name={item.icon}
                     />
-                    <span className="text-xs font-semibold text-[#0052cc]">{item.title}</span>
+                    <span className="text-xs font-semibold text-[#0052cc]">{marks(item.title)}</span>
                   </li>
                 )
               }
@@ -104,7 +104,7 @@ export const FeatureStripBlock: React.FC<Props> = ({
                     <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#1668C4]">
                       <Check className="h-3 w-3 text-white" strokeWidth={3} />
                     </span>
-                    <span className="text-sm text-brand">{item.title}</span>
+                    <span className="text-sm text-brand">{marks(item.title)}</span>
                   </li>
                 )
               }
@@ -129,14 +129,14 @@ export const FeatureStripBlock: React.FC<Props> = ({
 
                   <div className={cn('min-w-0', (centred || style === 'cards') && 'mt-3')}>
                     <h3 className="text-xs font-bold uppercase tracking-wide leading-tight text-subheading">
-                      {item.title}
+                      {marks(item.title)}
                     </h3>
                     {item.description && (
                       <p
                         className="mt-2 text-xs leading-relaxed text-slate-600"
                         data-payload-subpath={`items.${i}.description`}
                       >
-                        {item.description}
+                        {marks(item.description)}
                       </p>
                     )}
                   </div>
@@ -171,14 +171,14 @@ export const FeatureStripBlock: React.FC<Props> = ({
               className="mx-auto mt-8 max-w-md rounded-lg bg-[#dfeafb] px-5 py-4 text-center text-sm leading-relaxed text-brand"
               data-payload-subpath="footnote"
             >
-              {footnote}
+              {marks(footnote)}
             </p>
           ) : (
             <p
               className="mx-auto mt-6 max-w-3xl whitespace-pre-line text-center text-[13px] leading-relaxed text-[#0052cc]"
               data-payload-subpath="footnote"
             >
-              {footnote}
+              {marks(footnote)}
             </p>
           ))}
       </div>

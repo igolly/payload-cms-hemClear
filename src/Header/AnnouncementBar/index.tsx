@@ -1,5 +1,6 @@
 'use client'
 import React, { useEffect, useState } from 'react'
+import { marks } from '@/utilities/marks'
 
 const pad = (n: number) => String(Math.max(0, n)).padStart(2, '0')
 
@@ -37,17 +38,17 @@ export const AnnouncementBar: React.FC<{
     <div className="w-full bg-navy px-4 py-2 text-white">
       <div className="mx-auto flex max-w-7xl flex-col items-center justify-center gap-x-8 gap-y-1 text-center sm:flex-row">
         <p className="text-xs leading-tight">
-          {title && <span className="block font-bold text-[#ffe066]">{title}</span>}
-          {text}
+          {title && <span className="block font-bold text-[#ffe066]">{marks(title)}</span>}
+          {marks(text)}
         </p>
 
         {remaining !== null && (
           <ul className="flex items-center gap-3">
             {parts(remaining).map((part) => (
               <li className="flex flex-col items-center leading-none" key={part.label}>
-                <span className="text-sm font-bold tabular-nums">{part.value}</span>
+                <span className="text-sm font-bold tabular-nums">{marks(part.value)}</span>
                 <span className="text-[9px] uppercase tracking-wide text-white/70">
-                  {part.label}
+                  {marks(part.label)}
                 </span>
               </li>
             ))}

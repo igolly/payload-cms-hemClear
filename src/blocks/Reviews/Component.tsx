@@ -5,8 +5,12 @@ import type { ReviewsBlock as Props } from '@/payload-types'
 import { Media } from '@/components/Media'
 import { ReviewGrid } from './ReviewGrid'
 import { Stars } from './Stars'
+import { backgroundStyle } from '@/fields/background'
+import { marks } from '@/utilities/marks'
 
 export const ReviewsBlock: React.FC<Props> = ({
+  bgColor,
+  bgColorCustom,
   description,
   disclaimer,
   featured,
@@ -22,19 +26,19 @@ export const ReviewsBlock: React.FC<Props> = ({
   const gridItems = Array.isArray(reviews) ? reviews : []
 
   return (
-    <section className="w-full bg-white px-4 py-16 sm:px-6 lg:px-8">
+    <section className="w-full bg-white px-4 py-16 sm:px-6 lg:px-8" style={backgroundStyle(bgColor, bgColorCustom)}>
       <div className="mx-auto max-w-7xl">
         {/* Heading */}
         {(heading || headingAccent) && (
           <h2 className="text-center font-serif text-3xl leading-tight sm:text-4xl lg:text-5xl">
             {heading && (
               <span className="block text-heading" data-payload-subpath="heading">
-                {heading}
+                {marks(heading)}
               </span>
             )}
             {headingAccent && (
               <span className="block text-[#2d80e2]" data-payload-subpath="headingAccent">
-                {headingAccent}
+                {marks(headingAccent)}
               </span>
             )}
           </h2>
@@ -45,7 +49,7 @@ export const ReviewsBlock: React.FC<Props> = ({
             className="mx-auto mt-4 max-w-2xl whitespace-pre-line text-center text-sm leading-relaxed text-brand"
             data-payload-subpath="description"
           >
-            {description}
+            {marks(description)}
           </p>
         )}
 
@@ -64,7 +68,7 @@ export const ReviewsBlock: React.FC<Props> = ({
                       className="font-serif text-xl font-semibold text-brand"
                       data-payload-subpath={`featured.${i}.score`}
                     >
-                      {item.score}
+                      {marks(item.score)}
                     </span>
                   )}
                   <Stars className="text-[#f7a304]" count={item.stars} />
@@ -74,14 +78,14 @@ export const ReviewsBlock: React.FC<Props> = ({
                   className="mt-5 font-serif text-xl font-bold leading-snug text-subheading"
                   data-payload-subpath={`featured.${i}.title`}
                 >
-                  {item.title}
+                  {marks(item.title)}
                 </h3>
 
                 <p
                   className="mt-4 whitespace-pre-line text-sm leading-relaxed text-brand"
                   data-payload-subpath={`featured.${i}.quote`}
                 >
-                  {item.quote}
+                  {marks(item.quote)}
                 </p>
 
                 <div className="mt-auto pt-6">
@@ -90,7 +94,7 @@ export const ReviewsBlock: React.FC<Props> = ({
                   </p>
                   {item.authorNote && (
                     <p className="text-sm text-brand" data-payload-subpath={`featured.${i}.authorNote`}>
-                      {item.authorNote}
+                      {marks(item.authorNote)}
                     </p>
                   )}
                 </div>
@@ -130,7 +134,7 @@ export const ReviewsBlock: React.FC<Props> = ({
             className="mx-auto mt-10 max-w-3xl whitespace-pre-line text-center text-[11px] leading-relaxed text-slate-600"
             data-payload-subpath="disclaimer"
           >
-            {disclaimer}
+            {marks(disclaimer)}
           </p>
         )}
       </div>

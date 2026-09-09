@@ -1,9 +1,10 @@
 import { Button, type ButtonProps } from '@/components/ui/button'
 import { cn } from '@/utilities/ui'
+import { marks } from '@/utilities/marks'
 import Link from 'next/link'
 import React from 'react'
 
-import type { Page, Product } from '@/payload-types'
+import type { Page } from '@/payload-types'
 
 type CMSLinkType = {
   appearance?: 'inline' | ButtonProps['variant']
@@ -12,10 +13,8 @@ type CMSLinkType = {
   label?: string | null
   newTab?: boolean | null
   reference?: {
-    relationTo: 'pages' | 'products'
-    // `href` is built as `/<relationTo>/<slug>` for anything that isn't a page,
-    // so products resolve to /products/<slug> with no extra mapping.
-    value: number | Page | Product | string
+    relationTo: 'pages'
+    value: number | Page | string
   } | null
   size?: ButtonProps['size'] | null
   type?: 'custom' | 'reference' | null
@@ -35,11 +34,10 @@ export const CMSLink: React.FC<CMSLinkType> = (props) => {
     url,
   } = props
 
+  // Pages are the only linkable collection, and they live at the root.
   const href =
     type === 'reference' && typeof reference?.value === 'object' && reference.value.slug
-      ? `${reference?.relationTo !== 'pages' ? `/${reference?.relationTo}` : ''}/${
-          reference.value.slug
-        }`
+      ? `/${reference.value.slug}`
       : url
 
   if (!href) return null
@@ -51,7 +49,7 @@ export const CMSLink: React.FC<CMSLinkType> = (props) => {
   if (appearance === 'inline') {
     return (
       <Link className={cn(className)} href={href || url || ''} {...newTabProps}>
-        {label && label}
+        {label && marks(label)}
         {children && children}
       </Link>
     )
@@ -60,7 +58,7 @@ export const CMSLink: React.FC<CMSLinkType> = (props) => {
   return (
     <Button asChild className={className} size={size} variant={appearance}>
       <Link className={cn(className)} href={href || url || ''} {...newTabProps}>
-        {label && label}
+        {label && marks(label)}
         {children && children}
       </Link>
     </Button>

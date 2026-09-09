@@ -15,6 +15,7 @@ import { Controller } from 'react-hook-form'
 import { Error } from '../Error'
 import { Width } from '../Width'
 import { stateOptions } from './options'
+import { marks } from '@/utilities/marks'
 
 export const State: React.FC<
   StateField & {
@@ -25,7 +26,7 @@ export const State: React.FC<
   return (
     <Width width={width}>
       <Label htmlFor={name}>
-        {label}
+        {marks(label)}
         {required && (
           <span className="required">
             * <span className="sr-only">(required)</span>
@@ -48,7 +49,7 @@ export const State: React.FC<
                 {stateOptions.map(({ label, value }) => {
                   return (
                     <SelectItem key={value} value={value}>
-                      {label}
+                      {marks(label)}
                     </SelectItem>
                   )
                 })}

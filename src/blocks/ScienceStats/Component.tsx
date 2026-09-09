@@ -4,8 +4,12 @@ import type { ScienceStatsBlock as Props } from '@/payload-types'
 
 import { CMSLink } from '@/components/Link'
 import { ImageSlot } from '@/blocks/FAQ/ImagePlaceholder'
+import { backgroundStyle } from '@/fields/background'
+import { marks } from '@/utilities/marks'
 
 export const ScienceStatsBlock: React.FC<Props> = ({
+  bgColor,
+  bgColorCustom,
   badges,
   footnote,
   heading,
@@ -18,7 +22,7 @@ export const ScienceStatsBlock: React.FC<Props> = ({
   const chips = Array.isArray(badges) ? badges : []
 
   return (
-    <section className="w-full bg-[#f5f8fd] px-4 py-14 sm:px-6 lg:px-8">
+    <section className="w-full bg-[#f5f8fd] px-4 py-14 sm:px-6 lg:px-8" style={backgroundStyle(bgColor, bgColorCustom)}>
       <div className="mx-auto max-w-6xl">
         <header className="text-center">
           {heading && (
@@ -26,7 +30,7 @@ export const ScienceStatsBlock: React.FC<Props> = ({
               className="font-serif text-3xl leading-tight text-heading sm:text-4xl"
               data-payload-subpath="heading"
             >
-              {heading}
+              {marks(heading)}
             </h2>
           )}
           {subheading && (
@@ -34,7 +38,7 @@ export const ScienceStatsBlock: React.FC<Props> = ({
               className="mx-auto mt-3 max-w-3xl text-sm text-slate-600"
               data-payload-subpath="subheading"
             >
-              {subheading}
+              {marks(subheading)}
             </p>
           )}
         </header>
@@ -58,13 +62,13 @@ export const ScienceStatsBlock: React.FC<Props> = ({
                   key={stat.id ?? i}
                 >
                   <span className="w-24 shrink-0 font-serif text-3xl font-bold leading-none text-brand">
-                    {stat.value}
+                    {marks(stat.value)}
                   </span>
                   <span className="min-w-0">
-                    <span className="block text-sm font-bold text-[#0052cc]">{stat.title}</span>
+                    <span className="block text-sm font-bold text-[#0052cc]">{marks(stat.title)}</span>
                     {stat.description && (
                       <span className="mt-1 block text-xs leading-relaxed text-slate-600">
-                        {stat.description}
+                        {marks(stat.description)}
                       </span>
                     )}
                   </span>
@@ -98,14 +102,14 @@ export const ScienceStatsBlock: React.FC<Props> = ({
                 className="border-[#c9dcf5] pl-6 text-sm font-semibold text-brand first:pl-0 sm:border-l sm:first:border-l-0"
                 key={chip.id ?? i}
               >
-                {chip.text}
+                {marks(chip.text)}
               </li>
             ))}
           </ul>
         )}
 
         {footnote && (
-          <p className="mt-4 text-center text-[11px] text-slate-500">{footnote}</p>
+          <p className="mt-4 text-center text-[11px] text-slate-500">{marks(footnote)}</p>
         )}
       </div>
     </section>

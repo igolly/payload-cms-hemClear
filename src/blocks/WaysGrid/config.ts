@@ -1,5 +1,7 @@
 import type { Block } from 'payload'
 
+import { backgroundField } from '@/fields/background'
+
 export const WaysGrid: Block = {
   slug: 'waysGrid',
   interfaceName: 'WaysGridBlock',
@@ -71,5 +73,6 @@ export const WaysGrid: Block = {
         step: 1,
       },
     },
+    backgroundField(),
   ],
 }

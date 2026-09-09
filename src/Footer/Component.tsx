@@ -7,6 +7,7 @@ import { getCachedGlobal } from '@/utilities/getGlobals'
 import { BrandIcon, SocialIcon } from '@/components/BrandIcons'
 import { CMSLink } from '@/components/Link'
 import { Logo } from '@/components/Logo/Logo'
+import { marks } from '@/utilities/marks'
 
 export async function Footer() {
   const footer = await getCachedGlobal('footer', 2)()
@@ -25,14 +26,14 @@ export async function Footer() {
           {/* Link columns */}
           {columns.map((column, i) => (
             <div key={column.id ?? i}>
-              <h2 className={headingClass}>{column.title}</h2>
+              <h2 className={headingClass}>{marks(column.title)}</h2>
               <ul className="mt-4 space-y-2.5">
                 {(column.items || []).map((item, j) => (
                   <li key={item.id ?? j}>
                     <CMSLink
                       {...item.link}
                       appearance="inline"
-                      className="flex items-center justify-between gap-4 text-sm text-white/90 transition-colors hover:text-white"
+                      className="flex items-center justify-between gap-4 font-inter text-sm text-white/90 transition-colors hover:text-white"
                     >
                       <ChevronRight aria-hidden="true" className="h-3.5 w-3.5 text-white/50" />
                     </CMSLink>
@@ -52,7 +53,7 @@ export async function Footer() {
                     <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-white/30 text-white [&>span>svg]:h-4 [&>span>svg]:w-4">
                       <BrandIcon name={item.icon} />
                     </span>
-                    <span className="text-sm text-white/90">{item.label}</span>
+                    <span className="text-sm text-white/90">{marks(item.label)}</span>
                   </li>
                 ))}
               </ul>
@@ -67,13 +68,13 @@ export async function Footer() {
                 {socialItems.map((item, i) => (
                   <li key={item.id ?? i}>
                     <a
-                      className="flex items-center gap-3 text-sm text-white/90 transition-colors hover:text-white"
+                      className="flex items-center gap-3 font-inter text-sm text-white/90 transition-colors hover:text-white"
                       href={item.url || '#'}
                       rel="noopener noreferrer"
                       target="_blank"
                     >
                       <SocialIcon className="[&>svg]:h-5 [&>svg]:w-5" name={item.platform} />
-                      {item.label}
+                      {marks(item.label)}
                     </a>
                   </li>
                 ))}
@@ -93,19 +94,19 @@ export async function Footer() {
 
             {footer?.tagline && (
               <p className="mt-4 whitespace-pre-line text-xl leading-snug text-white">
-                {footer.tagline}
+                {marks(footer.tagline)}
               </p>
             )}
 
             {footer?.copyright && (
-              <p className="mt-6 text-xs text-white/70">{footer.copyright}</p>
+              <p className="mt-6 text-xs text-white/70">{marks(footer.copyright)}</p>
             )}
           </div>
 
           {/* Legal links + disclaimer */}
           <div>
             {legalLinks.length > 0 && (
-              <ul className="flex flex-wrap items-center gap-x-3 gap-y-2 text-sm text-white/90">
+              <ul className="flex flex-wrap items-center gap-x-3 gap-y-2 font-inter text-sm text-white/90">
                 {legalLinks.map((item, i) => (
                   <li className="flex items-center gap-3" key={item.id ?? i}>
                     {i > 0 && <span aria-hidden="true" className="text-white/30">|</span>}
@@ -122,7 +123,7 @@ export async function Footer() {
             {footer?.disclaimer && (
               <div className="mt-5 space-y-2 text-xs leading-relaxed text-white/70">
                 {footer.disclaimer.split('\n\n').map((paragraph, i) => (
-                  <p key={i}>{paragraph}</p>
+                  <p key={i}>{marks(paragraph)}</p>
                 ))}
               </div>
             )}

@@ -1,5 +1,7 @@
 import type { Block } from 'payload'
 
+import { backgroundField } from '@/fields/background'
+
 export const FAQ: Block = {
   slug: 'faq',
   interfaceName: 'FAQBlock',
@@ -93,5 +95,6 @@ export const FAQ: Block = {
         description: 'How the accordion appears before the visitor interacts with it.',
       },
     },
+    backgroundField(),
   ],
 }

@@ -4,8 +4,12 @@ import type { IngredientExplorerBlock as Props } from '@/payload-types'
 
 import { BrandIcon } from '@/components/BrandIcons'
 import { Explorer } from './Explorer'
+import { backgroundStyle } from '@/fields/background'
+import { marks } from '@/utilities/marks'
 
 export const IngredientExplorerBlock: React.FC<Props> = ({
+  bgColor,
+  bgColorCustom,
   allLabel,
   disclaimer,
   disclaimerTitle,
@@ -14,7 +18,7 @@ export const IngredientExplorerBlock: React.FC<Props> = ({
   const formulas = Array.isArray(groups) ? groups : []
 
   return (
-    <section className="w-full bg-white px-4 py-12 sm:px-6 lg:px-8">
+    <section className="w-full bg-white px-4 py-12 sm:px-6 lg:px-8" style={backgroundStyle(bgColor, bgColorCustom)}>
       <div className="mx-auto max-w-7xl">
         {formulas.length > 0 && <Explorer allLabel={allLabel} groups={formulas} />}
 
@@ -26,14 +30,14 @@ export const IngredientExplorerBlock: React.FC<Props> = ({
             />
             <div className="min-w-0">
               {disclaimerTitle && (
-                <p className="text-xs font-bold text-brand">{disclaimerTitle}</p>
+                <p className="text-xs font-bold text-brand">{marks(disclaimerTitle)}</p>
               )}
               {disclaimer && (
                 <p
                   className="mt-1 whitespace-pre-line text-[11px] leading-relaxed text-slate-600"
                   data-payload-subpath="disclaimer"
                 >
-                  {disclaimer}
+                  {marks(disclaimer)}
                 </p>
               )}
             </div>

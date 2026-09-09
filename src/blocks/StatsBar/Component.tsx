@@ -2,14 +2,16 @@ import React from 'react'
 import { Star } from 'lucide-react'
 
 import type { StatsBarBlock as Props } from '@/payload-types'
+import { backgroundStyle } from '@/fields/background'
+import { marks } from '@/utilities/marks'
 
-export const StatsBarBlock: React.FC<Props> = ({ stats }) => {
+export const StatsBarBlock: React.FC<Props> = ({ bgColor, bgColorCustom, stats }) => {
   const items = Array.isArray(stats) ? stats : []
 
   if (items.length === 0) return null
 
   return (
-    <section className="w-full bg-[#F7FAFF] px-4 py-8 sm:px-6 lg:px-8">
+    <section className="w-full bg-[#F7FAFF] px-4 py-8 sm:px-6 lg:px-8" style={backgroundStyle(bgColor, bgColorCustom)}>
       <ul className="mx-auto grid max-w-6xl grid-cols-2 gap-y-6 lg:flex lg:items-center lg:justify-center">
         {items.map((stat, i) => (
           <li
@@ -22,13 +24,13 @@ export const StatsBarBlock: React.FC<Props> = ({ stats }) => {
                 className="font-serif text-lg leading-none text-brand"
                 data-payload-subpath={`stats.${i}.topLabel`}
               >
-                {stat.topLabel}
+                {marks(stat.topLabel)}
               </span>
             )}
 
             <span className="flex items-center gap-1">
               <span className="font-serif text-3xl leading-tight text-brand sm:text-4xl">
-                {stat.value}
+                {marks(stat.value)}
               </span>
               {stat.showStar && (
                 <Star className="h-6 w-6 text-brand sm:h-7 sm:w-7" fill="currentColor" strokeWidth={0} />
@@ -40,7 +42,7 @@ export const StatsBarBlock: React.FC<Props> = ({ stats }) => {
                 className="font-serif text-sm text-brand sm:text-base"
                 data-payload-subpath={`stats.${i}.label`}
               >
-                {stat.label}
+                {marks(stat.label)}
               </span>
             )}
           </li>

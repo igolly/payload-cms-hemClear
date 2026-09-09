@@ -2,6 +2,8 @@ import type { Block } from 'payload'
 
 import { brandIconOptions } from '@/components/BrandIcons'
 
+import { backgroundField } from '@/fields/background'
+
 export const SupportTabs: Block = {
   slug: 'supportTabs',
   interfaceName: 'SupportTabsBlock',
@@ -65,5 +67,6 @@ export const SupportTabs: Block = {
         { name: 'disclaimer', type: 'textarea' },
       ],
     },
+    backgroundField(),
   ],
 }
