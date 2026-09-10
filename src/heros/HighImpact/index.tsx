@@ -87,7 +87,7 @@ export const HighImpactHero: React.FC<Page['hero']> = ({
     : 'lg:grid-cols-[562.5px_minmax(0,1fr)]'
 
   return (
-    <section className="w-full bg-white">
+    <section className="w-full bg-[#F5F5F7]">
       <div
         className={cn(
           'mx-auto grid max-w-[1400px] grid-cols-1 items-stretch px-6 lg:gap-10 lg:px-8',

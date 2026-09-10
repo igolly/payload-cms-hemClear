@@ -65,6 +65,9 @@ const mediaField = (label?: string): PuckField => ({
   label,
   render: ({ value, onChange, readOnly }) => (
     <MediaField
+      // Our own list route: the picker's built-in one caps at 24 rows and searches only
+      // `alt`. See `src/puck/mediaBrowse.ts`.
+      apiEndpoint="/api/media/puck-browse"
       label={label}
       onChange={async (next) => {
         if (!next) {
@@ -169,14 +172,37 @@ const itemSummary = (item: Record<string, unknown>, index = 0): string => {
   return typeof firstString === 'string' ? firstString.slice(0, 60) : `Item ${index + 1}`
 }
 
+/**
+ * Text fields that must stay plain strings on the Puck canvas.
+ *
+ * `contentEditable` is what gives the editor its click-and-type feel, but it works by
+ * handing the component a React element in place of the prop's string. That is fine for
+ * copy that is simply printed, and fatal for a value the component *uses*: a URL bound to
+ * `href`, or a string the UI parses or filters on. Those opt out here and keep their
+ * sidebar input.
+ */
+const NEVER_INLINE = new Set([
+  'bgColorCustom', // parsed by `backgroundStyle`
+  'category', // `ingredientExplorer` derives its filter pills from this
+])
+
+/** Names that read as an attribute value rather than as copy on the page. */
+const ATTRIBUTE_LIKE = /(url|href|src|id|slug)$/i
+
+const isInlineEditable = (field: PayloadField): boolean => {
+  const name = 'name' in field && typeof field.name === 'string' ? field.name : ''
+  if (!name) return false
+  return !NEVER_INLINE.has(name) && !ATTRIBUTE_LIKE.test(name)
+}
+
 const convertField = (field: PayloadField): PuckField | null => {
   const label = labelFor(field)
 
   switch (field.type) {
     case 'text':
-      return { type: 'text', label }
+      return { type: 'text', label, contentEditable: isInlineEditable(field) }
     case 'textarea':
-      return { type: 'textarea', label }
+      return { type: 'textarea', label, contentEditable: isInlineEditable(field) }
     case 'number':
       return { type: 'number', label }
     case 'email':
@@ -207,7 +233,10 @@ const convertField = (field: PayloadField): PuckField | null => {
       // Puck's built-in richtext field, not the plugin's `createRichTextField()`: that one
       // lives in a `'use client'` module, and this config is also evaluated on the server
       // to render pages, where calling into a client module throws.
-      return { type: 'richtext', label, contentEditable: false }
+      // Inline-editable like the text fields: Puck hands the component an element either
+      // way (a static render when off, a tiptap editor when on), and `RichText` already
+      // accepts Lexical JSON, an HTML string, or an element.
+      return { type: 'richtext', label, contentEditable: true }
     case 'array':
       return {
         type: 'array',

@@ -19,6 +19,7 @@ import { MedicalReview } from '../../blocks/MedicalReview/config'
 import { Guarantee } from '../../blocks/Guarantee/config'
 import { ProductDetail } from '../../blocks/ProductDetail/config'
 import { ProductSystem } from '../../blocks/ProductSystem/config'
+import { SolutionSystem } from '../../blocks/SolutionSystem/config'
 import { Pairing } from '../../blocks/Pairing/config'
 import { StatsBar } from '../../blocks/StatsBar/config'
 import { SupportTabs } from '../../blocks/SupportTabs/config'
@@ -93,6 +94,14 @@ export const Pages: CollectionConfig<'pages'> = {
         {
           fields: [
             {
+              // Says so on screen when these blocks are no longer what the site renders.
+              name: 'puckLayoutNotice',
+              type: 'ui',
+              admin: {
+                components: { Field: '@/components/PuckLayoutNotice#PuckLayoutNotice' },
+              },
+            },
+            {
               name: 'layout',
               type: 'blocks',
               blocks: [
@@ -103,6 +112,7 @@ export const Pages: CollectionConfig<'pages'> = {
                 StatsBar,
                 Causes,
                 ProductSystem,
+                SolutionSystem,
                 VideoStories,
                 WaysGrid,
                 ClosingCta,

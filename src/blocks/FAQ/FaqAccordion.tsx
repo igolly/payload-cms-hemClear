@@ -73,11 +73,16 @@ export const FaqAccordion: React.FC<{
                 id={panelId}
                 role="region"
               >
-                {item.answer.split('\n\n').map((paragraph, p) => (
-                  <p className={p > 0 ? 'mt-4' : undefined} key={p}>
-                    {marks(paragraph)}
-                  </p>
-                ))}
+                {typeof item.answer === 'string' ? (
+                  item.answer.split('\n\n').map((paragraph, p) => (
+                    <p className={p > 0 ? 'mt-4' : undefined} key={p}>
+                      {marks(paragraph)}
+                    </p>
+                  ))
+                ) : (
+                  // Inline-editable on the Puck canvas: already an element, not a string.
+                  <p>{item.answer}</p>
+                )}
               </div>
             )}
           </li>

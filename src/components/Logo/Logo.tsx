@@ -1,5 +1,6 @@
-import clsx from 'clsx'
 import React from 'react'
+
+import { cn } from '@/utilities/ui'
 
 interface Props {
   className?: string
@@ -22,7 +23,9 @@ export const Logo = (props: Props) => {
       loading={loading}
       fetchPriority={priority}
       decoding="async"
-      className={clsx('w-auto h-9', className)}
+      // `cn` (tailwind-merge), not `clsx`: the footer passes an explicit width, and
+      // with plain clsx that would sit alongside `w-auto` instead of replacing it.
+      className={cn('w-auto h-9', className)}
       src="/logo.png"
     />
   )

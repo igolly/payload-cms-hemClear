@@ -4,6 +4,7 @@ import type { ClosingCtaBlock as Props } from '@/payload-types'
 
 import { BrandIcon } from '@/components/BrandIcons'
 import { CMSLink } from '@/components/Link'
+import { Media } from '@/components/Media'
 import { ImageSlot } from '@/blocks/FAQ/ImagePlaceholder'
 import { backgroundStyle } from '@/fields/background'
 import { marks } from '@/utilities/marks'
@@ -70,10 +71,25 @@ export const ClosingCtaBlock: React.FC<Props> = ({
                 </div>
 
                 <div className="flex gap-3 p-4">
-                  <BrandIcon
-                    className="shrink-0 text-brand [&>svg]:h-9 [&>svg]:w-9"
-                    name={card.icon}
-                  />
+                  {/* Uploaded mark wins; the icon is the fallback, so a card without one
+                      renders exactly as before. */}
+                  {card.iconImage && typeof card.iconImage === 'object' ? (
+                    <span
+                      className="block h-9 w-9 shrink-0"
+                      data-payload-subpath={`cards.${i}.iconImage`}
+                    >
+                      <Media
+                        htmlElement={null}
+                        imgClassName="h-9 w-9 object-contain"
+                        resource={card.iconImage}
+                      />
+                    </span>
+                  ) : (
+                    <BrandIcon
+                      className="shrink-0 text-brand [&>svg]:h-9 [&>svg]:w-9"
+                      name={card.icon}
+                    />
+                  )}
                   <div className="min-w-0">
                     <h3 className="font-serif text-sm font-bold leading-tight text-subheading">
                       {marks(card.title)}

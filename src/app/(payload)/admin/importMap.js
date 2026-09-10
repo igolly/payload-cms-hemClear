@@ -9,6 +9,7 @@ import { UnderlineFeatureClient as UnderlineFeatureClient_e70f5e05f09f93e00b997e
 import { BoldFeatureClient as BoldFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
 import { ItalicFeatureClient as ItalicFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
 import { LinkFeatureClient as LinkFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
+import { PuckLayoutNotice as PuckLayoutNotice_7e1a787aadea86ec3e63929c5402d7a3 } from '@/components/PuckLayoutNotice'
 import { PlanRowLabel as PlanRowLabel_037531769fa81ee3ede4b3daf04ae43b } from '@/blocks/ProductDetail/RowLabel'
 import { StoryRowLabel as StoryRowLabel_037531769fa81ee3ede4b3daf04ae43b } from '@/blocks/ProductDetail/RowLabel'
 import { SectionRowLabel as SectionRowLabel_037531769fa81ee3ede4b3daf04ae43b } from '@/blocks/ProductDetail/RowLabel'
@@ -19,6 +20,7 @@ import { StatRowLabel as StatRowLabel_af70b2176a744957d617bfa0d9963a50 } from '@
 import { FactorRowLabel as FactorRowLabel_4242fa1c6000ce48da034d4dcb4c845a } from '@/blocks/Causes/RowLabel'
 import { ParagraphRowLabel as ParagraphRowLabel_f52fc9ee580fd82af34a5f4c567e317c } from '@/blocks/ProductSystem/RowLabel'
 import { FeatureRowLabel as FeatureRowLabel_f52fc9ee580fd82af34a5f4c567e317c } from '@/blocks/ProductSystem/RowLabel'
+import { CardRowLabel as CardRowLabel_856ebfcbbb5c2673ed7b6915acb53d50 } from '@/blocks/SolutionSystem/RowLabel'
 import { StoryRowLabel as StoryRowLabel_b7235514919dcb7d17142f412285bf50 } from '@/blocks/VideoStories/RowLabel'
 import { WayRowLabel as WayRowLabel_d0eca5bef3e6afe0c2214eaf4aa2487f } from '@/blocks/WaysGrid/RowLabel'
 import { CtaCardRowLabel as CtaCardRowLabel_eccc6856eaf1a75df0068a13021d0705 } from '@/blocks/ClosingCta/RowLabel'
@@ -73,6 +75,7 @@ export const importMap = {
   "@payloadcms/richtext-lexical/client#BoldFeatureClient": BoldFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
   "@payloadcms/richtext-lexical/client#ItalicFeatureClient": ItalicFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
   "@payloadcms/richtext-lexical/client#LinkFeatureClient": LinkFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
+  "@/components/PuckLayoutNotice#PuckLayoutNotice": PuckLayoutNotice_7e1a787aadea86ec3e63929c5402d7a3,
   "@/blocks/ProductDetail/RowLabel#PlanRowLabel": PlanRowLabel_037531769fa81ee3ede4b3daf04ae43b,
   "@/blocks/ProductDetail/RowLabel#StoryRowLabel": StoryRowLabel_037531769fa81ee3ede4b3daf04ae43b,
   "@/blocks/ProductDetail/RowLabel#SectionRowLabel": SectionRowLabel_037531769fa81ee3ede4b3daf04ae43b,
@@ -83,6 +86,7 @@ export const importMap = {
   "@/blocks/Causes/RowLabel#FactorRowLabel": FactorRowLabel_4242fa1c6000ce48da034d4dcb4c845a,
   "@/blocks/ProductSystem/RowLabel#ParagraphRowLabel": ParagraphRowLabel_f52fc9ee580fd82af34a5f4c567e317c,
   "@/blocks/ProductSystem/RowLabel#FeatureRowLabel": FeatureRowLabel_f52fc9ee580fd82af34a5f4c567e317c,
+  "@/blocks/SolutionSystem/RowLabel#CardRowLabel": CardRowLabel_856ebfcbbb5c2673ed7b6915acb53d50,
   "@/blocks/VideoStories/RowLabel#StoryRowLabel": StoryRowLabel_b7235514919dcb7d17142f412285bf50,
   "@/blocks/WaysGrid/RowLabel#WayRowLabel": WayRowLabel_d0eca5bef3e6afe0c2214eaf4aa2487f,
   "@/blocks/ClosingCta/RowLabel#CtaCardRowLabel": CtaCardRowLabel_eccc6856eaf1a75df0068a13021d0705,

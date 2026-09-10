@@ -57,6 +57,16 @@ export const ClosingCta: Block = {
             { name: 'title', type: 'text', required: true, admin: { width: '50%' } },
           ],
         },
+        {
+          name: 'iconImage',
+          type: 'upload',
+          relationTo: 'media',
+          label: 'Icon image',
+          admin: {
+            description:
+              'Small mark shown beside the title. Replaces the icon above when set; leave empty to use the icon. (The photo field above is the large card image.)',
+          },
+        },
         { name: 'description', type: 'textarea' },
       ],
     },

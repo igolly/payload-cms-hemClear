@@ -241,6 +241,7 @@ export interface Page {
         | StatsBarBlock
         | CausesBlock
         | ProductSystemBlock
+        | SolutionSystemBlock
         | VideoStoriesBlock
         | WaysGridBlock
         | ClosingCtaBlock
@@ -1111,6 +1112,10 @@ export interface CausesBlock {
           | 'snowflake'
           | 'info';
         label: string;
+        /**
+         * Card illustration. Replaces the icon above when set; leave empty to keep using the icon.
+         */
+        image?: (string | null) | Media;
         id?: string | null;
       }[]
     | null;
@@ -1209,6 +1214,76 @@ export interface ProductSystemBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'productSystem';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "SolutionSystemBlock".
+ */
+export interface SolutionSystemBlock {
+  /**
+   * Use a line break to control where the heading wraps.
+   */
+  heading?: string | null;
+  subheading?: string | null;
+  /**
+   * Centre diagram. A placeholder holds its space until one is set.
+   */
+  image?: (string | null) | Media;
+  /**
+   * Split around the diagram by position: the first half fills the left column, the rest the right. On mobile they stack below the diagram in this order.
+   */
+  cards?:
+    | {
+        icon:
+          | 'pregnancy'
+          | 'toilet'
+          | 'sitting'
+          | 'lifting'
+          | 'fiber'
+          | 'tissueChange'
+          | 'flask'
+          | 'supportSystem'
+          | 'stethoscope'
+          | 'research'
+          | 'madeInUsa'
+          | 'guarantee'
+          | 'clipboardCheck'
+          | 'clock'
+          | 'documentSearch'
+          | 'packageLock'
+          | 'gmp'
+          | 'packageBox'
+          | 'truck'
+          | 'calendar'
+          | 'refund'
+          | 'rotate'
+          | 'badgeAward'
+          | 'leaf'
+          | 'droplet'
+          | 'shieldCheck'
+          | 'snowflake'
+          | 'info';
+        /**
+         * Large lead-in number, e.g. "13".
+         */
+        stat?: string | null;
+        title: string;
+        subtitle?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Leave empty to keep this section's designed default.
+   */
+  bgColor?:
+    ('white' | 'offWhite' | 'paleBlue' | 'lightBlue' | 'skyBlue' | 'brand' | 'navy' | 'deepNavy' | 'custom') | null;
+  /**
+   * Any CSS colour, e.g. #0d2050.
+   */
+  bgColorCustom?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'solutionSystem';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1377,6 +1452,10 @@ export interface ClosingCtaBlock {
           | 'snowflake'
           | 'info';
         title: string;
+        /**
+         * Small mark shown beside the title. Replaces the icon above when set; leave empty to use the icon. (The photo field above is the large card image.)
+         */
+        iconImage?: (string | null) | Media;
         description?: string | null;
         id?: string | null;
       }[]
@@ -2844,6 +2923,7 @@ export interface PagesSelect<T extends boolean = true> {
         statsBar?: T | StatsBarBlockSelect<T>;
         causes?: T | CausesBlockSelect<T>;
         productSystem?: T | ProductSystemBlockSelect<T>;
+        solutionSystem?: T | SolutionSystemBlockSelect<T>;
         videoStories?: T | VideoStoriesBlockSelect<T>;
         waysGrid?: T | WaysGridBlockSelect<T>;
         closingCta?: T | ClosingCtaBlockSelect<T>;
@@ -3131,6 +3211,7 @@ export interface CausesBlockSelect<T extends boolean = true> {
     | {
         icon?: T;
         label?: T;
+        image?: T;
         id?: T;
       };
   footnote?: T;
@@ -3174,6 +3255,28 @@ export interface ProductSystemBlockSelect<T extends boolean = true> {
     | T
     | {
         image?: T;
+        stat?: T;
+        title?: T;
+        subtitle?: T;
+        id?: T;
+      };
+  bgColor?: T;
+  bgColorCustom?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "SolutionSystemBlock_select".
+ */
+export interface SolutionSystemBlockSelect<T extends boolean = true> {
+  heading?: T;
+  subheading?: T;
+  image?: T;
+  cards?:
+    | T
+    | {
+        icon?: T;
         stat?: T;
         title?: T;
         subtitle?: T;
@@ -3248,6 +3351,7 @@ export interface ClosingCtaBlockSelect<T extends boolean = true> {
         image?: T;
         icon?: T;
         title?: T;
+        iconImage?: T;
         description?: T;
         id?: T;
       };

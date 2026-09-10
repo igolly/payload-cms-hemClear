@@ -10,8 +10,11 @@ import { backgroundStyle } from '@/fields/background'
 import { marks } from '@/utilities/marks'
 
 /** Renders *asterisked* words in the highlight colour. */
-const highlight = (text: string) =>
-  text.split(/(\*[^*]+\*)/g).map((part, i) =>
+const highlight = (text: React.ReactNode): React.ReactNode => {
+  // An inline-editable field arrives as an element; there is nothing to scan for markers.
+  if (typeof text !== 'string') return text
+
+  return text.split(/(\*[^*]+\*)/g).map((part, i) =>
     part.startsWith('*') && part.endsWith('*') ? (
       <span className="text-[#6fd2f5]" key={i}>
         {part.slice(1, -1)}
@@ -20,6 +23,7 @@ const highlight = (text: string) =>
       <React.Fragment key={i}>{marks(part)}</React.Fragment>
     ),
   )
+}
 
 export const PricingOfferBlock: React.FC<Props> = ({
   bgColor,

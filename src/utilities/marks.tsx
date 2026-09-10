@@ -42,13 +42,19 @@ export const marks = (value: React.ReactNode): React.ReactNode => {
  * Several blocks declared this line-splitting locally; they now share this one so a heading
  * and a paragraph treat the symbols the same way.
  */
-export const multiline = (value: string): React.ReactNode =>
-  value.split('\n').map((line, i) => (
+export const multiline = (value: React.ReactNode): React.ReactNode => {
+  // Puck hands a component a React element in place of the string when a field is
+  // inline-editable on the canvas, so this has to be as total as `marks` is: anything
+  // that is not a string has no newlines to split and is returned untouched.
+  if (typeof value !== 'string') return value
+
+  return value.split('\n').map((line, i) => (
     <React.Fragment key={i}>
       {i > 0 && <br />}
       {marks(line)}
     </React.Fragment>
   ))
+}
 
 /**
  * The same treatment for a rich-text HTML string.

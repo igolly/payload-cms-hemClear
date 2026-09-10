@@ -81,6 +81,15 @@ export const Causes: Block = {
             { name: 'label', type: 'text', required: true, admin: { width: '50%' } },
           ],
         },
+        {
+          name: 'image',
+          type: 'upload',
+          relationTo: 'media',
+          admin: {
+            description:
+              'Card illustration. Replaces the icon above when set; leave empty to keep using the icon.',
+          },
+        },
       ],
     },
     {

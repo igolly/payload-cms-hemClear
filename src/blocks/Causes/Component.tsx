@@ -6,6 +6,7 @@ import { Check } from 'lucide-react'
 
 import { BrandIcon } from '@/components/BrandIcons'
 import { CMSLink } from '@/components/Link'
+import { Media } from '@/components/Media'
 import { cn } from '@/utilities/ui'
 import { ImageSlot } from '@/blocks/FAQ/ImagePlaceholder'
 import { backgroundStyle } from '@/fields/background'
@@ -116,10 +117,31 @@ export const CausesBlock: React.FC<Props> = ({
                     data-payload-subpath={`factors.${i}.label`}
                     key={factor.id ?? i}
                   >
-                    <BrandIcon
-                      className="text-[#1668C4] [&>svg]:h-7 [&>svg]:w-7"
-                      name={factor.icon}
-                    />
+                    {/*
+                     * The uploaded illustration wins when there is one, and the icon is
+                     * the fallback — so pages still on icons (`/why`,
+                     * `/about-hemorrhoids`) render exactly as before. The art carries its
+                     * own pale disc, so the slot stays unstyled rather than drawing one.
+                     */}
+                    {factor.image && typeof factor.image === 'object' ? (
+                      <span
+                        className="block h-16 w-16"
+                        data-payload-subpath={`factors.${i}.image`}
+                      >
+                        {/* `htmlElement={null}` so `Media` emits its `<picture>` bare —
+                            its default `<div>` wrapper is not valid inside a span. */}
+                        <Media
+                          htmlElement={null}
+                          imgClassName="h-16 w-16 object-contain"
+                          resource={factor.image}
+                        />
+                      </span>
+                    ) : (
+                      <BrandIcon
+                        className="text-[#1668C4] [&>svg]:h-7 [&>svg]:w-7"
+                        name={factor.icon}
+                      />
+                    )}
                     <span className="text-[11px] font-semibold leading-tight text-[#123A6B]">
                       {marks(factor.label)}
                     </span>

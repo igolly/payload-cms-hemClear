@@ -49,7 +49,9 @@ export const CMSLink: React.FC<CMSLinkType> = (props) => {
   if (appearance === 'inline') {
     return (
       <Link className={cn(className)} href={href || url || ''} {...newTabProps}>
-        {label && marks(label)}
+        {/* Wrapped: `marks` splits a label carrying ® into several nodes, which a flex
+            or grid `className` would otherwise space out as separate items. */}
+        {label && <span>{marks(label)}</span>}
         {children && children}
       </Link>
     )
@@ -58,7 +60,9 @@ export const CMSLink: React.FC<CMSLinkType> = (props) => {
   return (
     <Button asChild className={className} size={size} variant={appearance}>
       <Link className={cn(className)} href={href || url || ''} {...newTabProps}>
-        {label && marks(label)}
+        {/* Wrapped: `marks` splits a label carrying ® into several nodes, which a flex
+            or grid `className` would otherwise space out as separate items. */}
+        {label && <span>{marks(label)}</span>}
         {children && children}
       </Link>
     </Button>

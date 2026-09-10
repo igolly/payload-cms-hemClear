@@ -32,6 +32,7 @@ import { Pairing } from '@/blocks/Pairing/config'
 import { PricingOffer } from '@/blocks/PricingOffer/config'
 import { ProductDetail } from '@/blocks/ProductDetail/config'
 import { ProductSystem } from '@/blocks/ProductSystem/config'
+import { SolutionSystem } from '@/blocks/SolutionSystem/config'
 import { Reviews } from '@/blocks/Reviews/config'
 import { SavingsCompare } from '@/blocks/SavingsCompare/config'
 import { ScienceStats } from '@/blocks/ScienceStats/config'
@@ -59,6 +60,7 @@ import { PairingBlock } from '@/blocks/Pairing/Component'
 import { PricingOfferBlock } from '@/blocks/PricingOffer/Component'
 import { ProductDetailBlockComponent } from '@/blocks/ProductDetail/Component'
 import { ProductSystemBlock } from '@/blocks/ProductSystem/Component'
+import { SolutionSystemBlockComponent } from '@/blocks/SolutionSystem/Component'
 import { ReviewsBlock } from '@/blocks/Reviews/Component'
 import { SavingsCompareBlock } from '@/blocks/SavingsCompare/Component'
 import { ScienceStatsBlock } from '@/blocks/ScienceStats/Component'
@@ -91,6 +93,7 @@ const generatedBlocks: [Block, AnyComponent][] = [
   [PricingOffer, PricingOfferBlock as AnyComponent],
   [ProductDetail, ProductDetailBlockComponent as AnyComponent],
   [ProductSystem, ProductSystemBlock as AnyComponent],
+  [SolutionSystem, SolutionSystemBlockComponent as AnyComponent],
   [Reviews, ReviewsBlock as AnyComponent],
   [SavingsCompare, SavingsCompareBlock as AnyComponent],
   [ScienceStats, ScienceStatsBlock as AnyComponent],
@@ -184,6 +187,7 @@ export const puckConfig: Config = {
       components: [
         'productDetail',
         'productSystem',
+        'solutionSystem',
         'ingredientExplorer',
         'formulaTable',
         'scienceStats',

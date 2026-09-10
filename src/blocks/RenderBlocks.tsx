@@ -14,6 +14,7 @@ import { GuaranteeBlock } from '@/blocks/Guarantee/Component'
 import { IngredientExplorerBlock } from '@/blocks/IngredientExplorer/Component'
 import { ProductDetailBlockComponent } from '@/blocks/ProductDetail/Component'
 import { ProductSystemBlock } from '@/blocks/ProductSystem/Component'
+import { SolutionSystemBlockComponent } from '@/blocks/SolutionSystem/Component'
 import { MedicalReviewBlock } from '@/blocks/MedicalReview/Component'
 import { PairingBlock } from '@/blocks/Pairing/Component'
 import { PricingOfferBlock } from '@/blocks/PricingOffer/Component'
@@ -41,6 +42,7 @@ const blockComponents = {
   ingredientExplorer: IngredientExplorerBlock,
   productDetail: ProductDetailBlockComponent,
   productSystem: ProductSystemBlock,
+  solutionSystem: SolutionSystemBlockComponent,
   medicalReview: MedicalReviewBlock,
   pairing: PairingBlock,
   pricingOffer: PricingOfferBlock,
@@ -82,6 +84,7 @@ export const fullBleed = new Set([
   'whyDays',
   'faq',
   'productSystem',
+  'solutionSystem',
   'reviews',
   'statsBar',
   'videoStories',

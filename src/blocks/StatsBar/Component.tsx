@@ -11,7 +11,7 @@ export const StatsBarBlock: React.FC<Props> = ({ bgColor, bgColorCustom, stats }
   if (items.length === 0) return null
 
   return (
-    <section className="w-full bg-[#F7FAFF] px-4 py-8 sm:px-6 lg:px-8" style={backgroundStyle(bgColor, bgColorCustom)}>
+    <section className="w-full bg-[#F7FAFF] px-4 sm:px-6 lg:px-8" style={backgroundStyle(bgColor, bgColorCustom)}>
       <ul className="mx-auto grid max-w-6xl grid-cols-2 gap-y-6 lg:flex lg:items-center lg:justify-center">
         {items.map((stat, i) => (
           <li
