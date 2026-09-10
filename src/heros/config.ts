@@ -99,7 +99,9 @@ export const hero: Field = {
     },
     {
       name: 'badgeTitle',
-      type: 'text',
+      // `textarea`, not `text`: the component renders this through `multiline`, so a line
+      // break is meaningful — and a single-line input gives an editor no way to enter one.
+      type: 'textarea',
       admin: {
         condition: (_, { type } = {}) => type === 'highImpact',
         description: 'e.g. "Doctor\'s Choice". Use a line break for a two-line badge title.',

@@ -370,6 +370,18 @@ React element before the component renders**. Therefore, in any block component:
 This transform is editor-only; the server renderer never applies it, so the live site
 always receives plain strings.
 
+**`puckData` stores a *copy* of each media document, not a reference.** Replacing a file
+on a media record therefore leaves every Puck page still pointing at the old URL, and
+Payload renames an upload when the name is taken (`solution-image-1.png` came back as
+`solution-image-2.png`), so the stale copy 404s. After any media replacement, walk
+`puckData.content` and swap the embedded snapshots for freshly-read documents. The
+`layout` blocks are unaffected — they store an id and resolve it at render.
+
+**Writing a page through the Local API can unpublish it.** A `payload.update` on `pages`
+that omits `_status` has been observed leaving `_status: 'draft'`, which makes the page
+404 for the public (`read: authenticatedOrPublished`). Pass `_status: 'published'`
+explicitly when scripting a change to a live page, and check the status afterwards.
+
 **The image picker** reads from `/api/media/puck-browse` (`src/puck/mediaBrowse.ts`), not
 `/api/media`. The plugin's picker hard-codes a 24-row page and searches `alt` only, which
 is unusable against a 300-image library where almost nothing has an `alt`; that endpoint

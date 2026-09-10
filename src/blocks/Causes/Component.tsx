@@ -65,16 +65,19 @@ export const CausesBlock: React.FC<Props> = ({
 
           {heading && (
             <h2
-              className="mt-2 font-serif text-3xl leading-tight text-heading sm:text-4xl"
+              className="mt-2 font-serif text-3xl leading-tight text-subheading sm:text-4xl"
               data-payload-subpath="heading"
             >
               {multiline(heading)}
             </h2>
           )}
 
+          {/* Short rule under the heading, per the comp: 90x5 there, scaled to 80x4 here. */}
+          {heading && <span aria-hidden="true" className="mt-5 block h-1 w-20 bg-[#2d80e2]" />}
+
           {description && (
             <p
-              className="mt-5 max-w-xl whitespace-pre-line text-sm leading-relaxed text-[#4A5B72]"
+              className="mt-6 max-w-xl whitespace-pre-line text-[15px] leading-relaxed text-black"
               data-payload-subpath="description"
             >
               {marks(description)}
@@ -82,7 +85,7 @@ export const CausesBlock: React.FC<Props> = ({
           )}
 
           {gridLabel && (
-            <p className="mt-6 text-sm font-semibold text-[#1668C4]" data-payload-subpath="gridLabel">
+            <p className="mt-7 text-[15px] font-medium text-[#2d80e2]" data-payload-subpath="gridLabel">
               {marks(gridLabel)}
             </p>
           )}
@@ -90,11 +93,11 @@ export const CausesBlock: React.FC<Props> = ({
           {items.length > 0 && (
             <ul
               className={cn(
-                'mt-4',
+                'mt-6',
                 checklist
                   ? 'flex flex-col gap-3 text-left'
                   : cn(
-                      'grid grid-cols-2 gap-3 sm:grid-cols-3',
+                      'grid grid-cols-2 gap-2.5 sm:grid-cols-3',
                       noImage && 'sm:grid-cols-4 lg:grid-cols-5',
                     ),
               )}
@@ -113,7 +116,7 @@ export const CausesBlock: React.FC<Props> = ({
                   </li>
                 ) : (
                   <li
-                    className="flex flex-col items-center justify-start gap-2 rounded-xl border border-[#DBE8FA] bg-white px-3 py-4 text-center shadow-[0_1px_3px_rgba(16,60,120,0.06)]"
+                    className="flex flex-col items-center justify-start gap-2 rounded-xl border border-[#2d80e2] bg-white px-3 py-4 text-center"
                     data-payload-subpath={`factors.${i}.label`}
                     key={factor.id ?? i}
                   >
@@ -142,7 +145,7 @@ export const CausesBlock: React.FC<Props> = ({
                         name={factor.icon}
                       />
                     )}
-                    <span className="text-[11px] font-semibold leading-tight text-[#123A6B]">
+                    <span className="text-[13px] font-bold leading-tight text-subheading">
                       {marks(factor.label)}
                     </span>
                   </li>

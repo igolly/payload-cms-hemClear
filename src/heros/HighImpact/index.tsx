@@ -7,6 +7,7 @@ import { CMSLink } from '@/components/Link'
 import { Media } from '@/components/Media'
 import { cn } from '@/utilities/ui'
 import { marks, multiline } from '@/utilities/marks'
+import Image from 'next/image'
 
 /**
  * Trust point icons are uploaded images. Until an editor sets one, a dashed square holds
@@ -33,28 +34,6 @@ const TrustIcon: React.FC<{ resource: NonNullable<Page['hero']['trustPoints']>[n
   )
 }
 
-const Laurel = ({ className }: { className?: string }) => (
-  <svg viewBox="0 0 24 40" fill="none" className={className} aria-hidden="true">
-    <path
-      d="M20 2C14 6 11 12 11 20s3 14 9 18"
-      stroke="currentColor"
-      strokeWidth="1.4"
-      strokeLinecap="round"
-    />
-    {[4, 11, 18, 25, 32].map((y) => (
-      <ellipse
-        key={y}
-        cx={14 - (y % 14 === 4 ? 1 : 3)}
-        cy={y}
-        rx="4"
-        ry="2.2"
-        transform={`rotate(-35 ${14 - (y % 14 === 4 ? 1 : 3)} ${y})`}
-        stroke="currentColor"
-        strokeWidth="1.2"
-      />
-    ))}
-  </svg>
-)
 
 export const HighImpactHero: React.FC<Page['hero']> = ({
   media,
@@ -94,34 +73,37 @@ export const HighImpactHero: React.FC<Page['hero']> = ({
           columns,
         )}
       >
+
         {/*
          * Left: product image.
          *
-         * Rendered at its own aspect ratio — the column fixes the width (562.5px on
-         * desktop, per the design) and the height simply follows. Nothing is cropped.
+         * Fills the band — flush to its top and bottom edges, as in `public/hero.png`.
+         * The photo is cropped to manage that, but only barely: the column's height is set
+         * by the copy beside it, and on every page using this hero the image already stands
+         * within a few pixels of that height (home 588 against 596; `/why` and
+         * `/about-hemorrhoids` exactly 0), so the crop is ~1% of the width at most.
          *
-         * The alternative, stretching the photo to fill the column with `object-cover`,
-         * makes it sit flush to the top and bottom of the band, but the copy column then
-         * dictates the height and the crop grows with it: at 1024px the column runs to
-         * ~986px tall against an 890x931 source, which cuts the product shot away
-         * entirely. Fitting the image wins over filling the band.
-         *
-         * The column still stretches to the copy beside it, so the image is centred in
-         * whatever height that comes to. The placeholder tint is drawn only while no
-         * image is set, otherwise it would show as bands around the photo.
+         * That margin is the whole reason this is safe. Pair this hero with a much taller
+         * copy column and the crop grows with the difference — measure it there rather than
+         * assuming this still holds. The placeholder tint is drawn only while no image is
+         * set, otherwise it would show as bands around the photo.
          */}
         <div
           className={cn(
-            'relative flex w-full items-center overflow-hidden',
+            'relative flex w-full items-stretch overflow-hidden',
             !hasMedia && 'min-h-105 bg-slate-100',
             mediaRight && 'lg:order-2',
           )}
         >
           {hasMedia && (
-            <div className="w-full" data-payload-subpath="media">
+            <div className="h-full w-full" data-payload-subpath="media">
               <Media
-                imgClassName="h-auto w-full object-contain"
-                pictureClassName="block"
+                // `Media` wraps its <picture> in a div of its own; without a height here
+                // that div collapses to content height and the `h-full` below resolves
+                // against nothing.
+                className="h-full w-full"
+                imgClassName="h-full w-full object-cover"
+                pictureClassName="block h-full w-full"
                 priority
                 resource={media}
               />
@@ -132,7 +114,10 @@ export const HighImpactHero: React.FC<Page['hero']> = ({
         {/* Right: content */}
         <div
           className={cn(
-            'flex flex-col items-start justify-center py-10 lg:py-14',
+            // No bottom padding at desktop: this column sets the band's height, so its
+            // `pb` showed as a strip of empty hero colour above whatever section came
+            // next. The following section brings its own padding.
+            'flex flex-col items-start justify-center py-10 lg:pb-0 lg:pt-14',
             mediaRight && 'lg:order-1',
           )}
         >
@@ -146,23 +131,45 @@ export const HighImpactHero: React.FC<Page['hero']> = ({
           )}
           {/* Badge */}
           {(badgeTitle || badgeDescription) && (
-            <div className="mb-6 flex items-center gap-3 rounded-lg border border-slate-200 px-4 py-2.5">
+            <div className="mb-2 flex items-center gap-3 rounded-lg border border-slate-200 px-4 py-2.5">
               {badgeTitle && (
                 <>
-                  <Laurel className="h-6 w-3.5 shrink-0 text-brand" />
+                  <Image
+                    alt="Laurel"
+                    // Vector, so it stays crisp at any size. `unoptimized` because
+                    // Next will not put SVGs through the optimiser, and a vector has
+                    // nothing to gain from it. Intrinsic 116x256 with `w-auto` keeps
+                    // the ornament's true aspect at a 30px height.
+                    className="h-[30px] w-auto shrink-0"
+                    height={256}
+                    src="/flower-vector.svg"
+                    unoptimized
+                    width={116}
+                  />
                   <span
                     className="font-serif text-sm font-semibold leading-tight text-brand"
                     data-payload-subpath="badgeTitle"
                   >
                     {multiline(badgeTitle)}
                   </span>
-                  <Laurel className="h-6 w-3.5 shrink-0 -scale-x-100 text-brand" />
+                  <Image
+                    alt="Laurel"
+                    // Vector, so it stays crisp at any size. `unoptimized` because
+                    // Next will not put SVGs through the optimiser, and a vector has
+                    // nothing to gain from it. Intrinsic 116x256 with `w-auto` keeps
+                    // the ornament's true aspect at a 30px height.
+                    className="h-[30px] w-auto shrink-0"
+                    height={256}
+                    src="/flower.svg"
+                    unoptimized
+                    width={116}
+                  />
                 </>
               )}
               {badgeTitle && badgeDescription && <span className="h-8 w-px bg-slate-200" />}
               {badgeDescription && (
                 <span
-                  className="max-w-55 text-xs font-medium leading-snug text-slate-700"
+                  className="max-w-60 text-xs font-medium leading-snug text-slate-700"
                   data-payload-subpath="badgeDescription"
                 >
                   {marks(badgeDescription)}
@@ -183,7 +190,7 @@ export const HighImpactHero: React.FC<Page['hero']> = ({
 
           {subheading && (
             <p
-              className="mt-3 font-serif text-lg text-brand"
+              className="mt-2 font-serif text-lg text-brand"
               data-payload-subpath="subheading"
             >
               {marks(subheading)}
@@ -193,7 +200,7 @@ export const HighImpactHero: React.FC<Page['hero']> = ({
           {/* Description */}
           {description && (
             <p
-              className="mt-5 max-w-xl whitespace-pre-line text-[15px] leading-relaxed text-slate-700"
+              className="mt-4 max-w-2xl whitespace-pre-line text-[15px] leading-relaxed text-slate-700"
               data-payload-subpath="description"
             >
               {marks(description)}
@@ -202,7 +209,7 @@ export const HighImpactHero: React.FC<Page['hero']> = ({
 
           {/* Benefits checklist */}
           {Array.isArray(benefits) && benefits.length > 0 && (
-            <ul className="mt-6 flex flex-col gap-3">
+            <ul className="mt-2.5 flex flex-col gap-1.5">
               {benefits.map((benefit, i) => (
                 <li
                   className="flex items-center gap-3"
@@ -219,7 +226,7 @@ export const HighImpactHero: React.FC<Page['hero']> = ({
           )}
 
           {(calloutTitle || calloutText) && (
-            <div className="mt-6 flex items-start gap-3 rounded-lg bg-[#eef4fd] px-4 py-3">
+            <div className="mt-4 flex items-start gap-3 rounded-lg bg-[#eef4fd] px-4 py-3">
               <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-brand text-white">
                 <Check className="h-4 w-4" strokeWidth={3} />
               </span>
@@ -238,7 +245,7 @@ export const HighImpactHero: React.FC<Page['hero']> = ({
 
           {/* CTAs */}
           {Array.isArray(links) && links.length > 0 && (
-            <div className="mt-8 flex flex-wrap gap-3">
+            <div className="mt-6 flex flex-wrap gap-3">
               {links.map(({ link }, i) => {
                 const isOutline = link.appearance === 'outline'
                 return (
@@ -269,7 +276,7 @@ export const HighImpactHero: React.FC<Page['hero']> = ({
 
           {/* Trust points */}
           {Array.isArray(trustPoints) && trustPoints.length > 0 && (
-            <div className="mt-8 flex flex-wrap items-center gap-4 sm:gap-6">
+            <div className="mt-5 flex flex-wrap items-center gap-4 sm:gap-6">
               {trustPoints.map((point, i) => (
                 <div
                   className="flex items-center gap-4 sm:gap-6"
