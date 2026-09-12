@@ -10,6 +10,7 @@ import { fileURLToPath } from 'url'
 
 import { anyone } from '../access/anyone'
 import { authenticated } from '../access/authenticated'
+import { puckMediaBrowse, puckMediaUpload } from '@/puck/mediaBrowse'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -17,6 +18,8 @@ const dirname = path.dirname(filename)
 export const Media: CollectionConfig = {
   slug: 'media',
   folders: true,
+  // Serves the Puck editor's image picker; see the file for what it corrects.
+  endpoints: [puckMediaBrowse, puckMediaUpload],
   access: {
     create: authenticated,
     delete: authenticated,

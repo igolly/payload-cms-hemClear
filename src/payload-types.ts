@@ -213,9 +213,17 @@ export interface Page {
     benefits?:
       | {
           text: string;
+          /**
+           * Optional illustrated icon. Replaces the default tick when set.
+           */
+          icon?: (string | null) | Media;
           id?: string | null;
         }[]
       | null;
+    /**
+     * Optional icon for the callout box. Replaces the default tick when set.
+     */
+    calloutIcon?: (string | null) | Media;
     /**
      * Optional highlighted box below the benefits.
      */
@@ -231,6 +239,10 @@ export interface Page {
           id?: string | null;
         }[]
       | null;
+    /**
+     * Stacked is the /why treatment: each point sets its icon over its label and the row moves above the call-to-action buttons. The two go together in the comp, so one control drives both.
+     */
+    trustPointsStyle?: ('inline' | 'stacked') | null;
   };
   layout?:
     | (
@@ -241,6 +253,7 @@ export interface Page {
         | StatsBarBlock
         | CausesBlock
         | ProductSystemBlock
+        | SolutionSystemBlock
         | VideoStoriesBlock
         | WaysGridBlock
         | ClosingCtaBlock
@@ -990,6 +1003,10 @@ export interface FAQBlock {
          * Blank lines become separate paragraphs.
          */
         answer: string;
+        /**
+         * Optional. Draws a ruled heading above this question, starting a new group — e.g. "Questions about Shipping HemClear®". Leave empty for questions that continue the previous group.
+         */
+        groupLabel?: string | null;
         id?: string | null;
       }[]
     | null;
@@ -997,6 +1014,22 @@ export interface FAQBlock {
    * How the accordion appears before the visitor interacts with it.
    */
   defaultState?: ('allOpen' | 'firstOpen' | 'allClosed') | null;
+  /**
+   * Compact drops the image panel and centres the heading, for pages where the FAQ is one section among many rather than the whole page.
+   */
+  headerStyle?: ('banner' | 'compact') | null;
+  supportTitle?: string | null;
+  supportText?: string | null;
+  /**
+   * Large icon on the left.
+   */
+  supportIcon?: (string | null) | Media;
+  /**
+   * Small icon inside the button.
+   */
+  supportLinkIcon?: (string | null) | Media;
+  supportLinkLabel?: string | null;
+  supportLinkUrl?: string | null;
   /**
    * Leave empty to keep this section's designed default.
    */
@@ -1111,6 +1144,10 @@ export interface CausesBlock {
           | 'snowflake'
           | 'info';
         label: string;
+        /**
+         * Card illustration. Replaces the icon above when set; leave empty to keep using the icon.
+         */
+        image?: (string | null) | Media;
         id?: string | null;
       }[]
     | null;
@@ -1118,6 +1155,14 @@ export interface CausesBlock {
    * Fine print below the grid, shown with an info icon.
    */
   footnote?: string | null;
+  /**
+   * Showcase is the /why Quality treatment: a Marcellus display heading, no rule, borderless icon columns divided by hairlines, and the footnote in a tinted note card. Overlay is the /why Internal and External treatment: the image fills the whole band and the copy sits in a narrow column over it, on the side opposite "Image position". Default keeps the original look for pages already using it.
+   */
+  variant?: ('default' | 'showcase' | 'overlay') | null;
+  /**
+   * Showcase only. Tall is the /why Quality frame, which crops the photo to fill it. Square suits a product shot that must not be cropped.
+   */
+  imageFrame?: ('tall' | 'square') | null;
   links?:
     | {
         link: {
@@ -1209,6 +1254,76 @@ export interface ProductSystemBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'productSystem';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "SolutionSystemBlock".
+ */
+export interface SolutionSystemBlock {
+  /**
+   * Use a line break to control where the heading wraps.
+   */
+  heading?: string | null;
+  subheading?: string | null;
+  /**
+   * Centre diagram. A placeholder holds its space until one is set.
+   */
+  image?: (string | null) | Media;
+  /**
+   * Split around the diagram by position: the first half fills the left column, the rest the right. On mobile they stack below the diagram in this order.
+   */
+  cards?:
+    | {
+        icon:
+          | 'pregnancy'
+          | 'toilet'
+          | 'sitting'
+          | 'lifting'
+          | 'fiber'
+          | 'tissueChange'
+          | 'flask'
+          | 'supportSystem'
+          | 'stethoscope'
+          | 'research'
+          | 'madeInUsa'
+          | 'guarantee'
+          | 'clipboardCheck'
+          | 'clock'
+          | 'documentSearch'
+          | 'packageLock'
+          | 'gmp'
+          | 'packageBox'
+          | 'truck'
+          | 'calendar'
+          | 'refund'
+          | 'rotate'
+          | 'badgeAward'
+          | 'leaf'
+          | 'droplet'
+          | 'shieldCheck'
+          | 'snowflake'
+          | 'info';
+        /**
+         * Large lead-in number, e.g. "13".
+         */
+        stat?: string | null;
+        title: string;
+        subtitle?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Leave empty to keep this section's designed default.
+   */
+  bgColor?:
+    ('white' | 'offWhite' | 'paleBlue' | 'lightBlue' | 'skyBlue' | 'brand' | 'navy' | 'deepNavy' | 'custom') | null;
+  /**
+   * Any CSS colour, e.g. #0d2050.
+   */
+  bgColorCustom?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'solutionSystem';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1311,6 +1426,10 @@ export interface WaysGridBlock {
    */
   footnote?: string | null;
   /**
+   * Circular is the "9 Ways" treatment: a ringed icon with the number in the title. Photo card is the /why routine treatment: a wide photo with the number in a badge over it.
+   */
+  mediaStyle?: ('circle' | 'card') | null;
+  /**
    * How many items sit in the top row on desktop; the rest flow into a second row. Ignored on smaller screens.
    */
   firstRowCount?: number | null;
@@ -1377,6 +1496,10 @@ export interface ClosingCtaBlock {
           | 'snowflake'
           | 'info';
         title: string;
+        /**
+         * Small mark shown beside the title. Replaces the icon above when set; leave empty to use the icon. (The photo field above is the large card image.)
+         */
+        iconImage?: (string | null) | Media;
         description?: string | null;
         id?: string | null;
       }[]
@@ -1874,12 +1997,20 @@ export interface TotalCareBlock {
                 | 'snowflake'
                 | 'info';
               label: string;
+              /**
+               * Illustrated icon. Replaces the icon above when set; leave empty to keep using the icon.
+               */
+              image?: (string | null) | Media;
               id?: string | null;
             }[]
           | null;
         id?: string | null;
       }[]
     | null;
+  /**
+   * Showcase is the /why treatment: two white cards side by side, each with a wide product photo next to its feature list, and no "+" between them. Default keeps the original look for pages already using it.
+   */
+  variant?: ('default' | 'showcase') | null;
   /**
    * Leave empty to keep this section's designed default.
    */
@@ -2023,6 +2154,10 @@ export interface FeatureStripBlock {
           | 'info';
         title: string;
         description?: string | null;
+        /**
+         * Illustrated icon. Replaces the icon above when set; leave empty to keep using the icon.
+         */
+        image?: (string | null) | Media;
         id?: string | null;
       }[]
     | null;
@@ -2030,11 +2165,24 @@ export interface FeatureStripBlock {
    * How the items are laid out.
    */
   variant?: ('divided' | 'cards' | 'pills' | 'checklist') | null;
+  /**
+   * Optional artwork behind the whole section.
+   */
+  backgroundImage?: (string | null) | Media;
   background?: ('white' | 'light') | null;
   /**
    * Alignment of each item.
    */
-  align?: ('center' | 'left') | null;
+  align?: ('center' | 'left' | 'split') | null;
+  /**
+   * Large matches the /why comp, where the icon is an illustration.
+   */
+  iconSize?: ('small' | 'medium' | 'large') | null;
+  showRule?: boolean | null;
+  /**
+   * How item titles are cased.
+   */
+  titleCase?: ('upper' | 'none') | null;
   links?:
     | {
         link: {
@@ -2822,8 +2970,10 @@ export interface PagesSelect<T extends boolean = true> {
           | T
           | {
               text?: T;
+              icon?: T;
               id?: T;
             };
+        calloutIcon?: T;
         calloutTitle?: T;
         calloutText?: T;
         trustPoints?:
@@ -2833,6 +2983,7 @@ export interface PagesSelect<T extends boolean = true> {
               label?: T;
               id?: T;
             };
+        trustPointsStyle?: T;
       };
   layout?:
     | T
@@ -2844,6 +2995,7 @@ export interface PagesSelect<T extends boolean = true> {
         statsBar?: T | StatsBarBlockSelect<T>;
         causes?: T | CausesBlockSelect<T>;
         productSystem?: T | ProductSystemBlockSelect<T>;
+        solutionSystem?: T | SolutionSystemBlockSelect<T>;
         videoStories?: T | VideoStoriesBlockSelect<T>;
         waysGrid?: T | WaysGridBlockSelect<T>;
         closingCta?: T | ClosingCtaBlockSelect<T>;
@@ -3087,9 +3239,17 @@ export interface FAQBlockSelect<T extends boolean = true> {
     | {
         question?: T;
         answer?: T;
+        groupLabel?: T;
         id?: T;
       };
   defaultState?: T;
+  headerStyle?: T;
+  supportTitle?: T;
+  supportText?: T;
+  supportIcon?: T;
+  supportLinkIcon?: T;
+  supportLinkLabel?: T;
+  supportLinkUrl?: T;
   bgColor?: T;
   bgColorCustom?: T;
   id?: T;
@@ -3131,9 +3291,12 @@ export interface CausesBlockSelect<T extends boolean = true> {
     | {
         icon?: T;
         label?: T;
+        image?: T;
         id?: T;
       };
   footnote?: T;
+  variant?: T;
+  imageFrame?: T;
   links?:
     | T
     | {
@@ -3174,6 +3337,28 @@ export interface ProductSystemBlockSelect<T extends boolean = true> {
     | T
     | {
         image?: T;
+        stat?: T;
+        title?: T;
+        subtitle?: T;
+        id?: T;
+      };
+  bgColor?: T;
+  bgColorCustom?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "SolutionSystemBlock_select".
+ */
+export interface SolutionSystemBlockSelect<T extends boolean = true> {
+  heading?: T;
+  subheading?: T;
+  image?: T;
+  cards?:
+    | T
+    | {
+        icon?: T;
         stat?: T;
         title?: T;
         subtitle?: T;
@@ -3228,6 +3413,7 @@ export interface WaysGridBlockSelect<T extends boolean = true> {
         id?: T;
       };
   footnote?: T;
+  mediaStyle?: T;
   firstRowCount?: T;
   bgColor?: T;
   bgColorCustom?: T;
@@ -3248,6 +3434,7 @@ export interface ClosingCtaBlockSelect<T extends boolean = true> {
         image?: T;
         icon?: T;
         title?: T;
+        iconImage?: T;
         description?: T;
         id?: T;
       };
@@ -3434,10 +3621,12 @@ export interface TotalCareBlockSelect<T extends boolean = true> {
           | {
               icon?: T;
               label?: T;
+              image?: T;
               id?: T;
             };
         id?: T;
       };
+  variant?: T;
   bgColor?: T;
   bgColorCustom?: T;
   id?: T;
@@ -3498,11 +3687,16 @@ export interface FeatureStripBlockSelect<T extends boolean = true> {
         icon?: T;
         title?: T;
         description?: T;
+        image?: T;
         id?: T;
       };
   variant?: T;
+  backgroundImage?: T;
   background?: T;
   align?: T;
+  iconSize?: T;
+  showRule?: T;
+  titleCase?: T;
   links?:
     | T
     | {

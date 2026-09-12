@@ -54,14 +54,16 @@ export const ScienceStatsBlock: React.FC<Props> = ({
           </div>
 
           <div>
-            <ul className="flex flex-col gap-6">
+            {/* The comp rules the stats apart rather than spacing them, and keeps each
+                value on one line — "2-Part" broke across two in a 6rem column. */}
+            <ul className="flex flex-col">
               {items.map((stat, i) => (
                 <li
-                  className="flex items-start gap-4"
+                  className="flex items-start gap-4 border-t border-[#c9dcf5] py-5 first:border-t-0 first:pt-0"
                   data-payload-subpath={`stats.${i}.title`}
                   key={stat.id ?? i}
                 >
-                  <span className="w-24 shrink-0 font-serif text-3xl font-bold leading-none text-brand">
+                  <span className="w-28 shrink-0 whitespace-nowrap font-serif text-3xl font-bold leading-none text-brand">
                     {marks(stat.value)}
                   </span>
                   <span className="min-w-0">

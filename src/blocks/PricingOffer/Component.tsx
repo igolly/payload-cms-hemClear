@@ -10,8 +10,11 @@ import { backgroundStyle } from '@/fields/background'
 import { marks } from '@/utilities/marks'
 
 /** Renders *asterisked* words in the highlight colour. */
-const highlight = (text: string) =>
-  text.split(/(\*[^*]+\*)/g).map((part, i) =>
+const highlight = (text: React.ReactNode): React.ReactNode => {
+  // An inline-editable field arrives as an element; there is nothing to scan for markers.
+  if (typeof text !== 'string') return text
+
+  return text.split(/(\*[^*]+\*)/g).map((part, i) =>
     part.startsWith('*') && part.endsWith('*') ? (
       <span className="text-[#6fd2f5]" key={i}>
         {part.slice(1, -1)}
@@ -20,6 +23,7 @@ const highlight = (text: string) =>
       <React.Fragment key={i}>{marks(part)}</React.Fragment>
     ),
   )
+}
 
 export const PricingOfferBlock: React.FC<Props> = ({
   bgColor,
@@ -42,7 +46,7 @@ export const PricingOfferBlock: React.FC<Props> = ({
 
   return (
     <section className="w-full bg-navy px-4 py-12 sm:px-6 lg:px-8" style={backgroundStyle(bgColor, bgColorCustom)}>
-      <div className="mx-auto max-w-5xl">
+      <div className="mx-auto max-w-6xl">
         {(bannerTitle || bannerText) && (
           <div className="flex flex-col items-center gap-5 rounded-xl bg-[#31509f] px-6 py-5 sm:flex-row sm:gap-6">
             <span className="flex h-[5.5rem] w-[5.5rem] shrink-0 items-center justify-center rounded-full bg-white text-brand shadow-[0_0_28px_rgba(255,255,255,0.35)]">
@@ -109,13 +113,20 @@ export const PricingOfferBlock: React.FC<Props> = ({
                    * so the cards beside the featured one stay the same height and line up
                    * along the top as in the design.
                    */}
+                  {/*
+                   * `marks` splits the name around its ® symbols, so the pieces have to sit
+                   * inside a single inline child. Left as direct children of this flex box
+                   * they each became a flex item and were laid out as boxes rather than
+                   * flowing text — "HemClear® + HemCream®" broke mid-phrase and stranded its
+                   * trailing ® on the line above.
+                   */}
                   <p
                     className={cn(
-                      'flex min-h-[2.5em] items-center justify-center font-serif font-bold leading-tight text-heading',
-                      plan.popular ? 'text-[1.7rem]' : 'text-2xl',
+                      'flex min-h-[2.5em] items-center justify-center px-1 text-center font-serif font-bold leading-tight text-heading',
+                      plan.popular ? 'text-[1.7rem]' : 'text-[1.3rem]',
                     )}
                   >
-                    {marks(plan.name)}
+                    <span className="text-balance">{marks(plan.name)}</span>
                   </p>
 
                   <div

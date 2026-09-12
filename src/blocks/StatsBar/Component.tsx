@@ -11,7 +11,7 @@ export const StatsBarBlock: React.FC<Props> = ({ bgColor, bgColorCustom, stats }
   if (items.length === 0) return null
 
   return (
-    <section className="w-full bg-[#F7FAFF] px-4 py-8 sm:px-6 lg:px-8" style={backgroundStyle(bgColor, bgColorCustom)}>
+    <section className="w-full bg-[#FAFBFF] px-4 py-8 sm:px-6 lg:px-8" style={backgroundStyle(bgColor, bgColorCustom)}>
       <ul className="mx-auto grid max-w-6xl grid-cols-2 gap-y-6 lg:flex lg:items-center lg:justify-center">
         {items.map((stat, i) => (
           <li
@@ -21,7 +21,7 @@ export const StatsBarBlock: React.FC<Props> = ({ bgColor, bgColorCustom, stats }
           >
             {stat.topLabel && (
               <span
-                className="font-serif text-lg leading-none text-brand"
+                className="font-marcellus text-lg leading-none text-brand"
                 data-payload-subpath={`stats.${i}.topLabel`}
               >
                 {marks(stat.topLabel)}
@@ -29,7 +29,7 @@ export const StatsBarBlock: React.FC<Props> = ({ bgColor, bgColorCustom, stats }
             )}
 
             <span className="flex items-center gap-1">
-              <span className="font-serif text-3xl leading-tight text-brand sm:text-4xl">
+              <span className="font-marcellus text-[30px] font-normal leading-[34px] text-brand">
                 {marks(stat.value)}
               </span>
               {stat.showStar && (
@@ -39,7 +39,7 @@ export const StatsBarBlock: React.FC<Props> = ({ bgColor, bgColorCustom, stats }
 
             {stat.label && (
               <span
-                className="font-serif text-sm text-brand sm:text-base"
+                className="font-marcellus text-sm text-brand sm:text-base"
                 data-payload-subpath={`stats.${i}.label`}
               >
                 {marks(stat.label)}

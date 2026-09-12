@@ -81,12 +81,49 @@ export const Causes: Block = {
             { name: 'label', type: 'text', required: true, admin: { width: '50%' } },
           ],
         },
+        {
+          name: 'image',
+          type: 'upload',
+          relationTo: 'media',
+          admin: {
+            description:
+              'Card illustration. Replaces the icon above when set; leave empty to keep using the icon.',
+          },
+        },
       ],
     },
     {
       name: 'footnote',
       type: 'textarea',
       admin: { description: 'Fine print below the grid, shown with an info icon.' },
+    },
+    {
+      name: 'variant',
+      type: 'select',
+      defaultValue: 'default',
+      options: [
+        { label: 'Default', value: 'default' },
+        { label: 'Showcase (large display heading, plain icon row)', value: 'showcase' },
+        { label: 'Overlay (copy over a full-bleed photo)', value: 'overlay' },
+      ],
+      admin: {
+        description:
+          'Showcase is the /why Quality treatment: a Marcellus display heading, no rule, borderless icon columns divided by hairlines, and the footnote in a tinted note card. Overlay is the /why Internal and External treatment: the image fills the whole band and the copy sits in a narrow column over it, on the side opposite "Image position". Default keeps the original look for pages already using it.',
+      },
+    },
+    {
+      name: 'imageFrame',
+      type: 'select',
+      defaultValue: 'tall',
+      options: [
+        { label: 'Tall crop (fills a portrait frame)', value: 'tall' },
+        { label: 'Square, uncropped', value: 'square' },
+      ],
+      admin: {
+        condition: (_, { variant } = {}) => variant === 'showcase',
+        description:
+          'Showcase only. Tall is the /why Quality frame, which crops the photo to fill it. Square suits a product shot that must not be cropped.',
+      },
     },
     linkGroup({ appearances: ['default', 'outline'], overrides: { maxRows: 2 } }),
     backgroundField(),

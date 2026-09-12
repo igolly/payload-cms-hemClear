@@ -99,7 +99,9 @@ export const hero: Field = {
     },
     {
       name: 'badgeTitle',
-      type: 'text',
+      // `textarea`, not `text`: the component renders this through `multiline`, so a line
+      // break is meaningful — and a single-line input gives an editor no way to enter one.
+      type: 'textarea',
       admin: {
         condition: (_, { type } = {}) => type === 'highImpact',
         description: 'e.g. "Doctor\'s Choice". Use a line break for a two-line badge title.',
@@ -143,8 +145,27 @@ export const hero: Field = {
           type: 'text',
           required: true,
         },
+        {
+          name: 'icon',
+          type: 'upload',
+          relationTo: 'media',
+          admin: {
+            description:
+              'Optional illustrated icon. Replaces the default tick when set.',
+          },
+        },
       ],
       label: 'Benefits',
+    },
+    {
+      name: 'calloutIcon',
+      type: 'upload',
+      relationTo: 'media',
+      admin: {
+        condition: (_, { type } = {}) => type === 'highImpact',
+        description: 'Optional icon for the callout box. Replaces the default tick when set.',
+      },
+      label: 'Callout Icon',
     },
     {
       name: 'calloutTitle',
@@ -182,6 +203,21 @@ export const hero: Field = {
         },
       ],
       label: 'Trust Points',
+    },
+    {
+      name: 'trustPointsStyle',
+      type: 'select',
+      defaultValue: 'inline',
+      options: [
+        { label: 'Inline, below the buttons', value: 'inline' },
+        { label: 'Stacked, above the buttons', value: 'stacked' },
+      ],
+      admin: {
+        condition: (_, { type } = {}) => type === 'highImpact',
+        description:
+          'Stacked is the /why treatment: each point sets its icon over its label and the row moves above the call-to-action buttons. The two go together in the comp, so one control drives both.',
+      },
+      label: 'Trust Points Layout',
     },
   ],
   label: false,

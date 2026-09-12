@@ -199,6 +199,9 @@ complete page and so the design has real copy to lay out against.
 - [ ] `pnpm generate:types`
 - [ ] `src/blocks/<Name>/Component.tsx` typed off `@/payload-types`
 - [ ] Registered in `RenderBlocks.tsx` under the same key as `slug`
+- [ ] Added to `fullBleed` in `RenderBlocks.tsx` if the section paints edge-to-edge
+- [ ] **Registered in `src/puck/config.tsx`** — import the config *and* the component, add
+      the pair to the registry array, and list the slug under a category
 - [ ] Verified at `/admin` (create the block) **and** on the page
 - [ ] `pnpm lint` clean
 
@@ -232,8 +235,9 @@ Two conventions worth copying from the current hero:
 | Reviews | `reviews` | Featured review cards with source logos + an expandable customer grid |
 | FAQ | `faq` | Header band (image, background, heading, intro) + numbered accordion |
 | Stats Bar | `statsBar` | Trust stats row — "20 Years in Business", "4.8★", etc. |
-| Causes | `causes` | Illustration (left/right/none) + heading + factors as icon cards or a checklist + footnote + optional CTAs |
+| Causes | `causes` | Illustration (left/right/none) + heading + factors as cards (icon **or** uploaded image) or a checklist + footnote + optional CTAs |
 | Product System | `productSystem` | Copy column · diagram · feature-card column |
+| Solution System | `solutionSystem` | Diagram flanked by highlight cards, split left/right by position |
 | Video Stories | `videoStories` | Navy band with a scroll-snap carousel of phone-framed customer videos |
 | Ways Grid | `waysGrid` | Auto-numbered benefit grid, split across two rows |
 | Support Tabs | `supportTabs` | Tab row + card carousel sharing one scroll position |
@@ -334,6 +338,57 @@ unreferenced; it can be deleted.
 Still in `public/` and not yet in Media: `hero.png`, `hero-image.jpg`, `logo.png`,
 `reviw.png`, `faq.png`, `sectionshomepage.png` (the last three are design references, not
 site assets). `scratch_shot.mjs` is a throwaway screenshot script that shouldn't be committed.
+
+## 5b. The visual editor (Puck) — two rules
+
+The site ships the real Puck editor (`@puckeditor/core` via `@delmaredigital/payload-puck`)
+at **`/admin/puck-editor/pages/:id`**, reachable from the **Visual Editor** button in a
+page's admin sidebar. Drag-and-drop, click-to-select and inline typing all work there.
+
+**Rule 1 — `puckData` wins, completely.** `HybridPageRenderer` renders a page from
+`puckData` the moment it has content and *ignores the `layout` blocks entirely*. Home is
+already in this state. So:
+
+- Writing a block into `layout` on such a page renders **nothing**. Insert the matching
+  entry into `puckData.content` too — same shape, `{ type, props }`, with `props.id` equal
+  to the block's `id`, and uploads stored as **fully populated media objects**, not IDs.
+- The Content tab shows `PuckLayoutNotice` saying so, so editors are not left guessing.
+- Emptying the Puck canvas falls back to the original blocks; nothing is destroyed.
+
+**Rule 2 — inline editing changes what a component receives.** Text, textarea and richText
+fields are `contentEditable` on the canvas (`src/puck/fields.tsx`), which is what gives the
+editor its click-and-type feel. Puck implements it by **replacing the prop's string with a
+React element before the component renders**. Therefore, in any block component:
+
+- Never call a string method on a text prop without a guard. `marks()` and `multiline()`
+  are already total — they hand back anything that is not a string untouched. Copy that
+  shape rather than calling `.split()`/`.trim()` directly.
+- A field whose value is *used* rather than printed — a URL bound to `href`, a string the
+  UI filters on — must opt out in `NEVER_INLINE` or via the `url|href|src|id|slug` name
+  rule in `src/puck/fields.tsx`, or it will arrive as an element and break.
+
+This transform is editor-only; the server renderer never applies it, so the live site
+always receives plain strings.
+
+**`puckData` stores a *copy* of each media document, not a reference.** Replacing a file
+on a media record therefore leaves every Puck page still pointing at the old URL, and
+Payload renames an upload when the name is taken (`solution-image-1.png` came back as
+`solution-image-2.png`), so the stale copy 404s. After any media replacement, walk
+`puckData.content` and swap the embedded snapshots for freshly-read documents. The
+`layout` blocks are unaffected — they store an id and resolve it at render.
+
+**Writing a page through the Local API can unpublish it.** A `payload.update` on `pages`
+that omits `_status` has been observed leaving `_status: 'draft'`, which makes the page
+404 for the public (`read: authenticatedOrPublished`). Pass `_status: 'published'`
+explicitly when scripting a change to a live page, and check the status afterwards.
+
+**The image picker** reads from `/api/media/puck-browse` (`src/puck/mediaBrowse.ts`), not
+`/api/media`. The plugin's picker hard-codes a 24-row page and searches `alt` only, which
+is unusable against a 300-image library where almost nothing has an `alt`; that endpoint
+returns the whole library in one response and searches `filename` too. Uploads are proxied
+straight through to `/api/media`, so the Upload tab is unaffected.
+
+---
 
 ## 6. Data flow, caching, preview
 

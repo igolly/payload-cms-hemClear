@@ -63,6 +63,19 @@ export const WaysGrid: Block = {
       admin: { description: 'Fine print below the grid, shown with a shield icon.' },
     },
     {
+      name: 'mediaStyle',
+      type: 'select',
+      defaultValue: 'circle',
+      options: [
+        { label: 'Circular icon', value: 'circle' },
+        { label: 'Photo card with number badge', value: 'card' },
+      ],
+      admin: {
+        description:
+          'Circular is the "9 Ways" treatment: a ringed icon with the number in the title. Photo card is the /why routine treatment: a wide photo with the number in a badge over it.',
+      },
+    },
+    {
       name: 'firstRowCount',
       type: 'number',
       defaultValue: 4,

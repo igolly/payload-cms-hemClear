@@ -5,26 +5,76 @@ import type { FeatureStripBlock as Props } from '@/payload-types'
 
 import { BrandIcon } from '@/components/BrandIcons'
 import { CMSLink } from '@/components/Link'
+import { Media } from '@/components/Media'
 import { cn } from '@/utilities/ui'
 import { backgroundStyle } from '@/fields/background'
 import { marks, multiline } from '@/utilities/marks'
+
+type Item = NonNullable<Props['items']>[number]
+
+/**
+ * An item's illustrated icon when one is uploaded, falling back to the brand icon — the
+ * same precedence `causes` and `totalCare` use, so a strip already built on icons is
+ * untouched. Sizes are written out rather than interpolated so Tailwind can see them.
+ */
+const MARK_SIZE = {
+  small: 'h-9 w-9',
+  medium: 'h-14 w-14',
+  large: 'h-20 w-20',
+} as const
+const MARK_ICON = {
+  small: '[&>svg]:h-9 [&>svg]:w-9',
+  medium: '[&>svg]:h-14 [&>svg]:w-14',
+  large: '[&>svg]:h-20 [&>svg]:w-20',
+} as const
+
+type MarkSize = keyof typeof MARK_SIZE
+
+const ItemMark: React.FC<{ item: Item; size: MarkSize }> = ({ item, size }) =>
+  item.image && typeof item.image === 'object' ? (
+    <span className={cn('block shrink-0', MARK_SIZE[size])}>
+      {/* `htmlElement={null}` so `Media` emits its `<picture>` bare — its default `<div>`
+          wrapper is not valid inside a span. */}
+      <Media
+        htmlElement={null}
+        imgClassName={cn('object-contain', MARK_SIZE[size])}
+        resource={item.image}
+      />
+    </span>
+  ) : (
+    <BrandIcon className={cn('shrink-0 text-[#1668C4]', MARK_ICON[size])} name={item.icon} />
+  )
 
 export const FeatureStripBlock: React.FC<Props> = ({
   bgColor,
   bgColorCustom,
   align,
   background,
+  backgroundImage,
   eyebrow,
   footnote,
   heading,
+  iconSize,
   items,
   links,
+  showRule,
   subheading,
+  titleCase,
   variant,
 }) => {
   const strip = Array.isArray(items) ? items : []
-  const centred = align !== 'left'
+  /* `split` stacks a title beside the icon and drops the description beneath both, which is
+     neither of the original two alignments — so it has to come out of `centred` as well. */
+  const split = align === 'split'
+  const centred = align !== 'left' && !split
   const style = variant ?? 'divided'
+  const hasArtwork = Boolean(backgroundImage && typeof backgroundImage === 'object')
+  const markSize: MarkSize =
+    iconSize === 'large' ? 'large' : iconSize === 'medium' ? 'medium' : 'small'
+  const titleClass = cn(
+    'text-xs font-bold leading-tight tracking-wide text-subheading',
+    titleCase !== 'none' && 'uppercase',
+  )
 
   const listClass = {
     cards: 'grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6',
@@ -38,9 +88,17 @@ export const FeatureStripBlock: React.FC<Props> = ({
       className={cn(
         'w-full px-4 py-12 sm:px-6 lg:px-8',
         background === 'light' ? 'bg-[#f2f6fd]' : 'bg-white',
+        hasArtwork && 'relative isolate',
       )}
       style={backgroundStyle(bgColor, bgColorCustom)}
     >
+      {/* Optional full-bleed artwork behind the section, as the comp's symptoms band has. */}
+      {hasArtwork && (
+        <div aria-hidden="true" className="absolute inset-0 -z-10">
+          <Media fill imgClassName="object-cover" resource={backgroundImage} />
+        </div>
+      )}
+
       <div className="mx-auto max-w-6xl">
         {(eyebrow || heading || subheading) && (
           <header className="text-center">
@@ -85,11 +143,10 @@ export const FeatureStripBlock: React.FC<Props> = ({
                     data-payload-subpath={`items.${i}.title`}
                     key={key}
                   >
-                    <BrandIcon
-                      className="shrink-0 text-[#1668C4] [&>svg]:h-6 [&>svg]:w-6"
-                      name={item.icon}
-                    />
-                    <span className="text-xs font-semibold text-[#0052cc]">{marks(item.title)}</span>
+                    <ItemMark item={item} size={markSize} />
+                    <span className="text-xs font-semibold text-[#0052cc]">
+                      {marks(item.title)}
+                    </span>
                   </li>
                 )
               }
@@ -116,21 +173,37 @@ export const FeatureStripBlock: React.FC<Props> = ({
                       ? 'flex flex-col items-center rounded-xl border border-[#dbe8fa] bg-white px-3 py-5 text-center'
                       : cn(
                           'px-5 lg:flex-1 lg:border-l lg:border-[#dbe8fa] lg:first:border-l-0',
-                          centred ? 'flex flex-col items-center text-center' : 'flex gap-3',
+                          centred && 'flex flex-col items-center text-center',
+                          split && 'flex flex-col',
+                          !centred && !split && 'flex gap-3',
                         ),
                   )}
                   data-payload-subpath={`items.${i}.title`}
                   key={key}
                 >
-                  <BrandIcon
-                    className="shrink-0 text-[#1668C4] [&>svg]:h-9 [&>svg]:w-9"
-                    name={item.icon}
-                  />
+                  {split ? (
+                    <div className="flex items-center gap-3">
+                      <ItemMark item={item} size={markSize} />
+                      <h3 className={cn('min-w-0', titleClass)}>{marks(item.title)}</h3>
+                    </div>
+                  ) : (
+                    <ItemMark item={item} size={markSize} />
+                  )}
 
-                  <div className={cn('min-w-0', (centred || style === 'cards') && 'mt-3')}>
-                    <h3 className="text-xs font-bold uppercase tracking-wide leading-tight text-subheading">
-                      {marks(item.title)}
-                    </h3>
+                  <div
+                    className={cn(
+                      'min-w-0',
+                      (centred || style === 'cards' || split) && 'mt-3',
+                      centred && 'flex flex-col items-center',
+                    )}
+                  >
+                    {!split && <h3 className={titleClass}>{marks(item.title)}</h3>}
+
+                    {/* The /why comp sets a short hairline between title and body. */}
+                    {showRule && !split && (
+                      <span aria-hidden="true" className="mt-3 block h-[3px] w-6 bg-[#C9D9F0]" />
+                    )}
+
                     {item.description && (
                       <p
                         className="mt-2 text-xs leading-relaxed text-slate-600"
