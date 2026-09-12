@@ -13,13 +13,15 @@ import Image from 'next/image'
  * Trust point icons are uploaded images. Until an editor sets one, a dashed square holds
  * the icon's space so the row keeps its rhythm rather than collapsing.
  */
-const TrustIcon: React.FC<{ resource: NonNullable<Page['hero']['trustPoints']>[number]['icon'] }> = ({
-  resource,
-}) => {
+const TrustIcon: React.FC<{
+  large?: boolean
+  resource: NonNullable<Page['hero']['trustPoints']>[number]['icon']
+}> = ({ large, resource }) => {
+  const size = large ? 'h-10 w-10' : 'h-6 w-6'
   if (resource && typeof resource === 'object') {
     return (
       <Media
-        className="h-6 w-6 shrink-0"
+        className={cn(size, 'shrink-0')}
         imgClassName="h-full w-full object-contain"
         resource={resource}
       />
@@ -29,11 +31,13 @@ const TrustIcon: React.FC<{ resource: NonNullable<Page['hero']['trustPoints']>[n
   return (
     <span
       aria-hidden="true"
-      className="block h-6 w-6 shrink-0 rounded-md border-2 border-dashed border-[#C6DAF6] bg-[#F7FAFF]"
+      className={cn(
+        size,
+        'block shrink-0 rounded-md border-2 border-dashed border-[#C6DAF6] bg-[#F7FAFF]',
+      )}
     />
   )
 }
-
 
 export const HighImpactHero: React.FC<Page['hero']> = ({
   media,
@@ -48,10 +52,18 @@ export const HighImpactHero: React.FC<Page['hero']> = ({
   subheading,
   description,
   benefits,
+  calloutIcon,
   trustPoints,
+  trustPointsStyle,
 }) => {
   const mediaRight = mediaPosition === 'right'
   const hasMedia = media && typeof media === 'object'
+  /*
+   * The `/why` comp stacks each trust point's icon over its label AND lifts the row above
+   * the buttons. Those move together there, so one control drives both rather than leaving
+   * an editor to pair two settings correctly.
+   */
+  const stackedTrust = trustPointsStyle === 'stacked'
 
   /*
    * The 562.5px track has to be the one the image lands in, so the template flips with
@@ -65,6 +77,43 @@ export const HighImpactHero: React.FC<Page['hero']> = ({
     ? 'lg:grid-cols-[minmax(0,1fr)_562.5px]'
     : 'lg:grid-cols-[562.5px_minmax(0,1fr)]'
 
+  const trustRow = Array.isArray(trustPoints) && trustPoints.length > 0 && (
+    <div
+      className={cn(
+        'flex flex-wrap gap-4 sm:gap-6',
+        stackedTrust ? 'mt-6 items-stretch' : 'mt-5 items-center',
+      )}
+    >
+      {trustPoints.map((point, i) => (
+        <div
+          className={cn('flex gap-4 sm:gap-6', stackedTrust ? 'items-stretch' : 'items-center')}
+          data-payload-subpath={`trustPoints.${i}.label`}
+          key={point.id ?? i}
+        >
+          {i !== 0 && (
+            <span className={cn('w-px bg-slate-200', stackedTrust ? 'self-stretch' : 'h-8')} />
+          )}
+          <div
+            className={cn(
+              'flex',
+              stackedTrust ? 'w-24 flex-col items-center gap-1 text-center' : 'items-center gap-2',
+            )}
+          >
+            <TrustIcon large={stackedTrust} resource={point.icon} />
+            <span
+              className={cn(
+                'font-semibold text-slate-900',
+                stackedTrust ? 'text-xs leading-tight' : 'text-sm',
+              )}
+            >
+              {marks(point.label)}
+            </span>
+          </div>
+        </div>
+      ))}
+    </div>
+  )
+
   return (
     <section className="w-full bg-[#F5F5F7]">
       <div
@@ -73,7 +122,6 @@ export const HighImpactHero: React.FC<Page['hero']> = ({
           columns,
         )}
       >
-
         {/*
          * Left: product image.
          *
@@ -180,19 +228,13 @@ export const HighImpactHero: React.FC<Page['hero']> = ({
 
           {/* Headline */}
           {heading && (
-            <h1
-              className="hero-heading text-heading"
-              data-payload-subpath="heading"
-            >
+            <h1 className="hero-heading text-heading" data-payload-subpath="heading">
               {multiline(heading)}
             </h1>
           )}
 
           {subheading && (
-            <p
-              className="mt-2 font-serif text-lg text-brand"
-              data-payload-subpath="subheading"
-            >
+            <p className="mt-2 font-serif text-lg text-brand" data-payload-subpath="subheading">
               {marks(subheading)}
             </p>
           )}
@@ -216,10 +258,24 @@ export const HighImpactHero: React.FC<Page['hero']> = ({
                   data-payload-subpath={`benefits.${i}.text`}
                   key={benefit.id ?? i}
                 >
-                  <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-brand">
-                    <Check className="h-3 w-3 text-white" strokeWidth={3} />
+                  {benefit.icon && typeof benefit.icon === 'object' ? (
+                    <span className="block h-[26px] w-[26px] shrink-0">
+                      {/* `htmlElement={null}` so `Media` emits its `<picture>` bare — its
+                          default `<div>` wrapper is not valid inside a span. */}
+                      <Media
+                        htmlElement={null}
+                        imgClassName="h-[26px] w-[26px] object-contain"
+                        resource={benefit.icon}
+                      />
+                    </span>
+                  ) : (
+                    <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-brand">
+                      <Check className="h-3 w-3 text-white" strokeWidth={3} />
+                    </span>
+                  )}
+                  <span className="text-[15px] font-medium text-slate-900">
+                    {marks(benefit.text)}
                   </span>
-                  <span className="text-[15px] font-medium text-slate-900">{marks(benefit.text)}</span>
                 </li>
               ))}
             </ul>
@@ -227,9 +283,19 @@ export const HighImpactHero: React.FC<Page['hero']> = ({
 
           {(calloutTitle || calloutText) && (
             <div className="mt-4 flex items-start gap-3 rounded-lg bg-[#eef4fd] px-4 py-3">
-              <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-brand text-white">
-                <Check className="h-4 w-4" strokeWidth={3} />
-              </span>
+              {calloutIcon && typeof calloutIcon === 'object' ? (
+                <span className="block h-16 w-16 shrink-0">
+                  <Media
+                    htmlElement={null}
+                    imgClassName="h-16 w-16 object-contain"
+                    resource={calloutIcon}
+                  />
+                </span>
+              ) : (
+                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-brand text-white">
+                  <Check className="h-4 w-4" strokeWidth={3} />
+                </span>
+              )}
               <span className="min-w-0">
                 {calloutTitle && (
                   <span className="block text-sm font-bold text-brand">{marks(calloutTitle)}</span>
@@ -242,6 +308,8 @@ export const HighImpactHero: React.FC<Page['hero']> = ({
               </span>
             </div>
           )}
+
+          {stackedTrust && trustRow}
 
           {/* CTAs */}
           {Array.isArray(links) && links.length > 0 && (
@@ -274,24 +342,7 @@ export const HighImpactHero: React.FC<Page['hero']> = ({
             </div>
           )}
 
-          {/* Trust points */}
-          {Array.isArray(trustPoints) && trustPoints.length > 0 && (
-            <div className="mt-5 flex flex-wrap items-center gap-4 sm:gap-6">
-              {trustPoints.map((point, i) => (
-                <div
-                  className="flex items-center gap-4 sm:gap-6"
-                  data-payload-subpath={`trustPoints.${i}.label`}
-                  key={point.id ?? i}
-                >
-                  {i !== 0 && <span className="h-8 w-px bg-slate-200" />}
-                  <div className="flex items-center gap-2">
-                    <TrustIcon resource={point.icon} />
-                    <span className="text-sm font-semibold text-slate-900">{marks(point.label)}</span>
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
+          {!stackedTrust && trustRow}
         </div>
       </div>
     </section>

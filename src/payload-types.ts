@@ -213,9 +213,17 @@ export interface Page {
     benefits?:
       | {
           text: string;
+          /**
+           * Optional illustrated icon. Replaces the default tick when set.
+           */
+          icon?: (string | null) | Media;
           id?: string | null;
         }[]
       | null;
+    /**
+     * Optional icon for the callout box. Replaces the default tick when set.
+     */
+    calloutIcon?: (string | null) | Media;
     /**
      * Optional highlighted box below the benefits.
      */
@@ -231,6 +239,10 @@ export interface Page {
           id?: string | null;
         }[]
       | null;
+    /**
+     * Stacked is the /why treatment: each point sets its icon over its label and the row moves above the call-to-action buttons. The two go together in the comp, so one control drives both.
+     */
+    trustPointsStyle?: ('inline' | 'stacked') | null;
   };
   layout?:
     | (
@@ -991,6 +1003,10 @@ export interface FAQBlock {
          * Blank lines become separate paragraphs.
          */
         answer: string;
+        /**
+         * Optional. Draws a ruled heading above this question, starting a new group — e.g. "Questions about Shipping HemClear®". Leave empty for questions that continue the previous group.
+         */
+        groupLabel?: string | null;
         id?: string | null;
       }[]
     | null;
@@ -998,6 +1014,22 @@ export interface FAQBlock {
    * How the accordion appears before the visitor interacts with it.
    */
   defaultState?: ('allOpen' | 'firstOpen' | 'allClosed') | null;
+  /**
+   * Compact drops the image panel and centres the heading, for pages where the FAQ is one section among many rather than the whole page.
+   */
+  headerStyle?: ('banner' | 'compact') | null;
+  supportTitle?: string | null;
+  supportText?: string | null;
+  /**
+   * Large icon on the left.
+   */
+  supportIcon?: (string | null) | Media;
+  /**
+   * Small icon inside the button.
+   */
+  supportLinkIcon?: (string | null) | Media;
+  supportLinkLabel?: string | null;
+  supportLinkUrl?: string | null;
   /**
    * Leave empty to keep this section's designed default.
    */
@@ -1123,6 +1155,14 @@ export interface CausesBlock {
    * Fine print below the grid, shown with an info icon.
    */
   footnote?: string | null;
+  /**
+   * Showcase is the /why Quality treatment: a Marcellus display heading, no rule, borderless icon columns divided by hairlines, and the footnote in a tinted note card. Overlay is the /why Internal and External treatment: the image fills the whole band and the copy sits in a narrow column over it, on the side opposite "Image position". Default keeps the original look for pages already using it.
+   */
+  variant?: ('default' | 'showcase' | 'overlay') | null;
+  /**
+   * Showcase only. Tall is the /why Quality frame, which crops the photo to fill it. Square suits a product shot that must not be cropped.
+   */
+  imageFrame?: ('tall' | 'square') | null;
   links?:
     | {
         link: {
@@ -1385,6 +1425,10 @@ export interface WaysGridBlock {
    * Fine print below the grid, shown with a shield icon.
    */
   footnote?: string | null;
+  /**
+   * Circular is the "9 Ways" treatment: a ringed icon with the number in the title. Photo card is the /why routine treatment: a wide photo with the number in a badge over it.
+   */
+  mediaStyle?: ('circle' | 'card') | null;
   /**
    * How many items sit in the top row on desktop; the rest flow into a second row. Ignored on smaller screens.
    */
@@ -1953,12 +1997,20 @@ export interface TotalCareBlock {
                 | 'snowflake'
                 | 'info';
               label: string;
+              /**
+               * Illustrated icon. Replaces the icon above when set; leave empty to keep using the icon.
+               */
+              image?: (string | null) | Media;
               id?: string | null;
             }[]
           | null;
         id?: string | null;
       }[]
     | null;
+  /**
+   * Showcase is the /why treatment: two white cards side by side, each with a wide product photo next to its feature list, and no "+" between them. Default keeps the original look for pages already using it.
+   */
+  variant?: ('default' | 'showcase') | null;
   /**
    * Leave empty to keep this section's designed default.
    */
@@ -2102,6 +2154,10 @@ export interface FeatureStripBlock {
           | 'info';
         title: string;
         description?: string | null;
+        /**
+         * Illustrated icon. Replaces the icon above when set; leave empty to keep using the icon.
+         */
+        image?: (string | null) | Media;
         id?: string | null;
       }[]
     | null;
@@ -2109,11 +2165,24 @@ export interface FeatureStripBlock {
    * How the items are laid out.
    */
   variant?: ('divided' | 'cards' | 'pills' | 'checklist') | null;
+  /**
+   * Optional artwork behind the whole section.
+   */
+  backgroundImage?: (string | null) | Media;
   background?: ('white' | 'light') | null;
   /**
    * Alignment of each item.
    */
-  align?: ('center' | 'left') | null;
+  align?: ('center' | 'left' | 'split') | null;
+  /**
+   * Large matches the /why comp, where the icon is an illustration.
+   */
+  iconSize?: ('small' | 'medium' | 'large') | null;
+  showRule?: boolean | null;
+  /**
+   * How item titles are cased.
+   */
+  titleCase?: ('upper' | 'none') | null;
   links?:
     | {
         link: {
@@ -2901,8 +2970,10 @@ export interface PagesSelect<T extends boolean = true> {
           | T
           | {
               text?: T;
+              icon?: T;
               id?: T;
             };
+        calloutIcon?: T;
         calloutTitle?: T;
         calloutText?: T;
         trustPoints?:
@@ -2912,6 +2983,7 @@ export interface PagesSelect<T extends boolean = true> {
               label?: T;
               id?: T;
             };
+        trustPointsStyle?: T;
       };
   layout?:
     | T
@@ -3167,9 +3239,17 @@ export interface FAQBlockSelect<T extends boolean = true> {
     | {
         question?: T;
         answer?: T;
+        groupLabel?: T;
         id?: T;
       };
   defaultState?: T;
+  headerStyle?: T;
+  supportTitle?: T;
+  supportText?: T;
+  supportIcon?: T;
+  supportLinkIcon?: T;
+  supportLinkLabel?: T;
+  supportLinkUrl?: T;
   bgColor?: T;
   bgColorCustom?: T;
   id?: T;
@@ -3215,6 +3295,8 @@ export interface CausesBlockSelect<T extends boolean = true> {
         id?: T;
       };
   footnote?: T;
+  variant?: T;
+  imageFrame?: T;
   links?:
     | T
     | {
@@ -3331,6 +3413,7 @@ export interface WaysGridBlockSelect<T extends boolean = true> {
         id?: T;
       };
   footnote?: T;
+  mediaStyle?: T;
   firstRowCount?: T;
   bgColor?: T;
   bgColorCustom?: T;
@@ -3538,10 +3621,12 @@ export interface TotalCareBlockSelect<T extends boolean = true> {
           | {
               icon?: T;
               label?: T;
+              image?: T;
               id?: T;
             };
         id?: T;
       };
+  variant?: T;
   bgColor?: T;
   bgColorCustom?: T;
   id?: T;
@@ -3602,11 +3687,16 @@ export interface FeatureStripBlockSelect<T extends boolean = true> {
         icon?: T;
         title?: T;
         description?: T;
+        image?: T;
         id?: T;
       };
   variant?: T;
+  backgroundImage?: T;
   background?: T;
   align?: T;
+  iconSize?: T;
+  showRule?: T;
+  titleCase?: T;
   links?:
     | T
     | {

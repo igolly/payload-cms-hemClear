@@ -39,53 +39,71 @@ export const FaqAccordion: React.FC<{
         const buttonId = `faq-button-${item.id ?? i}`
 
         return (
-          <li
-            className="rounded-2xl border border-[#e5edf9] bg-white shadow-[0_1px_3px_rgba(16,60,120,0.06)]"
-            data-payload-subpath={`items.${i}.question`}
-            key={item.id ?? i}
-          >
-            <h3>
-              <button
-                aria-controls={panelId}
-                aria-expanded={isOpen}
-                className="flex w-full items-center gap-4 px-6 py-5 text-left"
-                id={buttonId}
-                onClick={() => toggle(i)}
-                type="button"
-              >
-                <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[#0329b2] text-sm font-semibold text-white">
-                  {i + 1}
+          <React.Fragment key={item.id ?? i}>
+            {/*
+             * A ruled group heading, drawn above the question that opens the group. The
+             * comp keeps numbering running across groups (13 follows 12 under the shipping
+             * rule), so this only interrupts the list visually.
+             */}
+            {item.groupLabel && (
+              <li aria-hidden="true" className="mt-3 flex items-center gap-5">
+                <span className="h-px grow bg-[#c9d9f0]" />
+                <span className="shrink-0 font-serif text-xl text-heading">
+                  {marks(item.groupLabel)}
                 </span>
-
-                <span className="grow text-base font-bold text-subheading">{marks(item.question)}</span>
-
-                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-[#6279cf] text-[#6279cf]">
-                  {isOpen ? <Minus className="h-4 w-4" /> : <PlusIcon className="h-3 w-3" />}
-                </span>
-              </button>
-            </h3>
-
-            {isOpen && (
-              <div
-                aria-labelledby={buttonId}
-                className="px-6 pb-6 text-[15px] leading-relaxed text-slate-700"
-                data-payload-subpath={`items.${i}.answer`}
-                id={panelId}
-                role="region"
-              >
-                {typeof item.answer === 'string' ? (
-                  item.answer.split('\n\n').map((paragraph, p) => (
-                    <p className={p > 0 ? 'mt-4' : undefined} key={p}>
-                      {marks(paragraph)}
-                    </p>
-                  ))
-                ) : (
-                  // Inline-editable on the Puck canvas: already an element, not a string.
-                  <p>{item.answer}</p>
-                )}
-              </div>
+                <span className="h-px grow bg-[#c9d9f0]" />
+              </li>
             )}
-          </li>
+
+            <li
+              className="rounded-2xl border border-[#e5edf9] bg-white shadow-[0_1px_3px_rgba(16,60,120,0.06)]"
+              data-payload-subpath={`items.${i}.question`}
+            >
+              <h3>
+                <button
+                  aria-controls={panelId}
+                  aria-expanded={isOpen}
+                  className="flex w-full items-center gap-4 px-6 py-5 text-left"
+                  id={buttonId}
+                  onClick={() => toggle(i)}
+                  type="button"
+                >
+                  <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[#0329b2] text-sm font-semibold text-white">
+                    {i + 1}
+                  </span>
+
+                  <span className="grow text-base font-bold text-subheading">
+                    {marks(item.question)}
+                  </span>
+
+                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-[#6279cf] text-[#6279cf]">
+                    {isOpen ? <Minus className="h-4 w-4" /> : <PlusIcon className="h-3 w-3" />}
+                  </span>
+                </button>
+              </h3>
+
+              {isOpen && (
+                <div
+                  aria-labelledby={buttonId}
+                  className="px-6 pb-6 text-[15px] leading-relaxed text-slate-700"
+                  data-payload-subpath={`items.${i}.answer`}
+                  id={panelId}
+                  role="region"
+                >
+                  {typeof item.answer === 'string' ? (
+                    item.answer.split('\n\n').map((paragraph, p) => (
+                      <p className={p > 0 ? 'mt-4' : undefined} key={p}>
+                        {marks(paragraph)}
+                      </p>
+                    ))
+                  ) : (
+                    // Inline-editable on the Puck canvas: already an element, not a string.
+                    <p>{item.answer}</p>
+                  )}
+                </div>
+              )}
+            </li>
+          </React.Fragment>
         )
       })}
     </ul>

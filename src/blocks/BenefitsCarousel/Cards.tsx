@@ -69,7 +69,9 @@ export const Cards: React.FC<{ items: Item[] }> = ({ items }) => {
 
             return (
               <li
-                className="w-[70%] flex-none snap-start sm:w-[44%] md:w-[30%] lg:w-[calc((100%-2.25rem)/4)]"
+                /* Five across at desktop, per the comp — four gaps of `gap-4` (1rem each)
+                   come out of the track before the cards are divided up. */
+                className="w-[70%] flex-none snap-start sm:w-[44%] md:w-[30%] lg:w-[calc((100%-4rem)/5)]"
                 key={key}
               >
                 <div className="relative" data-payload-subpath={`items.${i}.title`}>

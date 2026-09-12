@@ -79,6 +79,14 @@ export const FAQ: Block = {
             description: 'Blank lines become separate paragraphs.',
           },
         },
+        {
+          name: 'groupLabel',
+          type: 'text',
+          admin: {
+            description:
+              'Optional. Draws a ruled heading above this question, starting a new group — e.g. "Questions about Shipping HemClear®". Leave empty for questions that continue the previous group.',
+          },
+        },
       ],
     },
     {
@@ -94,6 +102,58 @@ export const FAQ: Block = {
       admin: {
         description: 'How the accordion appears before the visitor interacts with it.',
       },
+    },
+    {
+      name: 'headerStyle',
+      type: 'select',
+      defaultValue: 'banner',
+      label: 'Header Style',
+      options: [
+        { label: 'Banner with product image', value: 'banner' },
+        { label: 'Compact — heading only', value: 'compact' },
+      ],
+      admin: {
+        description:
+          'Compact drops the image panel and centres the heading, for pages where the FAQ is one section among many rather than the whole page.',
+      },
+    },
+    {
+      type: 'collapsible',
+      label: 'Support Callout (optional)',
+      admin: { initCollapsed: true },
+      fields: [
+        {
+          type: 'row',
+          fields: [
+            { name: 'supportTitle', type: 'text', admin: { width: '50%' } },
+            { name: 'supportText', type: 'text', admin: { width: '50%' } },
+          ],
+        },
+        {
+          type: 'row',
+          fields: [
+            {
+              name: 'supportIcon',
+              type: 'upload',
+              relationTo: 'media',
+              admin: { description: 'Large icon on the left.', width: '50%' },
+            },
+            {
+              name: 'supportLinkIcon',
+              type: 'upload',
+              relationTo: 'media',
+              admin: { description: 'Small icon inside the button.', width: '50%' },
+            },
+          ],
+        },
+        {
+          type: 'row',
+          fields: [
+            { name: 'supportLinkLabel', type: 'text', admin: { width: '50%' } },
+            { name: 'supportLinkUrl', type: 'text', admin: { width: '50%' } },
+          ],
+        },
+      ],
     },
     backgroundField(),
   ],

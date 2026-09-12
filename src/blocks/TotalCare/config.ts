@@ -60,9 +60,31 @@ export const TotalCare: Block = {
                 { name: 'label', type: 'text', required: true, admin: { width: '60%' } },
               ],
             },
+            {
+              name: 'image',
+              type: 'upload',
+              relationTo: 'media',
+              admin: {
+                description:
+                  'Illustrated icon. Replaces the icon above when set; leave empty to keep using the icon.',
+              },
+            },
           ],
         },
       ],
+    },
+    {
+      name: 'variant',
+      type: 'select',
+      defaultValue: 'default',
+      options: [
+        { label: 'Default', value: 'default' },
+        { label: 'Showcase (two standalone cards, image beside the features)', value: 'showcase' },
+      ],
+      admin: {
+        description:
+          'Showcase is the /why treatment: two white cards side by side, each with a wide product photo next to its feature list, and no "+" between them. Default keeps the original look for pages already using it.',
+      },
     },
     backgroundField(),
   ],

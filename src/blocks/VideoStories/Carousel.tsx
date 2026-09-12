@@ -18,9 +18,16 @@ export const Carousel: React.FC<{
   /** Card width classes. Override when the carousel sits in a narrow column. */
   itemClassName?: string
   stories: Story[]
+  /**
+   * Which background the controls sit on. The arrows and dots were written in white for
+   * the navy `videoStories` band; on a white section they were invisible while still
+   * taking up their gutter, which pushed the track out of line with the heading above it.
+   */
+  tone?: 'dark' | 'light'
 }> = ({
   itemClassName = 'w-[68%] sm:w-[42%] md:w-[31%] lg:w-[calc((100%-4rem)/5)]',
   stories,
+  tone = 'dark',
 }) => {
   const trackRef = useRef<HTMLUListElement>(null)
   const [active, setActive] = useState(0)
@@ -61,8 +68,13 @@ export const Carousel: React.FC<{
 
   const nudge = (direction: -1 | 1) => scrollToIndex(active + direction)
 
-  const arrowClass =
-    'flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-white/15 text-white transition-colors hover:bg-white/25 disabled:opacity-30'
+  const light = tone === 'light'
+  const arrowClass = cn(
+    'flex h-11 w-11 shrink-0 items-center justify-center rounded-full transition-colors disabled:opacity-30',
+    light
+      ? 'bg-[#eaf2fe] text-brand hover:bg-[#d8e6fb]'
+      : 'bg-white/15 text-white hover:bg-white/25',
+  )
 
   return (
     <div>
@@ -106,7 +118,13 @@ export const Carousel: React.FC<{
               aria-label={`Go to story ${i + 1}`}
               className={cn(
                 'h-2 rounded-full transition-all',
-                i === active ? 'w-6 bg-white' : 'w-2 bg-white/40 hover:bg-white/70',
+                i === active
+                  ? light
+                    ? 'w-6 bg-brand'
+                    : 'w-6 bg-white'
+                  : light
+                    ? 'w-2 bg-brand/30 hover:bg-brand/60'
+                    : 'w-2 bg-white/40 hover:bg-white/70',
               )}
               key={story.id ?? i}
               onClick={() => scrollToIndex(i)}

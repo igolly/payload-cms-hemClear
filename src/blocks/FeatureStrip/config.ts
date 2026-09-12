@@ -46,6 +46,15 @@ export const FeatureStrip: Block = {
           ],
         },
         { name: 'description', type: 'textarea' },
+        {
+          name: 'image',
+          type: 'upload',
+          relationTo: 'media',
+          admin: {
+            description:
+              'Illustrated icon. Replaces the icon above when set; leave empty to keep using the icon.',
+          },
+        },
       ],
     },
     {
@@ -68,6 +77,15 @@ export const FeatureStrip: Block = {
           type: 'row',
           fields: [
             {
+              name: 'backgroundImage',
+              type: 'upload',
+              relationTo: 'media',
+              admin: {
+                description: 'Optional artwork behind the whole section.',
+                width: '50%',
+              },
+            },
+            {
               name: 'background',
               type: 'select',
               defaultValue: 'white',
@@ -84,8 +102,50 @@ export const FeatureStrip: Block = {
               options: [
                 { label: 'Centred', value: 'center' },
                 { label: 'Left', value: 'left' },
+                { label: 'Split (icon beside the title, description below)', value: 'split' },
               ],
               admin: { description: 'Alignment of each item.', width: '50%' },
+            },
+          ],
+        },
+        {
+          type: 'row',
+          fields: [
+            {
+              name: 'iconSize',
+              type: 'select',
+              defaultValue: 'small',
+              options: [
+                { label: 'Small', value: 'small' },
+                { label: 'Medium', value: 'medium' },
+                { label: 'Large', value: 'large' },
+              ],
+              admin: {
+                description: 'Large matches the /why comp, where the icon is an illustration.',
+                width: '50%',
+              },
+            },
+            {
+              name: 'showRule',
+              type: 'checkbox',
+              defaultValue: false,
+              label: 'Hairline between the title and description',
+              admin: { width: '50%' },
+            },
+          ],
+        },
+        {
+          type: 'row',
+          fields: [
+            {
+              name: 'titleCase',
+              type: 'select',
+              defaultValue: 'upper',
+              options: [
+                { label: 'UPPERCASE', value: 'upper' },
+                { label: 'As typed', value: 'none' },
+              ],
+              admin: { description: 'How item titles are cased.', width: '50%' },
             },
           ],
         },
