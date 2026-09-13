@@ -408,6 +408,39 @@ export const ProductDetail: Block = {
             },
           ],
         },
+        {
+          label: 'Sticky Bars',
+          fields: [
+            {
+              name: 'stickyEnabled',
+              type: 'checkbox',
+              defaultValue: false,
+              label: 'Show the sticky offer and buy bars once the buy box scrolls away',
+            },
+            {
+              type: 'row',
+              fields: [
+                {
+                  name: 'stickyOfferText',
+                  type: 'text',
+                  admin: { description: 'e.g. "Save 50% + Free HemCream®".', width: '50%' },
+                },
+                {
+                  name: 'stickyOfferNote',
+                  type: 'text',
+                  admin: { description: 'e.g. "Free shipping + 90-day guarantee".', width: '50%' },
+                },
+              ],
+            },
+            {
+              type: 'row',
+              fields: [
+                { name: 'stickyCtaLabel', type: 'text', admin: { width: '50%' } },
+                { name: 'stickyCtaUrl', type: 'text', admin: { width: '50%' } },
+              ],
+            },
+          ],
+        },
       ],
     },
   ],

@@ -12,3 +12,11 @@ export const RowLabel: React.FC<RowLabelProps> = () => {
 
   return <div>{marks(label)}</div>
 }
+
+export const MegaMenuRowLabel: React.FC<RowLabelProps> = () => {
+  const { data, rowNumber } = useRowLabel<
+    NonNullable<NonNullable<Header['navItems']>[number]['megaMenu']>[number]
+  >()
+  const prefix = rowNumber !== undefined ? `${rowNumber + 1}. ` : ''
+  return <div>{data?.title ? marks(`${prefix}${data.title}`) : 'Card'}</div>
+}

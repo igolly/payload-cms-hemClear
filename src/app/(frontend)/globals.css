@@ -22,6 +22,21 @@
   }
 
   /*
+   * Smooth scrolling for in-page jumps and anchor links, site-wide. Gated on the user's
+   * motion preference: someone who has asked for reduced motion gets the instant jump.
+   * `scroll-padding-top` keeps a target from landing under the sticky header.
+   */
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
+  }
+
+  html {
+    scroll-padding-top: 6rem;
+  }
+
+  /*
    * Every paragraph and description on the site is body copy, so Inter is applied to
    * `p` here rather than to ~30 block components one class at a time. An element rule
    * loses to a class, so the handful of paragraphs that carry `font-serif` (display
@@ -71,6 +86,44 @@
 }
 
 @layer utilities {
+  /*
+   * Hover underline that wipes in from the left.
+   *
+   * Drawn as an absolutely positioned rule rather than a background gradient: a background
+   * can only sit at the bottom of the padding box, so opening a gap under the text meant
+   * adding padding and shifting the link inside its flex row. A positioned bar is outside
+   * layout entirely, so `bottom` sets the gap freely and nothing moves. Animating
+   * `transform` also keeps the work on the compositor.
+   */
+  .link-underline {
+    position: relative;
+  }
+
+  .link-underline::after {
+    background-color: currentColor;
+    bottom: -7px;
+    content: '';
+    height: 2px;
+    left: 0;
+    position: absolute;
+    right: 0;
+    transform: scaleX(0);
+    /* Anchored left, so the rule sweeps out from the left edge. */
+    transform-origin: left center;
+    transition: transform 320ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .link-underline:hover::after,
+  .link-underline:focus-visible::after {
+    transform: scaleX(1);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .link-underline::after {
+      transition: none;
+    }
+  }
+
   .container {
     width: 100%;
     margin-inline: auto;

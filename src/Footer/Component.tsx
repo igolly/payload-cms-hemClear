@@ -86,7 +86,7 @@ export async function Footer() {
                   {socialItems.map((item, i) => (
                     <li key={item.id ?? i}>
                       <a
-                        className="flex items-center gap-3 font-inter text-[13px] text-white/90 transition-colors hover:text-white"
+                        className="link-underline flex items-center gap-3 self-start font-inter text-[13px] text-white/90 transition-colors hover:text-white"
                         href={item.url || '#'}
                         rel="noopener noreferrer"
                         target="_blank"
@@ -136,7 +136,7 @@ export async function Footer() {
                     <CMSLink
                       {...item.link}
                       appearance="inline"
-                      className="transition-colors hover:text-white"
+                      className="link-underline transition-colors hover:text-white"
                     />
                   </li>
                 ))}

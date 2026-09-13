@@ -690,6 +690,17 @@ export interface ProductDetailBlock {
         id?: string | null;
       }[]
     | null;
+  stickyEnabled?: boolean | null;
+  /**
+   * e.g. "Save 50% + Free HemCream®".
+   */
+  stickyOfferText?: string | null;
+  /**
+   * e.g. "Free shipping + 90-day guarantee".
+   */
+  stickyOfferNote?: string | null;
+  stickyCtaLabel?: string | null;
+  stickyCtaUrl?: string | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'productDetail';
@@ -3171,6 +3182,11 @@ export interface ProductDetailBlockSelect<T extends boolean = true> {
             };
         id?: T;
       };
+  stickyEnabled?: T;
+  stickyOfferText?: T;
+  stickyOfferNote?: T;
+  stickyCtaLabel?: T;
+  stickyCtaUrl?: T;
   id?: T;
   blockName?: T;
 }
@@ -4373,6 +4389,28 @@ export interface Header {
           url?: string | null;
           label: string;
         };
+        /**
+         * Leave empty for a plain link. Add cards and this item opens a dropdown on hover, e.g. the product list under "Shop".
+         */
+        megaMenu?:
+          | {
+              title: string;
+              eyebrow?: string | null;
+              description?: string | null;
+              image?: (string | null) | Media;
+              link: {
+                type?: ('reference' | 'custom') | null;
+                newTab?: boolean | null;
+                reference?: {
+                  relationTo: 'pages';
+                  value: string | Page;
+                } | null;
+                url?: string | null;
+                label: string;
+              };
+              id?: string | null;
+            }[]
+          | null;
         id?: string | null;
       }[]
     | null;
@@ -4501,6 +4539,24 @@ export interface HeaderSelect<T extends boolean = true> {
               reference?: T;
               url?: T;
               label?: T;
+            };
+        megaMenu?:
+          | T
+          | {
+              title?: T;
+              eyebrow?: T;
+              description?: T;
+              image?: T;
+              link?:
+                | T
+                | {
+                    type?: T;
+                    newTab?: T;
+                    reference?: T;
+                    url?: T;
+                    label?: T;
+                  };
+              id?: T;
             };
         id?: T;
       };

@@ -37,6 +37,30 @@ export const Header: GlobalConfig = {
         link({
           appearances: false,
         }),
+        {
+          name: 'megaMenu',
+          type: 'array',
+          label: 'Dropdown Cards',
+          labels: { singular: 'Card', plural: 'Cards' },
+          admin: {
+            description:
+              'Leave empty for a plain link. Add cards and this item opens a dropdown on hover, e.g. the product list under "Shop".',
+            initCollapsed: true,
+            components: { RowLabel: '@/Header/RowLabel#MegaMenuRowLabel' },
+          },
+          fields: [
+            {
+              type: 'row',
+              fields: [
+                { name: 'title', type: 'text', required: true, admin: { width: '50%' } },
+                { name: 'eyebrow', type: 'text', admin: { width: '50%' } },
+              ],
+            },
+            { name: 'description', type: 'textarea' },
+            { name: 'image', type: 'upload', relationTo: 'media' },
+            link({ appearances: false }),
+          ],
+        },
       ],
       maxRows: 8,
       admin: {

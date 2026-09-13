@@ -9,6 +9,7 @@ import { BuyBox } from '@/components/ProductDetail/BuyBox'
 import { Composition } from '@/components/ProductDetail/Composition'
 import { DetailSections } from '@/components/ProductDetail/DetailSections'
 import { Gallery } from '@/components/ProductDetail/Gallery'
+import { StickyBars } from '@/components/ProductDetail/StickyBars'
 import { marks } from '@/utilities/marks'
 
 /**
@@ -37,6 +38,19 @@ export const ProductDetailBlockComponent: React.FC<ProductDetailBlock> = (produc
 
   return (
     <section className="w-full bg-white px-4 py-8 sm:px-6 lg:px-8">
+      {product.stickyEnabled && (
+        <StickyBars
+          ctaLabel={product.ctaLabel}
+          gallery={product.gallery}
+          offerNote={product.stickyOfferNote}
+          offerText={product.stickyOfferText}
+          plans={Array.isArray(product.plans) ? product.plans : []}
+          stickyCtaLabel={product.stickyCtaLabel}
+          stickyCtaUrl={product.stickyCtaUrl}
+          title={product.title}
+        />
+      )}
+
       <div className="mx-auto max-w-7xl">
         <div className="grid grid-cols-1 gap-10 lg:grid-cols-2">
           {/*

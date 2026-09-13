@@ -7,11 +7,15 @@ import React from 'react'
 import type { Page } from '@/payload-types'
 
 type CMSLinkType = {
+  /** Forwarded to the anchor — the header menu uses it to mark its trigger. */
+  'aria-expanded'?: boolean
   appearance?: 'inline' | ButtonProps['variant']
   children?: React.ReactNode
   className?: string
   label?: string | null
   newTab?: boolean | null
+  /** Forwarded to the anchor, e.g. to close a menu the link sits inside. */
+  onClick?: () => void
   reference?: {
     relationTo: 'pages'
     value: number | Page | string
@@ -29,6 +33,7 @@ export const CMSLink: React.FC<CMSLinkType> = (props) => {
     className,
     label,
     newTab,
+    onClick,
     reference,
     size: sizeFromProps,
     url,
@@ -44,11 +49,12 @@ export const CMSLink: React.FC<CMSLinkType> = (props) => {
 
   const size = appearance === 'link' ? 'clear' : sizeFromProps
   const newTabProps = newTab ? { rel: 'noopener noreferrer', target: '_blank' } : {}
+  const passthrough = { 'aria-expanded': props['aria-expanded'], onClick }
 
   /* Ensure we don't break any styles set by richText */
   if (appearance === 'inline') {
     return (
-      <Link className={cn(className)} href={href || url || ''} {...newTabProps}>
+      <Link className={cn(className)} href={href || url || ''} {...newTabProps} {...passthrough}>
         {/* Wrapped: `marks` splits a label carrying ® into several nodes, which a flex
             or grid `className` would otherwise space out as separate items. */}
         {label && <span>{marks(label)}</span>}
@@ -59,7 +65,7 @@ export const CMSLink: React.FC<CMSLinkType> = (props) => {
 
   return (
     <Button asChild className={className} size={size} variant={appearance}>
-      <Link className={cn(className)} href={href || url || ''} {...newTabProps}>
+      <Link className={cn(className)} href={href || url || ''} {...newTabProps} {...passthrough}>
         {/* Wrapped: `marks` splits a label carrying ® into several nodes, which a flex
             or grid `className` would otherwise space out as separate items. */}
         {label && <span>{marks(label)}</span>}
