@@ -15,6 +15,9 @@ type Story = NonNullable<VideoStoriesBlock['stories']>[number]
  * `scrollTo`, and the active dot is derived from scroll position.
  */
 export const Carousel: React.FC<{
+  /** Show the prev/next buttons. Off in a narrow column, where their gutters cost more
+      than they are worth and the dots carry the paging on their own. */
+  arrows?: boolean
   /** Card width classes. Override when the carousel sits in a narrow column. */
   itemClassName?: string
   stories: Story[]
@@ -25,6 +28,7 @@ export const Carousel: React.FC<{
    */
   tone?: 'dark' | 'light'
 }> = ({
+  arrows = true,
   itemClassName = 'w-[68%] sm:w-[42%] md:w-[31%] lg:w-[calc((100%-4rem)/5)]',
   stories,
   tone = 'dark',
@@ -72,7 +76,7 @@ export const Carousel: React.FC<{
   const arrowClass = cn(
     'flex h-11 w-11 shrink-0 items-center justify-center rounded-full transition-colors disabled:opacity-30',
     light
-      ? 'bg-[#eaf2fe] text-brand hover:bg-[#d8e6fb]'
+      ? 'bg-[#e9edf3] text-[#1a2340] hover:bg-[#dbe1ea]'
       : 'bg-white/15 text-white hover:bg-white/25',
   )
 
@@ -81,7 +85,7 @@ export const Carousel: React.FC<{
       <div className="flex items-center gap-3">
         <button
           aria-label="Previous stories"
-          className={cn(arrowClass, 'hidden sm:flex')}
+          className={cn(arrowClass, arrows ? 'hidden sm:flex' : 'hidden')}
           disabled={atStart}
           onClick={() => nudge(-1)}
           type="button"
@@ -94,15 +98,15 @@ export const Carousel: React.FC<{
           ref={trackRef}
         >
           {stories.map((story, i) => (
-            <li className={cn('flex-none snap-start', itemClassName)} key={story.id ?? i}>
-              <StoryCard index={i} story={story} />
+            <li className={cn('flex flex-none snap-start', itemClassName)} key={story.id ?? i}>
+              <StoryCard index={i} story={story} tone={tone} />
             </li>
           ))}
         </ul>
 
         <button
           aria-label="Next stories"
-          className={cn(arrowClass, 'hidden sm:flex')}
+          className={cn(arrowClass, arrows ? 'hidden sm:flex' : 'hidden')}
           disabled={atEnd}
           onClick={() => nudge(1)}
           type="button"
@@ -117,13 +121,14 @@ export const Carousel: React.FC<{
             <button
               aria-label={`Go to story ${i + 1}`}
               className={cn(
-                'h-2 rounded-full transition-all',
+                'rounded-full transition-all',
+                light ? 'h-2.5' : 'h-2',
                 i === active
                   ? light
-                    ? 'w-6 bg-brand'
+                    ? 'w-2.5 bg-brand'
                     : 'w-6 bg-white'
                   : light
-                    ? 'w-2 bg-brand/30 hover:bg-brand/60'
+                    ? 'w-2.5 bg-[#d3d9e2] hover:bg-[#b6c0cf]'
                     : 'w-2 bg-white/40 hover:bg-white/70',
               )}
               key={story.id ?? i}

@@ -10,6 +10,12 @@ import { FixedToolbarFeature, HeadingFeature, lexicalEditor } from '@payloadcms/
 import { Page } from '@/payload-types'
 import { getServerSideURL } from '@/utilities/getURL'
 
+// `https://<ref>.storage.supabase.co/storage/v1/s3` → `.../storage/v1/object/public`.
+// S3_PUBLIC_URL overrides it, e.g. for a CDN in front of the bucket.
+const getPublicStorageURL = () =>
+  (process.env.S3_PUBLIC_URL || (process.env.S3_ENDPOINT || '').replace(/\/s3\/?$/, '/object/public'))
+    .replace(/\/$/, '')
+
 const generateTitle: GenerateTitle<Page> = ({ doc }) => {
   return doc?.title ? `${doc.title} | HemClear®` : 'HemClear®'
 }
@@ -28,10 +34,23 @@ export const plugins: Plugin[] = [
   // `enabled` is driven by env: with no bucket configured the adapter stands down
   // and Payload writes to public/media, which is what we want locally. It stays in
   // the plugin list either way so the collection schema is identical everywhere.
+  //
+  // The bucket is public, so file URLs point straight at Supabase's public object
+  // endpoint. Without this every image was proxied through `/api/media/file/*`: the
+  // request hit a Payload function, which downloaded the object from S3 and streamed
+  // it back — slow, and it ties up serverless invocations for every image.
   s3Storage({
     alwaysInsertFields: true,
     bucket: process.env.S3_BUCKET || '',
-    collections: { media: true },
+    collections: {
+      media: {
+        disablePayloadAccessControl: true,
+        generateFileURL: ({ filename, prefix }) =>
+          [getPublicStorageURL(), process.env.S3_BUCKET, prefix, encodeURIComponent(filename)]
+            .filter(Boolean)
+            .join('/'),
+      },
+    },
     config: {
       credentials: {
         accessKeyId: process.env.S3_ACCESS_KEY_ID || '',

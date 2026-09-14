@@ -1,12 +1,13 @@
 'use client'
 import React, { useState } from 'react'
-import { Check, ChevronDown } from 'lucide-react'
+import { ChevronDown } from 'lucide-react'
 
 import type { ReviewsBlock } from '@/payload-types'
 
 import { cn } from '@/utilities/ui'
 import { Stars } from './Stars'
 import { marks } from '@/utilities/marks'
+import Image from 'next/image'
 
 type Review = NonNullable<ReviewsBlock['reviews']>[number]
 
@@ -40,16 +41,27 @@ export const ReviewGrid: React.FC<Props> = ({
             data-payload-subpath={`reviews.${i}.title`}
             key={review.id ?? i}
           >
-            <Stars className="text-brand" count={review.stars} />
+            <Stars className="text-[#192F7C]" count={review.stars} />
 
             {review.verified && (
               <p
                 className="mt-3 flex items-center gap-2 text-sm font-medium text-brand"
                 data-payload-subpath={`reviews.${i}.verified`}
               >
-                <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-brand">
-                  <Check className="h-3 w-3 text-white" strokeWidth={3} />
-                </span>
+                {/* Decorative: the adjacent label already says "Verified Purchase", so an
+                    alt here would just be read out twice. Sized explicitly rather than with
+                    `fill`, which needs a positioned parent and is meant for unknown ratios.
+                    `unoptimized` because the optimiser's smallest width step is below the
+                    source's own 22px — it was shipping an 11px copy into a 20px box. There is
+                    nothing to save on a file this small, so serve it untouched. */}
+                <Image
+                  alt=""
+                  className="h-5 w-5 shrink-0"
+                  height={22}
+                  src="/check-icon.png"
+                  unoptimized
+                  width={22}
+                />
                 {verifiedLabel || 'Verified Purchase'}
               </p>
             )}

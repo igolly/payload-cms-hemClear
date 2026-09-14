@@ -24,11 +24,12 @@ export const VideoMedia: React.FC<MediaProps> = (props) => {
   }, [])
 
   if (resource && typeof resource === 'object') {
-    const { filename } = resource
+    const { url } = resource
 
     return (
       <video
         autoPlay
+        preload="metadata"
         className={cn(videoClassName)}
         controls={false}
         loop
@@ -37,7 +38,7 @@ export const VideoMedia: React.FC<MediaProps> = (props) => {
         playsInline
         ref={videoRef}
       >
-        <source src={getMediaUrl(`/media/${filename}`)} />
+        <source src={getMediaUrl(url)} />
       </video>
     )
   }

@@ -26,8 +26,14 @@ const nextConfig: NextConfig = {
         pathname: '/**',
       },
     ],
-    qualities: [100],
+    formats: ['image/avif', 'image/webp'],
+    // Media URLs carry `?<updatedAt>`, so a replaced file gets a new URL and a long
+    // TTL never serves a stale image.
+    minimumCacheTTL: 2678400, // 31 days
+    qualities: [75, 100],
     remotePatterns: [
+      // Supabase Storage public objects (media uploads).
+      { hostname: '*.supabase.co', pathname: '/storage/v1/object/public/**', protocol: 'https' },
       // Vercel Blob public URLs, used once BLOB_READ_WRITE_TOKEN is set.
       { hostname: '*.public.blob.vercel-storage.com', protocol: 'https' },
       ...[NEXT_PUBLIC_SERVER_URL /* 'https://example.com' */].map((item) => {

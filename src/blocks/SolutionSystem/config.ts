@@ -62,6 +62,15 @@ export const SolutionSystem: Block = {
         },
         { name: 'title', type: 'text', required: true },
         { name: 'subtitle', type: 'text' },
+        {
+          name: 'image',
+          type: 'upload',
+          relationTo: 'media',
+          admin: {
+            description:
+              'Illustrated icon. Replaces the icon above when set; leave empty to keep using the icon.',
+          },
+        },
       ],
     },
     backgroundField(),

@@ -1,6 +1,7 @@
 import React from 'react'
 
 import { cn } from '@/utilities/ui'
+import Image from 'next/image'
 
 interface Props {
   className?: string
@@ -16,7 +17,7 @@ export const Logo = (props: Props) => {
 
   return (
     /* eslint-disable @next/next/no-img-element */
-    <img
+    <Image
       alt="HemClear"
       width={484}
       height={128}
@@ -25,7 +26,7 @@ export const Logo = (props: Props) => {
       decoding="async"
       // `cn` (tailwind-merge), not `clsx`: the footer passes an explicit width, and
       // with plain clsx that would sit alongside `w-auto` instead of replacing it.
-      className={cn('w-auto h-9', className)}
+      className={cn('w-auto h-14', className)}
       src="/logo.png"
     />
   )

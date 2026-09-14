@@ -21,12 +21,15 @@ export const ClosingCtaBlock: React.FC<Props> = ({
   const items = Array.isArray(cards) ? cards : []
 
   return (
-    <section className="w-full bg-[#e0ecfc] px-4 py-16 sm:px-6 lg:px-8" style={backgroundStyle(bgColor, bgColorCustom)}>
+    <section
+      className="w-full bg-[#e0ecfc] px-4 py-9 sm:px-6 lg:px-8"
+      style={backgroundStyle(bgColor, bgColorCustom)}
+    >
       <div className="mx-auto max-w-7xl">
         <header className="text-center">
           {headingTop && (
             <h2
-              className="text-3xl font-extrabold leading-tight text-heading sm:text-4xl"
+              className="font-marcellus text-3xl font-bold leading-[1.08] text-[#051959] sm:text-[3rem]"
               data-payload-subpath="headingTop"
             >
               {marks(headingTop)}
@@ -35,7 +38,7 @@ export const ClosingCtaBlock: React.FC<Props> = ({
 
           {heading && (
             <p
-              className="mt-1 font-serif text-3xl leading-tight text-heading sm:text-4xl"
+              className="mt-1 font-marcellus text-3xl leading-[1.08] text-[#051959db] sm:text-[3rem]"
               data-payload-subpath="heading"
             >
               {marks(heading)}
@@ -44,7 +47,7 @@ export const ClosingCtaBlock: React.FC<Props> = ({
 
           {description && (
             <p
-              className="mx-auto mt-5 max-w-4xl whitespace-pre-line text-sm leading-relaxed text-[#1a2f7c]"
+              className="mx-auto mt-4 max-w-4xl whitespace-pre-line text-[16px] leading-snug text-[#192F7C]"
               data-payload-subpath="description"
             >
               {marks(description)}
@@ -53,24 +56,24 @@ export const ClosingCtaBlock: React.FC<Props> = ({
         </header>
 
         {items.length > 0 && (
-          <ul className="mt-10 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          <ul className="mx-auto mt-6 grid max-w-[1056px] grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {items.map((card, i) => (
               <li
                 className="overflow-hidden rounded-xl bg-white shadow-[0_2px_8px_rgba(16,60,120,0.08)]"
                 data-payload-subpath={`cards.${i}.title`}
                 key={card.id ?? i}
               >
-                <div className="relative aspect-[4/3] w-full">
+                <div className="relative aspect-[3/2] w-full">
                   <ImageSlot
-                    className="h-full w-full"
+                    className="h-full w-full object-top"
                     hint="Lifestyle photo"
-                    imgClassName="h-full w-full object-cover"
+                    imgClassName="h-full w-full object-cover object-top"
                     label={`Card ${i + 1} image`}
                     resource={card.image}
                   />
                 </div>
 
-                <div className="flex gap-3 p-4">
+                <div className="flex gap-2.5 p-3">
                   {/* Uploaded mark wins; the icon is the fallback, so a card without one
                       renders exactly as before. */}
                   {card.iconImage && typeof card.iconImage === 'object' ? (
@@ -91,12 +94,12 @@ export const ClosingCtaBlock: React.FC<Props> = ({
                     />
                   )}
                   <div className="min-w-0">
-                    <h3 className="font-serif text-sm font-bold leading-tight text-subheading">
+                    <h3 className="font-serif text-xs font-bold leading-tight text-[#192F7C]">
                       {marks(card.title)}
                     </h3>
                     {card.description && (
                       <p
-                        className="mt-1 text-xs leading-relaxed text-slate-700"
+                        className="mt-1 text-[10px] leading-snug text-slate-700"
                         data-payload-subpath={`cards.${i}.description`}
                       >
                         {marks(card.description)}
@@ -110,15 +113,15 @@ export const ClosingCtaBlock: React.FC<Props> = ({
         )}
 
         {Array.isArray(links) && links.length > 0 && (
-          <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
+          <div className="mt-6 flex flex-col items-center justify-center gap-4 sm:flex-row">
             {links.map(({ link }, i) => (
               <CMSLink
                 {...link}
                 appearance="inline"
                 className={
                   link.appearance === 'outline'
-                    ? 'inline-flex w-full items-center justify-center rounded-md border border-[#9dbde8] bg-white/60 px-10 py-4 text-base text-brand transition-colors hover:bg-white sm:w-auto'
-                    : 'inline-flex w-full items-center justify-center rounded-md bg-brand px-10 py-4 text-base text-white transition-colors hover:bg-brand-dark sm:w-auto'
+                    ? 'inline-flex w-full items-center justify-center rounded-md border border-[#9dbde8] bg-white/60 px-10 py-3.5 text-base text-brand transition-colors hover:bg-white sm:w-auto'
+                    : 'inline-flex w-full items-center justify-center rounded-md bg-[#192F7C] px-10 py-3.5 text-base text-white transition-colors hover:bg-brand-dark sm:w-auto'
                 }
                 key={i}
               />

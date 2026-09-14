@@ -4,6 +4,7 @@ import type { SolutionSystemBlock as Props } from '@/payload-types'
 
 import { ImageSlot } from '@/blocks/FAQ/ImagePlaceholder'
 import { BrandIcon } from '@/components/BrandIcons'
+import { Media } from '@/components/Media'
 import { backgroundStyle } from '@/fields/background'
 import { marks, multiline } from '@/utilities/marks'
 
@@ -20,11 +21,27 @@ const HighlightCard: React.FC<{ card: Card; index: number }> = ({ card, index })
     className="flex items-center gap-4 rounded-2xl border border-[#E2ECFB] bg-white px-5 py-4 shadow-[0_2px_10px_rgba(16,60,120,0.05)]"
     data-payload-subpath={`cards.${index}.title`}
   >
-    <BrandIcon className="block h-9 w-9 shrink-0 text-[#1668C4] [&>svg]:h-full [&>svg]:w-full" name={card.icon} />
+    {card.image && typeof card.image === 'object' ? (
+      <span className="block h-9 w-9 shrink-0" data-payload-subpath={`cards.${index}.image`}>
+        {/* `htmlElement={null}` so `Media` emits its `<picture>` bare — its default `<div>`
+            wrapper is not valid inside a span. */}
+        <Media htmlElement={null} imgClassName="h-9 w-9 object-contain" resource={card.image} />
+      </span>
+    ) : (
+      <BrandIcon
+        className="block h-9 w-9 shrink-0 text-[#1668C4] [&>svg]:h-full [&>svg]:w-full"
+        name={card.icon}
+      />
+    )}
     <div className="min-w-0">
-      <p className="text-[15px] font-bold leading-snug text-[#123A6B]">
+      {/*
+       * The comp runs the card title in the same blue as the section subheading and keeps
+       * the lead-in number dark — the reverse of how this read before, which put the blue
+       * on the number and left the title in slate.
+       */}
+      <p className="text-[15px] font-bold leading-snug text-[#1668C4]">
         {card.stat && (
-          <span className="mr-1.5 align-middle text-3xl font-extrabold text-[#1668C4]">
+          <span className="mr-1.5 align-middle text-3xl font-extrabold text-heading">
             {marks(card.stat)}
           </span>
         )}

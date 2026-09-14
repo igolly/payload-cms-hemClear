@@ -43,14 +43,22 @@ export const AnnouncementBar: React.FC<{
         </p>
 
         {remaining !== null && (
-          <ul className="flex items-center gap-3">
-            {parts(remaining).map((part) => (
-              <li className="flex flex-col items-center leading-none" key={part.label}>
-                <span className="text-sm font-bold tabular-nums">{marks(part.value)}</span>
-                <span className="text-[9px] uppercase tracking-wide text-white/70">
-                  {marks(part.label)}
-                </span>
-              </li>
+          <ul className="flex items-center justify-center h-full gap-3">
+            {parts(remaining).map((part, i) => (
+              <React.Fragment key={part.label}>
+                {/* Separator between units, centred on the unit block as a whole. */}
+                {i > 0 && (
+                  <li aria-hidden="true" className="text-sm font-bold leading-none text-white/50">
+                    :
+                  </li>
+                )}
+                <li className="flex flex-col items-center leading-none">
+                  <span className="text-sm font-bold tabular-nums">{marks(part.value)}</span>
+                  <span className="text-[9px] uppercase tracking-wide text-white/70">
+                    {marks(part.label)}
+                  </span>
+                </li>
+              </React.Fragment>
             ))}
           </ul>
         )}

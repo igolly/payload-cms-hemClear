@@ -262,27 +262,31 @@ export const ProductDetailBlockComponent: React.FC<ProductDetailBlock> = (produc
                 title={product.compositionTitle}
               />
             )}
+            {/*
+             * Customer stories close the buy column, as the comp has them. Five cards fit
+             * across it once they are sized off the column rather than the page and the
+             * arrows step aside — the earlier squeeze came from page-width cards being asked
+             * to fit here, not from the column being too narrow for the row.
+             */}
+            {stories.length > 0 && (
+              <div className="mt-10 border-t border-[#dbe8fa] pt-8">
+                {product.storiesTitle && (
+                  <h2 className="text-xl font-extrabold tracking-tight text-heading sm:text-2xl">
+                    {marks(product.storiesTitle)}
+                  </h2>
+                )}
+                <div className="mt-5 border-b border-[#dbe8fa] pb-8">
+                  <Carousel
+                    arrows={false}
+                    itemClassName="w-[46%] sm:w-[30%] lg:w-[calc((100%-4rem)/5)]"
+                    stories={stories}
+                    tone="light"
+                  />
+                </div>
+              </div>
+            )}
           </div>
         </div>
-
-        {/*
-         * Customer stories run the full width of the page rather than sitting in the buy
-         * column. Inside it each phone mock had about 186px to work with, so the row read
-         * as a squeeze with the next card clipped at the column edge; out here the
-         * carousel's own five-across sizing applies and the arrows have somewhere to go.
-         */}
-        {stories.length > 0 && (
-          <div className="mt-12 border-t border-[#dbe8fa] pt-10">
-            {product.storiesTitle && (
-              <h2 className="font-serif text-2xl text-heading sm:text-3xl">
-                {marks(product.storiesTitle)}
-              </h2>
-            )}
-            <div className="mt-6">
-              <Carousel stories={stories} tone="light" />
-            </div>
-          </div>
-        )}
       </div>
     </section>
   )

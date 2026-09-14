@@ -1320,6 +1320,10 @@ export interface SolutionSystemBlock {
         stat?: string | null;
         title: string;
         subtitle?: string | null;
+        /**
+         * Illustrated icon. Replaces the icon above when set; leave empty to keep using the icon.
+         */
+        image?: (string | null) | Media;
         id?: string | null;
       }[]
     | null;
@@ -3378,6 +3382,7 @@ export interface SolutionSystemBlockSelect<T extends boolean = true> {
         stat?: T;
         title?: T;
         subtitle?: T;
+        image?: T;
         id?: T;
       };
   bgColor?: T;

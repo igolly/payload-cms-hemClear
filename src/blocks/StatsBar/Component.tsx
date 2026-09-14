@@ -11,7 +11,10 @@ export const StatsBarBlock: React.FC<Props> = ({ bgColor, bgColorCustom, stats }
   if (items.length === 0) return null
 
   return (
-    <section className="w-full bg-[#FAFBFF] px-4 py-8 sm:px-6 lg:px-8" style={backgroundStyle(bgColor, bgColorCustom)}>
+    <section
+      className="w-full bg-[#FAFBFF] px-4 py-4 sm:px-6 lg:px-8"
+      style={backgroundStyle(bgColor, bgColorCustom)}
+    >
       <ul className="mx-auto grid max-w-6xl grid-cols-2 gap-y-6 lg:flex lg:items-center lg:justify-center">
         {items.map((stat, i) => (
           <li
@@ -21,25 +24,29 @@ export const StatsBarBlock: React.FC<Props> = ({ bgColor, bgColorCustom, stats }
           >
             {stat.topLabel && (
               <span
-                className="font-marcellus text-lg leading-none text-brand"
+                className="font-marcellus text-lg leading-none text-subheading"
                 data-payload-subpath={`stats.${i}.topLabel`}
               >
                 {marks(stat.topLabel)}
               </span>
             )}
 
-            <span className="flex items-center gap-1">
-              <span className="font-marcellus text-[30px] font-normal leading-[34px] text-brand">
+            <span className="flex items-center">
+              <span className="font-marcellus text-[30px] font-normal leading-[34px] text-subheading">
                 {marks(stat.value)}
               </span>
               {stat.showStar && (
-                <Star className="h-6 w-6 text-brand sm:h-7 sm:w-7" fill="currentColor" strokeWidth={0} />
+                <Star
+                  className="h-6 w-6 text-subheading sm:h-7 sm:w-7"
+                  fill="currentColor"
+                  strokeWidth={0}
+                />
               )}
             </span>
 
             {stat.label && (
               <span
-                className="font-marcellus text-sm text-brand sm:text-base"
+                className="font-marcellus text-sm text-subheading sm:text-base"
                 data-payload-subpath={`stats.${i}.label`}
               >
                 {marks(stat.label)}
