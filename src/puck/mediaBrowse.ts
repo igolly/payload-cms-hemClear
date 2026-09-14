@@ -39,9 +39,7 @@ export const puckMediaBrowse: Endpoint = {
     const where: Where = {
       and: [
         { mimeType: { contains: 'image' } },
-        ...(term
-          ? [{ or: [{ filename: { contains: term } }, { alt: { contains: term } }] }]
-          : []),
+        ...(term ? [{ or: [{ filename: { contains: term } }, { alt: { contains: term } }] }] : []),
       ],
     }
 

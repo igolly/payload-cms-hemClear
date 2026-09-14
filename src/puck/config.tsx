@@ -119,7 +119,11 @@ const toComponentConfig = (block: Block, Component: AnyComponent): ComponentConf
   label: blockLabel(block),
   fields: convertFields(block.fields),
   defaultProps: defaultsFor(block.fields) as never,
-  render: ({ puck: _puck, id: _id, ...props }: Record<string, unknown> & { puck?: unknown; id?: unknown }) => (
+  render: ({
+    puck: _puck,
+    id: _id,
+    ...props
+  }: Record<string, unknown> & { puck?: unknown; id?: unknown }) => (
     // Same wrapper rule `RenderBlocks` applies, so a section keeps its spacing whichever
     // editor the page was built in.
     <div className={fullBleed.has(block.slug) ? undefined : 'my-16'}>
@@ -167,7 +171,11 @@ components.formBlock = {
     introContent: { type: 'richtext', label: 'Intro Content' },
   },
   defaultProps: { enableIntro: false } as never,
-  render: ({ puck: _puck, id: _id, ...props }: Record<string, unknown> & { puck?: unknown; id?: unknown }) => {
+  render: ({
+    puck: _puck,
+    id: _id,
+    ...props
+  }: Record<string, unknown> & { puck?: unknown; id?: unknown }) => {
     const Form = FormBlock as AnyComponent
     return (
       <div className="my-16">

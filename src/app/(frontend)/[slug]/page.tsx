@@ -14,6 +14,7 @@ import { RenderBlocks } from '@/blocks/RenderBlocks'
 import { RenderHero } from '@/heros/RenderHero'
 import { puckConfig } from '@/puck/config'
 import { generateMeta } from '@/utilities/generateMeta'
+import { rewriteMediaProxyURLs } from '@/utilities/storageURL'
 import PageClient from './page.client'
 import { LivePreviewListener } from '@/components/LivePreviewListener'
 import { VisualEditorBridge } from '@/components/VisualEditorBridge'
@@ -118,5 +119,5 @@ const queryPageBySlug = cache(async ({ slug }: { slug: string }) => {
     },
   })
 
-  return result.docs?.[0] || null
+  return rewriteMediaProxyURLs(result.docs?.[0] || null)
 })

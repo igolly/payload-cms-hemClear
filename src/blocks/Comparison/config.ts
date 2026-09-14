@@ -18,8 +18,7 @@ export const Comparison: Block = {
       labels: { singular: 'Column', plural: 'Columns' },
       minRows: 1,
       admin: {
-        description:
-          'One per product column, left to right. Mark your own product as highlighted.',
+        description: 'One per product column, left to right. Mark your own product as highlighted.',
         initCollapsed: true,
         components: { RowLabel: '@/blocks/Comparison/RowLabel#ProductRowLabel' },
       },
@@ -39,8 +38,7 @@ export const Comparison: Block = {
       label: 'Feature Rows',
       labels: { singular: 'Row', plural: 'Rows' },
       admin: {
-        description:
-          'Each row lists one value per column, in the same order as Columns above.',
+        description: 'Each row lists one value per column, in the same order as Columns above.',
         initCollapsed: true,
         components: { RowLabel: '@/blocks/Comparison/RowLabel#FeatureRowLabel' },
       },

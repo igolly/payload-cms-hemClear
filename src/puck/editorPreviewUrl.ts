@@ -31,7 +31,8 @@ type EditorPage = {
 
 export const editorPreviewUrl = (page: EditorPage) => {
   try {
-    const hasPuckContent = Array.isArray(page?.puckData?.content) && page.puckData.content.length > 0
+    const hasPuckContent =
+      Array.isArray(page?.puckData?.content) && page.puckData.content.length > 0
     const blocks = page?.layout
 
     if (!hasPuckContent && Array.isArray(blocks) && blocks.length > 0) {

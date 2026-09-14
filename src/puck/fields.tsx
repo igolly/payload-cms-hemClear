@@ -52,7 +52,10 @@ const optionsFor = (field: PayloadField): { label: string; value: string }[] => 
   return raw.map((opt) =>
     typeof opt === 'string'
       ? { label: humanize(opt), value: opt }
-      : { label: typeof opt.label === 'string' ? opt.label : String(opt.value), value: String(opt.value) },
+      : {
+          label: typeof opt.label === 'string' ? opt.label : String(opt.value),
+          value: String(opt.value),
+        },
   )
 }
 
@@ -113,9 +116,7 @@ const mediaField = (label?: string): PuckField => ({
  */
 const relationshipField = (field: PayloadField, label?: string): PuckField => {
   const relations = ('relationTo' in field ? field.relationTo : undefined) as
-    | string
-    | string[]
-    | undefined
+    string | string[] | undefined
   const collections = Array.isArray(relations) ? relations : relations ? [relations] : []
 
   return {
@@ -268,7 +269,8 @@ export const convertFields = (fields: PayloadField[]): PuckFields => {
     }
     if (field.type === 'tabs') {
       for (const tab of field.tabs) {
-        if ('fields' in tab && Array.isArray(tab.fields)) Object.assign(out, convertFields(tab.fields))
+        if ('fields' in tab && Array.isArray(tab.fields))
+          Object.assign(out, convertFields(tab.fields))
       }
       continue
     }
@@ -292,7 +294,8 @@ export const defaultsFor = (fields: PayloadField[]): Record<string, unknown> => 
     }
     if (field.type === 'tabs') {
       for (const tab of field.tabs) {
-        if ('fields' in tab && Array.isArray(tab.fields)) Object.assign(out, defaultsFor(tab.fields))
+        if ('fields' in tab && Array.isArray(tab.fields))
+          Object.assign(out, defaultsFor(tab.fields))
       }
       continue
     }

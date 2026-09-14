@@ -150,8 +150,7 @@ export const hero: Field = {
           type: 'upload',
           relationTo: 'media',
           admin: {
-            description:
-              'Optional illustrated icon. Replaces the default tick when set.',
+            description: 'Optional illustrated icon. Replaces the default tick when set.',
           },
         },
       ],

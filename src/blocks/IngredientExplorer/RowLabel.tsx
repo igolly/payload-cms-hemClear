@@ -9,8 +9,9 @@ export const GroupRowLabel: React.FC<RowLabelProps> = () => {
 }
 
 export const IngredientRowLabel: React.FC<RowLabelProps> = () => {
-  const { data } = useRowLabel<
-    NonNullable<NonNullable<IngredientExplorerBlock['groups']>[number]['ingredients']>[number]
-  >()
+  const { data } =
+    useRowLabel<
+      NonNullable<NonNullable<IngredientExplorerBlock['groups']>[number]['ingredients']>[number]
+    >()
   return <div>{data?.name || 'Ingredient'}</div>
 }

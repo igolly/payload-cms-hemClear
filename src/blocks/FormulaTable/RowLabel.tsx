@@ -9,8 +9,7 @@ export const FormulaRowLabel: React.FC<RowLabelProps> = () => {
 }
 
 export const IngredientRowLabel: React.FC<RowLabelProps> = () => {
-  const { data } = useRowLabel<
-    NonNullable<NonNullable<FormulaTableBlock['formulas']>[number]['rows']>[number]
-  >()
+  const { data } =
+    useRowLabel<NonNullable<NonNullable<FormulaTableBlock['formulas']>[number]['rows']>[number]>()
   return <div>{data?.name || 'Ingredient'}</div>
 }

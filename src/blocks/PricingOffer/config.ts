@@ -24,7 +24,12 @@ export const PricingOffer: Block = {
           type: 'row',
           fields: [
             { name: 'bannerValue', type: 'text', admin: { width: '50%' } },
-            { name: 'bannerValueLabel', type: 'text', defaultValue: 'Value', admin: { width: '50%' } },
+            {
+              name: 'bannerValueLabel',
+              type: 'text',
+              defaultValue: 'Value',
+              admin: { width: '50%' },
+            },
           ],
         },
       ],
@@ -71,8 +76,18 @@ export const PricingOffer: Block = {
         {
           type: 'row',
           fields: [
-            { name: 'popular', type: 'checkbox', label: 'Highlight as most popular', admin: { width: '50%' } },
-            { name: 'popularLabel', type: 'text', defaultValue: 'Most Popular', admin: { width: '50%' } },
+            {
+              name: 'popular',
+              type: 'checkbox',
+              label: 'Highlight as most popular',
+              admin: { width: '50%' },
+            },
+            {
+              name: 'popularLabel',
+              type: 'text',
+              defaultValue: 'Most Popular',
+              admin: { width: '50%' },
+            },
           ],
         },
       ],

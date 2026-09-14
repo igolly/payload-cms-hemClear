@@ -9,12 +9,7 @@ import { FixedToolbarFeature, HeadingFeature, lexicalEditor } from '@payloadcms/
 
 import { Page } from '@/payload-types'
 import { getServerSideURL } from '@/utilities/getURL'
-
-// `https://<ref>.storage.supabase.co/storage/v1/s3` → `.../storage/v1/object/public`.
-// S3_PUBLIC_URL overrides it, e.g. for a CDN in front of the bucket.
-const getPublicStorageURL = () =>
-  (process.env.S3_PUBLIC_URL || (process.env.S3_ENDPOINT || '').replace(/\/s3\/?$/, '/object/public'))
-    .replace(/\/$/, '')
+import { getPublicFileURL } from '@/utilities/storageURL'
 
 const generateTitle: GenerateTitle<Page> = ({ doc }) => {
   return doc?.title ? `${doc.title} | HemClear®` : 'HemClear®'
@@ -45,10 +40,7 @@ export const plugins: Plugin[] = [
     collections: {
       media: {
         disablePayloadAccessControl: true,
-        generateFileURL: ({ filename, prefix }) =>
-          [getPublicStorageURL(), process.env.S3_BUCKET, prefix, encodeURIComponent(filename)]
-            .filter(Boolean)
-            .join('/'),
+        generateFileURL: getPublicFileURL,
       },
     },
     config: {

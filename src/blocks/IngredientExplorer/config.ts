@@ -54,7 +54,10 @@ export const IngredientExplorer: Block = {
                 {
                   name: 'category',
                   type: 'text',
-                  admin: { description: 'e.g. "Antioxidants". Drives the filter pills.', width: '50%' },
+                  admin: {
+                    description: 'e.g. "Antioxidants". Drives the filter pills.',
+                    width: '50%',
+                  },
                 },
               ],
             },

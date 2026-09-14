@@ -15,7 +15,8 @@ export const FormulaTable: Block = {
       labels: { singular: 'Formula', plural: 'Formulas' },
       minRows: 1,
       admin: {
-        description: 'Each becomes one thumbnail in the toggle. With one formula the toggle is hidden.',
+        description:
+          'Each becomes one thumbnail in the toggle. With one formula the toggle is hidden.',
         initCollapsed: true,
         components: { RowLabel: '@/blocks/FormulaTable/RowLabel#FormulaRowLabel' },
       },

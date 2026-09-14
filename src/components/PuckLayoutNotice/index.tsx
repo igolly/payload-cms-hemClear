@@ -33,9 +33,8 @@ export const PuckLayoutNotice: React.FC = () => {
         This page is rendered by the Visual Editor.
       </strong>
       <p style={{ margin: '0 0 .75rem', lineHeight: 1.5 }}>
-        The sections below are kept as a backup and are <strong>not</strong> what visitors
-        see. Edits made here will not appear on the site — make them in the Visual Editor
-        instead.
+        The sections below are kept as a backup and are <strong>not</strong> what visitors see.
+        Edits made here will not appear on the site — make them in the Visual Editor instead.
       </p>
       {id && (
         <a href={`/admin/puck-editor/pages/${id}`} style={{ fontWeight: 600 }}>

@@ -37,7 +37,10 @@ export const BannerHero: Block = {
             { label: 'Even wash', value: 'even' },
             { label: 'None', value: 'none' },
           ],
-          admin: { description: 'Darkening applied over the image so text stays readable.', width: '50%' },
+          admin: {
+            description: 'Darkening applied over the image so text stays readable.',
+            width: '50%',
+          },
         },
         {
           name: 'height',

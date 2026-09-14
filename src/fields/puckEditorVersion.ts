@@ -30,9 +30,7 @@ export const puckEditorVersion: Field = {
         // `puckData` is admin-hidden, so a save from the normal admin form may omit it.
         // Fall back to the stored document before concluding a page has no Puck content.
         const puckData = (data?.puckData ?? originalDoc?.puckData) as
-          | { content?: unknown[] }
-          | null
-          | undefined
+          { content?: unknown[] } | null | undefined
         const layout = (data?.layout ?? originalDoc?.layout) as unknown[] | null | undefined
 
         const hasPuckContent = Array.isArray(puckData?.content) && puckData.content.length > 0
