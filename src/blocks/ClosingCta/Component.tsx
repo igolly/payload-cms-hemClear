@@ -22,14 +22,14 @@ export const ClosingCtaBlock: React.FC<Props> = ({
 
   return (
     <section
-      className="w-full bg-[#e0ecfc] px-4 py-9 sm:px-6 lg:px-8"
+      className="w-full bg-tint-50 px-4 py-9 sm:px-6 lg:px-8"
       style={backgroundStyle(bgColor, bgColorCustom)}
     >
       <div className="mx-auto max-w-7xl">
         <header className="text-center">
           {headingTop && (
             <h2
-              className="font-marcellus text-3xl font-bold leading-[1.08] text-[#051959] sm:text-[3rem]"
+              className="font-marcellus text-3xl font-bold leading-[1.08] text-navy-900 sm:text-[3rem]"
               data-payload-subpath="headingTop"
             >
               {marks(headingTop)}
@@ -38,7 +38,7 @@ export const ClosingCtaBlock: React.FC<Props> = ({
 
           {heading && (
             <p
-              className="mt-1 font-marcellus text-3xl leading-[1.08] text-[#051959db] sm:text-[3rem]"
+              className="mt-1 font-marcellus text-3xl leading-[1.08] text-navy-900/85 sm:text-[3rem]"
               data-payload-subpath="heading"
             >
               {marks(heading)}
@@ -47,7 +47,7 @@ export const ClosingCtaBlock: React.FC<Props> = ({
 
           {description && (
             <p
-              className="mx-auto mt-4 max-w-4xl whitespace-pre-line text-[16px] leading-snug text-[#192F7C]"
+              className="mx-auto mt-4 max-w-4xl whitespace-pre-line text-[16px] leading-snug text-navy"
               data-payload-subpath="description"
             >
               {marks(description)}
@@ -94,7 +94,7 @@ export const ClosingCtaBlock: React.FC<Props> = ({
                     />
                   )}
                   <div className="min-w-0">
-                    <h3 className="font-serif text-xs font-bold leading-tight text-[#192F7C]">
+                    <h3 className="font-serif text-xs font-bold leading-tight text-navy">
                       {marks(card.title)}
                     </h3>
                     {card.description && (
@@ -120,8 +120,8 @@ export const ClosingCtaBlock: React.FC<Props> = ({
                 appearance="inline"
                 className={
                   link.appearance === 'outline'
-                    ? 'inline-flex w-full items-center justify-center rounded-md border border-[#9dbde8] bg-white/60 px-10 py-3.5 text-base text-brand transition-colors hover:bg-white sm:w-auto'
-                    : 'inline-flex w-full items-center justify-center rounded-md bg-[#192F7C] px-10 py-3.5 text-base text-white transition-colors hover:bg-brand-dark sm:w-auto'
+                    ? 'inline-flex w-full items-center justify-center rounded-md border border-tint-300 bg-white/60 px-10 py-3.5 text-base text-brand transition-colors hover:bg-white sm:w-auto'
+                    : 'inline-flex w-full items-center justify-center rounded-md bg-navy px-10 py-3.5 text-base text-white transition-colors hover:bg-brand-dark sm:w-auto'
                 }
                 key={i}
               />

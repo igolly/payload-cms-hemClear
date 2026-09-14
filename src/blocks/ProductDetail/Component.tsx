@@ -71,7 +71,7 @@ export const ProductDetailBlockComponent: React.FC<ProductDetailBlock> = (produc
           <div>
             {/* Review bar */}
             {(product.ratingLabel || ratingNotes.length > 0) && (
-              <div className="flex flex-wrap items-center gap-x-3 gap-y-1 border-b border-[#dbe8fa] pb-3 text-xs text-brand">
+              <div className="flex flex-wrap items-center gap-x-3 gap-y-1 border-b border-tint-100 pb-3 text-xs text-brand">
                 <span
                   aria-label={`${stars} out of 5 stars`}
                   className="flex items-center"
@@ -94,7 +94,7 @@ export const ProductDetailBlockComponent: React.FC<ProductDetailBlock> = (produc
                 )}
                 {ratingNotes.map((note, i) => (
                   <React.Fragment key={note.id ?? i}>
-                    <span aria-hidden="true" className="text-[#c9dcf5]">
+                    <span aria-hidden="true" className="text-tint-150">
                       |
                     </span>
                     <span>{marks(note.text)}</span>
@@ -104,7 +104,7 @@ export const ProductDetailBlockComponent: React.FC<ProductDetailBlock> = (produc
             )}
 
             {product.eyebrow && (
-              <p className="mt-4 text-sm font-bold uppercase tracking-wide text-[#0052cc]">
+              <p className="mt-4 text-sm font-bold uppercase tracking-wide text-brand-500">
                 {marks(product.eyebrow)}
               </p>
             )}
@@ -114,16 +114,14 @@ export const ProductDetailBlockComponent: React.FC<ProductDetailBlock> = (produc
             </h1>
 
             {product.description && (
-              <p className="mt-3 text-sm leading-relaxed text-[#1a2f7c]">
-                {marks(product.description)}
-              </p>
+              <p className="mt-3 text-sm leading-relaxed text-navy">{marks(product.description)}</p>
             )}
 
             {benefits.length > 0 && (
               <ul className="mt-4 flex flex-wrap gap-2">
                 {benefits.map((benefit, i) => (
                   <li
-                    className="flex items-center gap-2 rounded-full border border-[#dbe8fa] px-3 py-1.5"
+                    className="flex items-center gap-2 rounded-full border border-tint-100 px-3 py-1.5"
                     key={benefit.id ?? i}
                   >
                     <Check className="h-3.5 w-3.5 shrink-0 text-brand" strokeWidth={3} />
@@ -135,7 +133,7 @@ export const ProductDetailBlockComponent: React.FC<ProductDetailBlock> = (produc
 
             {/* Reported results */}
             {results.length > 0 && (
-              <div className="mt-6 rounded-xl border border-[#dbe8fa] bg-[#f7faff] p-5">
+              <div className="mt-6 rounded-xl border border-tint-100 bg-mist p-5">
                 {product.resultsTitle && (
                   <p className="text-center text-sm font-bold uppercase tracking-wide text-brand">
                     {marks(product.resultsTitle)}
@@ -148,7 +146,7 @@ export const ProductDetailBlockComponent: React.FC<ProductDetailBlock> = (produc
                       <p className="text-3xl font-extrabold text-brand">{marks(result.value)}</p>
                       <p className="mt-1 text-[11px] font-bold text-brand">{marks(result.label)}</p>
                       {result.detail && (
-                        <p className="mt-1 text-[10px] leading-tight text-[#0052cc]">
+                        <p className="mt-1 text-[10px] leading-tight text-brand-500">
                           {marks(result.detail)}
                         </p>
                       )}
@@ -179,14 +177,14 @@ export const ProductDetailBlockComponent: React.FC<ProductDetailBlock> = (produc
               <ul className="mt-4 flex flex-col gap-3">
                 {notes.map((note, i) => (
                   <li
-                    className="flex items-start gap-3 rounded-lg border border-[#dbe8fa] bg-[#f7faff] p-4"
+                    className="flex items-start gap-3 rounded-lg border border-tint-100 bg-mist p-4"
                     key={note.id ?? i}
                   >
                     <BrandIcon
                       className="shrink-0 text-brand [&>svg]:h-6 [&>svg]:w-6"
                       name={note.icon}
                     />
-                    <p className="text-xs leading-relaxed text-[#1a2f7c]">
+                    <p className="text-xs leading-relaxed text-navy">
                       {note.lead && <strong className="font-bold">{marks(note.lead)} </strong>}
                       {marks(note.text)}
                     </p>
@@ -203,7 +201,7 @@ export const ProductDetailBlockComponent: React.FC<ProductDetailBlock> = (produc
                     className="flex w-28 flex-col items-center gap-2 text-center"
                     key={item.id ?? i}
                   >
-                    <span className="flex h-11 w-11 items-center justify-center rounded-full border border-[#dbe8fa] text-brand [&>span>svg]:h-5 [&>span>svg]:w-5">
+                    <span className="flex h-11 w-11 items-center justify-center rounded-full border border-tint-100 text-brand [&>span>svg]:h-5 [&>span>svg]:w-5">
                       <BrandIcon name={item.icon} />
                     </span>
                     <span className="text-xs font-semibold text-brand">{marks(item.label)}</span>
@@ -214,7 +212,7 @@ export const ProductDetailBlockComponent: React.FC<ProductDetailBlock> = (produc
 
             {/* What you'll feel */}
             {feel.length > 0 && (
-              <div className="mt-6 rounded-xl border border-[#dbe8fa] bg-[#f7faff] p-5">
+              <div className="mt-6 rounded-xl border border-tint-100 bg-mist p-5">
                 {product.feelTitle && (
                   <p className="text-center text-base font-bold text-brand">
                     {marks(product.feelTitle)}
@@ -228,7 +226,7 @@ export const ProductDetailBlockComponent: React.FC<ProductDetailBlock> = (produc
                       key={row.id ?? i}
                     >
                       <BrandIcon
-                        className="shrink-0 text-[#1668C4] [&>svg]:h-6 [&>svg]:w-6"
+                        className="shrink-0 text-brand-400 [&>svg]:h-6 [&>svg]:w-6"
                         name={row.icon}
                       />
                       <span className="min-w-0 grow">
@@ -236,7 +234,7 @@ export const ProductDetailBlockComponent: React.FC<ProductDetailBlock> = (produc
                           {marks(row.title)}
                         </span>
                         {row.subtitle && (
-                          <span className="block text-[11px] text-[#0052cc]">
+                          <span className="block text-[11px] text-brand-500">
                             {marks(row.subtitle)}
                           </span>
                         )}
@@ -269,13 +267,13 @@ export const ProductDetailBlockComponent: React.FC<ProductDetailBlock> = (produc
              * to fit here, not from the column being too narrow for the row.
              */}
             {stories.length > 0 && (
-              <div className="mt-10 border-t border-[#dbe8fa] pt-8">
+              <div className="mt-10 border-t border-tint-100 pt-8">
                 {product.storiesTitle && (
                   <h2 className="text-xl font-extrabold tracking-tight text-heading sm:text-2xl">
                     {marks(product.storiesTitle)}
                   </h2>
                 )}
-                <div className="mt-5 border-b border-[#dbe8fa] pb-8">
+                <div className="mt-5 border-b border-tint-100 pb-8">
                   <Carousel
                     arrows={false}
                     itemClassName="w-[46%] sm:w-[30%] lg:w-[calc((100%-4rem)/5)]"

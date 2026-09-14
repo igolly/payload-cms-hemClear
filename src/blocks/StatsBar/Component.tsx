@@ -12,13 +12,13 @@ export const StatsBarBlock: React.FC<Props> = ({ bgColor, bgColorCustom, stats }
 
   return (
     <section
-      className="w-full bg-[#FAFBFF] px-4 py-4 sm:px-6 lg:px-8"
+      className="w-full bg-mist px-4 py-4 sm:px-6 lg:px-8"
       style={backgroundStyle(bgColor, bgColorCustom)}
     >
       <ul className="mx-auto grid max-w-6xl grid-cols-2 gap-y-6 lg:flex lg:items-center lg:justify-center">
         {items.map((stat, i) => (
           <li
-            className="flex flex-col items-center px-4 text-center lg:flex-1 lg:border-l lg:border-[#c9dcf5] lg:first:border-l-0"
+            className="flex flex-col items-center px-4 text-center lg:flex-1 lg:border-l lg:border-tint-150 lg:first:border-l-0"
             data-payload-subpath={`stats.${i}.value`}
             key={stat.id ?? i}
           >

@@ -42,7 +42,7 @@ const ItemMark: React.FC<{ item: Item; size: MarkSize }> = ({ item, size }) =>
       />
     </span>
   ) : (
-    <BrandIcon className={cn('shrink-0 text-[#1668C4]', MARK_ICON[size])} name={item.icon} />
+    <BrandIcon className={cn('shrink-0 text-brand-400', MARK_ICON[size])} name={item.icon} />
   )
 
 export const FeatureStripBlock: React.FC<Props> = ({
@@ -87,7 +87,7 @@ export const FeatureStripBlock: React.FC<Props> = ({
     <section
       className={cn(
         'w-full px-4 py-12 sm:px-6 lg:px-8',
-        background === 'light' ? 'bg-[#f2f6fd]' : 'bg-white',
+        background === 'light' ? 'bg-mist-100' : 'bg-white',
         hasArtwork && 'relative isolate',
       )}
       style={backgroundStyle(bgColor, bgColorCustom)}
@@ -104,7 +104,7 @@ export const FeatureStripBlock: React.FC<Props> = ({
           <header className="text-center">
             {eyebrow && (
               <p
-                className="text-xs font-bold uppercase tracking-[0.15em] text-[#0052cc]"
+                className="text-xs font-bold uppercase tracking-[0.15em] text-brand-500"
                 data-payload-subpath="eyebrow"
               >
                 {marks(eyebrow)}
@@ -122,7 +122,7 @@ export const FeatureStripBlock: React.FC<Props> = ({
 
             {subheading && (
               <p
-                className="mx-auto mt-3 max-w-3xl whitespace-pre-line text-sm text-[#1a2f7c]"
+                className="mx-auto mt-3 max-w-3xl whitespace-pre-line text-sm text-navy"
                 data-payload-subpath="subheading"
               >
                 {marks(subheading)}
@@ -139,12 +139,12 @@ export const FeatureStripBlock: React.FC<Props> = ({
               if (style === 'pills') {
                 return (
                   <li
-                    className="flex items-center gap-2 rounded-lg border border-[#dbe8fa] bg-white px-4 py-3"
+                    className="flex items-center gap-2 rounded-lg border border-tint-100 bg-white px-4 py-3"
                     data-payload-subpath={`items.${i}.title`}
                     key={key}
                   >
                     <ItemMark item={item} size={markSize} />
-                    <span className="text-xs font-semibold text-[#0052cc]">
+                    <span className="text-xs font-semibold text-brand-500">
                       {marks(item.title)}
                     </span>
                   </li>
@@ -158,7 +158,7 @@ export const FeatureStripBlock: React.FC<Props> = ({
                     data-payload-subpath={`items.${i}.title`}
                     key={key}
                   >
-                    <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#1668C4]">
+                    <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-brand-400">
                       <Check className="h-3 w-3 text-white" strokeWidth={3} />
                     </span>
                     <span className="text-sm text-brand">{marks(item.title)}</span>
@@ -170,9 +170,9 @@ export const FeatureStripBlock: React.FC<Props> = ({
                 <li
                   className={cn(
                     style === 'cards'
-                      ? 'flex flex-col items-center rounded-xl border border-[#dbe8fa] bg-white px-3 py-5 text-center'
+                      ? 'flex flex-col items-center rounded-xl border border-tint-100 bg-white px-3 py-5 text-center'
                       : cn(
-                          'px-5 lg:flex-1 lg:border-l lg:border-[#dbe8fa] lg:first:border-l-0',
+                          'px-5 lg:flex-1 lg:border-l lg:border-tint-100 lg:first:border-l-0',
                           centred && 'flex flex-col items-center text-center',
                           split && 'flex flex-col',
                           !centred && !split && 'flex gap-3',
@@ -201,7 +201,7 @@ export const FeatureStripBlock: React.FC<Props> = ({
 
                     {/* The /why comp sets a short hairline between title and body. */}
                     {showRule && !split && (
-                      <span aria-hidden="true" className="mt-3 block h-[3px] w-6 bg-[#C9D9F0]" />
+                      <span aria-hidden="true" className="mt-3 block h-[3px] w-6 bg-tint-150" />
                     )}
 
                     {item.description && (
@@ -228,7 +228,7 @@ export const FeatureStripBlock: React.FC<Props> = ({
                 className={
                   link.appearance === 'outline'
                     ? 'inline-flex items-center gap-3 rounded-full border border-brand py-3 pl-8 pr-4 text-sm font-bold uppercase tracking-wide text-brand transition-colors hover:bg-slate-50'
-                    : 'inline-flex items-center gap-3 rounded-full bg-[#1a7f37] py-3 pl-8 pr-4 text-sm font-bold uppercase tracking-wide text-white transition-colors hover:bg-[#166b2e]'
+                    : 'inline-flex items-center gap-3 rounded-full bg-success py-3 pl-8 pr-4 text-sm font-bold uppercase tracking-wide text-white transition-colors hover:bg-success-dark'
                 }
                 key={i}
               >
@@ -241,14 +241,14 @@ export const FeatureStripBlock: React.FC<Props> = ({
         {footnote &&
           (style === 'checklist' ? (
             <p
-              className="mx-auto mt-8 max-w-md rounded-lg bg-[#dfeafb] px-5 py-4 text-center text-sm leading-relaxed text-brand"
+              className="mx-auto mt-8 max-w-md rounded-lg bg-tint-50 px-5 py-4 text-center text-sm leading-relaxed text-brand"
               data-payload-subpath="footnote"
             >
               {marks(footnote)}
             </p>
           ) : (
             <p
-              className="mx-auto mt-6 max-w-3xl whitespace-pre-line text-center text-[13px] leading-relaxed text-[#0052cc]"
+              className="mx-auto mt-6 max-w-3xl whitespace-pre-line text-center text-[13px] leading-relaxed text-brand-500"
               data-payload-subpath="footnote"
             >
               {marks(footnote)}

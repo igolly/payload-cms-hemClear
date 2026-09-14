@@ -18,7 +18,7 @@ type Card = NonNullable<Props['cards']>[number]
  */
 const HighlightCard: React.FC<{ card: Card; index: number }> = ({ card, index }) => (
   <li
-    className="flex items-center gap-4 rounded-2xl border border-[#E2ECFB] bg-white px-5 py-4 shadow-[0_2px_10px_rgba(16,60,120,0.05)]"
+    className="flex items-center gap-4 rounded-2xl border border-tint-50 bg-white px-5 py-4 shadow-[0_2px_10px_rgba(16,60,120,0.05)]"
     data-payload-subpath={`cards.${index}.title`}
   >
     {card.image && typeof card.image === 'object' ? (
@@ -29,7 +29,7 @@ const HighlightCard: React.FC<{ card: Card; index: number }> = ({ card, index })
       </span>
     ) : (
       <BrandIcon
-        className="block h-9 w-9 shrink-0 text-[#1668C4] [&>svg]:h-full [&>svg]:w-full"
+        className="block h-9 w-9 shrink-0 text-brand-400 [&>svg]:h-full [&>svg]:w-full"
         name={card.icon}
       />
     )}
@@ -39,7 +39,7 @@ const HighlightCard: React.FC<{ card: Card; index: number }> = ({ card, index })
        * the lead-in number dark — the reverse of how this read before, which put the blue
        * on the number and left the title in slate.
        */}
-      <p className="text-[15px] font-bold leading-snug text-[#1668C4]">
+      <p className="text-[15px] font-bold leading-snug text-brand-400">
         {card.stat && (
           <span className="mr-1.5 align-middle text-3xl font-extrabold text-heading">
             {marks(card.stat)}
@@ -48,7 +48,7 @@ const HighlightCard: React.FC<{ card: Card; index: number }> = ({ card, index })
         {marks(card.title)}
       </p>
       {card.subtitle && (
-        <p className="mt-0.5 text-xs leading-tight text-[#6B86A8]">{marks(card.subtitle)}</p>
+        <p className="mt-0.5 text-xs leading-tight text-steel-500">{marks(card.subtitle)}</p>
       )}
     </div>
   </li>
@@ -75,7 +75,7 @@ export const SolutionSystemBlockComponent: React.FC<Props> = ({
 
   return (
     <section
-      className="w-full bg-[#F4F8FF] px-4 py-16 sm:px-6 lg:px-8"
+      className="w-full bg-mist px-4 py-16 sm:px-6 lg:px-8"
       style={backgroundStyle(bgColor, bgColorCustom)}
     >
       {(heading || subheading) && (
@@ -90,7 +90,7 @@ export const SolutionSystemBlockComponent: React.FC<Props> = ({
           )}
           {subheading && (
             <p
-              className="mt-4 text-base font-semibold text-[#1668C4] sm:text-lg"
+              className="mt-4 text-base font-semibold text-brand-400 sm:text-lg"
               data-payload-subpath="subheading"
             >
               {marks(subheading)}

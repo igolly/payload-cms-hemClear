@@ -13,7 +13,11 @@ type Item = NonNullable<SupportTabsBlock['items']>[number]
 
 const ItemIcon: React.FC<{ className?: string; item: Item }> = ({ className, item }) =>
   item.image && typeof item.image === 'object' ? (
-    <Media className={className} imgClassName="h-full w-full object-contain" resource={item.image} />
+    <Media
+      className={className}
+      imgClassName="h-full w-full object-contain"
+      resource={item.image}
+    />
   ) : (
     <BrandIcon className={className} name={item.icon} />
   )
@@ -69,7 +73,7 @@ export const Tabs: React.FC<{ items: Item[] }> = ({ items }) => {
                 'flex items-center gap-2 rounded-lg border px-3 py-2 text-xs font-semibold transition-colors',
                 i === active
                   ? 'border-brand bg-brand text-white'
-                  : 'border-[#dbe8fa] bg-white text-brand hover:bg-slate-50',
+                  : 'border-tint-100 bg-white text-brand hover:bg-slate-50',
               )}
               onClick={() => scrollToIndex(i)}
               type="button"
@@ -100,11 +104,11 @@ export const Tabs: React.FC<{ items: Item[] }> = ({ items }) => {
           {items.map((item, i) => (
             <li className="w-full flex-none snap-center" key={item.id ?? i}>
               <div
-                className="flex h-full items-center gap-5 rounded-xl border border-[#c9dcf5] bg-white p-6"
+                className="flex h-full items-center gap-5 rounded-xl border border-tint-150 bg-white p-6"
                 data-payload-subpath={`items.${i}.title`}
               >
                 <ItemIcon
-                  className="shrink-0 text-[#0052cc] [&>svg]:h-14 [&>svg]:w-14 [&_img]:h-14 [&_img]:w-14"
+                  className="shrink-0 text-brand-500 [&>svg]:h-14 [&>svg]:w-14 [&_img]:h-14 [&_img]:w-14"
                   item={item}
                 />
                 <div className="min-w-0">

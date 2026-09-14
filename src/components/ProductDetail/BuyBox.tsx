@@ -41,7 +41,7 @@ export const BuyBox: React.FC<{
                   <span
                     className={cn(
                       'relative flex h-20 w-20 items-center justify-center overflow-hidden rounded-full border-2 bg-white',
-                      i === variant ? 'border-brand' : 'border-[#dbe8fa]',
+                      i === variant ? 'border-brand' : 'border-tint-100',
                     )}
                   >
                     {item.image && typeof item.image === 'object' ? (
@@ -70,7 +70,7 @@ export const BuyBox: React.FC<{
                 <div
                   className={cn(
                     'rounded-xl border p-5',
-                    selected ? 'border-brand bg-[#f4f8ff]' : 'border-[#dbe8fa] bg-white',
+                    selected ? 'border-brand bg-mist' : 'border-tint-100 bg-white',
                   )}
                 >
                   <button
@@ -82,7 +82,7 @@ export const BuyBox: React.FC<{
                     <span
                       className={cn(
                         'flex h-4 w-4 shrink-0 items-center justify-center rounded-full border-2',
-                        selected ? 'border-brand' : 'border-[#9dbde8]',
+                        selected ? 'border-brand' : 'border-tint-300',
                       )}
                     >
                       {selected && <span className="h-2 w-2 rounded-full bg-brand" />}
@@ -115,7 +115,7 @@ export const BuyBox: React.FC<{
                     )}
                   </div>
 
-                  <div className="mt-1 flex flex-wrap justify-between gap-2 text-xs text-[#0052cc]">
+                  <div className="mt-1 flex flex-wrap justify-between gap-2 text-xs text-brand-500">
                     {item.billingNote && <span>{marks(item.billingNote)}</span>}
                     {item.perServing && (
                       <span className="font-semibold text-brand">{marks(item.perServing)}</span>
@@ -123,7 +123,7 @@ export const BuyBox: React.FC<{
                   </div>
 
                   {selected && Array.isArray(item.features) && item.features.length > 0 && (
-                    <ul className="mt-4 flex flex-col gap-2 border-t border-[#dbe8fa] pt-4">
+                    <ul className="mt-4 flex flex-col gap-2 border-t border-tint-100 pt-4">
                       {item.features.map((feature, f) => (
                         <li className="flex items-start gap-2" key={feature.id ?? f}>
                           <Check className="mt-0.5 h-4 w-4 shrink-0 text-brand" strokeWidth={3} />
@@ -151,7 +151,7 @@ export const BuyBox: React.FC<{
                         <span className="min-w-0">
                           <span className="block text-lg font-extrabold text-white">
                             {item.bonusHighlight && (
-                              <span className="text-[#ffe066]">{marks(item.bonusHighlight)} </span>
+                              <span className="text-cream">{marks(item.bonusHighlight)} </span>
                             )}
                             {marks(item.bonusTitle)}
                           </span>

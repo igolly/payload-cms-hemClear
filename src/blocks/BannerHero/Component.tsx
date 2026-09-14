@@ -25,7 +25,7 @@ export const BannerHeroBlock: React.FC<Props> = ({
   return (
     <section
       className={cn(
-        'relative w-full overflow-hidden bg-[#0d2050]',
+        'relative w-full overflow-hidden bg-navy-900',
         height === 'short' ? 'min-h-72' : 'min-h-[26rem]',
       )}
       style={backgroundStyle(bgColor, bgColorCustom)}
@@ -39,7 +39,7 @@ export const BannerHeroBlock: React.FC<Props> = ({
           resource={backgroundImage}
         />
       ) : (
-        <div className="absolute inset-0 bg-[linear-gradient(120deg,#0d2050_0%,#123a8a_60%,#1b57c4_100%)]" />
+        <div className="absolute inset-0 bg-[linear-gradient(120deg,var(--color-navy-900)_0%,var(--color-navy-600)_60%,var(--color-brand-500)_100%)]" />
       )}
 
       {overlay !== 'none' && (
@@ -48,7 +48,7 @@ export const BannerHeroBlock: React.FC<Props> = ({
           className={cn(
             'absolute inset-0',
             overlay === 'even'
-              ? 'bg-[#0d2050]/55'
+              ? 'bg-navy-900/55'
               : 'bg-[linear-gradient(90deg,rgba(13,32,80,0.92)_0%,rgba(13,32,80,0.75)_45%,rgba(13,32,80,0.15)_100%)]',
           )}
         />
@@ -63,7 +63,7 @@ export const BannerHeroBlock: React.FC<Props> = ({
         <div className="max-w-xl">
           {eyebrow && (
             <p
-              className="text-xs font-bold uppercase tracking-[0.15em] text-[#7fb2ff]"
+              className="text-xs font-bold uppercase tracking-[0.15em] text-brand-200"
               data-payload-subpath="eyebrow"
             >
               {marks(eyebrow)}
@@ -71,15 +71,12 @@ export const BannerHeroBlock: React.FC<Props> = ({
           )}
 
           {heading && (
-            <h2
-              className="hero-heading mt-4 text-white"
-              data-payload-subpath="heading"
-            >
+            <h2 className="hero-heading mt-4 text-white" data-payload-subpath="heading">
               {multiline(heading)}
             </h2>
           )}
 
-          <span aria-hidden="true" className="mt-6 block h-0.5 w-16 bg-[#7fb2ff]" />
+          <span aria-hidden="true" className="mt-6 block h-0.5 w-16 bg-brand-200" />
 
           {description && (
             <p
@@ -96,7 +93,7 @@ export const BannerHeroBlock: React.FC<Props> = ({
                 <CMSLink
                   {...link}
                   appearance="inline"
-                  className="inline-flex items-center gap-3 rounded-full bg-[#1b57c4] py-2 pl-6 pr-2 text-xs font-bold uppercase tracking-wide text-white transition-colors hover:bg-[#1746a0]"
+                  className="inline-flex items-center gap-3 rounded-full bg-brand-500 py-2 pl-6 pr-2 text-xs font-bold uppercase tracking-wide text-white transition-colors hover:bg-brand-600"
                   key={i}
                 >
                   <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-white/20">

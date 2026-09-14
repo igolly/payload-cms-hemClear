@@ -37,11 +37,11 @@ export const ReviewGrid: React.FC<Props> = ({
       <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {visible.map((review, i) => (
           <li
-            className="flex flex-col rounded-xl border border-[#e7e7e7] bg-white p-5"
+            className="flex flex-col rounded-xl border border-line bg-white p-5"
             data-payload-subpath={`reviews.${i}.title`}
             key={review.id ?? i}
           >
-            <Stars className="text-[#192F7C]" count={review.stars} />
+            <Stars className="text-navy" count={review.stars} />
 
             {review.verified && (
               <p
@@ -94,7 +94,7 @@ export const ReviewGrid: React.FC<Props> = ({
         <div className="mt-8 flex justify-center">
           <button
             aria-expanded={expanded}
-            className="inline-flex items-center gap-3 rounded-lg border border-[#e7e7e7] bg-white px-10 py-3 text-sm font-semibold uppercase tracking-wide text-brand transition-colors hover:bg-slate-50"
+            className="inline-flex items-center gap-3 rounded-lg border border-line bg-white px-10 py-3 text-sm font-semibold uppercase tracking-wide text-brand transition-colors hover:bg-slate-50"
             onClick={() => setExpanded((value) => !value)}
             type="button"
           >

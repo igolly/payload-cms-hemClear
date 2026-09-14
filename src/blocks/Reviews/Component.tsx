@@ -26,7 +26,10 @@ export const ReviewsBlock: React.FC<Props> = ({
   const gridItems = Array.isArray(reviews) ? reviews : []
 
   return (
-    <section className="w-full bg-white px-4 py-16 sm:px-6 lg:px-8" style={backgroundStyle(bgColor, bgColorCustom)}>
+    <section
+      className="w-full bg-white px-4 py-16 sm:px-6 lg:px-8"
+      style={backgroundStyle(bgColor, bgColorCustom)}
+    >
       <div className="mx-auto max-w-7xl">
         {/* Heading */}
         {(heading || headingAccent) && (
@@ -37,7 +40,7 @@ export const ReviewsBlock: React.FC<Props> = ({
               </span>
             )}
             {headingAccent && (
-              <span className="block text-[#2d80e2]" data-payload-subpath="headingAccent">
+              <span className="block text-brand-300" data-payload-subpath="headingAccent">
                 {marks(headingAccent)}
               </span>
             )}
@@ -58,7 +61,7 @@ export const ReviewsBlock: React.FC<Props> = ({
           <ul className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
             {featuredItems.map((item, i) => (
               <li
-                className="flex flex-col items-center rounded-xl border border-[#e7e7e7] bg-white p-6 text-center"
+                className="flex flex-col items-center rounded-xl border border-line bg-white p-6 text-center"
                 data-payload-subpath={`featured.${i}.title`}
                 key={item.id ?? i}
               >
@@ -71,7 +74,7 @@ export const ReviewsBlock: React.FC<Props> = ({
                       {marks(item.score)}
                     </span>
                   )}
-                  <Stars className="text-[#f7a304]" count={item.stars} />
+                  <Stars className="text-gold" count={item.stars} />
                 </div>
 
                 <h3
@@ -89,11 +92,17 @@ export const ReviewsBlock: React.FC<Props> = ({
                 </p>
 
                 <div className="mt-auto pt-6">
-                  <p className="text-sm font-bold text-brand" data-payload-subpath={`featured.${i}.author`}>
+                  <p
+                    className="text-sm font-bold text-brand"
+                    data-payload-subpath={`featured.${i}.author`}
+                  >
                     &mdash; {item.author}
                   </p>
                   {item.authorNote && (
-                    <p className="text-sm text-brand" data-payload-subpath={`featured.${i}.authorNote`}>
+                    <p
+                      className="text-sm text-brand"
+                      data-payload-subpath={`featured.${i}.authorNote`}
+                    >
                       {marks(item.authorNote)}
                     </p>
                   )}

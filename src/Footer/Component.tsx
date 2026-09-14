@@ -30,10 +30,10 @@ export async function Footer() {
   const socialItems = footer?.socialItems || []
   const legalLinks = footer?.legalLinks || []
 
-  const headingClass = 'text-xs font-bold uppercase tracking-wider text-[#9cf0ff]'
+  const headingClass = 'text-xs font-bold uppercase tracking-wider text-aqua-200'
 
   return (
-    <footer className="mt-auto bg-[#01193d] text-white">
+    <footer className="mt-auto bg-navy-950 text-white">
       {/* 1464 = the comp's 1400px rule plus this container's own lg padding, so the
           rule measures 1400 rather than 1400-minus-padding. */}
       <div className="mx-auto max-w-[1464px] px-4 py-14 sm:px-6 lg:px-8">
@@ -51,7 +51,10 @@ export async function Footer() {
                         appearance="inline"
                         className="flex items-center justify-between gap-6 font-inter text-[13px] text-white/90 transition-colors hover:text-white lg:whitespace-nowrap"
                       >
-                        <ChevronRight aria-hidden="true" className="h-3.5 w-3.5 shrink-0 text-white/50" />
+                        <ChevronRight
+                          aria-hidden="true"
+                          className="h-3.5 w-3.5 shrink-0 text-white/50"
+                        />
                       </CMSLink>
                     </li>
                   ))}
@@ -91,7 +94,10 @@ export async function Footer() {
                         rel="noopener noreferrer"
                         target="_blank"
                       >
-                        <SocialIcon className="shrink-0 [&>svg]:h-[18px] [&>svg]:w-[18px]" name={item.platform} />
+                        <SocialIcon
+                          className="shrink-0 [&>svg]:h-[18px] [&>svg]:w-[18px]"
+                          name={item.platform}
+                        />
                         {marks(item.label)}
                       </a>
                     </li>

@@ -63,14 +63,78 @@
 @source inline("bg-warning/30");
 
 @theme {
-  /* Brand blue. Defined once so it can be changed here rather than in 30+ files. */
-  --color-brand: #0023a3;
-  --color-brand-dark: #001a7d;
-  /* Deep navy for full-width dark bands, where the brand blue reads too bright. */
-  --color-navy: #192f7c;
-  /* Main section headings (h1/h2) and smaller card titles (h3/h4). */
-  --color-heading: #192f7c;
-  --color-subheading: #0329b2;
+  /*
+   * ---------------------------------------------------------------------------
+   * Palette
+   *
+   * Sampled from the Figma HOME frame (node 1-2): every value below either comes
+   * straight off the comp or is the one survivor of a cluster of near-identical
+   * hexes that had accumulated across the blocks. Each family runs darkest to
+   * lightest, so picking a shade is a matter of reading down the list.
+   *
+   * Use the semantic aliases at the bottom for type; use the ramps for everything
+   * else. Adding a raw `[#hex]` to a component puts a colour outside this system
+   * and is what the consolidation was undoing — reach for the nearest token.
+   * ---------------------------------------------------------------------------
+   */
+
+  /* Navy — structural. Full-width dark bands, headings, footer. Desaturated, so
+     it holds large areas the brand blue would make too loud. */
+  --color-navy-950: #01193d; /* footer */
+  --color-navy-900: #051959; /* display headings on tinted bands */
+  --color-navy: #192f7c; /* dark bands, and the default heading colour */
+  --color-navy-600: #31509f;
+  --color-navy-400: #6279cf;
+
+  /* Brand — saturated blue. Calls to action, links, accents. */
+  --color-brand-dark: #001a7d; /* CTA hover */
+  --color-brand: #0023a3; /* primary CTA, hero headline */
+  --color-brand-600: #0329b2; /* sub-headlines */
+  --color-brand-500: #0052cc; /* accent copy, inline links */
+  --color-brand-400: #1668c4; /* secondary accent, card titles */
+  --color-brand-300: #2c80e2; /* chips, small labels */
+  --color-brand-200: #7fb2ff; /* accents on a navy band */
+
+  /* Steel — muted blue-grey. Supporting copy, captions, meta. */
+  --color-steel-800: #123a6b;
+  --color-steel-600: #4a5b72;
+  --color-steel-500: #6b86a8;
+  --color-steel-400: #8aa6c8;
+  --color-steel-300: #b6c0cf;
+  --color-steel-200: #d3d9e2;
+
+  /* Tints — section and card surfaces, plus every border on the site. */
+  --color-tint-300: #a9c5ea;
+  --color-tint-200: #c5dbff; /* benefits band */
+  --color-tint-150: #c9dcf5; /* emphasised border */
+  --color-tint-100: #dbe8fa; /* default border */
+  --color-tint-50: #e0ecfc; /* pale blue band */
+  --color-line: #e2e5ef; /* neutral card rule */
+  --color-mist-100: #eef4fd; /* tinted card fill */
+  --color-mist: #f5f8fc; /* off-white section fill */
+  --color-shell: #f5f5f7; /* warm grey, hero */
+  --color-sand: #efeae4; /* product photography backdrop */
+
+  /* Semantics. */
+  --color-gold: #f7a305; /* review stars */
+  --color-amber: #ffd84d;
+  --color-cream: #ffe066;
+  --color-success: #1a7f37;
+  --color-success-dark: #166b2e;
+  --color-success-tint: #cfe6d6;
+  --color-danger: #c0392b;
+  --color-danger-bright: #c91b00;
+  --color-danger-tint: #f0cfcb;
+  --color-info: #006db0;
+  --color-info-dark: #0057a0;
+  --color-aqua: #6fd2f5;
+  --color-aqua-200: #9cf0ff;
+
+  /* Type aliases. These name the job rather than the colour, so a heading reads as
+     `text-heading` and stays correct if the palette shifts underneath it. */
+  --color-heading: #192f7c; /* = navy */
+  --color-subheading: #0329b2; /* = brand-600 */
+  --color-body: #4a5b72; /* = steel-600 */
 
   --breakpoint-sm: 40rem;
   --breakpoint-md: 48rem;

@@ -47,16 +47,16 @@ export const FaqAccordion: React.FC<{
              */}
             {item.groupLabel && (
               <li aria-hidden="true" className="mt-3 flex items-center gap-5">
-                <span className="h-px grow bg-[#c9d9f0]" />
+                <span className="h-px grow bg-tint-150" />
                 <span className="shrink-0 font-serif text-xl text-heading">
                   {marks(item.groupLabel)}
                 </span>
-                <span className="h-px grow bg-[#c9d9f0]" />
+                <span className="h-px grow bg-tint-150" />
               </li>
             )}
 
             <li
-              className="rounded-2xl border border-[#e5edf9] bg-white shadow-[0_1px_3px_rgba(16,60,120,0.06)]"
+              className="rounded-2xl border border-tint-50 bg-white shadow-[0_1px_3px_rgba(16,60,120,0.06)]"
               data-payload-subpath={`items.${i}.question`}
             >
               <h3>
@@ -68,7 +68,7 @@ export const FaqAccordion: React.FC<{
                   onClick={() => toggle(i)}
                   type="button"
                 >
-                  <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[#0329b2] text-sm font-semibold text-white">
+                  <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-brand-600 text-sm font-semibold text-white">
                     {i + 1}
                   </span>
 
@@ -76,7 +76,7 @@ export const FaqAccordion: React.FC<{
                     {marks(item.question)}
                   </span>
 
-                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-[#6279cf] text-[#6279cf]">
+                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-navy-400 text-navy-400">
                     {isOpen ? <Minus className="h-4 w-4" /> : <PlusIcon className="h-3 w-3" />}
                   </span>
                 </button>

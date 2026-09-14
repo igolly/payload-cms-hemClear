@@ -4,18 +4,22 @@ import type { Field } from 'payload'
  * Section background presets.
  *
  * The block stores the *key*, not the hex, so re-tuning a shade here restyles every
- * section using it. Keep this list short — it is the site's band palette, drawn from the
- * backgrounds the sections already ship with.
+ * section using it. Keep this list short — it is the site's band palette.
+ *
+ * Every hex is a token from the palette in `globals.css`, spelled out because this list
+ * is read by Payload on the server and written into an inline `style`, where a Tailwind
+ * class or a `var()` resolved against the admin document would not apply. Changing a
+ * shade means changing it in both places.
  */
 export const backgroundColors = {
   white: { label: 'White', hex: '#ffffff' },
-  offWhite: { label: 'Off White', hex: '#f5f5f5' },
-  paleBlue: { label: 'Pale Blue', hex: '#f4f8ff' },
-  lightBlue: { label: 'Light Blue', hex: '#e0ecfc' },
-  skyBlue: { label: 'Sky Blue', hex: '#cfe0f7' },
-  brand: { label: 'Brand Blue', hex: '#0023a3' },
-  navy: { label: 'Navy', hex: '#192f7c' },
-  deepNavy: { label: 'Deep Navy', hex: '#0d2050' },
+  offWhite: { label: 'Off White', hex: '#f5f5f7' }, // shell
+  paleBlue: { label: 'Pale Blue', hex: '#f5f8fc' }, // mist
+  lightBlue: { label: 'Light Blue', hex: '#e0ecfc' }, // tint-50
+  skyBlue: { label: 'Sky Blue', hex: '#c5dbff' }, // tint-200
+  brand: { label: 'Brand Blue', hex: '#0023a3' }, // brand
+  navy: { label: 'Navy', hex: '#192f7c' }, // navy
+  deepNavy: { label: 'Deep Navy', hex: '#051959' }, // navy-900
 } as const
 
 export type BackgroundColorKey = keyof typeof backgroundColors
@@ -62,15 +66,15 @@ export const backgroundField = (): Field => ({
           label: 'Custom colour',
           admin: {
             condition: (_, siblingData) => siblingData?.bgColor === 'custom',
-            description: 'Any CSS colour, e.g. #0d2050.',
-            placeholder: '#0d2050',
+            description: 'Any CSS colour, e.g. #051959.',
+            placeholder: '#051959',
             width: '50%',
           },
           validate: (value: string | null | undefined, { siblingData }: { siblingData?: any }) => {
             if (siblingData?.bgColor !== 'custom') return true
             const trimmed = value?.trim()
             if (!trimmed) return 'Enter a colour, or pick a preset instead.'
-            return looksLikeColor(trimmed) || 'Use a hex value such as #0d2050.'
+            return looksLikeColor(trimmed) || 'Use a hex value such as #051959.'
           },
         },
       ],

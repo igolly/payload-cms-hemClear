@@ -22,7 +22,7 @@ export const WhyDaysBlock: React.FC<Props> = ({
   const paras = Array.isArray(paragraphs) ? paragraphs : []
 
   return (
-    <section className="w-full bg-[#f2f5fa]" style={backgroundStyle(bgColor, bgColorCustom)}>
+    <section className="w-full bg-mist" style={backgroundStyle(bgColor, bgColorCustom)}>
       <div className="mx-auto grid max-w-7xl grid-cols-1 items-center gap-8 px-4 py-12 sm:px-6 lg:grid-cols-2 lg:gap-12 lg:px-8">
         {/* Left image */}
         <div className="relative aspect-[4/3] w-full" data-payload-subpath="image">
@@ -46,10 +46,10 @@ export const WhyDaysBlock: React.FC<Props> = ({
               </h2>
             )}
 
-            <span aria-hidden="true" className="mt-4 block h-0.5 w-full bg-[#1668C4]" />
+            <span aria-hidden="true" className="mt-4 block h-0.5 w-full bg-brand-400" />
 
             {paras.length > 0 && (
-              <div className="mt-4 space-y-3 text-sm leading-relaxed text-[#1a2f7c]">
+              <div className="mt-4 space-y-3 text-sm leading-relaxed text-navy">
                 {paras.map((paragraph, i) => (
                   <p data-payload-subpath={`paragraphs.${i}.text`} key={paragraph.id ?? i}>
                     {marks(paragraph.text)}
@@ -68,10 +68,7 @@ export const WhyDaysBlock: React.FC<Props> = ({
             )}
 
             {ctaText && (
-              <p
-                className="mt-1 text-sm leading-relaxed text-[#1a2f7c]"
-                data-payload-subpath="ctaText"
-              >
+              <p className="mt-1 text-sm leading-relaxed text-navy" data-payload-subpath="ctaText">
                 {marks(ctaText)}
               </p>
             )}

@@ -22,7 +22,10 @@ export const ScienceStatsBlock: React.FC<Props> = ({
   const chips = Array.isArray(badges) ? badges : []
 
   return (
-    <section className="w-full bg-[#f5f8fd] px-4 py-14 sm:px-6 lg:px-8" style={backgroundStyle(bgColor, bgColorCustom)}>
+    <section
+      className="w-full bg-mist px-4 py-14 sm:px-6 lg:px-8"
+      style={backgroundStyle(bgColor, bgColorCustom)}
+    >
       <div className="mx-auto max-w-6xl">
         <header className="text-center">
           {heading && (
@@ -59,7 +62,7 @@ export const ScienceStatsBlock: React.FC<Props> = ({
             <ul className="flex flex-col">
               {items.map((stat, i) => (
                 <li
-                  className="flex items-start gap-4 border-t border-[#c9dcf5] py-5 first:border-t-0 first:pt-0"
+                  className="flex items-start gap-4 border-t border-tint-150 py-5 first:border-t-0 first:pt-0"
                   data-payload-subpath={`stats.${i}.title`}
                   key={stat.id ?? i}
                 >
@@ -67,7 +70,9 @@ export const ScienceStatsBlock: React.FC<Props> = ({
                     {marks(stat.value)}
                   </span>
                   <span className="min-w-0">
-                    <span className="block text-sm font-bold text-[#0052cc]">{marks(stat.title)}</span>
+                    <span className="block text-sm font-bold text-brand-500">
+                      {marks(stat.title)}
+                    </span>
                     {stat.description && (
                       <span className="mt-1 block text-xs leading-relaxed text-slate-600">
                         {marks(stat.description)}
@@ -101,7 +106,7 @@ export const ScienceStatsBlock: React.FC<Props> = ({
           <ul className="mt-10 flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
             {chips.map((chip, i) => (
               <li
-                className="border-[#c9dcf5] pl-6 text-sm font-semibold text-brand first:pl-0 sm:border-l sm:first:border-l-0"
+                className="border-tint-150 pl-6 text-sm font-semibold text-brand first:pl-0 sm:border-l sm:first:border-l-0"
                 key={chip.id ?? i}
               >
                 {marks(chip.text)}

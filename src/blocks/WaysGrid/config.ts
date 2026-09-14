@@ -11,7 +11,11 @@ export const WaysGrid: Block = {
       type: 'collapsible',
       label: 'Section Header',
       fields: [
-        { name: 'eyebrow', type: 'text', admin: { description: 'Small caps line above the heading.' } },
+        {
+          name: 'eyebrow',
+          type: 'text',
+          admin: { description: 'Small caps line above the heading.' },
+        },
         {
           type: 'row',
           fields: [
@@ -28,7 +32,10 @@ export const WaysGrid: Block = {
             {
               name: 'headingAfter',
               type: 'text',
-              admin: { description: 'Navy text after the accent, e.g. "Supports You".', width: '33%' },
+              admin: {
+                description: 'Navy text after the accent, e.g. "Supports You".',
+                width: '33%',
+              },
             },
           ],
         },

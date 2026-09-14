@@ -26,7 +26,7 @@ export const DetailSections: React.FC<{ sections: Section[] }> = ({ sections }) 
         const panelId = `product-section-${section.id ?? i}`
 
         return (
-          <li className="border-t border-[#dbe8fa] py-4" key={section.id ?? i}>
+          <li className="border-t border-tint-100 py-4" key={section.id ?? i}>
             <h2>
               <button
                 aria-controls={panelId}
@@ -47,7 +47,7 @@ export const DetailSections: React.FC<{ sections: Section[] }> = ({ sections }) 
             {isOpen && Array.isArray(section.items) && section.items.length > 0 && (
               <ul className="mt-3 list-disc space-y-1.5 pl-5" id={panelId}>
                 {section.items.map((item, j) => (
-                  <li className="text-sm leading-relaxed text-[#1a2f7c]" key={item.id ?? j}>
+                  <li className="text-sm leading-relaxed text-navy" key={item.id ?? j}>
                     {marks(item.text)}
                   </li>
                 ))}

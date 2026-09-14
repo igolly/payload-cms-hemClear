@@ -44,7 +44,7 @@ const PhotoRow: React.FC<{ offset: number; ways: Way[] }> = ({ offset, ways }) =
           />
           <span
             aria-hidden="true"
-            className="absolute left-3 top-3 flex h-9.5 w-9.5 items-center justify-center rounded-full bg-[#2C80E2] text-[18px] font-bold leading-none text-white"
+            className="absolute left-3 top-3 flex h-9.5 w-9.5 items-center justify-center rounded-full bg-brand-300 text-[18px] font-bold leading-none text-white"
           >
             {offset + i + 1}
           </span>
@@ -52,7 +52,7 @@ const PhotoRow: React.FC<{ offset: number; ways: Way[] }> = ({ offset, ways }) =
 
         <h3 className="text-[17.5px] font-bold leading-[21px] text-heading">{way.title}</h3>
 
-        <span aria-hidden="true" className="block h-[3px] w-6 bg-[#C9D9F0]" />
+        <span aria-hidden="true" className="block h-[3px] w-6 bg-tint-150" />
 
         {way.description && (
           <p
@@ -84,7 +84,7 @@ const Row: React.FC<{ cardWidth: string; offset: number; ways: Way[] }> = ({
          * a 134px illustration. Both sizes are set explicitly so the illustration keeps its
          * inset inside the ring instead of filling it.
          */}
-        <div className="flex h-36.5 w-36.5 shrink-0 items-center justify-center overflow-hidden rounded-full border-[0.729px] border-[#2C80E2]">
+        <div className="flex h-36.5 w-36.5 shrink-0 items-center justify-center overflow-hidden rounded-full border-[0.729px] border-brand-300">
           <ImageSlot
             className="h-33.5 w-33.5 rounded-full"
             hint="Circular icon"
@@ -133,14 +133,14 @@ export const WaysGridBlock: React.FC<Props> = ({
 
   return (
     <section
-      className="w-full bg-[#F5F8FD] px-4 py-7 sm:px-6 lg:px-8"
+      className="w-full bg-mist px-4 py-7 sm:px-6 lg:px-8"
       style={backgroundStyle(bgColor, bgColorCustom)}
     >
       <div className="mx-auto max-w-350">
         <header className="text-center">
           {eyebrow && (
             <p
-              className="mb-3 text-xs font-bold uppercase tracking-[0.15em] text-[#0052cc]"
+              className="mb-3 text-xs font-bold uppercase tracking-[0.15em] text-brand-500"
               data-payload-subpath="eyebrow"
             >
               {marks(eyebrow)}
@@ -148,17 +148,15 @@ export const WaysGridBlock: React.FC<Props> = ({
           )}
 
           {/*
-           * Marcellus at the design's 52px, stepping down on narrow screens. The navy here
-           * is the design's own #051959 rather than the site's `--color-heading`; the two
-           * are close but not the same, and this section is the one held to the comp.
+           * Marcellus at the design's 52px, stepping down on narrow screens. `navy-900` here
+           * rather than the default `text-heading`: the two are close but not the same, and
+           * this section is the one held to the comp.
            */}
           {(headingBefore || headingAccent || headingAfter) && (
-            <h2 className="font-marcellus text-[32px] leading-tight text-[#051959] sm:text-[42px] lg:text-[52px]">
-              {headingBefore && (
-                <span data-payload-subpath="headingBefore">{headingBefore} </span>
-              )}
+            <h2 className="font-marcellus text-[32px] leading-tight text-navy-900 sm:text-[42px] lg:text-[52px]">
+              {headingBefore && <span data-payload-subpath="headingBefore">{headingBefore} </span>}
               {headingAccent && (
-                <span className="text-[#2C80E2]" data-payload-subpath="headingAccent">
+                <span className="text-brand-300" data-payload-subpath="headingAccent">
                   {marks(headingAccent)}
                 </span>
               )}
@@ -172,12 +170,12 @@ export const WaysGridBlock: React.FC<Props> = ({
               two variants differ in exactly that way — so the rule follows the variant
               rather than adding a field an editor would have to keep in sync with it. */}
           {!photo && (
-            <span aria-hidden="true" className="mx-auto mt-3.75 block h-0.5 w-18.25 bg-[#2C80E2]" />
+            <span aria-hidden="true" className="mx-auto mt-3.75 block h-0.5 w-18.25 bg-brand-300" />
           )}
 
           {subheading && (
             <p
-              className="mt-3.75 whitespace-pre-line text-lg font-medium leading-normal text-[#0052CC] sm:text-xl lg:text-2xl"
+              className="mt-3.75 whitespace-pre-line text-lg font-medium leading-normal text-brand-500 sm:text-xl lg:text-2xl"
               data-payload-subpath="subheading"
             >
               {marks(subheading)}
@@ -209,7 +207,10 @@ export const WaysGridBlock: React.FC<Props> = ({
             className="mx-auto mt-6 flex max-w-3xl items-start justify-center gap-2 whitespace-pre-line rounded-lg bg-white/70 px-4 py-3 text-center text-[11px] leading-relaxed text-slate-500"
             data-payload-subpath="footnote"
           >
-            <BrandIcon className="shrink-0 text-[#1668C4] [&>svg]:h-4 [&>svg]:w-4" name="shieldCheck" />
+            <BrandIcon
+              className="shrink-0 text-brand-400 [&>svg]:h-4 [&>svg]:w-4"
+              name="shieldCheck"
+            />
             {marks(footnote)}
           </p>
         )}

@@ -83,7 +83,7 @@ export const StickyBars: React.FC<{
           </span>
 
           <p className="min-w-0 flex-1 text-center text-xs font-semibold sm:text-sm">
-            {offerText && <span className="text-[#FFD84D]">{marks(offerText)}</span>}
+            {offerText && <span className="text-amber">{marks(offerText)}</span>}
             {offerText && offerNote && (
               <span aria-hidden="true" className="mx-2 text-white/40">
                 |
@@ -107,7 +107,7 @@ export const StickyBars: React.FC<{
       {/* Bottom: buy strip */}
       <div
         className={cn(
-          'fixed inset-x-0 bottom-0 z-40 border-t border-[#dbe8fa] bg-[#F7FAFF] shadow-[0_-6px_24px_rgba(16,60,120,0.10)]',
+          'fixed inset-x-0 bottom-0 z-40 border-t border-tint-100 bg-mist shadow-[0_-6px_24px_rgba(16,60,120,0.10)]',
           'transition-transform duration-300 ease-out motion-reduce:transition-none',
           shown ? 'translate-y-0' : 'translate-y-full',
         )}
@@ -129,7 +129,7 @@ export const StickyBars: React.FC<{
             <label className="relative hidden shrink-0 sm:block">
               <span className="sr-only">Choose a plan</span>
               <select
-                className="w-56 appearance-none rounded-xl border border-[#cfe0f7] bg-white py-2.5 pl-4 pr-9 text-left text-sm font-semibold text-heading"
+                className="w-56 appearance-none rounded-xl border border-tint-150 bg-white py-2.5 pl-4 pr-9 text-left text-sm font-semibold text-heading"
                 onChange={(e) => setPlanIndex(Number(e.target.value))}
                 value={planIndex}
               >

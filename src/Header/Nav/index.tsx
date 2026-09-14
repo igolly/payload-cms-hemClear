@@ -48,16 +48,16 @@ export const HeaderNav: React.FC<{
               className={cn(
                 /* `no-underline` kills the button `link` variant's own `hover:underline`,
                    which otherwise drew a second, tighter rule under this one. */
-                'link-underline font-inter text-sm font-bold text-[#182F7C] no-underline transition-colors hover:text-[#0057A0] hover:no-underline',
-                open && 'text-[#0057A0]',
+                'link-underline font-inter text-sm font-bold text-navy no-underline transition-colors hover:text-info-dark hover:no-underline',
+                open && 'text-info-dark',
               )}
             />
             {menu && (
               <ChevronDown
                 aria-hidden="true"
                 className={cn(
-                  'ml-1 size-4 shrink-0 text-[#182F7C] transition-transform duration-200',
-                  open && 'rotate-180 text-[#0057A0]',
+                  'ml-1 size-4 shrink-0 text-navy transition-transform duration-200',
+                  open && 'rotate-180 text-info-dark',
                 )}
               />
             )}
@@ -67,7 +67,7 @@ export const HeaderNav: React.FC<{
 
       <Link
         href="#"
-        className="link-underline flex items-center gap-1.5 font-inter text-sm font-bold text-[#182F7C] transition-colors hover:text-[#0057A0]"
+        className="link-underline flex items-center gap-1.5 font-inter text-sm font-bold text-navy transition-colors hover:text-info-dark"
       >
         <User className="size-5" />
         Sign In
@@ -77,11 +77,11 @@ export const HeaderNav: React.FC<{
 
       <Link
         href="#"
-        className="relative flex items-center text-[#182F7C] transition-colors hover:text-[#0057A0]"
+        className="relative flex items-center text-navy transition-colors hover:text-info-dark"
       >
         <span className="sr-only">Cart</span>
         <ShoppingCart className="size-5" />
-        <span className="absolute -right-2 -top-2 flex size-4 items-center justify-center rounded-full bg-[#006DB0] text-[10px] font-bold text-white">
+        <span className="absolute -right-2 -top-2 flex size-4 items-center justify-center rounded-full bg-info text-[10px] font-bold text-white">
           0
         </span>
       </Link>

@@ -154,7 +154,7 @@ export const CausesBlock: React.FC<Props> = ({
             <p
               className={cn(
                 'font-bold uppercase text-subheading',
-                showcase ? 'text-[18px] leading-5' : 'text-xs tracking-[0.15em] text-[#0052cc]',
+                showcase ? 'text-[18px] leading-5' : 'text-xs tracking-[0.15em] text-brand-500',
               )}
               data-payload-subpath="eyebrow"
             >
@@ -181,7 +181,7 @@ export const CausesBlock: React.FC<Props> = ({
           {/* Short rule under the heading, per the comp: 90x5 there, scaled to 80x4 here.
               The showcase comp drops it — the display heading carries the section on its own. */}
           {heading && !showcase && (
-            <span aria-hidden="true" className="mt-5 block h-1 w-20 bg-[#2d80e2]" />
+            <span aria-hidden="true" className="mt-5 block h-1 w-20 bg-brand-300" />
           )}
 
           {description && (
@@ -202,7 +202,7 @@ export const CausesBlock: React.FC<Props> = ({
 
           {gridLabel && (
             <p
-              className="mt-7 text-[15px] font-medium text-[#2d80e2]"
+              className="mt-7 text-[15px] font-medium text-brand-300"
               data-payload-subpath="gridLabel"
             >
               {marks(gridLabel)}
@@ -230,18 +230,18 @@ export const CausesBlock: React.FC<Props> = ({
                     data-payload-subpath={`factors.${i}.label`}
                     key={factor.id ?? i}
                   >
-                    <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#1668C4]">
+                    <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-brand-400">
                       <Check className="h-3 w-3 text-white" strokeWidth={3} />
                     </span>
-                    <span className="text-sm text-[#123A6B]">{marks(factor.label)}</span>
+                    <span className="text-sm text-steel-800">{marks(factor.label)}</span>
                   </li>
                 ) : (
                   <li
                     className={cn(
                       'flex flex-col items-center justify-start text-center',
                       showcase
-                        ? 'gap-1 px-3 sm:border-l sm:border-[#C9D9F0]'
-                        : 'gap-2 rounded-xl border border-[#2d80e2] bg-white px-3 py-4',
+                        ? 'gap-1 px-3 sm:border-l sm:border-tint-150'
+                        : 'gap-2 rounded-xl border border-brand-300 bg-white px-3 py-4',
                     )}
                     data-payload-subpath={`factors.${i}.label`}
                     key={factor.id ?? i}
@@ -268,7 +268,7 @@ export const CausesBlock: React.FC<Props> = ({
                     ) : (
                       <BrandIcon
                         className={cn(
-                          'text-[#1668C4]',
+                          'text-brand-400',
                           showcase ? '[&>svg]:h-14 [&>svg]:w-14' : '[&>svg]:h-7 [&>svg]:w-7',
                         )}
                         name={factor.icon}
@@ -295,14 +295,14 @@ export const CausesBlock: React.FC<Props> = ({
               className={cn(
                 'flex whitespace-pre-line',
                 showcase
-                  ? 'mt-5 items-center gap-4 rounded-2xl bg-[#E0ECFC] p-[18px] text-[12.5px] leading-[17.5px] text-subheading'
-                  : 'mt-6 items-start gap-2 text-[11px] leading-relaxed text-[#8397AE]',
+                  ? 'mt-5 items-center gap-4 rounded-2xl bg-tint-50 p-[18px] text-[12.5px] leading-[17.5px] text-subheading'
+                  : 'mt-6 items-start gap-2 text-[11px] leading-relaxed text-steel-400',
               )}
               data-payload-subpath="footnote"
             >
               <BrandIcon
                 className={cn(
-                  'shrink-0 text-[#1668C4]',
+                  'shrink-0 text-brand-400',
                   showcase ? '[&>svg]:h-9 [&>svg]:w-9' : 'mt-px [&>svg]:h-4 [&>svg]:w-4',
                 )}
                 name="info"

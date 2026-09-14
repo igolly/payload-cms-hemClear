@@ -19,12 +19,15 @@ export const SupportTabsBlock: React.FC<Props> = ({
   const areas = Array.isArray(items) ? items : []
 
   return (
-    <section className="w-full bg-[#f5f8fd] px-4 py-14 sm:px-6 lg:px-8" style={backgroundStyle(bgColor, bgColorCustom)}>
+    <section
+      className="w-full bg-mist px-4 py-14 sm:px-6 lg:px-8"
+      style={backgroundStyle(bgColor, bgColorCustom)}
+    >
       <div className="mx-auto max-w-5xl">
         <header className="text-center">
           {eyebrow && (
             <span
-              className="inline-block rounded-full border border-[#9dc0ee] px-5 py-1.5 text-[10px] font-bold uppercase tracking-[0.15em] text-[#0052cc]"
+              className="inline-block rounded-full border border-tint-300 px-5 py-1.5 text-[10px] font-bold uppercase tracking-[0.15em] text-brand-500"
               data-payload-subpath="eyebrow"
             >
               {marks(eyebrow)}
@@ -42,7 +45,7 @@ export const SupportTabsBlock: React.FC<Props> = ({
 
           {subheading && (
             <p
-              className="mt-2 whitespace-pre-line text-base font-semibold text-[#0052cc]"
+              className="mt-2 whitespace-pre-line text-base font-semibold text-brand-500"
               data-payload-subpath="subheading"
             >
               {marks(subheading)}
@@ -58,7 +61,7 @@ export const SupportTabsBlock: React.FC<Props> = ({
 
         {footerLine && (
           <p
-            className="mt-8 text-center text-base font-semibold text-[#0052cc]"
+            className="mt-8 text-center text-base font-semibold text-brand-500"
             data-payload-subpath="footerLine"
           >
             {marks(footerLine)}

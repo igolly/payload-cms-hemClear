@@ -31,7 +31,7 @@ const MobileItem: React.FC<{ item: NavItem; onNavigate: () => void }> = ({ item,
         <CMSLink
           {...item.link}
           appearance="inline"
-          className="block py-4 font-inter text-base font-bold text-[#182F7C]"
+          className="block py-4 font-inter text-base font-bold text-navy"
           onClick={onNavigate}
         />
       </li>
@@ -42,7 +42,7 @@ const MobileItem: React.FC<{ item: NavItem; onNavigate: () => void }> = ({ item,
     <li className="border-b border-border">
       <button
         aria-expanded={open}
-        className="flex w-full items-center justify-between py-4 text-left font-inter text-base font-bold text-[#182F7C]"
+        className="flex w-full items-center justify-between py-4 text-left font-inter text-base font-bold text-navy"
         onClick={() => setOpen((v) => !v)}
         type="button"
       >
@@ -66,7 +66,7 @@ const MobileItem: React.FC<{ item: NavItem; onNavigate: () => void }> = ({ item,
               <CMSLink
                 {...card.link}
                 appearance="inline"
-                className="flex items-center gap-3 rounded-xl bg-[#F4F8FF] p-3"
+                className="flex items-center gap-3 rounded-xl bg-mist p-3"
                 label={null}
                 onClick={onNavigate}
               >
@@ -122,7 +122,7 @@ export const MobileNav: React.FC<{
 
       <div className="flex items-center justify-between py-5">
         <Link
-          className="flex items-center gap-2 font-inter text-base font-bold text-[#182F7C]"
+          className="flex items-center gap-2 font-inter text-base font-bold text-navy"
           href="#"
           onClick={onClose}
         >
@@ -130,10 +130,10 @@ export const MobileNav: React.FC<{
           Sign In
         </Link>
 
-        <Link className="relative flex items-center text-[#182F7C]" href="#" onClick={onClose}>
+        <Link className="relative flex items-center text-navy" href="#" onClick={onClose}>
           <span className="sr-only">Cart</span>
           <ShoppingCart className="size-6" />
-          <span className="absolute -right-2 -top-2 flex size-4 items-center justify-center rounded-full bg-[#006DB0] text-[10px] font-bold text-white">
+          <span className="absolute -right-2 -top-2 flex size-4 items-center justify-center rounded-full bg-info text-[10px] font-bold text-white">
             0
           </span>
         </Link>

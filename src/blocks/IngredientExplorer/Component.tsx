@@ -18,14 +18,17 @@ export const IngredientExplorerBlock: React.FC<Props> = ({
   const formulas = Array.isArray(groups) ? groups : []
 
   return (
-    <section className="w-full bg-white px-4 py-12 sm:px-6 lg:px-8" style={backgroundStyle(bgColor, bgColorCustom)}>
+    <section
+      className="w-full bg-white px-4 py-12 sm:px-6 lg:px-8"
+      style={backgroundStyle(bgColor, bgColorCustom)}
+    >
       <div className="mx-auto max-w-7xl">
         {formulas.length > 0 && <Explorer allLabel={allLabel} groups={formulas} />}
 
         {(disclaimerTitle || disclaimer) && (
-          <div className="mt-10 flex items-start gap-3 rounded-xl border border-[#dbe8fa] bg-[#f7faff] p-5">
+          <div className="mt-10 flex items-start gap-3 rounded-xl border border-tint-100 bg-mist p-5">
             <BrandIcon
-              className="mt-0.5 shrink-0 text-[#1668C4] [&>svg]:h-5 [&>svg]:w-5"
+              className="mt-0.5 shrink-0 text-brand-400 [&>svg]:h-5 [&>svg]:w-5"
               name="info"
             />
             <div className="min-w-0">

@@ -80,7 +80,9 @@ export const VideoStories: Block = {
           name: 'video',
           type: 'upload',
           relationTo: 'media',
-          admin: { description: 'Uploaded video file. Plays inline when the visitor presses play.' },
+          admin: {
+            description: 'Uploaded video file. Plays inline when the visitor presses play.',
+          },
         },
         {
           name: 'videoUrl',

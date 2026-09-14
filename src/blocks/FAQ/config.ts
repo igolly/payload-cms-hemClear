@@ -33,7 +33,8 @@ export const FAQ: Block = {
               type: 'upload',
               relationTo: 'media',
               admin: {
-                description: 'Product shot shown beside the heading. A placeholder renders until one is set.',
+                description:
+                  'Product shot shown beside the heading. A placeholder renders until one is set.',
                 width: '50%',
               },
             },

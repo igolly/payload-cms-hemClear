@@ -7,11 +7,20 @@ import { Table } from './Table'
 import { backgroundStyle } from '@/fields/background'
 import { marks } from '@/utilities/marks'
 
-export const FormulaTableBlock: React.FC<Props> = ({ bgColor, bgColorCustom, footnote, formulas, heading }) => {
+export const FormulaTableBlock: React.FC<Props> = ({
+  bgColor,
+  bgColorCustom,
+  footnote,
+  formulas,
+  heading,
+}) => {
   const items = Array.isArray(formulas) ? formulas : []
 
   return (
-    <section className="w-full bg-white px-4 py-14 sm:px-6 lg:px-8" style={backgroundStyle(bgColor, bgColorCustom)}>
+    <section
+      className="w-full bg-white px-4 py-14 sm:px-6 lg:px-8"
+      style={backgroundStyle(bgColor, bgColorCustom)}
+    >
       <div className="mx-auto max-w-5xl">
         {heading && (
           <h2
@@ -27,7 +36,7 @@ export const FormulaTableBlock: React.FC<Props> = ({ bgColor, bgColorCustom, foo
         {footnote && (
           <p className="mx-auto mt-6 flex max-w-2xl items-start justify-center gap-3 text-xs leading-relaxed text-slate-600">
             <BrandIcon
-              className="shrink-0 text-[#1668C4] [&>svg]:h-7 [&>svg]:w-7"
+              className="shrink-0 text-brand-400 [&>svg]:h-7 [&>svg]:w-7"
               name="shieldCheck"
             />
             {marks(footnote)}

@@ -66,7 +66,7 @@ export const FAQBlock: React.FC<Props> = ({
       )}
 
       {hasHeader && !compact && (
-        <div className="relative overflow-hidden border-b-2 border-[#0d8ce9] bg-white">
+        <div className="relative overflow-hidden border-b-2 border-brand-300 bg-white">
           {/*
            * The hero sits in the site's 6xl content column rather than bleeding to the
            * window edge, so the artwork is what sets the band's height: at 1152px wide its
@@ -83,7 +83,7 @@ export const FAQBlock: React.FC<Props> = ({
               {backgroundImage && typeof backgroundImage === 'object' ? (
                 <Media fill imgClassName="object-cover" priority resource={backgroundImage} />
               ) : (
-                <div className="h-full w-full bg-[radial-gradient(60%_80%_at_20%_40%,#eaf3ff_0%,#ffffff_70%)]" />
+                <div className="h-full w-full bg-[radial-gradient(60%_80%_at_20%_40%,var(--color-mist-100)_0%,#fff_70%)]" />
               )}
             </div>
 
@@ -139,7 +139,7 @@ export const FAQBlock: React.FC<Props> = ({
 
           {/* Closing callout: an icon, a line of copy and one button, per the comp. */}
           {(supportTitle || supportText || supportLinkLabel) && (
-            <div className="mt-5 flex flex-col items-center gap-5 rounded-2xl border border-[#e5edf9] bg-white p-6 text-center shadow-[0_1px_3px_rgba(16,60,120,0.06)] sm:flex-row sm:text-left">
+            <div className="mt-5 flex flex-col items-center gap-5 rounded-2xl border border-tint-50 bg-white p-6 text-center shadow-[0_1px_3px_rgba(16,60,120,0.06)] sm:flex-row sm:text-left">
               {supportIcon && typeof supportIcon === 'object' && (
                 <span className="block h-20 w-20 shrink-0" data-payload-subpath="supportIcon">
                   {/* `htmlElement={null}` so `Media` emits its `<picture>` bare — its default

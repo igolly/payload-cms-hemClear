@@ -136,7 +136,7 @@ export const StoryCard: React.FC<{ index: number; story: Story; tone?: 'dark' | 
                 light ? 'px-1.5 py-0.5 text-[7px]' : 'left-3 top-9 gap-1.5 px-2 py-1 text-[9px]',
               )}
             >
-              <span className="h-1 w-1 rounded-full bg-[#4da3ff]" />
+              <span className="h-1 w-1 rounded-full bg-brand-200" />
               {marks(story.badge)}
             </span>
           )}

@@ -13,7 +13,11 @@ export const SupportTabs: Block = {
       type: 'collapsible',
       label: 'Section Header',
       fields: [
-        { name: 'eyebrow', type: 'text', admin: { description: 'Outlined pill above the heading.' } },
+        {
+          name: 'eyebrow',
+          type: 'text',
+          admin: { description: 'Outlined pill above the heading.' },
+        },
         { name: 'heading', type: 'text' },
         { name: 'subheading', type: 'textarea' },
       ],

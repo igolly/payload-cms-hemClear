@@ -16,7 +16,7 @@ const highlight = (text: React.ReactNode): React.ReactNode => {
 
   return text.split(/(\*[^*]+\*)/g).map((part, i) =>
     part.startsWith('*') && part.endsWith('*') ? (
-      <span className="text-[#6fd2f5]" key={i}>
+      <span className="text-aqua" key={i}>
         {part.slice(1, -1)}
       </span>
     ) : (
@@ -45,10 +45,13 @@ export const PricingOfferBlock: React.FC<Props> = ({
   const featuredIsCenter = cards.length === 3 && Boolean(cards[1]?.popular)
 
   return (
-    <section className="w-full bg-navy px-4 py-12 sm:px-6 lg:px-8" style={backgroundStyle(bgColor, bgColorCustom)}>
+    <section
+      className="w-full bg-navy px-4 py-12 sm:px-6 lg:px-8"
+      style={backgroundStyle(bgColor, bgColorCustom)}
+    >
       <div className="mx-auto max-w-6xl">
         {(bannerTitle || bannerText) && (
-          <div className="flex flex-col items-center gap-5 rounded-xl bg-[#31509f] px-6 py-5 sm:flex-row sm:gap-6">
+          <div className="flex flex-col items-center gap-5 rounded-xl bg-navy-600 px-6 py-5 sm:flex-row sm:gap-6">
             <span className="flex h-[5.5rem] w-[5.5rem] shrink-0 items-center justify-center rounded-full bg-white text-brand shadow-[0_0_28px_rgba(255,255,255,0.35)]">
               <Gift className="h-11 w-11" strokeWidth={1.75} />
             </span>
@@ -96,13 +99,13 @@ export const PricingOfferBlock: React.FC<Props> = ({
               <li
                 className={cn(
                   'overflow-hidden rounded-xl',
-                  plan.popular ? 'bg-white ring-4 ring-[#4d7fe0]' : 'bg-[#eaf2fe]',
+                  plan.popular ? 'bg-white ring-4 ring-brand-300' : 'bg-mist-100',
                 )}
                 data-payload-subpath={`plans.${i}.name`}
                 key={plan.id ?? i}
               >
                 {plan.popular && plan.popularLabel && (
-                  <p className="bg-[#0a2fa8] py-2 text-center text-xs font-bold uppercase tracking-wide text-white">
+                  <p className="bg-brand py-2 text-center text-xs font-bold uppercase tracking-wide text-white">
                     ★ {plan.popularLabel} ★
                   </p>
                 )}
@@ -135,7 +138,7 @@ export const PricingOfferBlock: React.FC<Props> = ({
                     {plan.image && typeof plan.image === 'object' ? (
                       <Media fill imgClassName="object-contain" resource={plan.image} />
                     ) : (
-                      <span className="flex h-full items-center justify-center text-[11px] text-[#8AA6C8]">
+                      <span className="flex h-full items-center justify-center text-[11px] text-steel-400">
                         Product image
                       </span>
                     )}
@@ -154,17 +157,17 @@ export const PricingOfferBlock: React.FC<Props> = ({
                   </p>
 
                   {Array.isArray(plan.features) && plan.features.length > 0 && (
-                    <ul className="mt-4 flex flex-col gap-2.5 border-t border-[#cfe0f7] pt-4 text-left">
+                    <ul className="mt-4 flex flex-col gap-2.5 border-t border-tint-150 pt-4 text-left">
                       {plan.features.map((feature, f) => (
                         <li className="flex items-start gap-2.5" key={feature.id ?? f}>
                           <CircleCheck
-                            className="mt-px h-[18px] w-[18px] shrink-0 fill-[#0f3bbd] text-white"
+                            className="mt-px h-[18px] w-[18px] shrink-0 fill-brand-600 text-white"
                             strokeWidth={2.5}
                           />
                           <span
                             className={cn(
                               'text-[13px] leading-snug',
-                              feature.highlight ? 'text-[#0052cc]' : 'text-[#1a2340]',
+                              feature.highlight ? 'text-brand-500' : 'text-navy-950',
                             )}
                           >
                             {marks(feature.text)}
@@ -178,7 +181,7 @@ export const PricingOfferBlock: React.FC<Props> = ({
                     className={cn(
                       'mt-5 block rounded-md py-3.5 text-[15px] font-bold uppercase tracking-wide text-white transition-colors',
                       plan.popular
-                        ? 'bg-[#1a7f37] hover:bg-[#166b2e]'
+                        ? 'bg-success hover:bg-success-dark'
                         : 'bg-brand hover:bg-brand-dark',
                     )}
                     href={plan.ctaUrl || '#'}
@@ -187,7 +190,7 @@ export const PricingOfferBlock: React.FC<Props> = ({
                   </a>
 
                   {/* Reserved even when empty, so a plan without a footnote keeps its height. */}
-                  <p className="mt-2.5 min-h-4 text-xs text-[#0052cc]">{marks(plan.footnote)}</p>
+                  <p className="mt-2.5 min-h-4 text-xs text-brand-500">{marks(plan.footnote)}</p>
                 </div>
               </li>
             ))}
@@ -198,11 +201,11 @@ export const PricingOfferBlock: React.FC<Props> = ({
           <ul className="mx-auto mt-6 flex max-w-[97%] flex-wrap items-center justify-center gap-x-8 gap-y-4 rounded-xl bg-white px-8 py-5">
             {trust.map((item, i) => (
               <li
-                className="flex items-center gap-3 border-[#dbe8fa] pl-8 first:pl-0 sm:border-l sm:first:border-l-0"
+                className="flex items-center gap-3 border-tint-100 pl-8 first:pl-0 sm:border-l sm:first:border-l-0"
                 key={item.id ?? i}
               >
                 <BrandIcon
-                  className="shrink-0 text-[#1668C4] [&>svg]:h-8 [&>svg]:w-8"
+                  className="shrink-0 text-brand-400 [&>svg]:h-8 [&>svg]:w-8"
                   name={item.icon}
                 />
                 <span className="whitespace-pre-line text-sm font-bold leading-tight text-heading">

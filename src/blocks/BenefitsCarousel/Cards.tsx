@@ -40,7 +40,10 @@ export const Cards: React.FC<{ items: Item[] }> = ({ items }) => {
     const track = trackRef.current
     if (!track) return
     const step = track.firstElementChild?.clientWidth ?? 0
-    track.scrollTo({ behavior: 'smooth', left: step * Math.max(0, Math.min(items.length - 1, index)) })
+    track.scrollTo({
+      behavior: 'smooth',
+      left: step * Math.max(0, Math.min(items.length - 1, index)),
+    })
   }
 
   const arrow =
@@ -80,17 +83,17 @@ export const Cards: React.FC<{ items: Item[] }> = ({ items }) => {
                    * third rather than stacked beneath it, so the icon badge can straddle the
                    * seam and the panel can grow upward over the photo when details expand.
                    */}
-                  <div className="relative aspect-[10/19] w-full overflow-hidden rounded-3xl bg-[#e8f0fc]">
+                  <div className="relative aspect-[10/19] w-full overflow-hidden rounded-3xl bg-mist-100">
                     {item.image && typeof item.image === 'object' ? (
                       <Media fill imgClassName="object-cover" resource={item.image} />
                     ) : (
-                      <span className="flex h-full items-center justify-center text-[11px] text-[#8AA6C8]">
+                      <span className="flex h-full items-center justify-center text-[11px] text-steel-400">
                         Photo
                       </span>
                     )}
 
                     <div className="absolute inset-x-0 bottom-0 flex min-h-[38%] flex-col items-center justify-center rounded-t-3xl bg-white px-4 pb-8 pt-12 text-center">
-                      <span className="absolute -top-9 left-1/2 flex h-[4.5rem] w-[4.5rem] -translate-x-1/2 items-center justify-center rounded-full border border-[#dbe8fa] bg-white text-brand [&>span>svg]:h-8 [&>span>svg]:w-8">
+                      <span className="absolute -top-9 left-1/2 flex h-[4.5rem] w-[4.5rem] -translate-x-1/2 items-center justify-center rounded-full border border-tint-100 bg-white text-brand [&>span>svg]:h-8 [&>span>svg]:w-8">
                         <BrandIcon name={item.icon} />
                       </span>
 
@@ -115,7 +118,11 @@ export const Cards: React.FC<{ items: Item[] }> = ({ items }) => {
                       onClick={() => setOpen(isOpen ? null : key)}
                       type="button"
                     >
-                      {isOpen ? <Minus className="h-5 w-5" /> : <PlusIcon className="h-3.5 w-3.5" />}
+                      {isOpen ? (
+                        <Minus className="h-5 w-5" />
+                      ) : (
+                        <PlusIcon className="h-3.5 w-3.5" />
+                      )}
                     </button>
                   )}
                 </div>
@@ -142,7 +149,7 @@ export const Cards: React.FC<{ items: Item[] }> = ({ items }) => {
               aria-label={`Go to ${i + 1}`}
               className={cn(
                 'h-2 rounded-full transition-all',
-                i === active ? 'w-5 bg-brand' : 'w-2 bg-[#a9c5ea] hover:bg-[#7fa8dd]',
+                i === active ? 'w-5 bg-brand' : 'w-2 bg-tint-300 hover:bg-steel-400',
               )}
               key={item.id ?? i}
               onClick={() => scrollToIndex(i)}

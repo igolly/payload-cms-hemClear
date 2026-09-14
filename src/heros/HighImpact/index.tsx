@@ -33,7 +33,7 @@ const TrustIcon: React.FC<{
       aria-hidden="true"
       className={cn(
         size,
-        'block shrink-0 rounded-md border-2 border-dashed border-[#C6DAF6] bg-[#F7FAFF]',
+        'block shrink-0 rounded-md border-2 border-dashed border-tint-150 bg-mist',
       )}
     />
   )
@@ -115,7 +115,7 @@ export const HighImpactHero: React.FC<Page['hero']> = ({
   )
 
   return (
-    <section className="w-full bg-[#F5F5F7]">
+    <section className="w-full bg-shell">
       <div
         className={cn(
           'mx-auto grid max-w-[1400px] grid-cols-1 items-stretch px-6 lg:gap-10 lg:px-8',
@@ -171,7 +171,7 @@ export const HighImpactHero: React.FC<Page['hero']> = ({
         >
           {eyebrow && (
             <p
-              className="mb-3 text-xs font-bold uppercase tracking-[0.15em] text-[#0052cc]"
+              className="mb-3 text-xs font-bold uppercase tracking-[0.15em] text-brand-500"
               data-payload-subpath="eyebrow"
             >
               {marks(eyebrow)}
@@ -282,7 +282,7 @@ export const HighImpactHero: React.FC<Page['hero']> = ({
           )}
 
           {(calloutTitle || calloutText) && (
-            <div className="mt-4 flex items-start gap-3 rounded-lg bg-[#eef4fd] px-4 py-3">
+            <div className="mt-4 flex items-start gap-3 rounded-lg bg-mist-100 px-4 py-3">
               {calloutIcon && typeof calloutIcon === 'object' ? (
                 <span className="block h-16 w-16 shrink-0">
                   <Media
@@ -301,7 +301,7 @@ export const HighImpactHero: React.FC<Page['hero']> = ({
                   <span className="block text-sm font-bold text-brand">{marks(calloutTitle)}</span>
                 )}
                 {calloutText && (
-                  <span className="mt-0.5 block text-xs leading-relaxed text-[#1a2f7c]">
+                  <span className="mt-0.5 block text-xs leading-relaxed text-navy">
                     {marks(calloutText)}
                   </span>
                 )}

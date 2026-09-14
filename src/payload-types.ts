@@ -982,7 +982,7 @@ export interface ReviewsBlock {
   bgColor?:
     ('white' | 'offWhite' | 'paleBlue' | 'lightBlue' | 'skyBlue' | 'brand' | 'navy' | 'deepNavy' | 'custom') | null;
   /**
-   * Any CSS colour, e.g. #0d2050.
+   * Any CSS colour, e.g. #051959.
    */
   bgColorCustom?: string | null;
   id?: string | null;
@@ -1047,7 +1047,7 @@ export interface FAQBlock {
   bgColor?:
     ('white' | 'offWhite' | 'paleBlue' | 'lightBlue' | 'skyBlue' | 'brand' | 'navy' | 'deepNavy' | 'custom') | null;
   /**
-   * Any CSS colour, e.g. #0d2050.
+   * Any CSS colour, e.g. #051959.
    */
   bgColorCustom?: string | null;
   id?: string | null;
@@ -1086,7 +1086,7 @@ export interface StatsBarBlock {
   bgColor?:
     ('white' | 'offWhite' | 'paleBlue' | 'lightBlue' | 'skyBlue' | 'brand' | 'navy' | 'deepNavy' | 'custom') | null;
   /**
-   * Any CSS colour, e.g. #0d2050.
+   * Any CSS colour, e.g. #051959.
    */
   bgColorCustom?: string | null;
   id?: string | null;
@@ -1199,7 +1199,7 @@ export interface CausesBlock {
   bgColor?:
     ('white' | 'offWhite' | 'paleBlue' | 'lightBlue' | 'skyBlue' | 'brand' | 'navy' | 'deepNavy' | 'custom') | null;
   /**
-   * Any CSS colour, e.g. #0d2050.
+   * Any CSS colour, e.g. #051959.
    */
   bgColorCustom?: string | null;
   id?: string | null;
@@ -1259,7 +1259,7 @@ export interface ProductSystemBlock {
   bgColor?:
     ('white' | 'offWhite' | 'paleBlue' | 'lightBlue' | 'skyBlue' | 'brand' | 'navy' | 'deepNavy' | 'custom') | null;
   /**
-   * Any CSS colour, e.g. #0d2050.
+   * Any CSS colour, e.g. #051959.
    */
   bgColorCustom?: string | null;
   id?: string | null;
@@ -1333,7 +1333,7 @@ export interface SolutionSystemBlock {
   bgColor?:
     ('white' | 'offWhite' | 'paleBlue' | 'lightBlue' | 'skyBlue' | 'brand' | 'navy' | 'deepNavy' | 'custom') | null;
   /**
-   * Any CSS colour, e.g. #0d2050.
+   * Any CSS colour, e.g. #051959.
    */
   bgColorCustom?: string | null;
   id?: string | null;
@@ -1393,7 +1393,7 @@ export interface VideoStoriesBlock {
   bgColor?:
     ('white' | 'offWhite' | 'paleBlue' | 'lightBlue' | 'skyBlue' | 'brand' | 'navy' | 'deepNavy' | 'custom') | null;
   /**
-   * Any CSS colour, e.g. #0d2050.
+   * Any CSS colour, e.g. #051959.
    */
   bgColorCustom?: string | null;
   id?: string | null;
@@ -1454,7 +1454,7 @@ export interface WaysGridBlock {
   bgColor?:
     ('white' | 'offWhite' | 'paleBlue' | 'lightBlue' | 'skyBlue' | 'brand' | 'navy' | 'deepNavy' | 'custom') | null;
   /**
-   * Any CSS colour, e.g. #0d2050.
+   * Any CSS colour, e.g. #051959.
    */
   bgColorCustom?: string | null;
   id?: string | null;
@@ -1544,7 +1544,7 @@ export interface ClosingCtaBlock {
   bgColor?:
     ('white' | 'offWhite' | 'paleBlue' | 'lightBlue' | 'skyBlue' | 'brand' | 'navy' | 'deepNavy' | 'custom') | null;
   /**
-   * Any CSS colour, e.g. #0d2050.
+   * Any CSS colour, e.g. #051959.
    */
   bgColorCustom?: string | null;
   id?: string | null;
@@ -1643,7 +1643,7 @@ export interface GuaranteeBlock {
   bgColor?:
     ('white' | 'offWhite' | 'paleBlue' | 'lightBlue' | 'skyBlue' | 'brand' | 'navy' | 'deepNavy' | 'custom') | null;
   /**
-   * Any CSS colour, e.g. #0d2050.
+   * Any CSS colour, e.g. #051959.
    */
   bgColorCustom?: string | null;
   id?: string | null;
@@ -1696,7 +1696,7 @@ export interface WhyDaysBlock {
   bgColor?:
     ('white' | 'offWhite' | 'paleBlue' | 'lightBlue' | 'skyBlue' | 'brand' | 'navy' | 'deepNavy' | 'custom') | null;
   /**
-   * Any CSS colour, e.g. #0d2050.
+   * Any CSS colour, e.g. #051959.
    */
   bgColorCustom?: string | null;
   id?: string | null;
@@ -1774,7 +1774,7 @@ export interface ComparisonBlock {
   bgColor?:
     ('white' | 'offWhite' | 'paleBlue' | 'lightBlue' | 'skyBlue' | 'brand' | 'navy' | 'deepNavy' | 'custom') | null;
   /**
-   * Any CSS colour, e.g. #0d2050.
+   * Any CSS colour, e.g. #051959.
    */
   bgColorCustom?: string | null;
   id?: string | null;
@@ -1849,7 +1849,7 @@ export interface SupportTabsBlock {
   bgColor?:
     ('white' | 'offWhite' | 'paleBlue' | 'lightBlue' | 'skyBlue' | 'brand' | 'navy' | 'deepNavy' | 'custom') | null;
   /**
-   * Any CSS colour, e.g. #0d2050.
+   * Any CSS colour, e.g. #051959.
    */
   bgColorCustom?: string | null;
   id?: string | null;
@@ -1933,7 +1933,7 @@ export interface PairingBlock {
   bgColor?:
     ('white' | 'offWhite' | 'paleBlue' | 'lightBlue' | 'skyBlue' | 'brand' | 'navy' | 'deepNavy' | 'custom') | null;
   /**
-   * Any CSS colour, e.g. #0d2050.
+   * Any CSS colour, e.g. #051959.
    */
   bgColorCustom?: string | null;
   id?: string | null;
@@ -2032,7 +2032,7 @@ export interface TotalCareBlock {
   bgColor?:
     ('white' | 'offWhite' | 'paleBlue' | 'lightBlue' | 'skyBlue' | 'brand' | 'navy' | 'deepNavy' | 'custom') | null;
   /**
-   * Any CSS colour, e.g. #0d2050.
+   * Any CSS colour, e.g. #051959.
    */
   bgColorCustom?: string | null;
   id?: string | null;
@@ -2118,7 +2118,7 @@ export interface MedicalReviewBlock {
   bgColor?:
     ('white' | 'offWhite' | 'paleBlue' | 'lightBlue' | 'skyBlue' | 'brand' | 'navy' | 'deepNavy' | 'custom') | null;
   /**
-   * Any CSS colour, e.g. #0d2050.
+   * Any CSS colour, e.g. #051959.
    */
   bgColorCustom?: string | null;
   id?: string | null;
@@ -2227,7 +2227,7 @@ export interface FeatureStripBlock {
   bgColor?:
     ('white' | 'offWhite' | 'paleBlue' | 'lightBlue' | 'skyBlue' | 'brand' | 'navy' | 'deepNavy' | 'custom') | null;
   /**
-   * Any CSS colour, e.g. #0d2050.
+   * Any CSS colour, e.g. #051959.
    */
   bgColorCustom?: string | null;
   id?: string | null;
@@ -2275,7 +2275,7 @@ export interface BannerHeroBlock {
   bgColor?:
     ('white' | 'offWhite' | 'paleBlue' | 'lightBlue' | 'skyBlue' | 'brand' | 'navy' | 'deepNavy' | 'custom') | null;
   /**
-   * Any CSS colour, e.g. #0d2050.
+   * Any CSS colour, e.g. #051959.
    */
   bgColorCustom?: string | null;
   id?: string | null;
@@ -2334,7 +2334,7 @@ export interface IngredientExplorerBlock {
   bgColor?:
     ('white' | 'offWhite' | 'paleBlue' | 'lightBlue' | 'skyBlue' | 'brand' | 'navy' | 'deepNavy' | 'custom') | null;
   /**
-   * Any CSS colour, e.g. #0d2050.
+   * Any CSS colour, e.g. #051959.
    */
   bgColorCustom?: string | null;
   id?: string | null;
@@ -2394,7 +2394,7 @@ export interface BenefitsCarouselBlock {
   bgColor?:
     ('white' | 'offWhite' | 'paleBlue' | 'lightBlue' | 'skyBlue' | 'brand' | 'navy' | 'deepNavy' | 'custom') | null;
   /**
-   * Any CSS colour, e.g. #0d2050.
+   * Any CSS colour, e.g. #051959.
    */
   bgColorCustom?: string | null;
   id?: string | null;
@@ -2448,7 +2448,7 @@ export interface FormulaTableBlock {
   bgColor?:
     ('white' | 'offWhite' | 'paleBlue' | 'lightBlue' | 'skyBlue' | 'brand' | 'navy' | 'deepNavy' | 'custom') | null;
   /**
-   * Any CSS colour, e.g. #0d2050.
+   * Any CSS colour, e.g. #051959.
    */
   bgColorCustom?: string | null;
   id?: string | null;
@@ -2534,7 +2534,7 @@ export interface PricingOfferBlock {
   bgColor?:
     ('white' | 'offWhite' | 'paleBlue' | 'lightBlue' | 'skyBlue' | 'brand' | 'navy' | 'deepNavy' | 'custom') | null;
   /**
-   * Any CSS colour, e.g. #0d2050.
+   * Any CSS colour, e.g. #051959.
    */
   bgColorCustom?: string | null;
   id?: string | null;
@@ -2589,7 +2589,7 @@ export interface SavingsCompareBlock {
   bgColor?:
     ('white' | 'offWhite' | 'paleBlue' | 'lightBlue' | 'skyBlue' | 'brand' | 'navy' | 'deepNavy' | 'custom') | null;
   /**
-   * Any CSS colour, e.g. #0d2050.
+   * Any CSS colour, e.g. #051959.
    */
   bgColorCustom?: string | null;
   id?: string | null;
@@ -2647,7 +2647,7 @@ export interface ScienceStatsBlock {
   bgColor?:
     ('white' | 'offWhite' | 'paleBlue' | 'lightBlue' | 'skyBlue' | 'brand' | 'navy' | 'deepNavy' | 'custom') | null;
   /**
-   * Any CSS colour, e.g. #0d2050.
+   * Any CSS colour, e.g. #051959.
    */
   bgColorCustom?: string | null;
   id?: string | null;

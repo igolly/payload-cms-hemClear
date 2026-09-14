@@ -17,7 +17,10 @@ export const VideoStoriesBlock: React.FC<Props> = ({
   const items = Array.isArray(stories) ? stories : []
 
   return (
-    <section className="w-full bg-navy px-4 py-14 sm:px-6 lg:px-8" style={backgroundStyle(bgColor, bgColorCustom)}>
+    <section
+      className="w-full bg-navy px-4 py-14 sm:px-6 lg:px-8"
+      style={backgroundStyle(bgColor, bgColorCustom)}
+    >
       <div className="mx-auto max-w-7xl">
         <header className="text-center">
           {eyebrow && (
@@ -40,7 +43,7 @@ export const VideoStoriesBlock: React.FC<Props> = ({
 
           {subheading && (
             <p
-              className="mt-3 font-serif text-lg italic text-[#69aeff]"
+              className="mt-3 font-serif text-lg italic text-brand-200"
               data-payload-subpath="subheading"
             >
               {marks(subheading)}

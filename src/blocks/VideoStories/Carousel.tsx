@@ -75,9 +75,7 @@ export const Carousel: React.FC<{
   const light = tone === 'light'
   const arrowClass = cn(
     'flex h-11 w-11 shrink-0 items-center justify-center rounded-full transition-colors disabled:opacity-30',
-    light
-      ? 'bg-[#e9edf3] text-[#1a2340] hover:bg-[#dbe1ea]'
-      : 'bg-white/15 text-white hover:bg-white/25',
+    light ? 'bg-line text-navy-950 hover:bg-steel-200' : 'bg-white/15 text-white hover:bg-white/25',
   )
 
   return (
@@ -128,7 +126,7 @@ export const Carousel: React.FC<{
                     ? 'w-2.5 bg-brand'
                     : 'w-6 bg-white'
                   : light
-                    ? 'w-2.5 bg-[#d3d9e2] hover:bg-[#b6c0cf]'
+                    ? 'w-2.5 bg-steel-200 hover:bg-steel-300'
                     : 'w-2 bg-white/40 hover:bg-white/70',
               )}
               key={story.id ?? i}

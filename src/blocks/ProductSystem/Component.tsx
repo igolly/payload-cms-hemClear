@@ -21,7 +21,10 @@ export const ProductSystemBlock: React.FC<Props> = ({
   const cards = Array.isArray(features) ? features : []
 
   return (
-    <section className="w-full bg-[#F4F8FF] px-4 py-16 sm:px-6 lg:px-8" style={backgroundStyle(bgColor, bgColorCustom)}>
+    <section
+      className="w-full bg-mist px-4 py-16 sm:px-6 lg:px-8"
+      style={backgroundStyle(bgColor, bgColorCustom)}
+    >
       {(heading || subheading) && (
         <header className="mx-auto max-w-3xl text-center">
           {heading && (
@@ -34,7 +37,7 @@ export const ProductSystemBlock: React.FC<Props> = ({
           )}
           {subheading && (
             <p
-              className="mt-3 text-base font-semibold text-[#1668C4] sm:text-lg"
+              className="mt-3 text-base font-semibold text-brand-400 sm:text-lg"
               data-payload-subpath="subheading"
             >
               {marks(subheading)}
@@ -56,11 +59,11 @@ export const ProductSystemBlock: React.FC<Props> = ({
           )}
 
           {paras.length > 0 && (
-            <div className="mt-4 space-y-3 text-[13px] leading-relaxed text-[#4A5B72]">
+            <div className="mt-4 space-y-3 text-[13px] leading-relaxed text-steel-600">
               {paras.map((paragraph, i) => (
                 <p data-payload-subpath={`paragraphs.${i}.text`} key={paragraph.id ?? i}>
                   {paragraph.lead && (
-                    <strong className="font-bold text-[#1668C4]">{marks(paragraph.lead)} </strong>
+                    <strong className="font-bold text-brand-400">{marks(paragraph.lead)} </strong>
                   )}
                   {marks(paragraph.text)}
                 </p>
@@ -70,7 +73,10 @@ export const ProductSystemBlock: React.FC<Props> = ({
         </div>
 
         {/* Centre — diagram. First on mobile. */}
-        <div className="relative order-1 aspect-square w-full lg:order-2" data-payload-subpath="image">
+        <div
+          className="relative order-1 aspect-square w-full lg:order-2"
+          data-payload-subpath="image"
+        >
           <ImageSlot
             className="h-full w-full"
             hint="Recommended 1000 × 1000px, transparent PNG"
@@ -84,7 +90,7 @@ export const ProductSystemBlock: React.FC<Props> = ({
           <ul className="order-3 space-y-3">
             {cards.map((feature, i) => (
               <li
-                className="flex items-center gap-3 rounded-xl border border-[#DBE8FA] bg-white px-4 py-3 shadow-[0_1px_3px_rgba(16,60,120,0.06)]"
+                className="flex items-center gap-3 rounded-xl border border-tint-100 bg-white px-4 py-3 shadow-[0_1px_3px_rgba(16,60,120,0.06)]"
                 data-payload-subpath={`features.${i}.title`}
                 key={feature.id ?? i}
               >
@@ -105,12 +111,12 @@ export const ProductSystemBlock: React.FC<Props> = ({
                   ) : (
                     <div
                       aria-label="Feature image placeholder"
-                      className="flex h-full w-full items-center justify-center rounded-lg border-2 border-dashed border-[#C6DAF6] bg-[#F7FAFF]"
+                      className="flex h-full w-full items-center justify-center rounded-lg border-2 border-dashed border-tint-150 bg-mist"
                       role="img"
                     >
                       <svg
                         aria-hidden="true"
-                        className="h-6 w-6 text-[#9DBDE8]"
+                        className="h-6 w-6 text-tint-300"
                         fill="none"
                         viewBox="0 0 24 24"
                       >
@@ -136,16 +142,16 @@ export const ProductSystemBlock: React.FC<Props> = ({
                   )}
                 </div>
                 <div className="min-w-0">
-                  <p className="text-sm font-bold leading-tight text-[#123A6B]">
+                  <p className="text-sm font-bold leading-tight text-steel-800">
                     {feature.stat && (
-                      <span className="mr-1 text-2xl font-extrabold text-[#1668C4]">
+                      <span className="mr-1 text-2xl font-extrabold text-brand-400">
                         {marks(feature.stat)}
                       </span>
                     )}
                     {marks(feature.title)}
                   </p>
                   {feature.subtitle && (
-                    <p className="mt-0.5 text-[11px] leading-tight text-[#6B86A8]">
+                    <p className="mt-0.5 text-[11px] leading-tight text-steel-500">
                       {marks(feature.subtitle)}
                     </p>
                   )}

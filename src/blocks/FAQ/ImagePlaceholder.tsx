@@ -33,10 +33,10 @@ export const ImageSlot: React.FC<{
   return (
     <div
       aria-label={`${label} placeholder`}
-      className={`flex flex-col items-center justify-center gap-1 rounded-2xl border-2 border-dashed border-[#C6DAF6] bg-[#F7FAFF] p-6 text-center ${className}`}
+      className={`flex flex-col items-center justify-center gap-1 rounded-2xl border-2 border-dashed border-tint-150 bg-mist p-6 text-center ${className}`}
       role="img"
     >
-      <svg aria-hidden="true" className="h-8 w-8 text-[#9DBDE8]" fill="none" viewBox="0 0 24 24">
+      <svg aria-hidden="true" className="h-8 w-8 text-tint-300" fill="none" viewBox="0 0 24 24">
         <rect height="16" rx="2" stroke="currentColor" strokeWidth="1.5" width="18" x="3" y="4" />
         <circle cx="8.5" cy="9.5" fill="currentColor" r="1.5" />
         <path
@@ -47,8 +47,8 @@ export const ImageSlot: React.FC<{
           strokeWidth="1.5"
         />
       </svg>
-      <span className="text-sm font-semibold text-[#3F6FA8]">{marks(label)}</span>
-      <span className="text-xs text-[#8AA6C8]">{marks(hint)}</span>
+      <span className="text-sm font-semibold text-steel-600">{marks(label)}</span>
+      <span className="text-xs text-steel-400">{marks(hint)}</span>
     </div>
   )
 }

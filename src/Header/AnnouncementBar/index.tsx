@@ -38,7 +38,7 @@ export const AnnouncementBar: React.FC<{
     <div className="w-full bg-navy px-4 py-2 text-white">
       <div className="mx-auto flex max-w-7xl flex-col items-center justify-center gap-x-8 gap-y-1 text-center sm:flex-row">
         <p className="text-xs leading-tight">
-          {title && <span className="block font-bold text-[#ffe066]">{marks(title)}</span>}
+          {title && <span className="block font-bold text-cream">{marks(title)}</span>}
           {marks(text)}
         </p>
 

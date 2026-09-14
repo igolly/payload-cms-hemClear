@@ -18,7 +18,7 @@ export const Gallery: React.FC<{ badgeLabel?: string | null; slides: Slide[] }> 
 
   return (
     <div>
-      <div className="relative aspect-square w-full overflow-hidden rounded-xl bg-[#efeae4]">
+      <div className="relative aspect-square w-full overflow-hidden rounded-xl bg-sand">
         {current?.image && typeof current.image === 'object' ? (
           <Media fill imgClassName="object-cover" priority resource={current.image} />
         ) : (
@@ -44,7 +44,7 @@ export const Gallery: React.FC<{ badgeLabel?: string | null; slides: Slide[] }> 
                   aria-label={`Show image ${i + 1}`}
                   className={cn(
                     'relative block h-16 w-20 overflow-hidden rounded-md border-2 bg-white',
-                    i === active ? 'border-[#c0392b]' : 'border-[#dbe8fa]',
+                    i === active ? 'border-danger' : 'border-tint-100',
                   )}
                   onClick={() => setActive(i)}
                   type="button"
@@ -63,7 +63,7 @@ export const Gallery: React.FC<{ badgeLabel?: string | null; slides: Slide[] }> 
                 aria-label={`Go to image ${i + 1}`}
                 className={cn(
                   'h-2 w-2 rounded-full transition-colors',
-                  i === active ? 'bg-brand' : 'bg-[#c9dcf5]',
+                  i === active ? 'bg-brand' : 'bg-tint-150',
                 )}
                 key={slide.id ?? i}
                 onClick={() => setActive(i)}

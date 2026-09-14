@@ -51,7 +51,7 @@ export const Explorer: React.FC<{ allLabel?: string | null; groups: Group[] }> =
       {/* Formula toggle */}
       {groups.length > 1 && (
         <div className="flex justify-center">
-          <div className="flex rounded-full border border-[#c9dcf5] bg-white p-1">
+          <div className="flex rounded-full border border-tint-150 bg-white p-1">
             {groups.map((item, i) => (
               <button
                 aria-pressed={i === groupIndex}
@@ -83,7 +83,7 @@ export const Explorer: React.FC<{ allLabel?: string | null; groups: Group[] }> =
                     'rounded-full border px-4 py-1.5 text-xs font-semibold transition-colors',
                     active
                       ? 'border-brand bg-brand text-white'
-                      : 'border-[#c9dcf5] bg-white text-brand hover:bg-slate-50',
+                      : 'border-tint-150 bg-white text-brand hover:bg-slate-50',
                   )}
                   onClick={() => setCategory(value)}
                   type="button"
@@ -104,9 +104,9 @@ export const Explorer: React.FC<{ allLabel?: string | null; groups: Group[] }> =
               {marks(group.heading)}
             </h2>
           )}
-          <span aria-hidden="true" className="mx-auto mt-3 block h-0.5 w-16 bg-[#2d80e2]" />
+          <span aria-hidden="true" className="mx-auto mt-3 block h-0.5 w-16 bg-brand-300" />
           {group.description && (
-            <p className="mx-auto mt-4 max-w-3xl text-sm leading-relaxed text-[#0052cc]">
+            <p className="mx-auto mt-4 max-w-3xl text-sm leading-relaxed text-brand-500">
               {marks(group.description)}
             </p>
           )}
@@ -124,34 +124,40 @@ export const Explorer: React.FC<{ allLabel?: string | null; groups: Group[] }> =
 
           return (
             <li
-              className="flex flex-col overflow-hidden rounded-xl border border-[#e2ecf9] bg-white shadow-[0_1px_3px_rgba(16,60,120,0.06)]"
+              className="flex flex-col overflow-hidden rounded-xl border border-tint-50 bg-white shadow-[0_1px_3px_rgba(16,60,120,0.06)]"
               key={key}
             >
-              <div className="relative aspect-[4/3] w-full bg-[#f2f6fd]">
+              <div className="relative aspect-[4/3] w-full bg-mist-100">
                 {item.image && typeof item.image === 'object' ? (
                   <Media fill imgClassName="object-cover" resource={item.image} />
                 ) : (
-                  <span className="flex h-full w-full items-center justify-center text-[11px] text-[#8AA6C8]">
+                  <span className="flex h-full w-full items-center justify-center text-[11px] text-steel-400">
                     Ingredient image
                   </span>
                 )}
               </div>
 
               <div className="flex grow flex-col p-4">
-                <h3 className="text-base font-bold leading-tight text-subheading">{marks(item.name)}</h3>
+                <h3 className="text-base font-bold leading-tight text-subheading">
+                  {marks(item.name)}
+                </h3>
                 {item.latin && <p className="text-xs italic text-slate-500">{marks(item.latin)}</p>}
 
                 {item.description && (
-                  <p className="mt-3 text-xs leading-relaxed text-[#1a2f7c]">{marks(item.description)}</p>
+                  <p className="mt-3 text-xs leading-relaxed text-navy">
+                    {marks(item.description)}
+                  </p>
                 )}
 
                 {isOpen && item.details && (
-                  <p className="mt-2 text-xs leading-relaxed text-slate-600">{marks(item.details)}</p>
+                  <p className="mt-2 text-xs leading-relaxed text-slate-600">
+                    {marks(item.details)}
+                  </p>
                 )}
 
                 <div className="mt-auto flex items-end justify-between gap-3 pt-4">
                   {item.benefit && (
-                    <p className="text-[11px] font-semibold leading-tight text-[#0052cc]">
+                    <p className="text-[11px] font-semibold leading-tight text-brand-500">
                       Benefit: {item.benefit}
                     </p>
                   )}

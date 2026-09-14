@@ -31,9 +31,7 @@ export const MegaMenu: React.FC<{ cards: Card[]; onClose: () => void; open: bool
     className={[
       'absolute inset-x-0 top-full z-30 origin-top border-b border-border bg-white shadow-[0_18px_40px_rgba(16,60,120,0.10)]',
       'transition-[opacity,transform] duration-200 ease-out motion-reduce:transition-none',
-      open
-        ? 'visible translate-y-0 opacity-100'
-        : 'invisible -translate-y-2 opacity-0',
+      open ? 'visible translate-y-0 opacity-100' : 'invisible -translate-y-2 opacity-0',
     ].join(' ')}
     onMouseLeave={onClose}
   >
@@ -49,13 +47,13 @@ export const MegaMenu: React.FC<{ cards: Card[]; onClose: () => void; open: bool
             <CMSLink
               {...card.link}
               appearance="inline"
-              className="group flex h-full items-center gap-4 rounded-2xl bg-[#F4F8FF] p-4 transition-colors hover:bg-[#E6EFFC]"
+              className="group flex h-full items-center gap-4 rounded-2xl bg-mist p-4 transition-colors hover:bg-tint-50"
               label={null}
               onClick={onClose}
             >
               <span className="min-w-0 flex-1">
                 {card.eyebrow && (
-                  <span className="block text-[11px] font-bold uppercase tracking-[0.12em] text-[#0057A0]">
+                  <span className="block text-[11px] font-bold uppercase tracking-[0.12em] text-info-dark">
                     {marks(card.eyebrow)}
                   </span>
                 )}

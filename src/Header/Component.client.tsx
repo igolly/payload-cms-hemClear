@@ -69,7 +69,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
           aria-controls="mobile-nav"
           aria-expanded={mobileOpen}
           aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
-          className="-mr-2 flex size-10 items-center justify-center rounded-lg text-[#182F7C] transition-colors hover:bg-[#F4F8FF] lg:hidden"
+          className="-mr-2 flex size-10 items-center justify-center rounded-lg text-navy transition-colors hover:bg-mist lg:hidden"
           onClick={() => setMobileOpen((v) => !v)}
           type="button"
         >
