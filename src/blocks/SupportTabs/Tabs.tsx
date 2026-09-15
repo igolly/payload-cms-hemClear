@@ -107,7 +107,7 @@ export const Tabs: React.FC<{ items: Item[] }> = ({ items }) => {
               aria-current={i === active}
               className={cn(
                 'flex items-center rounded-[14px] border bg-white p-0.5',
-                i === active ? 'border-aqua-200' : 'border-[#ddd] hover:border-brand-300',
+                i === active ? 'border-aqua-200' : 'border-ash-200 hover:border-brand-300',
               )}
               onClick={() => scrollToIndex(i)}
               type="button"

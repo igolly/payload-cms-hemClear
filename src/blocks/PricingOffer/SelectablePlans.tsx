@@ -12,7 +12,10 @@ import { PlanCarousel } from './PlanCarousel'
  * the chosen plan, with that plan's footnote under it. The most popular plan starts selected.
  */
 export const SelectablePlans: React.FC<{ plans: Plan[] }> = ({ plans }) => {
-  const initial = Math.max(0, plans.findIndex((plan) => plan.popular))
+  const initial = Math.max(
+    0,
+    plans.findIndex((plan) => plan.popular),
+  )
   const [selected, setSelected] = useState(initial)
   const chosen = plans[selected]
 
@@ -42,7 +45,11 @@ export const SelectablePlans: React.FC<{ plans: Plan[] }> = ({ plans }) => {
                 // In the carousel, bring the chosen card to the centre so the scroll doesn't re-pick another.
                 const track = event.currentTarget.parentElement
                 if (track && track.scrollWidth > track.clientWidth) {
-                  event.currentTarget.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' })
+                  event.currentTarget.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'nearest',
+                    inline: 'center',
+                  })
                 }
               }}
               onKeyDown={(event) => {
@@ -54,7 +61,9 @@ export const SelectablePlans: React.FC<{ plans: Plan[] }> = ({ plans }) => {
                   event.preventDefault()
                   const next = (i + step + plans.length) % plans.length
                   setSelected(next)
-                  ;(event.currentTarget.parentElement?.children[next] as HTMLElement | undefined)?.focus()
+                  ;(
+                    event.currentTarget.parentElement?.children[next] as HTMLElement | undefined
+                  )?.focus()
                 }
               }}
               role="radio"
@@ -75,7 +84,7 @@ export const SelectablePlans: React.FC<{ plans: Plan[] }> = ({ plans }) => {
       {chosen && (
         <>
           <a
-            className="flex h-[38.75px] w-full items-center justify-center rounded-[15.625px] bg-[#0b8800] p-[6.25px] text-lg font-medium uppercase sm:h-[38px] sm:max-w-[504px] sm:font-bold text-white transition-colors hover:bg-[#097000]"
+            className="flex h-[38.75px] w-full items-center justify-center rounded-[15.625px] bg-success-bright p-[6.25px] text-lg font-medium uppercase sm:h-[38px] sm:max-w-[504px] sm:font-bold text-white transition-colors hover:bg-success-deep"
             href={chosen.ctaUrl || '#'}
           >
             {chosen.ctaLabel || 'Buy Now'}

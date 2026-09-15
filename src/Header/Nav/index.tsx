@@ -28,7 +28,13 @@ export const SignInLink: React.FC<{ className?: string; onClick?: () => void }> 
     href="#"
     onClick={onClick}
   >
-    <img alt="" className="size-[25px] shrink-0" height={25} src="/icons/header/user.svg" width={25} />
+    <img
+      alt=""
+      className="size-[25px] shrink-0"
+      height={25}
+      src="/icons/header/user.svg"
+      width={25}
+    />
     Sign In
   </Link>
 )

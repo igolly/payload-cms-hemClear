@@ -97,7 +97,7 @@ export const SavingsCompareBlock: React.FC<Props> = ({
         )}
         {subheading && (
           <p
-            className="text-center text-base font-medium leading-[19px] text-[#ddd]"
+            className="text-center text-base font-medium leading-[19px] text-ash-200"
             data-payload-subpath="subheading"
           >
             {marks(subheading)}
@@ -131,7 +131,7 @@ export const SavingsCompareBlock: React.FC<Props> = ({
         <div className="flex w-full flex-col items-center gap-[15.63px] py-[10.42px] lg:flex-row lg:items-stretch lg:justify-center">
           {/* Buying separately. */}
           <div
-            className={`flex w-full max-w-[364.58px] flex-col items-center gap-[5.21px] overflow-hidden rounded-[15.63px] border-[1.04px] border-[#aaa] bg-white p-[14.59px] text-navy lg:shrink-0 ${CARD_SHADOW}`}
+            className={`flex w-full max-w-[364.58px] flex-col items-center gap-[5.21px] overflow-hidden rounded-[15.63px] border-[1.04px] border-ash-400 bg-white p-[14.59px] text-navy lg:shrink-0 ${CARD_SHADOW}`}
           >
             {separateTitle && (
               <p
@@ -144,7 +144,7 @@ export const SavingsCompareBlock: React.FC<Props> = ({
 
             <table className="w-full border-collapse text-left">
               <thead>
-                <tr className="border-b-[0.52px] border-[#aaa] text-[12.5px] font-bold leading-[17px]">
+                <tr className="border-b-[0.52px] border-ash-400 text-[12.5px] font-bold leading-[17px]">
                   <th className="py-[5.21px] pl-[10.42px] font-bold" scope="col">
                     {marks(separateColLabel)}
                   </th>
@@ -155,7 +155,10 @@ export const SavingsCompareBlock: React.FC<Props> = ({
               </thead>
               <tbody className="text-xs leading-[14px]">
                 {rows.map((row, i) => (
-                  <tr className="border-b-[0.52px] border-[#aaa] last:border-b-0" key={row.id ?? i}>
+                  <tr
+                    className="border-b-[0.52px] border-ash-400 last:border-b-0"
+                    key={row.id ?? i}
+                  >
                     <td className="py-[5.21px] pl-[10.42px]">{marks(row.name)}</td>
                     <td className="py-[5.21px] pr-[10.42px] text-right">{marks(row.cost)}</td>
                   </tr>
@@ -164,12 +167,12 @@ export const SavingsCompareBlock: React.FC<Props> = ({
             </table>
 
             {totals.length > 0 && (
-              <dl className="w-full overflow-hidden rounded-[10.42px] border-[0.52px] border-[#aaa] bg-shell">
+              <dl className="w-full overflow-hidden rounded-[10.42px] border-[0.52px] border-ash-400 bg-shell">
                 {totals.map((total, i) => {
                   const [figure, unit] = splitPrice(total.value)
                   return (
                     <div
-                      className="flex items-center justify-between gap-[5.73px] border-b-[0.52px] border-[#aaa] px-[10.42px] py-[5.21px] last:h-[26.9px] last:border-b-0 h-[27.42px]"
+                      className="flex items-center justify-between gap-[5.73px] border-b-[0.52px] border-ash-400 px-[10.42px] py-[5.21px] last:h-[26.9px] last:border-b-0 h-[27.42px]"
                       key={total.id ?? i}
                     >
                       <dt className="text-sm font-bold leading-[16px]">{marks(total.label)}</dt>
@@ -247,7 +250,7 @@ export const SavingsCompareBlock: React.FC<Props> = ({
                 {/* The comp's three stacks overflow their column by 11.58px, which
                     auto-layout absorbs as two -5.79px gaps. */}
                 {(formulaPriceLabel || formulaPrice || formulaAnnual) && (
-                  <div className="-mt-[5.79px] flex w-full flex-col items-center gap-[5.21px] border-t-[1.04px] border-[#aaa] px-[26.04px] py-[10.42px] text-center text-navy">
+                  <div className="-mt-[5.79px] flex w-full flex-col items-center gap-[5.21px] border-t-[1.04px] border-ash-400 px-[26.04px] py-[10.42px] text-center text-navy">
                     {formulaPriceLabel && (
                       <p
                         className="text-xs font-bold leading-[15px] text-brand-500"
@@ -277,7 +280,7 @@ export const SavingsCompareBlock: React.FC<Props> = ({
                 )}
 
                 {(formulaSaveLabel || formulaSaveValue || ctaLabel) && (
-                  <div className="-mt-[5.79px] flex w-full flex-col items-center gap-[5.21px] rounded-[15.63px] border-[1.04px] border-brand-300 bg-[linear-gradient(90deg,#d8e0ff_0%,#f9f9f9_50%,#d8e0ff_100%)] px-4 py-[9.38px] text-center sm:px-[25px]">
+                  <div className="-mt-[5.79px] flex w-full flex-col items-center gap-[5.21px] rounded-[15.63px] border-[1.04px] border-brand-300 bg-[linear-gradient(90deg,var(--color-tint-250)_0%,var(--color-ash-50)_50%,var(--color-tint-250)_100%)] px-4 py-[9.38px] text-center sm:px-[25px]">
                     {formulaSaveLabel && (
                       <p
                         className="text-xs font-bold leading-[15px] text-brand-500"

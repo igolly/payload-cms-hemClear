@@ -78,7 +78,9 @@ export const PlanCard: React.FC<{ index: number; plan: Plan; selected?: boolean 
         {planName(plan.name)}
       </p>
 
-      <div className={cn('relative shrink-0', popular ? 'h-[200px] w-[300px]' : 'h-[187px] w-[280px]')}>
+      <div
+        className={cn('relative shrink-0', popular ? 'h-[200px] w-[300px]' : 'h-[187px] w-[280px]')}
+      >
         {plan.image && typeof plan.image === 'object' ? (
           <Media fill imgClassName="object-cover" resource={plan.image} size="300px" />
         ) : (
@@ -104,15 +106,21 @@ export const PlanCard: React.FC<{ index: number; plan: Plan; selected?: boolean 
 
         {Array.isArray(plan.features) && plan.features.length > 0 && (
           // No right padding below xl: the comp's longest phone line fits its 345px card by ~1px.
-          <ul className="flex w-full flex-col gap-[9.375px] border-t-[0.625px] border-[#aaa] px-[9.375px] py-[12.5px] max-xl:pr-0">
+          <ul className="flex w-full flex-col gap-[9.375px] border-t-[0.625px] border-ash-400 px-[9.375px] py-[12.5px] max-xl:pr-0">
             {plan.features.map((feature, f) => (
               <li className="flex items-center gap-[6.25px]" key={feature.id ?? f}>
                 {/* eslint-disable-next-line @next/next/no-img-element -- static SVG, nothing to optimise */}
-                <img alt="" className="size-4 shrink-0" height={16} src="/icons/pricing/check.svg" width={16} />
+                <img
+                  alt=""
+                  className="size-4 shrink-0"
+                  height={16}
+                  src="/icons/pricing/check.svg"
+                  width={16}
+                />
                 <span
                   className={cn(
                     'text-left text-xs font-medium leading-[15px]',
-                    feature.highlight ? 'text-[#0531cf]' : 'text-navy-900',
+                    feature.highlight ? 'text-brand-600' : 'text-navy-900',
                   )}
                 >
                   {marks(feature.text)}
@@ -128,7 +136,7 @@ export const PlanCard: React.FC<{ index: number; plan: Plan; selected?: boolean 
               className={cn(
                 'flex h-[38.75px] w-full items-center justify-center rounded-[15.625px] p-[6.25px] text-lg uppercase text-white transition-colors',
                 popular
-                  ? 'bg-[#0b8800] font-bold hover:bg-[#097000]'
+                  ? 'bg-success-bright font-bold hover:bg-success-deep'
                   : 'bg-brand-600 font-medium hover:bg-brand-dark',
               )}
               href={plan.ctaUrl || '#'}
@@ -148,14 +156,14 @@ export const PlanCard: React.FC<{ index: number; plan: Plan; selected?: boolean 
 }
 
 /** The blue frame and ribbon that sit behind the most-popular plan. */
-export const PopularFrame: React.FC<{ children: React.ReactNode; label?: string | null; selectable?: boolean }> = ({
-  children,
-  label,
-  selectable,
-}) => (
+export const PopularFrame: React.FC<{
+  children: React.ReactNode
+  label?: string | null
+  selectable?: boolean
+}> = ({ children, label, selectable }) => (
   <div
     className={cn(
-      'flex w-full flex-col items-center justify-end gap-[6.25px] rounded-[18.75px] border-2 border-[#e0e0e0] bg-brand-600 max-xl:border-0',
+      'flex w-full flex-col items-center justify-end gap-[6.25px] rounded-[18.75px] border-2 border-ash-200 bg-brand-600 max-xl:border-0',
       selectable ? 'max-xl:min-h-[515px] xl:h-[561px]' : 'max-xl:min-h-[575px] xl:h-[576px]',
     )}
   >

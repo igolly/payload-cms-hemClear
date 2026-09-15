@@ -109,7 +109,7 @@ export const FeaturedCarousel: React.FC<{ slides: React.ReactNode[] }> = ({ slid
             <button
               aria-current={i === active}
               aria-label={`Review ${i + 1}`}
-              className={cn('size-2 rounded-full', i === active ? 'bg-brand-600' : 'bg-[#d9d9d9]')}
+              className={cn('size-2 rounded-full', i === active ? 'bg-brand-600' : 'bg-ash-250')}
               key={i}
               onClick={() => scrollToIndex(i)}
               type="button"

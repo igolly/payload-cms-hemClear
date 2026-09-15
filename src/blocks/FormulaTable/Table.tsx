@@ -32,7 +32,7 @@ export const Table: React.FC<{ formulas: Formula[] }> = ({ formulas }) => {
         // Phone comp: one white 340×280 card (radius 30) holding two 170×280 tiles, only the selected one filled.
         // Desktop comp: two 165×199 tiles butted together, each with a #ddd inside stroke and a 0 0 7 shadow.
         <div
-          className="mt-[12.5px] flex overflow-hidden rounded-[30px] bg-white shadow-[inset_0_0_0_1.25px_#f9f9f9] lg:overflow-visible lg:bg-transparent lg:shadow-none"
+          className="mt-[12.5px] flex overflow-hidden rounded-[30px] bg-white shadow-[inset_0_0_0_1.25px_var(--color-ash-50)] lg:overflow-visible lg:bg-transparent lg:shadow-none"
           role="group"
         >
           {formulas.map((item, i) => {
@@ -41,7 +41,7 @@ export const Table: React.FC<{ formulas: Formula[] }> = ({ formulas }) => {
               <button
                 aria-pressed={selected}
                 className={cn(
-                  'relative flex h-[280px] w-[170px] flex-col items-center justify-end gap-[12.5px] overflow-hidden rounded-[30px] p-[31.25px] transition-colors lg:h-[199px] lg:w-[165px] lg:border lg:border-[#dddddd] lg:pt-0 lg:pb-3 lg:shadow-[0_0_7px_rgba(0,0,0,0.15)]',
+                  'relative flex h-[280px] w-[170px] flex-col items-center justify-end gap-[12.5px] overflow-hidden rounded-[30px] p-[31.25px] transition-colors lg:h-[199px] lg:w-[165px] lg:border lg:border-ash-200 lg:pt-0 lg:pb-3 lg:shadow-[0_0_7px_rgba(0,0,0,0.15)]',
                   selected
                     ? 'bg-linear-to-b from-brand-500 to-brand-600'
                     : 'bg-transparent lg:bg-white',
@@ -109,12 +109,12 @@ export const Table: React.FC<{ formulas: Formula[] }> = ({ formulas }) => {
             // Figma: #f8f9fd card, 0.625px #999 inside stroke, radius 31.25, every row ruled underneath.
             <div
               aria-label={`${formula.name} ingredients`}
-              className="mt-[10.75px] flex w-full max-w-[937.5px] flex-col overflow-hidden rounded-[31.25px] bg-[#f8f9fd] text-left shadow-[inset_0_0_0_0.625px_#999] lg:mt-[11.25px]"
+              className="mt-[10.75px] flex w-full max-w-[937.5px] flex-col overflow-hidden rounded-[31.25px] bg-mist text-left shadow-[inset_0_0_0_0.625px_var(--color-ash-500)] lg:mt-[11.25px]"
               role="table"
             >
               {rows.map((row, i) => (
                 <div
-                  className="flex items-center gap-2 py-2 shadow-[inset_0_-0.625px_0_#999] lg:h-[55px] lg:gap-[31.25px]"
+                  className="flex items-center gap-2 py-2 shadow-[inset_0_-0.625px_0_var(--color-ash-500)] lg:h-[55px] lg:gap-[31.25px]"
                   key={row.id ?? i}
                   role="row"
                 >
@@ -138,7 +138,7 @@ export const Table: React.FC<{ formulas: Formula[] }> = ({ formulas }) => {
                   </span>
                   <span
                     aria-hidden="true"
-                    className="block h-[60px] w-[0.625px] shrink-0 bg-[#999] lg:h-[39px]"
+                    className="block h-[60px] w-[0.625px] shrink-0 bg-ash-500 lg:h-[39px]"
                   />
                   <span
                     className="flex min-w-0 flex-1 flex-col lg:flex-row lg:items-center lg:gap-[31.25px]"

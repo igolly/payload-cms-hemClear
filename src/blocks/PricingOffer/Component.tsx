@@ -62,11 +62,17 @@ export const PricingOfferBlock: React.FC<Props> = ({
     >
       <div className="mx-auto flex max-w-[1400px] flex-col items-center gap-[6.25px]">
         {(bannerTitle || bannerText) && (
-          <div className="flex w-full max-w-[1152px] flex-col items-center justify-center gap-[10px] rounded-[18px] bg-[#30489d] px-[31.25px] py-[12.5px] shadow-[0_0_11.25px_rgba(0,0,0,0.25)] lg:flex-row lg:gap-[92px] lg:rounded-[18.75px]">
+          <div className="flex w-full max-w-[1152px] flex-col items-center justify-center gap-[10px] rounded-[18px] bg-navy-600 px-[31.25px] py-[12.5px] shadow-[0_0_11.25px_rgba(0,0,0,0.25)] lg:flex-row lg:gap-[92px] lg:rounded-[18.75px]">
             <div className="flex w-full flex-col items-center gap-[10px] lg:w-auto lg:flex-row lg:gap-[31.25px]">
               <span className="flex h-[57px] w-[58px] shrink-0 items-center justify-center rounded-full bg-white shadow-[0_12.5px_15.625px_rgba(255,255,255,0.25),0_12.5px_15.625px_rgba(0,0,0,0.25)] lg:size-[112.5px]">
                 {/* eslint-disable-next-line @next/next/no-img-element -- static SVG, nothing to optimise */}
-                <img alt="" className="size-10 lg:size-[70px]" height={70} src="/icons/pricing/gift.svg" width={70} />
+                <img
+                  alt=""
+                  className="size-10 lg:size-[70px]"
+                  height={70}
+                  src="/icons/pricing/gift.svg"
+                  width={70}
+                />
               </span>
 
               <div className="flex w-full flex-col gap-[3.125px] border-l border-white pl-[30px] text-left text-white lg:w-auto">
@@ -103,16 +109,28 @@ export const PricingOfferBlock: React.FC<Props> = ({
         {cards.length > 0 && layout === 'select' && <SelectablePlans plans={cards} />}
 
         {cards.length > 0 && layout !== 'select' && (
-          <PlanCarousel initial={Math.max(0, cards.findIndex((plan) => plan.popular))} itemWidth="353.125px">
+          <PlanCarousel
+            initial={Math.max(
+              0,
+              cards.findIndex((plan) => plan.popular),
+            )}
+            itemWidth="353.125px"
+          >
             {cards.map((plan, i) =>
               plan.popular ? (
-                <div className="w-[353.125px] max-w-full xl:w-[411px] xl:max-w-[411px]" key={plan.id ?? i}>
+                <div
+                  className="w-[353.125px] max-w-full xl:w-[411px] xl:max-w-[411px]"
+                  key={plan.id ?? i}
+                >
                   <PopularFrame label={plan.popularLabel}>
                     <PlanCard index={i} plan={plan} />
                   </PopularFrame>
                 </div>
               ) : (
-                <div className="w-[353.125px] max-w-full xl:w-[345px] xl:max-w-[411px]" key={plan.id ?? i}>
+                <div
+                  className="w-[353.125px] max-w-full xl:w-[345px] xl:max-w-[411px]"
+                  key={plan.id ?? i}
+                >
                   <PlanCard index={i} plan={plan} />
                 </div>
               ),
@@ -129,7 +147,13 @@ export const PricingOfferBlock: React.FC<Props> = ({
               >
                 {item.icon && trustBadges[item.icon] ? (
                   // eslint-disable-next-line @next/next/no-img-element -- static SVG, nothing to optimise
-                  <img alt="" className="size-10 shrink-0" height={40} src={trustBadges[item.icon]} width={40} />
+                  <img
+                    alt=""
+                    className="size-10 shrink-0"
+                    height={40}
+                    src={trustBadges[item.icon]}
+                    width={40}
+                  />
                 ) : (
                   <BrandIcon className="shrink-0 text-navy [&>svg]:size-10" name={item.icon} />
                 )}

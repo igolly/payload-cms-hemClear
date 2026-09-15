@@ -83,11 +83,11 @@ export const ProductDetailBlockComponent: React.FC<ProductDetailBlock> = (produc
         </div>
 
         {/* Buy column — Figma 6207:2522 */}
-        <div className="@container flex min-w-0 flex-col gap-2.5 [&_sup]:leading-[0] lg:border-l lg:border-[#ddd] lg:px-5 lg:py-[30px]">
+        <div className="@container flex min-w-0 flex-col gap-2.5 [&_sup]:leading-[0] lg:border-l lg:border-ash-200 lg:px-5 lg:py-[30px]">
           {/* Intro — Figma 6207:2819 */}
           <div className="flex flex-col gap-2.5">
             {(product.ratingLabel || ratingNotes.length > 0) && (
-              <div className="flex flex-wrap items-center gap-x-3.5 gap-y-1 border-y border-[#3f5293] py-1.5">
+              <div className="flex flex-wrap items-center gap-x-3.5 gap-y-1 border-y border-navy-600 py-1.5">
                 <span
                   aria-label={`${stars} out of 5 stars`}
                   className="text-base leading-4 text-navy"
@@ -125,7 +125,7 @@ export const ProductDetailBlockComponent: React.FC<ProductDetailBlock> = (produc
 
             {benefits.length > 0 && (
               /* Figma 6207:2811: 38px pills, 1.25px brand-300 rule, 8px apart, #ccc rule beneath. */
-              <ul className="flex flex-wrap items-center gap-2 border-b border-[#ccc] py-4">
+              <ul className="flex flex-wrap items-center gap-2 border-b border-ash-300 py-4">
                 {benefits.map((benefit, i) => (
                   <li
                     className="flex h-[38px] items-center gap-2 rounded-[20px] border-[1.25px] border-brand-300 px-[18.75px]"
@@ -173,7 +173,7 @@ export const ProductDetailBlockComponent: React.FC<ProductDetailBlock> = (produc
               </ul>
 
               {product.resultsFootnote && (
-                <p className="text-center text-sm leading-4 text-[#666]">
+                <p className="text-center text-sm leading-4 text-ash-600">
                   {marks(product.resultsFootnote)}
                 </p>
               )}
@@ -225,7 +225,7 @@ export const ProductDetailBlockComponent: React.FC<ProductDetailBlock> = (produc
                     className="flex w-[150px] min-w-0 flex-col items-center gap-2.5 text-center"
                     key={item.id ?? i}
                   >
-                    <span className="flex size-16 items-center justify-center rounded-[20px] border border-[#ccc] text-navy">
+                    <span className="flex size-16 items-center justify-center rounded-[20px] border border-ash-300 text-navy">
                       {src ? (
                         <img alt="" className="size-7" height={28} src={src} width={28} />
                       ) : (
@@ -255,7 +255,7 @@ export const ProductDetailBlockComponent: React.FC<ProductDetailBlock> = (produc
 
                   return (
                     <li
-                      className="flex items-center justify-between gap-4 border-b border-[#ccc] py-2 last:border-b-0"
+                      className="flex items-center justify-between gap-4 border-b border-ash-300 py-2 last:border-b-0"
                       key={row.id ?? i}
                     >
                       <span className="flex min-w-0 items-center gap-[13px]">

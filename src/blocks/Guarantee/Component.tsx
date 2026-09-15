@@ -69,7 +69,7 @@ export const GuaranteeBlock: React.FC<Props> = ({
         {badgeLabel && (
           <span
             className={cn(
-              'flex h-[23.4375px] items-center rounded-[11.72px] bg-gradient-to-b from-brand-600 to-[#01124c] px-[23.4375px] text-xs font-bold uppercase leading-[normal] text-white',
+              'flex h-[23.4375px] items-center rounded-[11.72px] bg-gradient-to-b from-brand-600 to-navy-950 px-[23.4375px] text-xs font-bold uppercase leading-[normal] text-white',
               SHADOW,
             )}
             data-payload-subpath="badgeLabel"
@@ -99,7 +99,7 @@ export const GuaranteeBlock: React.FC<Props> = ({
         {pointItems.length > 0 && (
           <div
             className={cn(
-              'flex w-full max-w-[704px] flex-col items-center gap-[23.4375px] rounded-[23.44px] border-[0.9375px] border-brand-300 bg-gradient-to-r from-[#f3f6fb] via-white to-[#f3f6fb] p-[22.5px] sm:flex-row',
+              'flex w-full max-w-[704px] flex-col items-center gap-[23.4375px] rounded-[23.44px] border-[0.9375px] border-brand-300 bg-gradient-to-r from-mist via-white to-mist p-[22.5px] sm:flex-row',
               SHADOW,
             )}
           >
@@ -150,7 +150,7 @@ export const GuaranteeBlock: React.FC<Props> = ({
             {pills.map((pill, i) => (
               <li
                 className={cn(
-                  'flex h-[41.25px] items-center gap-[14.0625px] rounded-[14.06px] border-[0.9375px] border-brand-300 bg-gradient-to-r from-[#f3f6fb] to-white px-4 sm:px-[22.5px]',
+                  'flex h-[41.25px] items-center gap-[14.0625px] rounded-[14.06px] border-[0.9375px] border-brand-300 bg-gradient-to-r from-mist to-white px-4 sm:px-[22.5px]',
                   SHADOW,
                 )}
                 data-payload-subpath={`badges.${i}.label`}

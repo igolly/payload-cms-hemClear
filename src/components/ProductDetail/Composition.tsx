@@ -12,7 +12,7 @@ type Item = NonNullable<ProductDetailBlock['contains']>[number]
 const Tick = () => (
   <span
     aria-hidden="true"
-    className="w-[18px] shrink-0 text-center text-xl font-bold leading-5 text-[#00ae26]"
+    className="w-[18px] shrink-0 text-center text-xl font-bold leading-5 text-success-vivid"
   >
     ✓
   </span>
@@ -20,7 +20,7 @@ const Tick = () => (
 const Cross = () => (
   <span
     aria-hidden="true"
-    className="w-[15px] shrink-0 text-center text-[22px] font-bold leading-5 text-[#d30000]"
+    className="w-[15px] shrink-0 text-center text-[22px] font-bold leading-5 text-danger-bright"
   >
     ×
   </span>
@@ -83,11 +83,11 @@ export const Composition: React.FC<{
               <ul className="flex flex-wrap content-start gap-2.5">
                 {notContains.map((item, i) => (
                   <li
-                    className="flex items-center gap-2 rounded-[50px] border border-[#fcc] bg-white px-2.5 py-1"
+                    className="flex items-center gap-2 rounded-[50px] border border-danger-tint bg-white px-2.5 py-1"
                     key={item.id ?? i}
                   >
                     <Cross />
-                    <span className="text-sm leading-5 text-[#d30000]">{marks(item.text)}</span>
+                    <span className="text-sm leading-5 text-danger-bright">{marks(item.text)}</span>
                   </li>
                 ))}
               </ul>

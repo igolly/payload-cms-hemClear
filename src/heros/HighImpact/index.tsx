@@ -52,7 +52,7 @@ const TrustIcon: React.FC<{
 
 /** The comp's hairline rule (0.625px, #999) between badge parts and trust points. */
 const Divider: React.FC<{ className?: string }> = ({ className }) => (
-  <span aria-hidden="true" className={cn('block w-[0.625px] shrink-0 bg-[#999]', className)} />
+  <span aria-hidden="true" className={cn('block w-[0.625px] shrink-0 bg-ash-500', className)} />
 )
 
 export const HighImpactHero: React.FC<Page['hero']> = ({
@@ -112,7 +112,7 @@ export const HighImpactHero: React.FC<Page['hero']> = ({
             stackedTrust
               ? 'items-stretch gap-4 sm:gap-6'
               : 'items-center py-[10px] md:gap-[17.5px] md:py-0',
-            !stackedTrust && i !== 0 && 'border-t border-[#ddd] md:border-t-0',
+            !stackedTrust && i !== 0 && 'border-t border-ash-200 md:border-t-0',
           )}
           data-payload-subpath={`trustPoints.${i}.label`}
           key={point.id ?? i}

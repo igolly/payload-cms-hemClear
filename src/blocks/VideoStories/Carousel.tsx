@@ -186,7 +186,7 @@ export const Carousel: React.FC<{
                 aria-label={`Go to story ${i + 1}`}
                 className={cn(
                   'size-3 rounded-full transition-colors',
-                  i === active ? 'bg-brand-600' : 'bg-[#d9d9d9] hover:bg-steel-300',
+                  i === active ? 'bg-brand-600' : 'bg-ash-250 hover:bg-steel-300',
                 )}
                 key={story.id ?? i}
                 onClick={() => scrollToIndex(i)}

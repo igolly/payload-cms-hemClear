@@ -42,9 +42,7 @@ export const AnnouncementBar: React.FC<{
       {/* Mobile (6246:2933): offer and countdown stack, 6px / 4px padding, 5px apart. */}
       <div className="mx-auto flex min-h-14 max-w-[1400px] flex-col items-center justify-center gap-[5px] py-[6px] text-center sm:flex-row sm:py-0 [&_sup]:leading-[0]">
         <p className="w-[401px] max-w-full leading-[normal] sm:w-[557px] sm:shrink-0">
-          {title && (
-            <span className="block text-[17px] font-bold text-cream">{marks(title)}</span>
-          )}
+          {title && <span className="block text-[17px] font-bold text-cream">{marks(title)}</span>}
           <span className="block text-[13px]">{marks(text)}</span>
         </p>
 

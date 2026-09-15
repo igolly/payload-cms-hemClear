@@ -22,7 +22,7 @@ import { marks } from '@/utilities/marks'
 const u = (n: number) => `calc(${n} * var(--u))`
 
 const STROKE = '0.5px'
-const GREY = '#999999'
+const GREY = 'var(--color-ash-500)'
 
 export const ComparisonBlock: React.FC<Props> = ({
   bgColor,
@@ -72,7 +72,7 @@ export const ComparisonBlock: React.FC<Props> = ({
         {columns.length > 0 && (
           <div className="w-full max-w-[937.5px] [container-type:inline-size]">
             <div
-              className="relative overflow-hidden bg-gradient-to-r from-[#f3f6fb] via-white to-[#f3f6fb] text-black"
+              className="relative overflow-hidden bg-gradient-to-r from-mist via-white to-mist text-black"
               style={
                 {
                   '--u': 'calc(100cqw / 937.5)',

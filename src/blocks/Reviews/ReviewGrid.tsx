@@ -50,7 +50,7 @@ export const ReviewGrid: React.FC<Props> = ({
   const full = visible >= total
 
   const batches: Review[][] = []
-  for (let from = 0; from < visible; ) {
+  for (let from = 0; from < visible;) {
     const size = from === 0 ? limit : step
     batches.push(reviews.slice(from, Math.min(visible, from + size)))
     from += size
@@ -82,14 +82,19 @@ export const ReviewGrid: React.FC<Props> = ({
                 const i = reviews.indexOf(review)
                 return (
                   <li
-                    className="flex min-h-[322px] w-[266px] shrink-0 snap-start flex-col justify-between gap-3 rounded-[18.75px] border border-[#dddddd] bg-white p-4 shadow-[0_0_6.25px_rgba(0,0,0,0.15)]"
+                    className="flex min-h-[322px] w-[266px] shrink-0 snap-start flex-col justify-between gap-3 rounded-[18.75px] border border-ash-200 bg-white p-4 shadow-[0_0_6.25px_rgba(0,0,0,0.15)]"
                     data-payload-subpath={`reviews.${i}.title`}
                     data-review-card
                     key={review.id ?? i}
                   >
                     <div className="flex flex-col gap-3">
                       <div className="flex h-[29px] items-center">
-                        <Stars className="text-navy" count={review.stars} gap="gap-0" size="size-6" />
+                        <Stars
+                          className="text-navy"
+                          count={review.stars}
+                          gap="gap-0"
+                          size="size-6"
+                        />
                       </div>
 
                       {review.verified && (

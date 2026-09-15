@@ -95,7 +95,7 @@ export const CausesBlock: React.FC<Props> = ({
         />
       )}
       <p
-        className="flex items-start gap-[12.5px] whitespace-pre-line text-left text-[10px] font-medium leading-[13.75px] text-[#999] sm:text-center"
+        className="flex items-start gap-[12.5px] whitespace-pre-line text-left text-[10px] font-medium leading-[13.75px] text-ash-500 sm:text-center"
         data-payload-subpath="footnote"
       >
         {/* eslint-disable-next-line @next/next/no-img-element -- static 32px icon, nothing to optimise */}

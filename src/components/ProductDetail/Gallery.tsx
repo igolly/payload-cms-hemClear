@@ -123,7 +123,7 @@ export const Gallery: React.FC<{ badgeLabel?: string | null; slides: Slide[] }> 
                     aria-label={`Show image ${i + 1}`}
                     className={cn(
                       'relative block aspect-square w-full overflow-hidden rounded-[5px] border bg-white',
-                      i === active ? 'border-[#d30000]' : 'border-[#eee]',
+                      i === active ? 'border-danger-bright' : 'border-ash-100',
                     )}
                     onClick={() => setActive(i)}
                     type="button"
@@ -150,7 +150,7 @@ export const Gallery: React.FC<{ badgeLabel?: string | null; slides: Slide[] }> 
                 aria-label={`Go to image ${i + 1}`}
                 className={cn(
                   'size-3 rounded-full transition-colors',
-                  i === active ? 'bg-brand-600' : 'bg-[#d9d9d9] hover:bg-steel-300',
+                  i === active ? 'bg-brand-600' : 'bg-ash-250 hover:bg-steel-300',
                 )}
                 key={slide.id ?? i}
                 onClick={() => setActive(i)}

@@ -17,7 +17,11 @@ export const Stars: React.FC<{
   const filled = Math.max(0, Math.min(5, Math.round(count ?? 5)))
 
   return (
-    <div aria-label={`${filled} out of 5 stars`} className={cn('flex items-center', gap)} role="img">
+    <div
+      aria-label={`${filled} out of 5 stars`}
+      className={cn('flex items-center', gap)}
+      role="img"
+    >
       {Array.from({ length: 5 }).map((_, i) => (
         <Star
           aria-hidden="true"

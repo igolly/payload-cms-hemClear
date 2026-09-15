@@ -55,7 +55,14 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 
   return (
     <html
-      className={cn(GeistSans.variable, GeistMono.variable, inter.variable, marcellus.variable, playfair.variable, fraunces.variable)}
+      className={cn(
+        GeistSans.variable,
+        GeistMono.variable,
+        inter.variable,
+        marcellus.variable,
+        playfair.variable,
+        fraunces.variable,
+      )}
       lang="en"
       suppressHydrationWarning
     >

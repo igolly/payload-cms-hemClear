@@ -62,8 +62,7 @@ export const StatsBar: Block = {
             { label: 'Small', value: 'sm' },
           ],
           admin: {
-            description:
-              'Leave empty for the default: Small under a top label, Large otherwise.',
+            description: 'Leave empty for the default: Small under a top label, Large otherwise.',
           },
         },
       ],

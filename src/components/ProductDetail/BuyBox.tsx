@@ -29,7 +29,7 @@ export const BuyBox: React.FC<{
     <>
       {variants.length > 0 && (
         /* Figma 6210:2888: 10px vertical padding, 16px gap, #ccc rule beneath. */
-        <div className="flex flex-col gap-4 border-b border-[#ccc] py-2.5">
+        <div className="flex flex-col gap-4 border-b border-ash-300 py-2.5">
           {variantsTitle && (
             <p className="text-[16.25px] font-bold leading-5 text-navy">{marks(variantsTitle)}</p>
           )}
@@ -88,7 +88,7 @@ export const BuyBox: React.FC<{
           <div
             className={cn(
               'flex flex-col gap-4 rounded-[20px] border px-4 py-[30px] text-navy sm:px-5 [&_sup]:leading-[0]',
-              selected ? 'border-navy bg-mist-100' : 'border-[#ccc] bg-white',
+              selected ? 'border-navy bg-mist-100' : 'border-ash-300 bg-white',
             )}
             key={item.id ?? i}
           >
@@ -144,7 +144,7 @@ export const BuyBox: React.FC<{
             )}
 
             {selected && Array.isArray(item.features) && item.features.length > 0 && (
-              <ul className="flex flex-col gap-1 border-y border-[#ccc] py-2.5">
+              <ul className="flex flex-col gap-1 border-y border-ash-300 py-2.5">
                 {item.features.map((feature, f) => (
                   <li className="flex items-center gap-2" key={feature.id ?? f}>
                     <span
@@ -184,7 +184,7 @@ export const BuyBox: React.FC<{
                   <span className="flex min-w-0 flex-col gap-[5px] text-white sm:w-[205px]">
                     <span className="text-2xl font-bold leading-6">
                       {item.bonusHighlight && (
-                        <span className="text-[#f7ff05]">{marks(item.bonusHighlight)} </span>
+                        <span className="text-highlight">{marks(item.bonusHighlight)} </span>
                       )}
                       {marks(item.bonusTitle)}
                     </span>

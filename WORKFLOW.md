@@ -522,11 +522,20 @@ Calls to action, links, accents.
 Supporting copy, captions, meta: `steel-800` `#123a6b`, `steel-600` `#4a5b72`, `steel-500`
 `#6b86a8`, `steel-400` `#8aa6c8`, `steel-300` `#b6c0cf`, `steel-200` `#d3d9e2`.
 
+### Ash — neutral grey
+
+The comp rules its tables and boxes in a true grey rather than the blue-tinted `steel`, so
+both scales exist. Pick `ash` for a rule or a disabled state that should read as neutral,
+`steel` for copy that should sit in the blue family: `ash-600` `#666`, `ash-500` `#999`,
+`ash-400` `#aaa` (the default table rule), `ash-300` `#ccc`, `ash-250` `#d9d9d9`, `ash-200`
+`#ddd`, `ash-100` `#eee`, `ash-50` `#f9f9f9`.
+
 ### Tints — surfaces and borders
 
 | Token      | Hex       | Used for                     |
 | ---------- | --------- | ---------------------------- |
 | `tint-300` | `#a9c5ea` |                              |
+| `tint-250` | `#d8e0ff` | Savings wash                 |
 | `tint-200` | `#c5dbff` | Benefits band                |
 | `tint-150` | `#c9dcf5` | Emphasised border            |
 | `tint-100` | `#dbe8fa` | **Default border**           |
@@ -539,10 +548,15 @@ Supporting copy, captions, meta: `steel-800` `#123a6b`, `steel-600` `#4a5b72`, `
 
 ### Semantics
 
-`gold` `#f7a305` (review stars) · `amber` `#ffd84d` · `cream` `#ffe066` · `success` `#1a7f37`
-· `success-dark` `#166b2e` · `success-tint` `#cfe6d6` · `danger` `#c0392b` · `danger-bright`
-`#c91b00` · `danger-tint` `#f0cfcb` · `info` `#006db0` · `info-dark` `#0057a0` · `aqua`
-`#6fd2f5` · `aqua-200` `#9cf0ff`.
+`gold` `#f7a305` (review stars) · `amber` `#ffd84d` · `cream` `#ffe066` · `highlight`
+`#f7ff05` (text highlight on navy) · `danger` `#c0392b` · `danger-bright` `#d30000` ·
+`danger-tint` `#f0cfcb` · `info` `#006db0` · `info-dark` `#0057a0` · `aqua` `#6fd2f5` ·
+`aqua-200` `#9cf0ff`.
+
+Two greens, because the comp uses two: `success` `#1a7f37` / `success-dark` `#166b2e` /
+`success-tint` `#cfe6d6` are the muted tick-and-badge green, while `success-vivid`
+`#00ae26` / `success-bright` `#0b8800` / `success-deep` `#097000` are the saturated green
+the savings figures and their CTA are set in.
 
 ### Type aliases
 

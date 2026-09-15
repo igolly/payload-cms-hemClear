@@ -43,7 +43,7 @@ export const StatsBarBlock: React.FC<Props> = ({ bgColor, bgColorCustom, stats }
                 // `marks` sets ® in a <sup>; keep it from opening up the fixed line boxes.
                 // Mobile cells: bottom-aligned, 16px above and below, 5px between lines, split by
                 // #ddd rules (left rule on the right-hand column, top rule on the second row).
-                'flex min-w-0 flex-col items-center justify-end gap-[5px] py-4 [&_sup]:leading-[0] max-lg:even:border-l max-lg:even:border-[#ddd] max-lg:[&:nth-child(n+3)]:border-t max-lg:[&:nth-child(n+3)]:border-[#ddd] lg:flex-1 lg:justify-start lg:border-l lg:border-brand-500 lg:px-[42px] lg:py-0 lg:first:border-l-0',
+                'flex min-w-0 flex-col items-center justify-end gap-[5px] py-4 [&_sup]:leading-[0] max-lg:even:border-l max-lg:even:border-ash-200 max-lg:[&:nth-child(n+3)]:border-t max-lg:[&:nth-child(n+3)]:border-ash-200 lg:flex-1 lg:justify-start lg:border-l lg:border-brand-500 lg:px-[42px] lg:py-0 lg:first:border-l-0',
                 stat.topLabel ? 'lg:gap-1' : 'lg:gap-[3px]',
               )}
               data-payload-subpath={`stats.${i}.value`}

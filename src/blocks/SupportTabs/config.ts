@@ -57,7 +57,10 @@ export const SupportTabs: Block = {
         {
           name: 'cardTitle',
           type: 'text',
-          admin: { description: 'Heading on the card, e.g. "Healthy Vein Function". Defaults to the tab label.' },
+          admin: {
+            description:
+              'Heading on the card, e.g. "Healthy Vein Function". Defaults to the tab label.',
+          },
         },
         {
           name: 'image',

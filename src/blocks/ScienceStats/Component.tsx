@@ -43,7 +43,7 @@ export const ScienceStatsBlock: React.FC<Props> = ({
 
         {subheading && (
           <p
-            className="text-balance text-center text-xl font-medium leading-[26px] text-[#999] lg:text-2xl lg:leading-[29px] lg:text-[#727272]"
+            className="text-balance text-center text-xl font-medium leading-[26px] text-ash-500 lg:text-2xl lg:leading-[29px] lg:text-ash-600"
             data-payload-subpath="subheading"
           >
             {marks(subheading)}
@@ -124,7 +124,7 @@ export const ScienceStatsBlock: React.FC<Props> = ({
           <ul className="flex w-full items-center justify-center sm:w-auto sm:flex-wrap sm:gap-y-2">
             {chips.map((chip, i) => (
               <li
-                className="min-w-0 flex-1 border-l border-[#999] px-[10px] py-[6px] text-center font-fraunces text-base font-semibold leading-5 text-heading first:border-l-0 sm:flex-none sm:whitespace-nowrap sm:px-6 sm:py-0 sm:font-bold"
+                className="min-w-0 flex-1 border-l border-ash-500 px-[10px] py-[6px] text-center font-fraunces text-base font-semibold leading-5 text-heading first:border-l-0 sm:flex-none sm:whitespace-nowrap sm:px-6 sm:py-0 sm:font-bold"
                 key={chip.id ?? i}
               >
                 {marks(chip.text)}
@@ -134,7 +134,7 @@ export const ScienceStatsBlock: React.FC<Props> = ({
         )}
 
         {footnote && (
-          <p className="w-full text-center text-xs font-medium leading-[15px] text-[#999]">
+          <p className="w-full text-center text-xs font-medium leading-[15px] text-ash-500">
             {marks(footnote)}
           </p>
         )}

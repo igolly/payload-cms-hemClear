@@ -22,7 +22,7 @@ export const FormulaTableBlock: React.FC<Props> = ({
 
   return (
     <section
-      className="w-full bg-[#f8f9fd] px-4 pt-[18.75px] pb-4 font-inter sm:px-6 lg:bg-white lg:px-8 lg:pt-[29.75px] lg:pb-[31.25px]"
+      className="w-full bg-mist px-4 pt-[18.75px] pb-4 font-inter sm:px-6 lg:bg-white lg:px-8 lg:pt-[29.75px] lg:pb-[31.25px]"
       style={backgroundStyle(bgColor, bgColorCustom)}
     >
       <div className="mx-auto flex max-w-[1400px] flex-col items-center">

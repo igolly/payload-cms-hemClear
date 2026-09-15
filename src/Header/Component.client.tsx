@@ -49,10 +49,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
   }, [mobileOpen])
 
   return (
-    <header
-      className="relative z-20 w-full bg-white"
-      onMouseLeave={() => setOpenIndex(null)}
-    >
+    <header className="relative z-20 w-full bg-white" onMouseLeave={() => setOpenIndex(null)}>
       {/* Figma `Header Container` (desktop 2002:31, mobile 6246:2938): 1400px max, 92.5px
           tall, 50px sides on desktop; mobile centres the logo inside 16px sides. */}
       <div className="relative mx-auto flex h-[92.5px] w-full max-w-[1400px] items-center justify-center px-4 md:px-8 lg:justify-between lg:px-[50px]">
