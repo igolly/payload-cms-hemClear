@@ -123,7 +123,7 @@ export const ClosingCtaBlock: React.FC<Props> = ({
         )}
 
         {slides.length > 0 && (
-          <div className="mx-auto w-full lg:w-auto">
+          <div className="mx-auto w-full xl:w-auto">
             <CardsCarousel slides={slides} />
           </div>
         )}

@@ -1,5 +1,5 @@
 import React from 'react'
-import { ArrowRight, Check } from 'lucide-react'
+import { ArrowRight } from 'lucide-react'
 
 import type { FeatureStripBlock as Props } from '@/payload-types'
 
@@ -9,6 +9,8 @@ import { Media } from '@/components/Media'
 import { cn } from '@/utilities/ui'
 import { backgroundStyle } from '@/fields/background'
 import { marks, multiline } from '@/utilities/marks'
+
+import { FeatureStripAbout } from './About'
 
 type Item = NonNullable<Props['items']>[number]
 
@@ -45,7 +47,16 @@ const ItemMark: React.FC<{ item: Item; size: MarkSize }> = ({ item, size }) =>
     <BrandIcon className={cn('shrink-0 text-brand-400', MARK_ICON[size])} name={item.icon} />
   )
 
-export const FeatureStripBlock: React.FC<Props> = ({
+/* Only the /why page's `divided` row renders here; every other variant is an About-page
+   layout matched to its own Figma frame — see `About.tsx`. */
+export const FeatureStripBlock: React.FC<Props> = (props) =>
+  props.variant && props.variant !== 'divided' ? (
+    <FeatureStripAbout {...props} />
+  ) : (
+    <FeatureStripDivided {...props} />
+  )
+
+const FeatureStripDivided: React.FC<Props> = ({
   bgColor,
   bgColorCustom,
   align,
@@ -60,14 +71,12 @@ export const FeatureStripBlock: React.FC<Props> = ({
   showRule,
   subheading,
   titleCase,
-  variant,
 }) => {
   const strip = Array.isArray(items) ? items : []
   /* `split` stacks a title beside the icon and drops the description beneath both, which is
      neither of the original two alignments — so it has to come out of `centred` as well. */
   const split = align === 'split'
   const centred = align !== 'left' && !split
-  const style = variant ?? 'divided'
   const hasArtwork = Boolean(backgroundImage && typeof backgroundImage === 'object')
   const markSize: MarkSize =
     iconSize === 'large' ? 'large' : iconSize === 'medium' ? 'medium' : 'small'
@@ -76,12 +85,7 @@ export const FeatureStripBlock: React.FC<Props> = ({
     titleCase !== 'none' && 'uppercase',
   )
 
-  const listClass = {
-    cards: 'grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6',
-    checklist: 'grid grid-cols-1 gap-x-8 gap-y-3 sm:grid-cols-2 lg:grid-cols-3',
-    divided: 'grid grid-cols-1 gap-8 sm:grid-cols-2 lg:flex lg:items-start lg:justify-center',
-    pills: 'flex flex-wrap items-stretch justify-center gap-3',
-  }[style]
+  const listClass = 'grid grid-cols-1 gap-8 sm:grid-cols-2 lg:flex lg:items-start lg:justify-center'
 
   return (
     <section
@@ -136,47 +140,13 @@ export const FeatureStripBlock: React.FC<Props> = ({
             {strip.map((item, i) => {
               const key = item.id ?? i
 
-              if (style === 'pills') {
-                return (
-                  <li
-                    className="flex items-center gap-2 rounded-lg border border-tint-100 bg-white px-4 py-3"
-                    data-payload-subpath={`items.${i}.title`}
-                    key={key}
-                  >
-                    <ItemMark item={item} size={markSize} />
-                    <span className="text-xs font-semibold text-brand-500">
-                      {marks(item.title)}
-                    </span>
-                  </li>
-                )
-              }
-
-              if (style === 'checklist') {
-                return (
-                  <li
-                    className="flex items-center gap-2"
-                    data-payload-subpath={`items.${i}.title`}
-                    key={key}
-                  >
-                    <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-brand-400">
-                      <Check className="h-3 w-3 text-white" strokeWidth={3} />
-                    </span>
-                    <span className="text-sm text-brand">{marks(item.title)}</span>
-                  </li>
-                )
-              }
-
               return (
                 <li
                   className={cn(
-                    style === 'cards'
-                      ? 'flex flex-col items-center rounded-xl border border-tint-100 bg-white px-3 py-5 text-center'
-                      : cn(
-                          'px-5 lg:flex-1 lg:border-l lg:border-tint-100 lg:first:border-l-0',
-                          centred && 'flex flex-col items-center text-center',
-                          split && 'flex flex-col',
-                          !centred && !split && 'flex gap-3',
-                        ),
+                    'px-5 lg:flex-1 lg:border-l lg:border-tint-100 lg:first:border-l-0',
+                    centred && 'flex flex-col items-center text-center',
+                    split && 'flex flex-col',
+                    !centred && !split && 'flex gap-3',
                   )}
                   data-payload-subpath={`items.${i}.title`}
                   key={key}
@@ -193,7 +163,7 @@ export const FeatureStripBlock: React.FC<Props> = ({
                   <div
                     className={cn(
                       'min-w-0',
-                      (centred || style === 'cards' || split) && 'mt-3',
+                      (centred || split) && 'mt-3',
                       centred && 'flex flex-col items-center',
                     )}
                   >
@@ -238,22 +208,14 @@ export const FeatureStripBlock: React.FC<Props> = ({
           </div>
         )}
 
-        {footnote &&
-          (style === 'checklist' ? (
-            <p
-              className="mx-auto mt-8 max-w-md rounded-lg bg-tint-50 px-5 py-4 text-center text-sm leading-relaxed text-brand"
-              data-payload-subpath="footnote"
-            >
-              {marks(footnote)}
-            </p>
-          ) : (
-            <p
-              className="mx-auto mt-6 max-w-3xl whitespace-pre-line text-center text-[13px] leading-relaxed text-brand-500"
-              data-payload-subpath="footnote"
-            >
-              {marks(footnote)}
-            </p>
-          ))}
+        {footnote && (
+          <p
+            className="mx-auto mt-6 max-w-3xl whitespace-pre-line text-center text-[13px] leading-relaxed text-brand-500"
+            data-payload-subpath="footnote"
+          >
+            {marks(footnote)}
+          </p>
+        )}
       </div>
     </section>
   )

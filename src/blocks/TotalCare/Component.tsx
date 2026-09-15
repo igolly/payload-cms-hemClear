@@ -37,6 +37,79 @@ const FeatureMark: React.FC<{ feature: Feature; iconClass: string; size: string 
     <BrandIcon className={cn('shrink-0 text-brand-400', iconClass)} name={feature.icon} />
   )
 
+/**
+ * The About comp's TYPES OF HEMORRHOIDS band (2002:77): a centred display heading and plain
+ * intro line, then two 468.75px white cards 31.25px apart, each a 125px round photo beside the
+ * side's name (Playfair) and its caption. No rule under the heading and no "+" between cards.
+ */
+const AboutTypes: React.FC<
+  Pick<Props, 'bgColor' | 'bgColorCustom' | 'heading' | 'subheading'> & { sides: Side[] }
+> = ({ bgColor, bgColorCustom, heading, sides, subheading }) => (
+  <section
+    className="w-full bg-mist px-4 pb-[62.5px] pt-10 font-inter sm:px-6 lg:pt-[43.5px] [&_sup]:leading-[0]"
+    style={backgroundStyle(bgColor, bgColorCustom)}
+  >
+    <div className="mx-auto max-w-[968.75px]">
+      <header className="flex flex-col items-center gap-[11px] text-center">
+        {heading && (
+          <h2
+            className="font-marcellus text-[38px] leading-[48px] text-navy sm:text-[46px] sm:leading-[60px] lg:text-[57.5px] lg:leading-[72px]"
+            data-payload-subpath="heading"
+          >
+            {marks(heading)}
+          </h2>
+        )}
+        {subheading && (
+          <div data-payload-subpath="subheading">
+            <RichText
+              className="text-[16px] leading-[normal] text-black sm:text-[18.75px] [&_p]:m-0 [&_strong]:font-bold"
+              data={subheading}
+              enableGutter={false}
+              enableProse={false}
+            />
+          </div>
+        )}
+      </header>
+
+      {sides.length > 0 && (
+        <div className="mt-[30px] grid gap-[31.25px] lg:grid-cols-2">
+          {sides.map((side, i) => (
+            <div
+              className="flex flex-col items-center gap-5 rounded-[18.75px] bg-white px-6 pb-[18.75px] pt-[18.75px] shadow-[0_0_5px_rgba(0,0,0,0.25)] sm:flex-row sm:items-start sm:gap-[31.25px] sm:pl-[37.5px] sm:pr-[37.5px]"
+              data-payload-subpath={`items.${i}.label`}
+              key={side.id ?? i}
+            >
+              <div className="relative size-[125px] shrink-0 overflow-hidden rounded-full">
+                <ImageSlot
+                  className="h-full w-full"
+                  hint="Recommended 250 × 250px photo"
+                  imgClassName="h-full w-full object-cover"
+                  label={side.label}
+                  resource={side.image}
+                />
+              </div>
+
+              <div className="flex min-w-0 flex-1 flex-col gap-[8.5px] text-center sm:text-left">
+                <p className="font-playfair text-[22.5px] font-semibold leading-[25px] text-brand-500">
+                  {marks(side.label)}
+                </p>
+                {side.caption && (
+                  <p
+                    className="text-[15px] leading-5 text-black"
+                    data-payload-subpath={`items.${i}.caption`}
+                  >
+                    {marks(side.caption)}
+                  </p>
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  </section>
+)
+
 export const TotalCareBlock: React.FC<Props> = ({
   bgColor,
   bgColorCustom,
@@ -55,6 +128,17 @@ export const TotalCareBlock: React.FC<Props> = ({
    * `/home` and `/about-hemorrhoids`, which are still on it.
    */
   const showcase = variant === 'showcase'
+  if (variant === 'about') {
+    return (
+      <AboutTypes
+        bgColor={bgColor}
+        bgColorCustom={bgColorCustom}
+        heading={heading}
+        sides={sides}
+        subheading={subheading}
+      />
+    )
+  }
 
   return (
     <section

@@ -1,0 +1,176 @@
+import React from 'react'
+
+import type { Page } from '@/payload-types'
+
+import { Media } from '@/components/Media'
+import { cn } from '@/utilities/ui'
+import { marks, multiline } from '@/utilities/marks'
+
+/**
+ * The About comp's hero (Figma ABOUT HERO, 2002:75): no band colour of its own, a 1063px
+ * group centred on the page — a 500px copy column beside the 563×535 photo, which sets the
+ * band's height — with the copy block 29px from the top (the comp centres it; for the comp's
+ * copy that is the same pixel, and a longer copy then grows the band instead of overflowing).
+ * The copy is a ruled list of what the page covers and a pale callout card, instead of the
+ * home hero's badge, CTAs and trust row.
+ *
+ * Vertical rhythm is set margin by margin rather than with one gap: the comp's parts use
+ * different line boxes, and these offsets reproduce its glyph positions at 1440+.
+ */
+export const AboutHero: React.FC<Page['hero']> = ({
+  benefits,
+  calloutIcon,
+  calloutText,
+  calloutTitle,
+  description,
+  eyebrow,
+  heading,
+  media,
+  mediaPosition,
+  subheading,
+}) => {
+  const hasMedia = media && typeof media === 'object'
+  const mediaLeft = mediaPosition === 'left'
+
+  return (
+    <section className="w-full bg-white px-4 font-inter sm:px-6 [&_sup]:leading-[0]">
+      <div className="mx-auto grid w-full max-w-[1063px] grid-cols-1 lg:grid-cols-[minmax(0,500fr)_minmax(0,563fr)]">
+        <div
+          className={cn(
+            'flex min-w-0 flex-col items-start justify-center py-[30px] lg:justify-start lg:pb-[30px] lg:pt-[29px]',
+            mediaLeft && 'lg:order-2 lg:pl-8',
+          )}
+        >
+          {eyebrow && (
+            <p
+              className="text-[15px] font-semibold uppercase leading-[normal] text-navy sm:text-[17.5px]"
+              data-payload-subpath="eyebrow"
+            >
+              {marks(eyebrow)}
+            </p>
+          )}
+
+          {heading && (
+            <h1
+              className="mt-1.5 font-marcellus text-[44px] leading-[54px] text-brand-500 sm:text-[57.5px] sm:leading-[72px]"
+              data-payload-subpath="heading"
+            >
+              {multiline(heading)}
+            </h1>
+          )}
+
+          {/* The comp's short rule under the headline. */}
+          <span aria-hidden="true" className="mt-1 block h-[3.5px] w-16 rounded-full bg-brand-600" />
+
+          {subheading && (
+            <p
+              className="mt-[11.5px] text-[17px] font-semibold leading-[normal] text-brand-300 sm:text-[18.75px]"
+              data-payload-subpath="subheading"
+            >
+              {marks(subheading)}
+            </p>
+          )}
+
+          {description && (
+            <p
+              className="mt-[13.25px] w-full whitespace-pre-line text-[13.75px] leading-5 text-black"
+              data-payload-subpath="description"
+            >
+              {marks(description)}
+            </p>
+          )}
+
+          {/* A 26px icon disc beside each line; a pale rule under every line but the last. */}
+          {Array.isArray(benefits) && benefits.length > 0 && (
+            <ul className="mt-[15.5px] flex w-full max-w-[412.5px] flex-col gap-[3.125px]">
+              {benefits.map((benefit, i) => (
+                <li
+                  className="flex items-center gap-[12.5px]"
+                  data-payload-subpath={`benefits.${i}.text`}
+                  key={benefit.id ?? i}
+                >
+                  <span className="-mt-1 block size-[26px] shrink-0">
+                    {benefit.icon && typeof benefit.icon === 'object' ? (
+                      // `htmlElement={null}` so `Media` emits its `<picture>` bare — its
+                      // default `<div>` wrapper is not valid inside a span.
+                      <Media
+                        htmlElement={null}
+                        imgClassName="size-[26px] object-contain"
+                        resource={benefit.icon}
+                      />
+                    ) : (
+                      <span className="block size-[26px] rounded-full bg-brand-600" />
+                    )}
+                  </span>
+                  <span
+                    className={cn(
+                      'flex min-h-[30.625px] min-w-0 flex-1 items-center py-1 text-[15px] leading-[normal] text-brand-600',
+                      i < benefits.length - 1 && 'border-b-[0.625px] border-tint-50',
+                    )}
+                  >
+                    {/* Its own span: as direct flex items, the text and a ® `<sup>` would be
+                        split apart and lose the space between them. */}
+                    <span>{marks(benefit.text)}</span>
+                  </span>
+                </li>
+              ))}
+            </ul>
+          )}
+
+          {(calloutTitle || calloutText) && (
+            <div className="mt-[11.5px] flex min-h-[100px] w-full max-w-[412.5px] items-center gap-[18.75px] rounded-[12.5px] bg-tint-50 py-3 pl-[18.75px] pr-[18.75px]">
+              {calloutIcon && typeof calloutIcon === 'object' && (
+                <span className="block size-[62.5px] shrink-0">
+                  <Media
+                    htmlElement={null}
+                    imgClassName="size-[62.5px] object-contain"
+                    resource={calloutIcon}
+                  />
+                </span>
+              )}
+              <span className="min-w-0 text-brand-600">
+                {calloutTitle && (
+                  <span
+                    className="block text-[13.75px] font-bold leading-[normal]"
+                    data-payload-subpath="calloutTitle"
+                  >
+                    {marks(calloutTitle)}
+                  </span>
+                )}
+                {calloutText && (
+                  <span
+                    className="mt-[5.75px] block text-[12.5px] leading-[18px]"
+                    data-payload-subpath="calloutText"
+                  >
+                    {marks(calloutText)}
+                  </span>
+                )}
+              </span>
+            </div>
+          )}
+        </div>
+
+        {/* The photo's own 563:535 box sets the band height beside the copy; stacked, it
+            follows the copy at up to its comp width. */}
+        <div
+          className={cn(
+            'relative mx-auto aspect-[563/535] w-full max-w-[563px] self-center overflow-hidden',
+            !hasMedia && 'bg-slate-100',
+            mediaLeft && 'lg:order-1',
+          )}
+          data-payload-subpath="media"
+        >
+          {hasMedia && (
+            <Media
+              className="h-full w-full"
+              imgClassName="h-full w-full object-cover"
+              pictureClassName="block h-full w-full"
+              priority
+              resource={media}
+            />
+          )}
+        </div>
+      </div>
+    </section>
+  )
+}

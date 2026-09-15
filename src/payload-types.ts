@@ -193,6 +193,10 @@ export interface Page {
     media?: (string | null) | Media;
     mediaPosition?: ('left' | 'right') | null;
     /**
+     * About is the /about-hemorrhoids treatment: a centred copy column with a ruled list of topics and a callout card beside a framed photo; badge, buttons and trust points are not shown. Split keeps the home and /why look.
+     */
+    variant?: ('split' | 'about') | null;
+    /**
      * Small caps line above the heading.
      */
     eyebrow?: string | null;
@@ -1081,9 +1085,9 @@ export interface FAQBlock {
       }[]
     | null;
   /**
-   * How the accordion appears before the visitor interacts with it.
+   * How the accordion appears before the visitor interacts with it. Only one question is ever open at a time, so there is no "all open".
    */
-  defaultState?: ('allOpen' | 'firstOpen' | 'allClosed') | null;
+  defaultState?: ('allClosed' | 'firstOpen') | null;
   /**
    * Compact drops the image panel and centres the heading, for pages where the FAQ is one section among many rather than the whole page.
    */
@@ -1231,9 +1235,9 @@ export interface CausesBlock {
    */
   footnote?: string | null;
   /**
-   * Showcase is the /why Quality treatment: a Marcellus display heading, no rule, borderless icon columns divided by hairlines, and the footnote in a tinted note card. Overlay is the /why Internal and External treatment: the image fills the whole band and the copy sits in a narrow column over it, on the side opposite "Image position". Default keeps the original look for pages already using it.
+   * Showcase is the /why Quality treatment: a Marcellus display heading, no rule, borderless icon columns divided by hairlines, and the footnote in a tinted note card. Overlay is the /why Internal and External treatment: the image fills the whole band and the copy sits in a narrow column over it, on the side opposite "Image position". Default keeps the original look for pages already using it. The two About options are the /about-hemorrhoids Diagnosed and Offer treatments.
    */
-  variant?: ('default' | 'showcase' | 'overlay') | null;
+  variant?: ('default' | 'showcase' | 'overlay' | 'aboutDiagnosed' | 'aboutOffer') | null;
   /**
    * Showcase only. Tall is the /why Quality frame, which crops the photo to fill it. Square suits a product shot that must not be cropped.
    */
@@ -2122,9 +2126,9 @@ export interface TotalCareBlock {
       }[]
     | null;
   /**
-   * Showcase is the /why treatment: two white cards side by side, each with a wide product photo next to its feature list, and no "+" between them. Default keeps the original look for pages already using it.
+   * Showcase is the /why treatment: two white cards side by side, each with a wide product photo next to its feature list, and no "+" between them. About is the /about-hemorrhoids treatment: two white cards, each a round photo beside the name and caption, with no rule under the heading. Default keeps the original look for pages already using it.
    */
-  variant?: ('default' | 'showcase') | null;
+  variant?: ('default' | 'showcase' | 'about') | null;
   /**
    * Leave empty to keep this section's designed default.
    */
@@ -2234,6 +2238,10 @@ export interface FeatureStripBlock {
   heading?: string | null;
   subheading?: string | null;
   /**
+   * Optional body copy under the subheading, set smaller and darker. Used by the About-page layouts.
+   */
+  intro?: string | null;
+  /**
    * Laid out in one divided row on desktop, stacking on smaller screens.
    */
   items?:
@@ -2280,7 +2288,7 @@ export interface FeatureStripBlock {
   /**
    * How the items are laid out.
    */
-  variant?: ('divided' | 'cards' | 'pills' | 'checklist') | null;
+  variant?: ('divided' | 'cards' | 'pills' | 'checklist' | 'trustBar' | 'iconCards' | 'trustRow') | null;
   /**
    * Optional artwork behind the whole section.
    */
@@ -2400,6 +2408,14 @@ export interface IngredientExplorerBlock {
         heading?: string | null;
         description?: string | null;
         /**
+         * Optional. Replaces the block disclaimer title while this formula is shown.
+         */
+        disclaimerTitle?: string | null;
+        /**
+         * Optional. Replaces the block disclaimer (Footer) while this formula is shown.
+         */
+        disclaimer?: string | null;
+        /**
          * The filter pills are built from the categories used here, in the order they first appear — there is no separate list to keep in sync.
          */
         ingredients?:
@@ -2417,9 +2433,13 @@ export interface IngredientExplorerBlock {
                */
               category?: string | null;
               /**
-               * Revealed when the visitor expands the card.
+               * Research text on the back of the card. Filling it adds the + button that flips the card.
                */
               details?: string | null;
+              /**
+               * Shown under the research text. One reference per line.
+               */
+              references?: string | null;
               id?: string | null;
             }[]
           | null;
@@ -3086,6 +3106,7 @@ export interface PagesSelect<T extends boolean = true> {
             };
         media?: T;
         mediaPosition?: T;
+        variant?: T;
         eyebrow?: T;
         subheading?: T;
         badgeTitle?: T;
@@ -3840,6 +3861,7 @@ export interface FeatureStripBlockSelect<T extends boolean = true> {
   eyebrow?: T;
   heading?: T;
   subheading?: T;
+  intro?: T;
   items?:
     | T
     | {
@@ -3918,6 +3940,8 @@ export interface IngredientExplorerBlockSelect<T extends boolean = true> {
         name?: T;
         heading?: T;
         description?: T;
+        disclaimerTitle?: T;
+        disclaimer?: T;
         ingredients?:
           | T
           | {
@@ -3928,6 +3952,7 @@ export interface IngredientExplorerBlockSelect<T extends boolean = true> {
               benefit?: T;
               category?: T;
               details?: T;
+              references?: T;
               id?: T;
             };
         id?: T;

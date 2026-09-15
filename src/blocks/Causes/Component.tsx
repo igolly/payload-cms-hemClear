@@ -12,6 +12,8 @@ import { ImageSlot } from '@/blocks/FAQ/ImagePlaceholder'
 import { backgroundStyle } from '@/fields/background'
 import { marks, multiline } from '@/utilities/marks'
 
+import { CausesAbout } from './About'
+
 /**
  * Showcase column counts, written out so Tailwind's scanner can see every class it has to
  * emit. The hairline divider is suppressed on the first item of each row, which is why the
@@ -25,7 +27,15 @@ const SHOWCASE_COLUMNS: Record<number, string> = {
   4: 'sm:grid-cols-4 sm:[&>li:nth-child(4n+1)]:border-l-0',
 }
 
-export const CausesBlock: React.FC<Props> = ({
+export const CausesBlock: React.FC<Props> = (props) =>
+  /* The About-page cuts are their own layouts; see `About.tsx`. */
+  props.variant === 'aboutDiagnosed' || props.variant === 'aboutOffer' ? (
+    <CausesAbout {...props} />
+  ) : (
+    <CausesDefault {...props} />
+  )
+
+const CausesDefault: React.FC<Props> = ({
   bgColor,
   bgColorCustom,
   description,

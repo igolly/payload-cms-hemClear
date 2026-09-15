@@ -17,6 +17,14 @@ export const FeatureStrip: Block = {
         { name: 'eyebrow', type: 'text' },
         { name: 'heading', type: 'textarea' },
         { name: 'subheading', type: 'textarea' },
+        {
+          name: 'intro',
+          type: 'textarea',
+          admin: {
+            description:
+              'Optional body copy under the subheading, set smaller and darker. Used by the About-page layouts.',
+          },
+        },
       ],
     },
     {
@@ -70,6 +78,9 @@ export const FeatureStrip: Block = {
             { label: 'Bordered cards', value: 'cards' },
             { label: 'Compact pills (icon + title only)', value: 'pills' },
             { label: 'Checklist', value: 'checklist' },
+            { label: 'Trust bar (compact, hairline above)', value: 'trustBar' },
+            { label: 'Icon cards (round icon over title and text)', value: 'iconCards' },
+            { label: 'Trust row (large round icons, blue dividers)', value: 'trustRow' },
           ],
           admin: { description: 'How the items are laid out.' },
         },

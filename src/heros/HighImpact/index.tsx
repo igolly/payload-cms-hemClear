@@ -7,6 +7,8 @@ import { Media } from '@/components/Media'
 import { cn } from '@/utilities/ui'
 import { marks, multiline } from '@/utilities/marks'
 
+import { AboutHero } from './About'
+
 /**
  * Ornaments and glyphs exported from the Figma HERO frame (2002:5). They are part of the
  * design rather than content, so they ship as static files instead of Media uploads.
@@ -55,7 +57,11 @@ const Divider: React.FC<{ className?: string }> = ({ className }) => (
   <span aria-hidden="true" className={cn('block w-[0.625px] shrink-0 bg-ash-500', className)} />
 )
 
-export const HighImpactHero: React.FC<Page['hero']> = ({
+export const HighImpactHero: React.FC<Page['hero']> = (props) =>
+  // The About comp is a different composition, not a tweak of this one; it lives on its own.
+  props.variant === 'about' ? <AboutHero {...props} /> : <SplitHero {...props} />
+
+const SplitHero: React.FC<Page['hero']> = ({
   media,
   links,
   badgeTitle,
@@ -82,15 +88,14 @@ export const HighImpactHero: React.FC<Page['hero']> = ({
   const stackedTrust = trustPointsStyle === 'stacked'
 
   /*
-   * Figma: a 1400px container split 685 (image) / 715 (copy). Fractions rather than fixed
-   * pixels keep that ratio between `xl` and 1400px. Side by side only from `xl`: below it the
-   * copy column is far taller than the photo's box, so the photo was stretched into a tall
-   * sliver and cropped hard. The template flips with the media position so the image always
-   * lands in its own track.
+   * From `xl` the band is a full-bleed 50/50 split: the photo runs from the screen edge to
+   * the centre line at any width (centre-cropped), and the copy sits in the other half, capped
+   * at 700px and hugging the centre line — below 1400px the half is already narrower than
+   * that, so the cap only bites on wide screens. Below `xl` the two stack: side by side there,
+   * the copy column is far taller than the photo and the photo became a hard-cropped sliver.
+   * Media on the right mirrors both halves.
    */
-  const columns = mediaRight
-    ? 'xl:grid-cols-[minmax(0,715fr)_minmax(0,685fr)]'
-    : 'xl:grid-cols-[minmax(0,685fr)_minmax(0,715fr)]'
+  const columns = 'xl:grid-cols-2'
 
   /*
    * Inline trust points: the mobile comp lists them one per row, full width, 10px above and
@@ -145,12 +150,13 @@ export const HighImpactHero: React.FC<Page['hero']> = ({
 
   return (
     <section className="w-full bg-shell font-inter">
-      <div className={cn('mx-auto grid max-w-[1400px] grid-cols-1 items-stretch', columns)}>
+      <div className={cn('grid w-full grid-cols-1 items-stretch', columns)}>
         {/*
-         * Image column. The spacer sets the comp's 685x580 box; the photo is laid over it with
-         * `object-cover`, so a copy column taller than that (the /why treatment, with a callout
-         * and stacked trust points) grows the band and the photo crops to fill rather than
-         * leaving a strip of hero colour under it.
+         * Image column. Stacked, the spacer sets the comp's 685:580 box. Side by side, the
+         * spacer only guarantees the comp's 580px minimum and the column stretches to the copy's
+         * height; either way the photo is laid over the whole column with `object-cover`, so a
+         * taller copy column (the /why treatment) crops the photo rather than leaving a strip of
+         * hero colour under it.
          */}
         <div
           className={cn(
@@ -161,7 +167,10 @@ export const HighImpactHero: React.FC<Page['hero']> = ({
         >
           {/* Stacked (below `xl`) the photo spans the viewport, so its height is capped: at
               tablet widths the 685:580 box alone would be ~870px tall. */}
-          <div aria-hidden="true" className="aspect-[685/580] max-h-[600px] w-full xl:max-h-none" />
+          <div
+            aria-hidden="true"
+            className="aspect-[685/580] max-h-[600px] w-full xl:aspect-auto xl:h-full xl:max-h-none xl:min-h-[580px]"
+          />
           {hasMedia && (
             <div className="absolute inset-0" data-payload-subpath="media">
               <Media
@@ -180,12 +189,13 @@ export const HighImpactHero: React.FC<Page['hero']> = ({
           )}
         </div>
 
-        {/* Copy column: 31.25px side padding, 12.5px between every part, centred in the band.
-            The mobile comp keeps the 31.25px sides with only 16px above and below. */}
+        {/* Copy column: 31.25px side padding, 12.5px between every part. Stacked it's centred
+            (the mobile comp keeps the 31.25px sides with only 16px above and below); side by
+            side it's at most 700px wide and pinned to the centre line, beside the photo. */}
         <div
           className={cn(
-            'mx-auto flex w-full min-w-0 max-w-[715px] flex-col items-start justify-center gap-[12.5px] px-[31.25px] py-4 md:px-6 md:py-10 xl:mx-0 xl:max-w-none xl:px-[31.25px] xl:py-[35.9375px]',
-            mediaRight && 'xl:order-1',
+            'mx-auto flex w-full min-w-0 max-w-[715px] flex-col items-start justify-center gap-[12.5px] px-[31.25px] py-4 md:px-6 md:py-10 xl:mx-0 xl:max-w-[700px] xl:px-[31.25px] xl:py-[35.9375px]',
+            mediaRight ? 'xl:order-1 xl:justify-self-end' : 'xl:justify-self-start',
           )}
         >
           {eyebrow && (

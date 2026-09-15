@@ -2,11 +2,14 @@ import React from 'react'
 
 import type { IngredientExplorerBlock as Props } from '@/payload-types'
 
-import { BrandIcon } from '@/components/BrandIcons'
+import { Disclaimer } from './Disclaimer'
 import { Explorer } from './Explorer'
 import { backgroundStyle } from '@/fields/background'
-import { marks } from '@/utilities/marks'
 
+/**
+ * Figma "PILL INGREDIENT HEAD" (2003:238), "PILL INGREDIENT" (2003:241) and
+ * "PILL DISCLAIMER" (2003:240), stacked in one 1200-wide column.
+ */
 export const IngredientExplorerBlock: React.FC<Props> = ({
   bgColor,
   bgColorCustom,
@@ -19,32 +22,19 @@ export const IngredientExplorerBlock: React.FC<Props> = ({
 
   return (
     <section
-      className="w-full bg-white px-4 py-12 sm:px-6 lg:px-8"
+      className="w-full bg-white px-4 font-inter sm:px-6"
       style={backgroundStyle(bgColor, bgColorCustom)}
     >
-      <div className="mx-auto max-w-7xl">
-        {formulas.length > 0 && <Explorer allLabel={allLabel} groups={formulas} />}
-
-        {(disclaimerTitle || disclaimer) && (
-          <div className="mt-10 flex items-start gap-3 rounded-xl border border-tint-100 bg-mist p-5">
-            <BrandIcon
-              className="mt-0.5 shrink-0 text-brand-400 [&>svg]:h-5 [&>svg]:w-5"
-              name="info"
-            />
-            <div className="min-w-0">
-              {disclaimerTitle && (
-                <p className="text-xs font-bold text-brand">{marks(disclaimerTitle)}</p>
-              )}
-              {disclaimer && (
-                <p
-                  className="mt-1 whitespace-pre-line text-[11px] leading-relaxed text-slate-600"
-                  data-payload-subpath="disclaimer"
-                >
-                  {marks(disclaimer)}
-                </p>
-              )}
-            </div>
-          </div>
+      <div className="mx-auto max-w-[1200px]">
+        {formulas.length > 0 ? (
+          <Explorer
+            allLabel={allLabel}
+            disclaimer={disclaimer}
+            disclaimerTitle={disclaimerTitle}
+            groups={formulas}
+          />
+        ) : (
+          <Disclaimer text={disclaimer} title={disclaimerTitle} />
         )}
       </div>
     </section>

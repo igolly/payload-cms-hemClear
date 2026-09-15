@@ -105,10 +105,15 @@ export const Causes: Block = {
         { label: 'Default', value: 'default' },
         { label: 'Showcase (large display heading, plain icon row)', value: 'showcase' },
         { label: 'Overlay (copy over a full-bleed photo)', value: 'overlay' },
+        {
+          label: 'About: Diagnosed (photo beside a ruled checklist and note card)',
+          value: 'aboutDiagnosed',
+        },
+        { label: 'About: Offer (copy over a full-width product photo)', value: 'aboutOffer' },
       ],
       admin: {
         description:
-          'Showcase is the /why Quality treatment: a Marcellus display heading, no rule, borderless icon columns divided by hairlines, and the footnote in a tinted note card. Overlay is the /why Internal and External treatment: the image fills the whole band and the copy sits in a narrow column over it, on the side opposite "Image position". Default keeps the original look for pages already using it.',
+          'Showcase is the /why Quality treatment: a Marcellus display heading, no rule, borderless icon columns divided by hairlines, and the footnote in a tinted note card. Overlay is the /why Internal and External treatment: the image fills the whole band and the copy sits in a narrow column over it, on the side opposite "Image position". Default keeps the original look for pages already using it. The two About options are the /about-hemorrhoids Diagnosed and Offer treatments.',
       },
     },
     {

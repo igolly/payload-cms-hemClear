@@ -44,7 +44,16 @@ export const VisualEditorBridge: React.FC = () => {
 
   return (
     <style>{`
-      [data-payload-path], [data-payload-subpath] { position: relative; }
+      /*
+       * In \`base\`, the lowest Tailwind layer: unlayered CSS beats every layer regardless of
+       * specificity, so a bare rule here overrode \`absolute\`/\`sticky\` utilities on editable
+       * elements and knocked them into flow in the preview (the hero photo dropped below its
+       * box). Layered, an element's own positioning class wins; untouched elements still get
+       * \`relative\` for the "Click to edit" label.
+       */
+      @layer base {
+        [data-payload-path], [data-payload-subpath] { position: relative; }
+      }
       [data-payload-path]:hover {
         outline: 2px dashed #2d80e2;
         outline-offset: -2px;

@@ -47,12 +47,12 @@ export const CardsCarousel: React.FC<{ slides: React.ReactNode[] }> = ({ slides 
   }
 
   const arrow =
-    'absolute top-1/2 z-10 size-8 -translate-y-1/2 opacity-80 transition-opacity hover:opacity-100 disabled:pointer-events-none disabled:opacity-30 lg:hidden'
+    'absolute top-1/2 z-10 size-8 -translate-y-1/2 opacity-80 transition-opacity hover:opacity-100 disabled:pointer-events-none disabled:opacity-30 xl:hidden'
 
   return (
     <div className="relative">
       <ul
-        className="flex snap-x snap-mandatory gap-[17.5px] overflow-x-auto scroll-smooth py-[12.5px] [-ms-overflow-style:none] [scrollbar-width:none] lg:justify-center lg:overflow-visible [&::-webkit-scrollbar]:hidden"
+        className="flex snap-x snap-mandatory gap-[17.5px] overflow-x-auto scroll-smooth py-[12.5px] [-ms-overflow-style:none] [scrollbar-width:none] xl:justify-center xl:overflow-visible [&::-webkit-scrollbar]:hidden"
         ref={trackRef}
       >
         {slides}

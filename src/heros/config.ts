@@ -82,6 +82,21 @@ export const hero: Field = {
       label: 'Image Position',
     },
     {
+      name: 'variant',
+      type: 'select',
+      defaultValue: 'split',
+      options: [
+        { label: 'Split (full-bleed photo beside the copy)', value: 'split' },
+        { label: 'About (framed photo, ruled topic list, callout card)', value: 'about' },
+      ],
+      admin: {
+        condition: (_, { type } = {}) => type === 'highImpact',
+        description:
+          'About is the /about-hemorrhoids treatment: a centred copy column with a ruled list of topics and a callout card beside a framed photo; badge, buttons and trust points are not shown. Split keeps the home and /why look.',
+      },
+      label: 'Layout',
+    },
+    {
       name: 'eyebrow',
       type: 'text',
       admin: {

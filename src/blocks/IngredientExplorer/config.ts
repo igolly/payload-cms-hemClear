@@ -24,6 +24,22 @@ export const IngredientExplorer: Block = {
         { name: 'heading', type: 'text' },
         { name: 'description', type: 'textarea' },
         {
+          name: 'disclaimerTitle',
+          type: 'text',
+          admin: {
+            description:
+              'Optional. Replaces the block disclaimer title while this formula is shown.',
+          },
+        },
+        {
+          name: 'disclaimer',
+          type: 'textarea',
+          admin: {
+            description:
+              'Optional. Replaces the block disclaimer (Footer) while this formula is shown.',
+          },
+        },
+        {
           name: 'ingredients',
           type: 'array',
           labels: { singular: 'Ingredient', plural: 'Ingredients' },
@@ -64,7 +80,15 @@ export const IngredientExplorer: Block = {
             {
               name: 'details',
               type: 'textarea',
-              admin: { description: 'Revealed when the visitor expands the card.' },
+              admin: {
+                description:
+                  'Research text on the back of the card. Filling it adds the + button that flips the card.',
+              },
+            },
+            {
+              name: 'references',
+              type: 'textarea',
+              admin: { description: 'Shown under the research text. One reference per line.' },
             },
           ],
         },

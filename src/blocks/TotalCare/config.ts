@@ -80,10 +80,11 @@ export const TotalCare: Block = {
       options: [
         { label: 'Default', value: 'default' },
         { label: 'Showcase (two standalone cards, image beside the features)', value: 'showcase' },
+        { label: 'About (two cards, round photo beside the name and caption)', value: 'about' },
       ],
       admin: {
         description:
-          'Showcase is the /why treatment: two white cards side by side, each with a wide product photo next to its feature list, and no "+" between them. Default keeps the original look for pages already using it.',
+          'Showcase is the /why treatment: two white cards side by side, each with a wide product photo next to its feature list, and no "+" between them. About is the /about-hemorrhoids treatment: two white cards, each a round photo beside the name and caption, with no rule under the heading. Default keeps the original look for pages already using it.',
       },
     },
     backgroundField(),
