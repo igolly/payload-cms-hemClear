@@ -1,6 +1,5 @@
 import Link from 'next/link'
 import React from 'react'
-import { ChevronRight } from 'lucide-react'
 
 import { getCachedGlobal } from '@/utilities/getGlobals'
 
@@ -9,18 +8,51 @@ import { CMSLink } from '@/components/Link'
 import { Logo } from '@/components/Logo/Logo'
 import { marks } from '@/utilities/marks'
 
+/* eslint-disable @next/next/no-img-element */
+
 /*
- * Laid out against `public/FOOTER.png`. The values that look arbitrary were measured off
- * that file (it is a 1920px-wide comp):
+ * Figma `FOOTER` — desktop 2002:22 (1920 frame, 1400 container), mobile 6246:3893 (440).
  *
- * - the rule spans a 1400px container, and the content sits in a narrower band centred
- *   inside it, which is why there are two widths rather than one;
- * - the five columns are not equal — `grid-cols-[251fr_218fr_254fr_282fr_95fr]` is the
- *   ratio measured between the headings, with Our Promise widest and Shop narrowest;
- * - each link list is `w-fit`, so its chevrons right-align against the column's longest
- *   label rather than against the column edge. That is what the comp does, and it is why
- *   the chevrons sit at a different x in every column.
+ * - `footer menus`: a wrapping row, 62.5px gaps, 31.25px vertical padding, 0.625px white
+ *   rule under it. Desktop centres the row; mobile left-aligns it, so Support + Shop and
+ *   Our Promise + Social share a row at 440. The column gap shrinks below 440 (clamp) so
+ *   those pairs still share a row at 390.
+ * - Every link list hugs its longest label: the chevrons line up at that label's width
+ *   plus 18.75px, which is why they sit at a different x in each column.
+ * - `footer bottom`: logo/tagline/copyright (346 x 195.75, copyright pinned to the bottom)
+ *   beside a 592px legal column on desktop; stacked and centred on mobile.
  */
+
+/** Figma exports (public/icons/footer), keyed by the Footer global's icon select values. */
+const promiseIcons: Record<string, string> = {
+  stethoscope: '/icons/footer/promise-doctor.svg',
+  madeInUsa: '/icons/footer/promise-usa.svg',
+  gmp: '/icons/footer/promise-gmp.svg',
+  packageBox: '/icons/footer/promise-package.svg',
+  guarantee: '/icons/footer/promise-guarantee.svg',
+}
+
+const socialIcons: Record<string, string> = {
+  facebook: '/icons/footer/social-facebook.svg',
+  instagram: '/icons/footer/social-instagram.svg',
+  youtube: '/icons/footer/social-youtube.svg',
+  tiktok: '/icons/footer/social-tiktok.svg',
+}
+
+/** The comp's Kosugi ">" (6 x 12, aqua), drawn so no extra font is needed. */
+const Chevron = () => (
+  <svg
+    aria-hidden="true"
+    className="h-3 w-1.5 shrink-0 text-aqua-200"
+    fill="none"
+    viewBox="0 0 6 12"
+  >
+    <path d="M1 3l4 3.25L1 9.5" stroke="currentColor" strokeLinecap="round" strokeWidth="1" />
+  </svg>
+)
+
+const headingClass = 'text-sm font-bold uppercase leading-[normal] text-aqua-200'
+const itemText = 'text-xs font-medium leading-3 text-white'
 
 export async function Footer() {
   const footer = await getCachedGlobal('footer', 2)()
@@ -30,119 +62,129 @@ export async function Footer() {
   const socialItems = footer?.socialItems || []
   const legalLinks = footer?.legalLinks || []
 
-  const headingClass = 'text-xs font-bold uppercase tracking-wider text-aqua-200'
-
   return (
-    <footer className="mt-auto bg-navy-950 text-white">
-      {/* 1464 = the comp's 1400px rule plus this container's own lg padding, so the
-          rule measures 1400 rather than 1400-minus-padding. */}
-      <div className="mx-auto max-w-[1464px] px-4 py-14 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-[1100px]">
-          <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-[251fr_218fr_254fr_282fr_95fr] lg:gap-x-0">
-            {/* Link columns */}
-            {columns.map((column, i) => (
-              <div key={column.id ?? i}>
-                <h2 className={headingClass}>{marks(column.title)}</h2>
-                <ul className="mt-4 w-fit space-y-2">
-                  {(column.items || []).map((item, j) => (
-                    <li key={item.id ?? j}>
-                      <CMSLink
-                        {...item.link}
-                        appearance="inline"
-                        className="flex items-center justify-between gap-6 font-inter text-[13px] text-white/90 transition-colors hover:text-white lg:whitespace-nowrap"
-                      >
-                        <ChevronRight
-                          aria-hidden="true"
-                          className="h-3.5 w-3.5 shrink-0 text-white/50"
-                        />
-                      </CMSLink>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
+    <footer className="mt-auto bg-navy-950 font-inter text-white [&_sup]:leading-[0]">
+      <div className="mx-auto flex max-w-[1432px] flex-col gap-[12.5px] px-4 lg:py-[6.25px]">
+        <div className="flex flex-wrap items-start gap-x-[clamp(12px,calc(100vw-377.5px),62.5px)] gap-y-[62.5px] border-b-[0.625px] border-white py-[31.25px] lg:justify-center">
+          {/* Link columns */}
+          {columns.map((column, i) => (
+            <div className="flex flex-col gap-[9.375px]" key={column.id ?? i}>
+              <h2 className={headingClass}>{marks(column.title)}</h2>
+              <ul className="flex w-fit flex-col gap-[9.375px]">
+                {(column.items || []).map((item, j) => (
+                  <li key={item.id ?? j}>
+                    <CMSLink
+                      {...item.link}
+                      appearance="inline"
+                      className={`flex items-center justify-between gap-[18.75px] whitespace-nowrap transition-opacity hover:opacity-80 ${itemText}`}
+                    >
+                      <Chevron />
+                    </CMSLink>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
 
-            {/* Our promise */}
-            {promiseItems.length > 0 && (
-              <div>
-                <h2 className={headingClass}>{footer?.promiseTitle || 'Our Promise'}</h2>
-                <ul className="mt-4 space-y-2.5">
-                  {promiseItems.map((item, i) => (
-                    <li className="flex items-center gap-3" key={item.id ?? i}>
-                      <span className="flex h-[26px] w-[26px] shrink-0 items-center justify-center rounded-full border border-white/30 text-white [&>span>svg]:h-3.5 [&>span>svg]:w-3.5">
+          {/* Our promise */}
+          {promiseItems.length > 0 && (
+            <div className="flex flex-col gap-[9.375px]">
+              <h2 className={headingClass}>{footer?.promiseTitle || 'Our Promise'}</h2>
+              <ul className="flex flex-col gap-[9.375px]">
+                {promiseItems.map((item, i) => (
+                  <li className="flex items-center gap-[12.5px]" key={item.id ?? i}>
+                    {promiseIcons[item.icon] ? (
+                      <img
+                        alt=""
+                        className="size-[25px] shrink-0"
+                        height={25}
+                        src={promiseIcons[item.icon]}
+                        width={25}
+                      />
+                    ) : (
+                      <span className="flex size-[25px] shrink-0 items-center justify-center rounded-full border border-white/60 [&>span>svg]:size-3.5">
                         <BrandIcon name={item.icon} />
                       </span>
-                      <span className="text-[13px] text-white/90 lg:whitespace-nowrap">
-                        {marks(item.label)}
-                      </span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
+                    )}
+                    <span className={`whitespace-nowrap ${itemText}`}>{marks(item.label)}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
 
-            {/* Social */}
-            {socialItems.length > 0 && (
-              <div>
-                <h2 className={headingClass}>{footer?.socialTitle || 'Social Links'}</h2>
-                <ul className="mt-4 space-y-2.5">
-                  {socialItems.map((item, i) => (
-                    <li key={item.id ?? i}>
-                      <a
-                        className="link-underline flex items-center gap-3 self-start font-inter text-[13px] text-white/90 transition-colors hover:text-white"
-                        href={item.url || '#'}
-                        rel="noopener noreferrer"
-                        target="_blank"
-                      >
-                        <SocialIcon
-                          className="shrink-0 [&>svg]:h-[18px] [&>svg]:w-[18px]"
-                          name={item.platform}
-                        />
-                        {marks(item.label)}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
-          </div>
+          {/* Social */}
+          {socialItems.length > 0 && (
+            <div className="flex flex-col gap-[9.375px]">
+              <h2 className={headingClass}>{footer?.socialTitle || 'Social Links'}</h2>
+              <ul className="flex flex-col gap-[9.375px]">
+                {socialItems.map((item, i) => (
+                  <li key={item.id ?? i}>
+                    <a
+                      className={`flex items-center gap-[6.25px] whitespace-nowrap transition-opacity hover:opacity-80 ${itemText}`}
+                      href={item.url || '#'}
+                      rel="noopener noreferrer"
+                      target="_blank"
+                    >
+                      {socialIcons[item.platform] ? (
+                        <span className="flex size-[15px] shrink-0 items-center justify-center">
+                          <img
+                            alt=""
+                            className="max-h-[15px] max-w-[15px]"
+                            src={socialIcons[item.platform]}
+                          />
+                        </span>
+                      ) : (
+                        <SocialIcon className="shrink-0 [&>svg]:size-[15px]" name={item.platform} />
+                      )}
+                      {marks(item.label)}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
         </div>
 
-        <hr className="my-10 border-0 border-t border-white/60" />
+        <div className="flex flex-col items-center gap-[31.25px] py-[31.25px] lg:flex-row lg:items-stretch lg:justify-center">
+          {/* Logo, tagline, copyright — copyright pinned to the column's foot. */}
+          <div className="flex min-h-[195.75px] w-[346px] max-w-full flex-col items-center justify-between">
+            <div className="flex flex-col items-center gap-[6.25px]">
+              <Link
+                aria-label="HemClear home"
+                className="flex h-[71.43px] w-[250px] items-center justify-center"
+                href="/"
+              >
+                <Logo className="h-[64.29px] brightness-0 invert" />
+              </Link>
 
-        <div className="mx-auto grid max-w-[1100px] grid-cols-1 items-start gap-10 lg:grid-cols-[minmax(0,453fr)_minmax(0,647fr)] lg:gap-x-0">
-          {/* Logo, tagline, copyright — centred as a block, per the comp. */}
-          <div className="text-center">
-            <Link className="inline-flex items-center" href="/">
-              <Logo className="h-auto w-[242px] brightness-0 invert" />
-            </Link>
-
-            {footer?.tagline && (
-              <p className="mt-4 whitespace-pre-line text-[26px] leading-[1.15] text-white">
-                {marks(footer.tagline)}
-              </p>
-            )}
+              {footer?.tagline && (
+                <p className="whitespace-pre-line text-center text-2xl font-medium leading-[normal] text-white">
+                  {marks(footer.tagline)}
+                </p>
+              )}
+            </div>
 
             {footer?.copyright && (
-              <p className="mt-12 text-[13px] text-white/70">{marks(footer.copyright)}</p>
+              <p className="text-xs font-medium leading-[normal] text-white">
+                {marks(footer.copyright)}
+              </p>
             )}
           </div>
 
           {/* Legal links + disclaimer */}
-          <div>
+          <div className="flex w-full flex-col gap-[18.75px] lg:w-[592px]">
             {legalLinks.length > 0 && (
-              <ul className="flex flex-wrap items-center gap-x-3 gap-y-2 font-inter text-[13px] text-white/90">
+              <ul className="flex flex-wrap justify-center gap-y-2 lg:justify-start">
                 {legalLinks.map((item, i) => (
-                  <li className="flex items-center gap-3" key={item.id ?? i}>
-                    {i > 0 && (
-                      <span aria-hidden="true" className="text-white/30">
-                        |
-                      </span>
-                    )}
+                  <li
+                    className={i > 0 ? 'border-l border-white px-2.5' : 'px-2.5'}
+                    key={item.id ?? i}
+                  >
                     <CMSLink
                       {...item.link}
                       appearance="inline"
-                      className="link-underline transition-colors hover:text-white"
+                      className={`block whitespace-nowrap transition-opacity hover:opacity-80 ${itemText}`}
                     />
                   </li>
                 ))}
@@ -151,10 +193,13 @@ export async function Footer() {
 
             {footer?.disclaimer && (
               // The comp runs the paragraphs together — no gap beyond the line height.
-              <div className="mt-5 text-[13px] leading-[1.45] text-white/70">
-                {footer.disclaimer.split('\n\n').map((paragraph, i) => (
-                  <p key={i}>{marks(paragraph)}</p>
-                ))}
+              <div className="text-xs font-medium leading-[15px] text-white">
+                {footer.disclaimer
+                  .split(/\n+/)
+                  .filter((paragraph) => paragraph.trim())
+                  .map((paragraph, i) => (
+                    <p key={i}>{marks(paragraph)}</p>
+                  ))}
               </div>
             )}
           </div>

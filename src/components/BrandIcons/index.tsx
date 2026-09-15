@@ -197,6 +197,14 @@ export const brandIcons = {
       <path d="M12 3.5c3.2 3.6 5.5 6.4 5.5 9.2a5.5 5.5 0 0 1-11 0c0-2.8 2.3-5.6 5.5-9.2Z" />
     </svg>
   ),
+  shieldLeaf: (
+    <svg {...base}>
+      <path d="M12 2.8 4.8 5.7v6.1c0 4.4 3 8 7.2 9.4 4.2-1.4 7.2-5 7.2-9.4V5.7Z" />
+      <path d="M12 17.4V8.2" />
+      <path d="M12 8.2c0-1.4.7-2.6 1.7-3.4M12 11.4c1.5 0 2.8-.8 3.5-2M12 14.3c1.5 0 2.8-.8 3.5-2" />
+      <path d="M12 11.4c-1.5 0-2.8-.8-3.5-2M12 14.3c-1.5 0-2.8-.8-3.5-2" />
+    </svg>
+  ),
   shieldCheck: (
     <svg {...base}>
       <path d="M12 2.8 4.8 5.7v6.1c0 4.4 3 8 7.2 9.4 4.2-1.4 7.2-5 7.2-9.4V5.7Z" />
@@ -250,6 +258,7 @@ export const brandIconOptions: { label: string; value: BrandIconName }[] = [
   { label: 'Leaf', value: 'leaf' },
   { label: 'Droplet', value: 'droplet' },
   { label: 'Shield Check', value: 'shieldCheck' },
+  { label: 'Shield / Leaf', value: 'shieldLeaf' },
   { label: 'Snowflake', value: 'snowflake' },
   { label: 'Info', value: 'info' },
 ]

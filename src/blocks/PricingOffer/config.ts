@@ -10,6 +10,19 @@ export const PricingOffer: Block = {
   labels: { singular: 'Pricing Offer', plural: 'Pricing Offers' },
   fields: [
     {
+      name: 'layout',
+      type: 'select',
+      defaultValue: 'cards',
+      options: [
+        { label: 'Cards with their own buttons', value: 'cards' },
+        { label: 'Selectable cards, one Buy button', value: 'select' },
+      ],
+      admin: {
+        description:
+          'Selectable: visitors pick a plan (the most popular starts selected), then one shared button buys it; the chosen plan’s footnote shows under the button.',
+      },
+    },
+    {
       type: 'collapsible',
       label: 'Offer Banner',
       fields: [

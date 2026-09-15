@@ -120,6 +120,7 @@
   --color-amber: #ffd84d;
   --color-cream: #ffe066;
   --color-success: #1a7f37;
+  --color-success-bright: #0b8800; /* savings figures */
   --color-success-dark: #166b2e;
   --color-success-tint: #cfe6d6;
   --color-danger: #c0392b;
@@ -147,6 +148,10 @@
   --font-inter: var(--font-inter-sans), ui-sans-serif, system-ui, sans-serif;
   /* Hero display face. Loaded in the frontend layout as `--font-marcellus-display`. */
   --font-marcellus: var(--font-marcellus-display), ui-serif, Georgia, serif;
+  /* Pricing card product names, support-tab card titles. Loaded in the frontend layout as `--font-playfair-display`. */
+  --font-playfair: var(--font-playfair-display), ui-serif, Georgia, serif;
+  /* Hero badge title. Loaded in the frontend layout as `--font-fraunces-display`. */
+  --font-fraunces: var(--font-fraunces-display), ui-serif, Georgia, serif;
 }
 
 @layer utilities {

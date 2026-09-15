@@ -1,8 +1,7 @@
 'use client'
 
 import React, { useState } from 'react'
-import Link from 'next/link'
-import { ChevronDown, ShoppingCart, User } from 'lucide-react'
+import { ChevronDown } from 'lucide-react'
 
 import type { Header as HeaderType } from '@/payload-types'
 
@@ -10,7 +9,7 @@ import { CMSLink } from '@/components/Link'
 import { Media } from '@/components/Media'
 import { cn } from '@/utilities/ui'
 import { marks } from '@/utilities/marks'
-import { hasMenu } from '../Nav'
+import { CartLink, hasMenu, SignInLink } from '../Nav'
 
 type NavItem = NonNullable<HeaderType['navItems']>[number]
 
@@ -31,7 +30,7 @@ const MobileItem: React.FC<{ item: NavItem; onNavigate: () => void }> = ({ item,
         <CMSLink
           {...item.link}
           appearance="inline"
-          className="block py-4 font-inter text-base font-bold text-navy"
+          className="block py-4 font-inter text-base font-semibold text-navy-900"
           onClick={onNavigate}
         />
       </li>
@@ -42,7 +41,7 @@ const MobileItem: React.FC<{ item: NavItem; onNavigate: () => void }> = ({ item,
     <li className="border-b border-border">
       <button
         aria-expanded={open}
-        className="flex w-full items-center justify-between py-4 text-left font-inter text-base font-bold text-navy"
+        className="flex w-full items-center justify-between py-4 text-left font-inter text-base font-semibold text-navy-900"
         onClick={() => setOpen((v) => !v)}
         type="button"
       >
@@ -120,23 +119,9 @@ export const MobileNav: React.FC<{
         ))}
       </ul>
 
-      <div className="flex items-center justify-between py-5">
-        <Link
-          className="flex items-center gap-2 font-inter text-base font-bold text-navy"
-          href="#"
-          onClick={onClose}
-        >
-          <User className="size-5" />
-          Sign In
-        </Link>
-
-        <Link className="relative flex items-center text-navy" href="#" onClick={onClose}>
-          <span className="sr-only">Cart</span>
-          <ShoppingCart className="size-6" />
-          <span className="absolute -right-2 -top-2 flex size-4 items-center justify-center rounded-full bg-info text-[10px] font-bold text-white">
-            0
-          </span>
-        </Link>
+      <div className="flex items-center justify-between py-4">
+        <SignInLink className="-ml-[6.25px]" onClick={onClose} />
+        <CartLink onClick={onClose} />
       </div>
     </div>
   </div>

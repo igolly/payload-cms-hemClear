@@ -1,13 +1,17 @@
 'use client'
 import React, { useState } from 'react'
-import { Minus } from 'lucide-react'
 
 import type { ProductDetailBlock } from '@/payload-types'
-import { PlusIcon } from '@/components/PlusIcon'
 import { marks } from '@/utilities/marks'
+
+import { Toggle } from './Toggle'
 
 type Section = NonNullable<ProductDetailBlock['sections']>[number]
 
+/**
+ * Figma 6216:3121 / 6216:3138 / 6219:3264: each section is a 50px header over a bulleted
+ * 16/20 body with 16px beneath it, closed off by a navy rule. All open by default, as drawn.
+ */
 export const DetailSections: React.FC<{ sections: Section[] }> = ({ sections }) => {
   const [open, setOpen] = useState<Set<number>>(() => new Set(sections.map((_, i) => i)))
 
@@ -20,42 +24,30 @@ export const DetailSections: React.FC<{ sections: Section[] }> = ({ sections }) 
     })
 
   return (
-    <ul className="mt-8 flex flex-col">
+    <>
       {sections.map((section, i) => {
         const isOpen = open.has(i)
         const panelId = `product-section-${section.id ?? i}`
 
         return (
-          <li className="border-t border-tint-100 py-4" key={section.id ?? i}>
-            <h2>
-              <button
-                aria-controls={panelId}
-                aria-expanded={isOpen}
-                className="flex w-full items-center justify-between gap-4 text-left"
-                onClick={() => toggle(i)}
-                type="button"
-              >
-                <span className="font-serif text-xl text-heading">{marks(section.title)}</span>
-                {isOpen ? (
-                  <Minus className="h-5 w-5 shrink-0 text-brand" />
-                ) : (
-                  <PlusIcon className="h-3.5 w-3.5 shrink-0 text-brand" />
-                )}
-              </button>
-            </h2>
+          <div className="border-b border-navy" key={section.id ?? i}>
+            <Toggle controls={panelId} onClick={() => toggle(i)} open={isOpen}>
+              {marks(section.title)}
+            </Toggle>
 
             {isOpen && Array.isArray(section.items) && section.items.length > 0 && (
-              <ul className="mt-3 list-disc space-y-1.5 pl-5" id={panelId}>
+              <ul
+                className="list-disc pb-4 pl-6 text-base leading-5 text-navy [&_sup]:leading-[0]"
+                id={panelId}
+              >
                 {section.items.map((item, j) => (
-                  <li className="text-sm leading-relaxed text-navy" key={item.id ?? j}>
-                    {marks(item.text)}
-                  </li>
+                  <li key={item.id ?? j}>{marks(item.text)}</li>
                 ))}
               </ul>
             )}
-          </li>
+          </div>
         )
       })}
-    </ul>
+    </>
   )
 }

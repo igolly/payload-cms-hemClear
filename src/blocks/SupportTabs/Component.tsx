@@ -20,48 +20,42 @@ export const SupportTabsBlock: React.FC<Props> = ({
 
   return (
     <section
-      className="w-full bg-mist px-4 py-14 sm:px-6 lg:px-8"
+      className="w-full bg-mist px-4 py-[60px] font-inter sm:px-6 lg:px-8"
       style={backgroundStyle(bgColor, bgColorCustom)}
     >
-      <div className="mx-auto max-w-5xl">
-        <header className="text-center">
-          {eyebrow && (
-            <span
-              className="inline-block rounded-full border border-tint-300 px-5 py-1.5 text-[10px] font-bold uppercase tracking-[0.15em] text-brand-500"
-              data-payload-subpath="eyebrow"
-            >
-              {marks(eyebrow)}
-            </span>
-          )}
-
-          {heading && (
-            <h2
-              className="mt-5 font-serif text-3xl leading-tight text-heading sm:text-4xl"
-              data-payload-subpath="heading"
-            >
-              {marks(heading)}
-            </h2>
-          )}
-
-          {subheading && (
-            <p
-              className="mt-2 whitespace-pre-line text-base font-semibold text-brand-500"
-              data-payload-subpath="subheading"
-            >
-              {marks(subheading)}
-            </p>
-          )}
-        </header>
-
-        {areas.length > 0 && (
-          <div className="mt-8">
-            <Tabs items={areas} />
-          </div>
+      <div className="mx-auto flex max-w-[1400px] flex-col items-center gap-4">
+        {eyebrow && (
+          <span
+            className="flex h-[31.25px] items-center justify-center rounded-[15.625px] border-[1.25px] border-brand-300 px-[31.25px] text-center text-xs font-bold uppercase tracking-[2.4px] text-brand-600"
+            data-payload-subpath="eyebrow"
+          >
+            {marks(eyebrow)}
+          </span>
         )}
+
+        {heading && (
+          <h2
+            className="text-center font-marcellus text-[44px] font-normal leading-[normal] text-navy-900 lg:text-[52px] lg:leading-normal [&_sup]:leading-[0]"
+            data-payload-subpath="heading"
+          >
+            {marks(heading)}
+          </h2>
+        )}
+
+        {subheading && (
+          <p
+            className="whitespace-pre-line text-center text-2xl font-medium leading-[normal] text-brand-500 lg:leading-normal"
+            data-payload-subpath="subheading"
+          >
+            {marks(subheading)}
+          </p>
+        )}
+
+        {areas.length > 0 && <Tabs items={areas} />}
 
         {footerLine && (
           <p
-            className="mt-8 text-center text-base font-semibold text-brand-500"
+            className="text-center text-2xl font-medium leading-[normal] text-brand-500 lg:leading-normal"
             data-payload-subpath="footerLine"
           >
             {marks(footerLine)}
@@ -70,7 +64,7 @@ export const SupportTabsBlock: React.FC<Props> = ({
 
         {disclaimer && (
           <p
-            className="mx-auto mt-3 max-w-2xl whitespace-pre-line text-center text-[11px] leading-relaxed text-slate-500"
+            className="whitespace-pre-line text-center text-[11.667px] leading-[16.042px] text-brand-600"
             data-payload-subpath="disclaimer"
           >
             {marks(disclaimer)}

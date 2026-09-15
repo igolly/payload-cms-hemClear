@@ -3,7 +3,7 @@ import type { Metadata } from 'next'
 import { cn } from '@/utilities/ui'
 import { GeistMono } from 'geist/font/mono'
 import { GeistSans } from 'geist/font/sans'
-import { Inter, Marcellus } from 'next/font/google'
+import { Fraunces, Inter, Marcellus, Playfair_Display } from 'next/font/google'
 import React from 'react'
 
 import { AdminBar } from '@/components/AdminBar'
@@ -34,12 +34,28 @@ const marcellus = Marcellus({
   variable: '--font-marcellus-display',
 })
 
+// Serif display face: section subheads (400 italic), card titles (500/600), product names (700).
+const playfair = Playfair_Display({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700'],
+  style: ['normal', 'italic'],
+  display: 'swap',
+  variable: '--font-playfair-display',
+})
+
+// Hero "Doctor's Choice" badge title. Variable font, so the weight range is loaded as one file.
+const fraunces = Fraunces({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-fraunces-display',
+})
+
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const { isEnabled } = await draftMode()
 
   return (
     <html
-      className={cn(GeistSans.variable, GeistMono.variable, inter.variable, marcellus.variable)}
+      className={cn(GeistSans.variable, GeistMono.variable, inter.variable, marcellus.variable, playfair.variable, fraunces.variable)}
       lang="en"
       suppressHydrationWarning
     >

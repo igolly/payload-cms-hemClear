@@ -1,5 +1,5 @@
 import React from 'react'
-import { Check, Star } from 'lucide-react'
+/* eslint-disable @next/next/no-img-element -- static design-system glyphs, nothing to optimise */
 
 import type { ProductDetailBlock } from '@/payload-types'
 
@@ -10,14 +10,35 @@ import { Composition } from '@/components/ProductDetail/Composition'
 import { DetailSections } from '@/components/ProductDetail/DetailSections'
 import { Gallery } from '@/components/ProductDetail/Gallery'
 import { StickyBars } from '@/components/ProductDetail/StickyBars'
+import { cn } from '@/utilities/ui'
 import { marks } from '@/utilities/marks'
 
+import { artworkSrc, feelTile } from './artwork'
+
+/** Info-banner copy: `**phrase**` is set in bold, as the comp bolds its figures. */
+const withBold = (text: React.ReactNode): React.ReactNode =>
+  typeof text === 'string'
+    ? text.split(/(\*\*[^*]+\*\*)/).map((part, i) =>
+        part.startsWith('**') && part.endsWith('**') ? (
+          <strong className="font-bold" key={i}>
+            {marks(part.slice(2, -2))}
+          </strong>
+        ) : (
+          <React.Fragment key={i}>{marks(part)}</React.Fragment>
+        ),
+      )
+    : text
+
 /**
- * The whole product detail as one page section.
+ * The whole product detail as one page section — Figma 6219:3619 (PRODUCT PAGE).
  *
  * The block's props are the fields themselves, so they are bound to `product` in one go
- * rather than destructured into ~30 locals — the body below reads exactly as it did when
- * this took a `Product` document.
+ * rather than destructured into ~30 locals.
+ *
+ * Layout: a 1375px row of two 675px columns 25px apart. The buy column carries a #ddd rule
+ * on its left and 30/20px padding, and stacks its pieces 10px apart. It is a size container,
+ * so the pieces that need ~600px (results row, composition columns) fold on its width rather
+ * than the viewport's.
  */
 export const ProductDetailBlockComponent: React.FC<ProductDetailBlock> = (product) => {
   const gallery = Array.isArray(product.gallery) ? product.gallery : []
@@ -37,7 +58,7 @@ export const ProductDetailBlockComponent: React.FC<ProductDetailBlock> = (produc
   const stars = Math.max(0, Math.min(5, Math.round(product.rating ?? 5)))
 
   return (
-    <section className="w-full bg-white px-4 py-8 sm:px-6 lg:px-8">
+    <section className="w-full bg-white px-4 py-4 font-inter text-navy sm:px-6 lg:px-8 lg:py-2.5">
       {product.stickyEnabled && (
         <StickyBars
           ctaLabel={product.ctaLabel}
@@ -51,239 +72,265 @@ export const ProductDetailBlockComponent: React.FC<ProductDetailBlock> = (produc
         />
       )}
 
-      <div className="mx-auto max-w-7xl">
-        <div className="grid grid-cols-1 gap-10 lg:grid-cols-2">
-          {/*
-           * Gallery.
-           *
-           * Pinned on desktop so it stays in view while the buy column beside it — which
-           * runs to several screens of buy box, notes, detail sections and stories — is
-           * scrolled. `self-start` is what makes that work: a grid item stretches to the
-           * full row height by default, and a sticky element that already fills its
-           * containing block has no room left to travel. Left alone below `lg`, where the
-           * two columns stack and there is nothing to scroll past.
-           */}
-          <div className="lg:sticky lg:top-8 lg:self-start">
-            <Gallery badgeLabel={product.badgeLabel} slides={gallery} />
-          </div>
+      <div className="mx-auto grid max-w-[1375px] grid-cols-1 gap-6 lg:grid-cols-2 lg:gap-[25px]">
+        {/*
+         * Gallery. Pinned on desktop so it stays in view while the much longer buy column
+         * beside it scrolls; `self-start` stops the grid item stretching to the row height,
+         * which would leave a sticky element no room to travel.
+         */}
+        <div className="min-w-0 lg:sticky lg:top-8 lg:self-start">
+          <Gallery badgeLabel={product.badgeLabel} slides={gallery} />
+        </div>
 
-          {/* Buy column */}
-          <div>
-            {/* Review bar */}
+        {/* Buy column — Figma 6207:2522 */}
+        <div className="@container flex min-w-0 flex-col gap-2.5 [&_sup]:leading-[0] lg:border-l lg:border-[#ddd] lg:px-5 lg:py-[30px]">
+          {/* Intro — Figma 6207:2819 */}
+          <div className="flex flex-col gap-2.5">
             {(product.ratingLabel || ratingNotes.length > 0) && (
-              <div className="flex flex-wrap items-center gap-x-3 gap-y-1 border-b border-tint-100 pb-3 text-xs text-brand">
+              <div className="flex flex-wrap items-center gap-x-3.5 gap-y-1 border-y border-[#3f5293] py-1.5">
                 <span
                   aria-label={`${stars} out of 5 stars`}
-                  className="flex items-center"
+                  className="text-base leading-4 text-navy"
                   role="img"
                 >
-                  {Array.from({ length: 5 }).map((_, i) => (
-                    <Star
-                      aria-hidden="true"
-                      className={
-                        i < stars ? 'h-3.5 w-3.5 text-brand' : 'h-3.5 w-3.5 text-slate-200'
-                      }
-                      fill="currentColor"
-                      key={i}
-                      strokeWidth={0}
-                    />
-                  ))}
+                  {'★'.repeat(stars)}
+                  {stars < 5 && <span className="text-steel-200">{'★'.repeat(5 - stars)}</span>}
                 </span>
-                {product.ratingLabel && (
-                  <span className="font-semibold">{marks(product.ratingLabel)}</span>
-                )}
-                {ratingNotes.map((note, i) => (
-                  <React.Fragment key={note.id ?? i}>
-                    <span aria-hidden="true" className="text-tint-150">
-                      |
-                    </span>
-                    <span>{marks(note.text)}</span>
-                  </React.Fragment>
-                ))}
+                <span className="text-xs font-medium leading-[14px] text-brand-600">
+                  {[product.ratingLabel, ...ratingNotes.map((note) => note.text)]
+                    .filter(Boolean)
+                    .map((text, i) => (
+                      <React.Fragment key={i}>
+                        {i > 0 && ' | '}
+                        {marks(text)}
+                      </React.Fragment>
+                    ))}
+                </span>
               </div>
             )}
 
             {product.eyebrow && (
-              <p className="mt-4 text-sm font-bold uppercase tracking-wide text-brand-500">
+              <p className="text-[16.25px] font-bold uppercase leading-5 text-brand-600">
                 {marks(product.eyebrow)}
               </p>
             )}
 
-            <h1 className="mt-1 font-serif text-3xl leading-tight text-heading sm:text-4xl">
+            <h1 className="font-marcellus text-[32px] leading-[1.1] text-navy sm:text-[38px] sm:leading-[38px]">
               {marks(product.title)}
             </h1>
 
             {product.description && (
-              <p className="mt-3 text-sm leading-relaxed text-navy">{marks(product.description)}</p>
+              <p className="text-lg leading-[22px] text-navy">{marks(product.description)}</p>
             )}
 
             {benefits.length > 0 && (
-              <ul className="mt-4 flex flex-wrap gap-2">
+              /* Figma 6207:2811: 38px pills, 1.25px brand-300 rule, 8px apart, #ccc rule beneath. */
+              <ul className="flex flex-wrap items-center gap-2 border-b border-[#ccc] py-4">
                 {benefits.map((benefit, i) => (
                   <li
-                    className="flex items-center gap-2 rounded-full border border-tint-100 px-3 py-1.5"
+                    className="flex h-[38px] items-center gap-2 rounded-[20px] border-[1.25px] border-brand-300 px-[18.75px]"
                     key={benefit.id ?? i}
                   >
-                    <Check className="h-3.5 w-3.5 shrink-0 text-brand" strokeWidth={3} />
-                    <span className="text-xs text-brand">{marks(benefit.text)}</span>
+                    <span
+                      aria-hidden="true"
+                      className="w-4 text-center text-lg font-medium leading-[1.21]"
+                    >
+                      ✓
+                    </span>
+                    <span className="text-xs font-medium leading-3">{marks(benefit.text)}</span>
                   </li>
                 ))}
               </ul>
             )}
+          </div>
 
-            {/* Reported results */}
-            {results.length > 0 && (
-              <div className="mt-6 rounded-xl border border-tint-100 bg-mist p-5">
-                {product.resultsTitle && (
-                  <p className="text-center text-sm font-bold uppercase tracking-wide text-brand">
-                    {marks(product.resultsTitle)}
-                  </p>
-                )}
+          {/* Reported results — Figma 6207:2832 */}
+          {results.length > 0 && (
+            <div className="flex flex-col gap-4 rounded-[20px] border border-navy bg-mist-100 p-5">
+              {product.resultsTitle && (
+                <p className="text-center text-[16.25px] font-bold uppercase leading-5 text-brand-600">
+                  {marks(product.resultsTitle)}
+                </p>
+              )}
 
-                <ul className="mt-4 grid grid-cols-2 gap-4 sm:grid-cols-4">
-                  {results.map((result, i) => (
-                    <li className="text-center" key={result.id ?? i}>
-                      <p className="text-3xl font-extrabold text-brand">{marks(result.value)}</p>
-                      <p className="mt-1 text-[11px] font-bold text-brand">{marks(result.label)}</p>
-                      {result.detail && (
-                        <p className="mt-1 text-[10px] leading-tight text-brand-500">
-                          {marks(result.detail)}
-                        </p>
-                      )}
-                    </li>
-                  ))}
-                </ul>
-
-                {product.resultsFootnote && (
-                  <p className="mt-4 text-center text-[10px] leading-relaxed text-slate-500">
-                    {marks(product.resultsFootnote)}
-                  </p>
-                )}
-              </div>
-            )}
-
-            <div className="mt-6">
-              <BuyBox
-                ctaLabel={product.ctaLabel}
-                oneTimeLabel={product.oneTimeLabel}
-                plans={Array.isArray(product.plans) ? product.plans : []}
-                variants={Array.isArray(product.variants) ? product.variants : []}
-                variantsTitle={product.variantsTitle}
-              />
-            </div>
-
-            {/* Info banners */}
-            {notes.length > 0 && (
-              <ul className="mt-4 flex flex-col gap-3">
-                {notes.map((note, i) => (
+              <ul className="grid grid-cols-2 gap-x-2 gap-y-6 @min-[600px]:grid-cols-4">
+                {results.map((result, i) => (
                   <li
-                    className="flex items-start gap-3 rounded-lg border border-tint-100 bg-mist p-4"
-                    key={note.id ?? i}
+                    className="flex flex-col gap-[5px] text-center @min-[600px]:h-[141px]"
+                    key={result.id ?? i}
                   >
-                    <BrandIcon
-                      className="shrink-0 text-brand [&>svg]:h-6 [&>svg]:w-6"
-                      name={note.icon}
-                    />
-                    <p className="text-xs leading-relaxed text-navy">
-                      {note.lead && <strong className="font-bold">{marks(note.lead)} </strong>}
-                      {marks(note.text)}
+                    <p className="font-fraunces text-[50px] font-bold leading-[50px]">
+                      {marks(result.value)}
                     </p>
+                    <p className="text-[13px] font-bold leading-4">{marks(result.label)}</p>
+                    {result.detail && (
+                      <p className="text-xs font-medium leading-[14px] text-brand-300">
+                        {marks(result.detail)}
+                      </p>
+                    )}
                   </li>
                 ))}
               </ul>
-            )}
 
-            {/* Trust icons */}
-            {trustItems.length > 0 && (
-              <ul className="mt-6 flex flex-wrap items-start justify-center gap-8">
-                {trustItems.map((item, i) => (
+              {product.resultsFootnote && (
+                <p className="text-center text-sm leading-4 text-[#666]">
+                  {marks(product.resultsFootnote)}
+                </p>
+              )}
+            </div>
+          )}
+
+          <BuyBox
+            ctaLabel={product.ctaLabel}
+            oneTimeLabel={product.oneTimeLabel}
+            plans={Array.isArray(product.plans) ? product.plans : []}
+            variants={Array.isArray(product.variants) ? product.variants : []}
+            variantsTitle={product.variantsTitle}
+          />
+
+          {/* Info banners — Figma 6215:3048 / 6216:3051 */}
+          {notes.map((note, i) => {
+            const src = artworkSrc(note.artwork)
+            // A lead saved with its dash ("Your purchase gives back —") keeps the dash out of the bold.
+            const lead =
+              typeof note.lead === 'string' ? note.lead.replace(/\s*[—–-]\s*$/, '') : note.lead
+
+            return (
+              <div
+                className="flex items-center gap-2 rounded-lg border border-navy bg-mist-100 px-5 py-[13px]"
+                key={note.id ?? i}
+              >
+                {src ? (
+                  <img alt="" className="size-7 shrink-0" height={28} src={src} width={28} />
+                ) : (
+                  <BrandIcon className="shrink-0 text-navy [&>svg]:size-7" name={note.icon} />
+                )}
+                <p className="text-xs leading-[14px] text-navy">
+                  {lead && <strong className="font-bold">{marks(lead)}</strong>}
+                  {lead && ' — '}
+                  {withBold(note.text)}
+                </p>
+              </div>
+            )
+          })}
+
+          {/* Trust icons — Figma 6216:3062: 150px boxes, 64px ringed tiles with 28px glyphs */}
+          {trustItems.length > 0 && (
+            <ul className="flex justify-center gap-2.5 p-2.5">
+              {trustItems.map((item, i) => {
+                const src = artworkSrc(item.artwork)
+
+                return (
                   <li
-                    className="flex w-28 flex-col items-center gap-2 text-center"
+                    className="flex w-[150px] min-w-0 flex-col items-center gap-2.5 text-center"
                     key={item.id ?? i}
                   >
-                    <span className="flex h-11 w-11 items-center justify-center rounded-full border border-tint-100 text-brand [&>span>svg]:h-5 [&>span>svg]:w-5">
-                      <BrandIcon name={item.icon} />
+                    <span className="flex size-16 items-center justify-center rounded-[20px] border border-[#ccc] text-navy">
+                      {src ? (
+                        <img alt="" className="size-7" height={28} src={src} width={28} />
+                      ) : (
+                        <BrandIcon className="[&>svg]:size-7" name={item.icon} />
+                      )}
                     </span>
-                    <span className="text-xs font-semibold text-brand">{marks(item.label)}</span>
+                    <span className="text-sm font-bold leading-[14px]">{marks(item.label)}</span>
                   </li>
-                ))}
-              </ul>
-            )}
+                )
+              })}
+            </ul>
+          )}
 
-            {/* What you'll feel */}
-            {feel.length > 0 && (
-              <div className="mt-6 rounded-xl border border-tint-100 bg-mist p-5">
-                {product.feelTitle && (
-                  <p className="text-center text-base font-bold text-brand">
-                    {marks(product.feelTitle)}
-                  </p>
-                )}
+          {/* What you'll feel — Figma 6216:3078 */}
+          {feel.length > 0 && (
+            <div className="flex flex-col gap-4 rounded-lg border border-navy bg-mist-100 px-5 py-[13px]">
+              {product.feelTitle && (
+                <p className="text-center text-lg font-bold leading-[22px]">
+                  {marks(product.feelTitle)}
+                </p>
+              )}
 
-                <ul className="mt-4 flex flex-col gap-2">
-                  {feel.map((row, i) => (
+              <ul className="flex flex-col">
+                {feel.map((row, i) => {
+                  const src = artworkSrc(row.artwork)
+                  const tile = row.artwork ? feelTile[row.artwork] : undefined
+
+                  return (
                     <li
-                      className="flex items-center gap-3 rounded-lg bg-white px-4 py-3"
+                      className="flex items-center justify-between gap-4 border-b border-[#ccc] py-2 last:border-b-0"
                       key={row.id ?? i}
                     >
-                      <BrandIcon
-                        className="shrink-0 text-brand-400 [&>svg]:h-6 [&>svg]:w-6"
-                        name={row.icon}
-                      />
-                      <span className="min-w-0 grow">
-                        <span className="block text-sm font-bold text-brand">
-                          {marks(row.title)}
+                      <span className="flex min-w-0 items-center gap-[13px]">
+                        <span
+                          className={cn(
+                            'flex size-[38px] shrink-0 items-center justify-center rounded-[10px] shadow-[0_2px_4px_rgba(0,0,0,0.1)]',
+                            !tile && 'bg-white',
+                          )}
+                          style={tile ? { backgroundImage: tile } : undefined}
+                        >
+                          {src ? (
+                            <img alt="" className="size-[18px]" height={18} src={src} width={18} />
+                          ) : (
+                            <BrandIcon
+                              className="text-brand-400 [&>svg]:size-[18px]"
+                              name={row.icon}
+                            />
+                          )}
                         </span>
-                        {row.subtitle && (
-                          <span className="block text-[11px] text-brand-500">
-                            {marks(row.subtitle)}
+                        <span className="flex min-w-0 flex-col gap-[5px]">
+                          <span className="text-base font-bold leading-4 text-black">
+                            {marks(row.title)}
                           </span>
-                        )}
+                          {row.subtitle && (
+                            <span className="text-xs leading-3 text-navy">
+                              {marks(row.subtitle)}
+                            </span>
+                          )}
+                        </span>
                       </span>
                       {row.percent && (
-                        <span className="text-sm font-bold text-brand">{marks(row.percent)}</span>
+                        <span className="shrink-0 text-lg leading-3 text-black">
+                          {marks(row.percent)}
+                        </span>
                       )}
                     </li>
-                  ))}
-                </ul>
-              </div>
-            )}
+                  )
+                })}
+              </ul>
+            </div>
+          )}
 
-            {sections.length > 0 && <DetailSections sections={sections} />}
+          {/* Accordions + stories — Figma 6216:3145, stacked with no gap */}
+          {(sections.length > 0 || hasComposition || stories.length > 0) && (
+            <div className="flex flex-col">
+              {sections.length > 0 && <DetailSections sections={sections} />}
 
-            {hasComposition && (
-              <Composition
-                contains={contains}
-                containsTitle={product.containsTitle}
-                notContains={notContains}
-                notContainsTitle={product.notContainsTitle}
-                note={product.compositionNote}
-                title={product.compositionTitle}
-              />
-            )}
-            {/*
-             * Customer stories close the buy column, as the comp has them. Five cards fit
-             * across it once they are sized off the column rather than the page and the
-             * arrows step aside — the earlier squeeze came from page-width cards being asked
-             * to fit here, not from the column being too narrow for the row.
-             */}
-            {stories.length > 0 && (
-              <div className="mt-10 border-t border-tint-100 pt-8">
-                {product.storiesTitle && (
-                  <h2 className="text-xl font-extrabold tracking-tight text-heading sm:text-2xl">
-                    {marks(product.storiesTitle)}
-                  </h2>
-                )}
-                <div className="mt-5 border-b border-tint-100 pb-8">
+              {hasComposition && (
+                <Composition
+                  contains={contains}
+                  containsTitle={product.containsTitle}
+                  notContains={notContains}
+                  notContainsTitle={product.notContainsTitle}
+                  note={product.compositionNote}
+                  title={product.compositionTitle}
+                />
+              )}
+
+              {/* Customer stories — Figma 6216:3153: 16px padding and gap, navy rule beneath. */}
+              {stories.length > 0 && (
+                <div className="flex flex-col gap-4 border-b border-navy py-4">
+                  {product.storiesTitle && (
+                    <h2 className="text-[22px] font-bold leading-[22px] text-navy">
+                      {marks(product.storiesTitle)}
+                    </h2>
+                  )}
                   <Carousel
-                    arrows={false}
-                    itemClassName="w-[46%] sm:w-[30%] lg:w-[calc((100%-4rem)/5)]"
+                    posterIncludesChrome={Boolean(product.storiesPosterIncludesChrome)}
                     stories={stories}
                     tone="light"
                   />
                 </div>
-              </div>
-            )}
-          </div>
+              )}
+            </div>
+          )}
         </div>
       </div>
     </section>

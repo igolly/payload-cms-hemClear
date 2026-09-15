@@ -1,9 +1,23 @@
 import React from 'react'
-import { Star } from 'lucide-react'
 
 import type { StatsBarBlock as Props } from '@/payload-types'
 import { backgroundStyle } from '@/fields/background'
+import { cn } from '@/utilities/ui'
 import { marks } from '@/utilities/marks'
+
+type Stat = NonNullable<Props['stats']>[number]
+
+/**
+ * Figure sizes from the desktop comp (`lg`, Marcellus): 50px for a short figure, 42px for a
+ * long one ("500,000+") so it stays inside its column, and 40px for a figure under a top label
+ * ("The / Original"). The mobile comp sets the figures in Fraunces Bold: 48/50, 36/40 and 36/38 on the 440px artboard, scaled with the viewport
+ * below it so a 390px phone keeps the labels inside their cells.
+ */
+const valueSizes: Record<NonNullable<Stat['valueSize']>, string> = {
+  lg: 'text-[min(48px,10.91vw)] leading-[50px] lg:h-[55px] lg:text-[50px] lg:leading-[55px]',
+  md: 'text-[min(36px,8.18vw)] leading-[40px] lg:h-[55px] lg:text-[42px] lg:leading-[55px]',
+  sm: 'text-[min(36px,8.18vw)] leading-[38px] lg:h-[40px] lg:text-[40px] lg:leading-[40px]',
+}
 
 export const StatsBarBlock: React.FC<Props> = ({ bgColor, bgColorCustom, stats }) => {
   const items = Array.isArray(stats) ? stats : []
@@ -12,48 +26,65 @@ export const StatsBarBlock: React.FC<Props> = ({ bgColor, bgColorCustom, stats }
 
   return (
     <section
-      className="w-full bg-mist px-4 py-4 sm:px-6 lg:px-8"
+      // Mobile comp: Fraunces, a 2x2 grid of 200px cells inset 16px / 10px. Desktop: Marcellus.
+      className="w-full bg-mist px-4 py-[10px] font-fraunces sm:px-6 lg:px-8 lg:py-0 lg:font-marcellus"
       style={backgroundStyle(bgColor, bgColorCustom)}
     >
-      <ul className="mx-auto grid max-w-6xl grid-cols-2 gap-y-6 lg:flex lg:items-center lg:justify-center">
-        {items.map((stat, i) => (
-          <li
-            className="flex flex-col items-center px-4 text-center lg:flex-1 lg:border-l lg:border-tint-150 lg:first:border-l-0"
-            data-payload-subpath={`stats.${i}.value`}
-            key={stat.id ?? i}
-          >
-            {stat.topLabel && (
-              <span
-                className="font-marcellus text-lg leading-none text-subheading"
-                data-payload-subpath={`stats.${i}.topLabel`}
-              >
-                {marks(stat.topLabel)}
-              </span>
-            )}
+      <ul className="mx-auto grid max-w-[1116px] grid-cols-[repeat(2,minmax(0,200px))] justify-start text-center text-brand-600 sm:justify-center lg:flex lg:items-center lg:py-[3px]">
+        {items.map((stat, i) => {
+          // A long figure ("500,000+") at the large size runs into its column's divider, so it
+          // steps down to `md` unless an editor has picked a size.
+          const size =
+            stat.valueSize ?? (stat.topLabel ? 'sm' : stat.value.length > 6 ? 'md' : 'lg')
 
-            <span className="flex items-center">
-              <span className="font-marcellus text-[30px] font-normal leading-[34px] text-subheading">
-                {marks(stat.value)}
-              </span>
-              {stat.showStar && (
-                <Star
-                  className="h-6 w-6 text-subheading sm:h-7 sm:w-7"
-                  fill="currentColor"
-                  strokeWidth={0}
-                />
+          return (
+            <li
+              className={cn(
+                // `marks` sets ® in a <sup>; keep it from opening up the fixed line boxes.
+                // Mobile cells: bottom-aligned, 16px above and below, 5px between lines, split by
+                // #ddd rules (left rule on the right-hand column, top rule on the second row).
+                'flex min-w-0 flex-col items-center justify-end gap-[5px] py-4 [&_sup]:leading-[0] max-lg:even:border-l max-lg:even:border-[#ddd] max-lg:[&:nth-child(n+3)]:border-t max-lg:[&:nth-child(n+3)]:border-[#ddd] lg:flex-1 lg:justify-start lg:border-l lg:border-brand-500 lg:px-[42px] lg:py-0 lg:first:border-l-0',
+                stat.topLabel ? 'lg:gap-1' : 'lg:gap-[3px]',
               )}
-            </span>
+              data-payload-subpath={`stats.${i}.value`}
+              key={stat.id ?? i}
+            >
+              {stat.topLabel ? (
+                // The comp sets "The / Original" as one 74px text box: 34px + 40px lines.
+                <span className="flex flex-col items-center gap-[5px] lg:gap-0">
+                  <span
+                    className="text-[min(26px,5.91vw)] leading-[28px] lg:text-[30px] lg:leading-[34px]"
+                    data-payload-subpath={`stats.${i}.topLabel`}
+                  >
+                    {marks(stat.topLabel)}
+                  </span>
+                  <span
+                    className={cn('whitespace-nowrap font-bold lg:font-normal', valueSizes[size])}
+                  >
+                    {marks(stat.value)}
+                    {stat.showStar && <span aria-hidden>★</span>}
+                  </span>
+                </span>
+              ) : (
+                <span
+                  className={cn('whitespace-nowrap font-bold lg:font-normal', valueSizes[size])}
+                >
+                  {marks(stat.value)}
+                  {stat.showStar && <span aria-hidden>★</span>}
+                </span>
+              )}
 
-            {stat.label && (
-              <span
-                className="font-marcellus text-sm text-subheading sm:text-base"
-                data-payload-subpath={`stats.${i}.label`}
-              >
-                {marks(stat.label)}
-              </span>
-            )}
-          </li>
-        ))}
+              {stat.label && (
+                <span
+                  className="whitespace-nowrap text-[min(24px,5.455vw)] leading-[30px] lg:text-2xl"
+                  data-payload-subpath={`stats.${i}.label`}
+                >
+                  {marks(stat.label)}
+                </span>
+              )}
+            </li>
+          )
+        })}
       </ul>
     </section>
   )

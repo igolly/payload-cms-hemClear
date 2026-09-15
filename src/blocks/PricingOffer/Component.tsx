@@ -1,13 +1,27 @@
 import React from 'react'
-import { CircleCheck, Gift } from 'lucide-react'
 
 import type { PricingOfferBlock as Props } from '@/payload-types'
 
 import { BrandIcon } from '@/components/BrandIcons'
 import { Media } from '@/components/Media'
-import { cn } from '@/utilities/ui'
 import { backgroundStyle } from '@/fields/background'
 import { marks } from '@/utilities/marks'
+
+import { PlanCard, PopularFrame } from './PlanCard'
+import { PlanCarousel } from './PlanCarousel'
+import { SelectablePlans } from './SelectablePlans'
+
+/**
+ * Trust-strip badges drawn for this section in the Figma comp (filled, two-tone), which the
+ * line icons in `BrandIcons` don't match. Any other icon an editor picks falls back to the
+ * shared set.
+ */
+const trustBadges: Record<string, string> = {
+  flask: '/icons/pricing/flask.svg',
+  guarantee: '/icons/pricing/guarantee.svg',
+  leaf: '/icons/pricing/leaf.svg',
+  madeInUsa: '/icons/pricing/made-in-usa.svg',
+}
 
 /** Renders *asterisked* words in the highlight colour. */
 const highlight = (text: React.ReactNode): React.ReactNode => {
@@ -16,7 +30,7 @@ const highlight = (text: React.ReactNode): React.ReactNode => {
 
   return text.split(/(\*[^*]+\*)/g).map((part, i) =>
     part.startsWith('*') && part.endsWith('*') ? (
-      <span className="text-aqua" key={i}>
+      <span className="text-aqua-200" key={i}>
         {part.slice(1, -1)}
       </span>
     ) : (
@@ -33,182 +47,93 @@ export const PricingOfferBlock: React.FC<Props> = ({
   bannerTitle,
   bannerValue,
   bannerValueLabel,
+  layout,
   plans,
   trustItems,
 }) => {
   const cards = Array.isArray(plans) ? plans : []
   const trust = Array.isArray(trustItems) ? trustItems : []
 
-  // The featured plan is drawn wider than the two beside it. That only works as a fixed
-  // column ratio when it actually is the middle one of three, so fall back to even
-  // columns for any other shape of the array.
-  const featuredIsCenter = cards.length === 3 && Boolean(cards[1]?.popular)
-
   return (
     <section
-      className="w-full bg-navy px-4 py-12 sm:px-6 lg:px-8"
+      // Inter throughout, as in the comp — the global rule only reaches <p>, not list items or links.
+      className="w-full bg-navy p-4 font-inter sm:px-6 sm:py-8 lg:px-8 lg:py-[18.75px]"
       style={backgroundStyle(bgColor, bgColorCustom)}
     >
-      <div className="mx-auto max-w-6xl">
+      <div className="mx-auto flex max-w-[1400px] flex-col items-center gap-[6.25px]">
         {(bannerTitle || bannerText) && (
-          <div className="flex flex-col items-center gap-5 rounded-xl bg-navy-600 px-6 py-5 sm:flex-row sm:gap-6">
-            <span className="flex h-[5.5rem] w-[5.5rem] shrink-0 items-center justify-center rounded-full bg-white text-brand shadow-[0_0_28px_rgba(255,255,255,0.35)]">
-              <Gift className="h-11 w-11" strokeWidth={1.75} />
-            </span>
+          <div className="flex w-full max-w-[1152px] flex-col items-center justify-center gap-[10px] rounded-[18px] bg-[#30489d] px-[31.25px] py-[12.5px] shadow-[0_0_11.25px_rgba(0,0,0,0.25)] lg:flex-row lg:gap-[92px] lg:rounded-[18.75px]">
+            <div className="flex w-full flex-col items-center gap-[10px] lg:w-auto lg:flex-row lg:gap-[31.25px]">
+              <span className="flex h-[57px] w-[58px] shrink-0 items-center justify-center rounded-full bg-white shadow-[0_12.5px_15.625px_rgba(255,255,255,0.25),0_12.5px_15.625px_rgba(0,0,0,0.25)] lg:size-[112.5px]">
+                {/* eslint-disable-next-line @next/next/no-img-element -- static SVG, nothing to optimise */}
+                <img alt="" className="size-10 lg:size-[70px]" height={70} src="/icons/pricing/gift.svg" width={70} />
+              </span>
 
-            <span aria-hidden="true" className="hidden h-16 w-px shrink-0 bg-white/30 sm:block" />
-
-            <div className="grow text-center sm:text-left">
-              {bannerTitle && (
-                <p className="text-2xl font-extrabold uppercase leading-tight tracking-wide text-white sm:text-[1.75rem]">
-                  {marks(bannerTitle)}
-                </p>
-              )}
-              {bannerText && (
-                <p className="mt-1 text-base font-bold leading-snug text-white sm:text-[1.0625rem]">
-                  {highlight(bannerText)}
-                </p>
-              )}
+              <div className="flex w-full flex-col gap-[3.125px] border-l border-white pl-[30px] text-left text-white lg:w-auto">
+                {bannerTitle && (
+                  <p className="font-marcellus text-[length:min(32px,calc((100vw-124.5px)*0.1014))] whitespace-nowrap uppercase leading-[normal] sm:text-[32px] lg:text-[40px] lg:leading-none">
+                    {marks(bannerTitle)}
+                  </p>
+                )}
+                {bannerText && (
+                  <p className="text-center text-2xl font-bold leading-[normal] lg:max-w-[27rem] lg:text-left lg:leading-normal">
+                    {highlight(bannerText)}
+                  </p>
+                )}
+              </div>
             </div>
 
-            {bannerImage && typeof bannerImage === 'object' && (
-              <span className="relative h-24 w-36 shrink-0">
-                <Media fill imgClassName="object-contain" resource={bannerImage} />
-              </span>
-            )}
-
-            {bannerValue && (
-              <span className="flex h-24 w-24 shrink-0 flex-col items-center justify-center rounded-full bg-white text-heading">
-                <span className="text-xl font-extrabold leading-none">{marks(bannerValue)}</span>
-                <span className="mt-1 text-[11px] font-bold uppercase tracking-wide">
-                  {marks(bannerValueLabel)}
+            <div className="flex w-full items-center justify-center gap-[25px] lg:w-auto lg:justify-end">
+              {bannerImage && typeof bannerImage === 'object' && (
+                <span className="relative h-[112.5px] w-[155px] shrink-0">
+                  <Media fill imgClassName="object-cover" resource={bannerImage} size="155px" />
                 </span>
-              </span>
-            )}
+              )}
+
+              {bannerValue && (
+                <span className="flex size-[112.5px] shrink-0 flex-col items-center justify-center rounded-full bg-white text-center text-navy shadow-[0_2.5px_2.5px_rgba(255,255,255,0.25),0_12.5px_15.625px_rgba(0,0,0,0.25)]">
+                  <span className="text-2xl font-extrabold">{marks(bannerValue)}</span>
+                  <span className="text-lg font-medium uppercase">{marks(bannerValueLabel)}</span>
+                </span>
+              )}
+            </div>
           </div>
         )}
 
-        {cards.length > 0 && (
-          <ul
-            className={cn(
-              'mt-8 grid grid-cols-1 gap-5 md:items-end',
-              featuredIsCenter ? 'md:grid-cols-[1fr_1.2fr_1fr]' : 'md:grid-cols-3',
-            )}
-          >
-            {cards.map((plan, i) => (
-              <li
-                className={cn(
-                  'overflow-hidden rounded-xl',
-                  plan.popular ? 'bg-white ring-4 ring-brand-300' : 'bg-mist-100',
-                )}
-                data-payload-subpath={`plans.${i}.name`}
-                key={plan.id ?? i}
-              >
-                {plan.popular && plan.popularLabel && (
-                  <p className="bg-brand py-2 text-center text-xs font-bold uppercase tracking-wide text-white">
-                    ★ {plan.popularLabel} ★
-                  </p>
-                )}
+        {cards.length > 0 && layout === 'select' && <SelectablePlans plans={cards} />}
 
-                <div className={cn('pb-5 text-center', plan.popular ? 'px-6 pt-5' : 'px-5 pt-6')}>
-                  {/*
-                   * Two lines of title height are reserved whether or not the name wraps,
-                   * so the cards beside the featured one stay the same height and line up
-                   * along the top as in the design.
-                   */}
-                  {/*
-                   * `marks` splits the name around its ® symbols, so the pieces have to sit
-                   * inside a single inline child. Left as direct children of this flex box
-                   * they each became a flex item and were laid out as boxes rather than
-                   * flowing text — "HemClear® + HemCream®" broke mid-phrase and stranded its
-                   * trailing ® on the line above.
-                   */}
-                  <p
-                    className={cn(
-                      'flex min-h-[2.5em] items-center justify-center px-1 text-center font-serif font-bold leading-tight text-heading',
-                      plan.popular ? 'text-[1.7rem]' : 'text-[1.3rem]',
-                    )}
-                  >
-                    <span className="text-balance">{marks(plan.name)}</span>
-                  </p>
-
-                  <div
-                    className={cn('relative mx-auto mt-4 w-full', plan.popular ? 'h-44' : 'h-40')}
-                  >
-                    {plan.image && typeof plan.image === 'object' ? (
-                      <Media fill imgClassName="object-contain" resource={plan.image} />
-                    ) : (
-                      <span className="flex h-full items-center justify-center text-[11px] text-steel-400">
-                        Product image
-                      </span>
-                    )}
-                  </div>
-
-                  {plan.priceLead && (
-                    <p className="mt-4 text-xs text-slate-500">{marks(plan.priceLead)}</p>
-                  )}
-                  <p className="mt-1 flex items-baseline justify-center gap-1">
-                    <span className="text-[2.5rem] font-extrabold leading-none text-heading">
-                      {marks(plan.price)}
-                    </span>
-                    {plan.priceSuffix && (
-                      <span className="text-sm text-slate-500">{marks(plan.priceSuffix)}</span>
-                    )}
-                  </p>
-
-                  {Array.isArray(plan.features) && plan.features.length > 0 && (
-                    <ul className="mt-4 flex flex-col gap-2.5 border-t border-tint-150 pt-4 text-left">
-                      {plan.features.map((feature, f) => (
-                        <li className="flex items-start gap-2.5" key={feature.id ?? f}>
-                          <CircleCheck
-                            className="mt-px h-[18px] w-[18px] shrink-0 fill-brand-600 text-white"
-                            strokeWidth={2.5}
-                          />
-                          <span
-                            className={cn(
-                              'text-[13px] leading-snug',
-                              feature.highlight ? 'text-brand-500' : 'text-navy-950',
-                            )}
-                          >
-                            {marks(feature.text)}
-                          </span>
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-
-                  <a
-                    className={cn(
-                      'mt-5 block rounded-md py-3.5 text-[15px] font-bold uppercase tracking-wide text-white transition-colors',
-                      plan.popular
-                        ? 'bg-success hover:bg-success-dark'
-                        : 'bg-brand hover:bg-brand-dark',
-                    )}
-                    href={plan.ctaUrl || '#'}
-                  >
-                    {plan.ctaLabel || 'Buy Now'}
-                  </a>
-
-                  {/* Reserved even when empty, so a plan without a footnote keeps its height. */}
-                  <p className="mt-2.5 min-h-4 text-xs text-brand-500">{marks(plan.footnote)}</p>
+        {cards.length > 0 && layout !== 'select' && (
+          <PlanCarousel initial={Math.max(0, cards.findIndex((plan) => plan.popular))} itemWidth="353.125px">
+            {cards.map((plan, i) =>
+              plan.popular ? (
+                <div className="w-[353.125px] max-w-full xl:w-[411px] xl:max-w-[411px]" key={plan.id ?? i}>
+                  <PopularFrame label={plan.popularLabel}>
+                    <PlanCard index={i} plan={plan} />
+                  </PopularFrame>
                 </div>
-              </li>
-            ))}
-          </ul>
+              ) : (
+                <div className="w-[353.125px] max-w-full xl:w-[345px] xl:max-w-[411px]" key={plan.id ?? i}>
+                  <PlanCard index={i} plan={plan} />
+                </div>
+              ),
+            )}
+          </PlanCarousel>
         )}
 
         {trust.length > 0 && (
-          <ul className="mx-auto mt-6 flex max-w-[97%] flex-wrap items-center justify-center gap-x-8 gap-y-4 rounded-xl bg-white px-8 py-5">
+          <ul className="grid w-full max-w-[1106.25px] grid-cols-1 gap-[10px] rounded-[18.75px] bg-white py-4 shadow-[0_0_11.25px_rgba(0,0,0,0.25)] sm:grid-cols-2 sm:gap-4 sm:px-4 sm:py-5 lg:flex lg:h-[76.25px] lg:items-center lg:justify-center lg:gap-0 lg:py-0">
             {trust.map((item, i) => (
               <li
-                className="flex items-center gap-3 border-tint-100 pl-8 first:pl-0 sm:border-l sm:first:border-l-0"
+                className="flex items-center gap-[12.5px] px-4 lg:border-l lg:border-navy lg:first:border-l-0"
                 key={item.id ?? i}
               >
-                <BrandIcon
-                  className="shrink-0 text-brand-400 [&>svg]:h-8 [&>svg]:w-8"
-                  name={item.icon}
-                />
-                <span className="whitespace-pre-line text-sm font-bold leading-tight text-heading">
+                {item.icon && trustBadges[item.icon] ? (
+                  // eslint-disable-next-line @next/next/no-img-element -- static SVG, nothing to optimise
+                  <img alt="" className="size-10 shrink-0" height={40} src={trustBadges[item.icon]} width={40} />
+                ) : (
+                  <BrandIcon className="shrink-0 text-navy [&>svg]:size-10" name={item.icon} />
+                )}
+                <span className="whitespace-pre-line text-base font-bold leading-[normal] text-navy sm:leading-normal">
                   {marks(item.label)}
                 </span>
               </li>

@@ -6,6 +6,64 @@ import { Media } from '@/components/Media'
 import { ImageSlot } from '@/blocks/FAQ/ImagePlaceholder'
 import { backgroundStyle } from '@/fields/background'
 import { marks, multiline } from '@/utilities/marks'
+import { cn } from '@/utilities/ui'
+
+type Feature = NonNullable<Props['features']>[number]
+
+/**
+ * The card icons drawn for this section in the Figma comp, exported at their 44px size.
+ * Shown when an editor has picked a built-in icon and not uploaded a card image.
+ */
+const featureIcons: Record<NonNullable<Feature['icon']>, string> = {
+  flask: '/icons/product-system/ingredients.svg',
+  guarantee: '/icons/product-system/guarantee.svg',
+  madeInUsa: '/icons/product-system/made-in-usa.svg',
+  research: '/icons/product-system/research.svg',
+  stethoscope: '/icons/product-system/doctor.svg',
+  supportSystem: '/icons/product-system/support-system.svg',
+}
+
+/* Below `sm` the cards stand upright (mobile comp): badge titles keep 24px, the rest run 14px. */
+const titleSizes = {
+  lg: 'text-2xl leading-[22.5px]',
+  md: 'text-[14px] leading-[normal] sm:text-lg',
+  sm: 'text-[14px] leading-[normal] sm:text-base',
+} as const
+
+/** The comp sizes a title by what sits beside it: a number, a subtitle, or nothing. */
+const titleSizeFor = (feature: Feature): keyof typeof titleSizes =>
+  feature.titleSize ?? (feature.stat ? 'sm' : feature.subtitle ? 'lg' : 'md')
+
+const FeatureIcon: React.FC<{ feature: Feature }> = ({ feature }) => {
+  if (feature.image && typeof feature.image === 'object') {
+    return (
+      <Media
+        className="size-11 shrink-0"
+        imgClassName="size-11 object-contain"
+        resource={feature.image}
+        size="44px"
+      />
+    )
+  }
+
+  const src = feature.icon ? featureIcons[feature.icon] : undefined
+
+  if (src) {
+    return (
+      // The research glyph is narrower than its 44px box; `object-contain` keeps it centred at its drawn ratio.
+      // eslint-disable-next-line @next/next/no-img-element -- static SVG, nothing to optimise
+      <img alt="" className="size-11 shrink-0 object-contain" height={44} src={src} width={44} />
+    )
+  }
+
+  return (
+    <div
+      aria-label="Feature image placeholder"
+      className="size-11 shrink-0 rounded-lg border-2 border-dashed border-tint-150 bg-mist"
+      role="img"
+    />
+  )
+}
 
 export const ProductSystemBlock: React.FC<Props> = ({
   bgColor,
@@ -22,144 +80,111 @@ export const ProductSystemBlock: React.FC<Props> = ({
 
   return (
     <section
-      className="w-full bg-mist px-4 py-16 sm:px-6 lg:px-8"
+      // `marks` sets ® in a <sup>; pinning its line-height keeps the fixed line boxes from growing.
+      className="w-full bg-mist px-[5px] font-inter sm:px-4 [&_sup]:leading-[0]"
       style={backgroundStyle(bgColor, bgColorCustom)}
     >
-      {(heading || subheading) && (
-        <header className="mx-auto max-w-3xl text-center">
-          {heading && (
-            <h2
-              className="font-serif text-3xl leading-tight text-heading sm:text-4xl"
-              data-payload-subpath="heading"
-            >
-              {multiline(heading)}
-            </h2>
-          )}
-          {subheading && (
-            <p
-              className="mt-3 text-base font-semibold text-brand-400 sm:text-lg"
-              data-payload-subpath="subheading"
-            >
-              {marks(subheading)}
-            </p>
-          )}
-        </header>
-      )}
-
-      <div className="mx-auto mt-12 grid max-w-6xl items-center gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)_minmax(0,1fr)]">
-        {/* Left column — copy. Sits below the diagram on mobile. */}
-        <div className="order-2 lg:order-1">
-          {columnHeading && (
-            <h3
-              className="font-serif text-2xl leading-tight text-subheading"
-              data-payload-subpath="columnHeading"
-            >
-              {multiline(columnHeading)}
-            </h3>
-          )}
-
-          {paras.length > 0 && (
-            <div className="mt-4 space-y-3 text-[13px] leading-relaxed text-steel-600">
-              {paras.map((paragraph, i) => (
-                <p data-payload-subpath={`paragraphs.${i}.text`} key={paragraph.id ?? i}>
-                  {paragraph.lead && (
-                    <strong className="font-bold text-brand-400">{marks(paragraph.lead)} </strong>
-                  )}
-                  {marks(paragraph.text)}
-                </p>
-              ))}
-            </div>
-          )}
-        </div>
-
-        {/* Centre — diagram. First on mobile. */}
-        <div
-          className="relative order-1 aspect-square w-full lg:order-2"
-          data-payload-subpath="image"
-        >
-          <ImageSlot
-            className="h-full w-full"
-            hint="Recommended 1000 × 1000px, transparent PNG"
-            label="Inside-out support diagram"
-            resource={image}
-          />
-        </div>
-
-        {/* Right column — feature cards. */}
-        {cards.length > 0 && (
-          <ul className="order-3 space-y-3">
-            {cards.map((feature, i) => (
-              <li
-                className="flex items-center gap-3 rounded-xl border border-tint-100 bg-white px-4 py-3 shadow-[0_1px_3px_rgba(16,60,120,0.06)]"
-                data-payload-subpath={`features.${i}.title`}
-                key={feature.id ?? i}
-              >
-                {/*
-                 * Leading visual. An image rather than an icon, so the slot is sized for
-                 * a real picture and crops to a square. The dashed box is the same
-                 * treatment `ImageSlot` gives the larger image fields, shrunk to fit a
-                 * card — it holds the space so an unfilled card reads as deliberate
-                 * rather than broken, and it is what shows until an editor uploads one.
-                 */}
-                <div className="h-14 w-14 shrink-0 overflow-hidden rounded-lg">
-                  {feature.image && typeof feature.image === 'object' ? (
-                    <Media
-                      className="h-full w-full"
-                      imgClassName="h-full w-full object-cover"
-                      resource={feature.image}
-                    />
-                  ) : (
-                    <div
-                      aria-label="Feature image placeholder"
-                      className="flex h-full w-full items-center justify-center rounded-lg border-2 border-dashed border-tint-150 bg-mist"
-                      role="img"
-                    >
-                      <svg
-                        aria-hidden="true"
-                        className="h-6 w-6 text-tint-300"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                      >
-                        <rect
-                          height="16"
-                          rx="2"
-                          stroke="currentColor"
-                          strokeWidth="1.5"
-                          width="18"
-                          x="3"
-                          y="4"
-                        />
-                        <circle cx="8.5" cy="9.5" fill="currentColor" r="1.5" />
-                        <path
-                          d="M4 17l5-5 4 4 2.5-2.5L20 17"
-                          stroke="currentColor"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth="1.5"
-                        />
-                      </svg>
-                    </div>
-                  )}
-                </div>
-                <div className="min-w-0">
-                  <p className="text-sm font-bold leading-tight text-steel-800">
-                    {feature.stat && (
-                      <span className="mr-1 text-2xl font-extrabold text-brand-400">
-                        {marks(feature.stat)}
-                      </span>
-                    )}
-                    {marks(feature.title)}
-                  </p>
-                  {feature.subtitle && (
-                    <p className="mt-0.5 text-[11px] leading-tight text-steel-500">
-                      {marks(feature.subtitle)}
-                    </p>
-                  )}
-                </div>
-              </li>
-            ))}
-          </ul>
+      <div className="mx-auto flex w-full max-w-[1400px] flex-col items-center gap-[18.75px] py-[31.25px] max-sm:pb-0">
+        {heading && (
+          <h2
+            className="hero-heading text-center text-navy-900 max-sm:leading-[43px]! lg:leading-[50px]"
+            data-payload-subpath="heading"
+          >
+            {multiline(heading)}
+          </h2>
         )}
+        {subheading && (
+          <p
+            className="text-center text-2xl font-medium leading-6 text-info-dark"
+            data-payload-subpath="subheading"
+          >
+            {marks(subheading)}
+          </p>
+        )}
+
+        {/* The comp's 6.25px spacer between the header and the three columns. */}
+        <div aria-hidden className="h-[6.25px] w-full max-sm:hidden" />
+
+        <div className="flex w-full flex-col items-center justify-center gap-[6.25px] sm:gap-8 xl:flex-row xl:gap-[6.25px] xl:px-[62.5px]">
+          {/* Left column — copy. Sits below the diagram on tablet; the mobile comp hides it. */}
+          <div className="order-2 flex max-sm:hidden w-full max-w-[500px] flex-col gap-[18.75px] xl:order-1 xl:w-[281.25px] xl:shrink-0">
+            {columnHeading && (
+              <h3
+                className="font-marcellus text-[37px] leading-[34px] text-subheading"
+                data-payload-subpath="columnHeading"
+              >
+                {multiline(columnHeading)}
+              </h3>
+            )}
+
+            {paras.length > 0 && (
+              <div className="flex flex-col gap-[12.5px] text-lg font-medium leading-[22px] text-black">
+                {paras.map((paragraph, i) => (
+                  <p data-payload-subpath={`paragraphs.${i}.text`} key={paragraph.id ?? i}>
+                    {paragraph.lead && (
+                      <strong className="font-bold text-info">{marks(paragraph.lead)} </strong>
+                    )}
+                    {marks(paragraph.text)}
+                  </p>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Centre — diagram. First on mobile. */}
+          <div
+            className="relative order-1 aspect-[500/457.5] w-full max-w-[500px] max-sm:-mx-[5px] max-sm:w-auto max-sm:max-w-none max-sm:self-stretch xl:order-2 xl:w-[500px] xl:shrink-0"
+            data-payload-subpath="image"
+          >
+            <ImageSlot
+              className="h-full w-full"
+              hint="Recommended 1000 × 915px"
+              label="Inside-out support diagram"
+              resource={image}
+            />
+          </div>
+
+          {/* Right column — feature cards. The mobile comp runs them as one row of upright
+              120px cards that runs off the right edge, so there it scrolls sideways. */}
+          {cards.length > 0 && (
+            <ul className="order-3 flex w-full max-w-[500px] flex-col gap-[6.25px] max-sm:-mr-[5px] max-sm:w-auto max-sm:max-w-none max-sm:snap-x max-sm:flex-row max-sm:gap-2 max-sm:self-stretch max-sm:overflow-x-auto max-sm:pr-[5px] max-sm:[scrollbar-width:none] xl:w-[281.25px] xl:shrink-0">
+              {cards.map((feature, i) => (
+                <li
+                  className="flex items-center gap-[18.75px] overflow-hidden rounded-[18.75px] bg-white p-[18.75px] text-brand-600 shadow-[inset_0_0_0_0.625px_var(--color-tint-50)] max-sm:h-[208px] max-sm:w-[120px] max-sm:shrink-0 max-sm:snap-start max-sm:flex-col max-sm:text-center"
+                  data-payload-subpath={`features.${i}.title`}
+                  key={feature.id ?? i}
+                >
+                  <FeatureIcon feature={feature} />
+
+                  <div className="flex min-w-0 flex-1 items-center gap-[6.25px] max-sm:block max-sm:w-full max-sm:flex-none max-sm:text-[14px] max-sm:leading-[normal]">
+                    {/* Upright, the number joins the title's line at the title's size. */}
+                    {feature.stat && (
+                      <p className="shrink-0 whitespace-nowrap text-[42px] font-bold leading-[normal] max-sm:mr-[0.25em] max-sm:inline max-sm:text-[14px]">
+                        {marks(feature.stat)}
+                      </p>
+                    )}
+                    <div className={cn('min-w-0 flex-1', feature.stat && 'max-sm:inline')}>
+                      <p
+                        className={cn(
+                          'font-bold',
+                          titleSizes[titleSizeFor(feature)],
+                          feature.stat && 'max-sm:inline',
+                        )}
+                      >
+                        {marks(feature.title)}
+                      </p>
+                      {feature.subtitle && (
+                        <p className="text-xs font-medium leading-[17px] max-sm:leading-[22.5px]">
+                          {marks(feature.subtitle)}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
       </div>
     </section>
   )

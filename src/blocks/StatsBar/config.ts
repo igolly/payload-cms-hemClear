@@ -52,6 +52,20 @@ export const StatsBar: Block = {
             },
           ],
         },
+        {
+          name: 'valueSize',
+          type: 'select',
+          label: 'Value size',
+          options: [
+            { label: 'Large', value: 'lg' },
+            { label: 'Medium (long values, e.g. "500,000+")', value: 'md' },
+            { label: 'Small', value: 'sm' },
+          ],
+          admin: {
+            description:
+              'Leave empty for the default: Small under a top label, Large otherwise.',
+          },
+        },
       ],
     },
     backgroundField(),

@@ -1,13 +1,36 @@
 'use client'
 import React, { useState } from 'react'
-import { Check, Minus, X } from 'lucide-react'
 
 import type { ProductDetailBlock } from '@/payload-types'
-import { PlusIcon } from '@/components/PlusIcon'
 import { marks } from '@/utilities/marks'
+
+import { Toggle } from './Toggle'
 
 type Item = NonNullable<ProductDetailBlock['contains']>[number]
 
+/** The comp's glyphs are type, not icons: a bold ✓ in green and a bold × in red. */
+const Tick = () => (
+  <span
+    aria-hidden="true"
+    className="w-[18px] shrink-0 text-center text-xl font-bold leading-5 text-[#00ae26]"
+  >
+    ✓
+  </span>
+)
+const Cross = () => (
+  <span
+    aria-hidden="true"
+    className="w-[15px] shrink-0 text-center text-[22px] font-bold leading-5 text-[#d30000]"
+  >
+    ×
+  </span>
+)
+
+/**
+ * Figma 6243:685: centred note, then two equal columns 10px apart. "Contains" stacks
+ * full-width outlined pills (10px apart); "Does not contain" wraps hugging white pills.
+ * Both columns stack below ~560px of buy column.
+ */
 export const Composition: React.FC<{
   contains: Item[]
   containsTitle?: string | null
@@ -20,72 +43,51 @@ export const Composition: React.FC<{
   const panelId = 'product-composition'
 
   return (
-    <div className="border-t border-tint-100 py-4">
-      <h2>
-        <button
-          aria-controls={panelId}
-          aria-expanded={open}
-          className="flex w-full items-center justify-between gap-4 text-left"
-          onClick={() => setOpen((v) => !v)}
-          type="button"
-        >
-          <span className="font-serif text-xl text-heading">{marks(title)}</span>
-          {open ? (
-            <Minus className="h-5 w-5 shrink-0 text-brand" />
-          ) : (
-            <PlusIcon className="h-3.5 w-3.5 shrink-0 text-brand" />
-          )}
-        </button>
-      </h2>
+    <div className="border-b border-navy">
+      <Toggle controls={panelId} onClick={() => setOpen((v) => !v)} open={open}>
+        {marks(title)}
+      </Toggle>
 
       {open && (
-        <div id={panelId}>
-          {note && <p className="mt-3 text-center text-xs font-bold text-brand">{marks(note)}</p>}
+        <div className="flex flex-col gap-4 pb-4 text-navy [&_sup]:leading-[0]" id={panelId}>
+          {note && <p className="text-center text-base font-bold leading-5">{marks(note)}</p>}
 
-          <div className="mt-4 grid grid-cols-1 gap-6 sm:grid-cols-2">
-            <div>
+          <div className="grid grid-cols-1 gap-x-2.5 gap-y-6 @min-[560px]:grid-cols-2">
+            <div className="flex min-w-0 flex-col gap-2.5">
               {containsTitle && (
-                <p className="flex items-center gap-2 text-xs font-bold uppercase tracking-wide text-success">
-                  <Check aria-hidden="true" className="h-4 w-4" strokeWidth={3} />
+                <p className="flex items-center gap-1.5 text-base font-bold uppercase leading-5">
+                  <Tick />
                   {marks(containsTitle)}
                 </p>
               )}
-              <ul className="mt-3 flex flex-col gap-2">
+              <ul className="flex flex-col gap-2.5">
                 {contains.map((item, i) => (
                   <li
-                    className="flex items-start gap-2 rounded-full border border-success-tint px-3 py-2"
+                    className="flex items-center gap-2 rounded-[50px] border border-aqua-200 px-2.5 py-1"
                     key={item.id ?? i}
                   >
-                    <Check
-                      aria-hidden="true"
-                      className="mt-0.5 h-3.5 w-3.5 shrink-0 text-success"
-                      strokeWidth={3}
-                    />
-                    <span className="text-xs leading-snug text-brand">{marks(item.text)}</span>
+                    <Tick />
+                    <span className="text-sm leading-5">{marks(item.text)}</span>
                   </li>
                 ))}
               </ul>
             </div>
 
-            <div>
+            <div className="flex min-w-0 flex-col gap-2.5">
               {notContainsTitle && (
-                <p className="flex items-center gap-2 text-xs font-bold uppercase tracking-wide text-danger">
-                  <X aria-hidden="true" className="h-4 w-4" strokeWidth={3} />
+                <p className="flex items-center gap-1.5 text-base font-bold uppercase leading-5">
+                  <Cross />
                   {marks(notContainsTitle)}
                 </p>
               )}
-              <ul className="mt-3 grid grid-cols-2 gap-2">
+              <ul className="flex flex-wrap content-start gap-2.5">
                 {notContains.map((item, i) => (
                   <li
-                    className="flex items-start gap-2 rounded-full border border-danger-tint px-3 py-2"
+                    className="flex items-center gap-2 rounded-[50px] border border-[#fcc] bg-white px-2.5 py-1"
                     key={item.id ?? i}
                   >
-                    <X
-                      aria-hidden="true"
-                      className="mt-0.5 h-3.5 w-3.5 shrink-0 text-danger"
-                      strokeWidth={3}
-                    />
-                    <span className="text-xs leading-snug text-danger">{marks(item.text)}</span>
+                    <Cross />
+                    <span className="text-sm leading-5 text-[#d30000]">{marks(item.text)}</span>
                   </li>
                 ))}
               </ul>

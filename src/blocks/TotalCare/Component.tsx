@@ -6,7 +6,6 @@ import { BrandIcon } from '@/components/BrandIcons'
 import RichText from '@/components/RichText'
 import { Media } from '@/components/Media'
 import { ImageSlot } from '@/blocks/FAQ/ImagePlaceholder'
-import { PlusIcon } from '@/components/PlusIcon'
 import { backgroundStyle } from '@/fields/background'
 import { cn } from '@/utilities/ui'
 import { marks } from '@/utilities/marks'
@@ -59,11 +58,16 @@ export const TotalCareBlock: React.FC<Props> = ({
 
   return (
     <section
-      className="w-full bg-mist px-4 py-14 sm:px-6 lg:px-8"
+      className={cn(
+        'w-full bg-mist font-inter sm:px-6 lg:px-8 [&_sup]:leading-[0]',
+        // The comp's band: 30px above the intro, 64px below the card — 30px on the phone comp
+        // (6666:230), which also keeps a 50px side gutter.
+        showcase ? 'px-4 py-14' : 'px-[50px] pb-[30px] pt-[30px] sm:pb-[64px]',
+      )}
       style={backgroundStyle(bgColor, bgColorCustom)}
     >
-      <div className={cn('mx-auto', showcase ? 'max-w-6xl' : 'max-w-4xl')}>
-        <header className="text-center">
+      <div className={cn('mx-auto', showcase ? 'max-w-6xl' : 'max-w-[1102px]')}>
+        <header className={cn('text-center', !showcase && 'flex flex-col items-center gap-2.5')}>
           {eyebrow && (
             <p
               className={cn(
@@ -82,7 +86,7 @@ export const TotalCareBlock: React.FC<Props> = ({
                 'leading-tight text-heading',
                 showcase
                   ? 'mt-3 font-marcellus text-[34px] sm:text-[46px] lg:text-[57px]'
-                  : 'mt-2 font-serif text-3xl sm:text-4xl',
+                  : 'font-marcellus text-[38px] leading-[normal] text-navy-900 sm:text-[42px] sm:leading-[1.25] lg:text-[52px]',
               )}
               data-payload-subpath="heading"
             >
@@ -92,18 +96,31 @@ export const TotalCareBlock: React.FC<Props> = ({
 
           {/* The showcase comp lets the display heading stand on its own, as `causes` does. */}
           {!showcase && (
-            <span aria-hidden="true" className="mx-auto mt-3 block h-0.5 w-16 bg-brand-300" />
+            // The comp's exported rule: a zero-height line with a 2.9px round-capped stroke, so it
+            // takes no space in the 10px-gap stack.
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              alt=""
+              aria-hidden="true"
+              className="-my-[1.458px] block h-[2.917px] w-[75.833px] max-w-none"
+              height={3}
+              src="/icons/totalCare/line.svg"
+              width={76}
+            />
           )}
 
           {subheading && (
-            <div data-payload-subpath="subheading">
+            // The phone comp lets the heading and rule stand alone above the card.
+            <div className={cn(!showcase && 'max-sm:hidden')} data-payload-subpath="subheading">
               <RichText
                 className={cn(
-                  'mx-auto max-w-3xl text-brand',
-                  showcase ? 'mt-3 text-[17px]' : 'mt-4 text-base',
+                  showcase
+                    ? 'mx-auto mt-3 max-w-3xl text-brand text-[17px]'
+                    : 'text-[17px] font-medium leading-[1.21] text-navy sm:text-[20px] lg:text-[24px] [&_p]:m-0 [&_strong]:font-bold',
                 )}
                 data={subheading}
                 enableGutter={false}
+                enableProse={showcase}
               />
             </div>
           )}
@@ -169,38 +186,42 @@ export const TotalCareBlock: React.FC<Props> = ({
               ))}
             </div>
           ) : (
-            <div className="mt-8 rounded-2xl border border-tint-150 bg-white p-6 sm:p-8">
-              <div className="flex flex-col items-center gap-6 sm:flex-row sm:items-start sm:justify-center sm:gap-4">
+            <div className="mx-auto mt-4 w-full max-w-[700px] rounded-[20px] border border-brand-300 bg-white p-5">
+              <div className="flex flex-col items-center gap-5 sm:flex-row sm:justify-between sm:gap-0">
                 {sides.map((side, i) => (
                   <React.Fragment key={side.id ?? i}>
                     {i > 0 && showConnector !== false && (
-                      <span
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        alt=""
                         aria-hidden="true"
-                        className="flex h-9 w-9 shrink-0 items-center justify-center self-center rounded-full bg-brand text-white"
-                      >
-                        <PlusIcon className="h-3.5 w-3.5" />
-                      </span>
+                        className="block size-8 shrink-0"
+                        height={32}
+                        src="/icons/totalCare/plus.svg"
+                        width={32}
+                      />
                     )}
 
                     <div
-                      className="flex-1 rounded-xl border border-tint-100 p-5 text-center"
+                      className="flex w-full min-w-0 flex-1 flex-col items-center gap-2.5 px-4 text-center"
                       data-payload-subpath={`items.${i}.label`}
                     >
-                      <p className="text-xs font-bold uppercase tracking-wide text-brand">
+                      <p className="text-[18px] font-bold uppercase leading-[22px] text-navy">
                         {marks(side.label)}
                       </p>
 
-                      <div className="relative mx-auto mt-4 aspect-square w-40 overflow-hidden rounded-full bg-mist">
+                      <div className="relative h-[175px] w-[180px] shrink-0 overflow-hidden">
                         <ImageSlot
                           className="h-full w-full"
-                          hint="Transparent PNG"
+                          hint="Recommended 850 × 830px photo"
+                          imgClassName="h-full w-full object-cover"
                           label={side.label}
                           resource={side.image}
                         />
                       </div>
 
                       {Array.isArray(side.features) && side.features.length > 0 && (
-                        <ul className="mt-4 flex flex-col gap-2 text-left">
+                        <ul className="flex flex-col gap-2 text-left">
                           {side.features.map((feature, f) => (
                             <li className="flex items-center gap-2" key={feature.id ?? f}>
                               <FeatureMark
@@ -208,7 +229,7 @@ export const TotalCareBlock: React.FC<Props> = ({
                                 iconClass="[&>svg]:h-5 [&>svg]:w-5"
                                 size="h-5 w-5"
                               />
-                              <span className="text-xs font-medium text-brand">
+                              <span className="text-xs font-medium text-navy">
                                 {marks(feature.label)}
                               </span>
                             </li>
@@ -218,7 +239,7 @@ export const TotalCareBlock: React.FC<Props> = ({
 
                       {side.caption && (
                         <p
-                          className="mt-4 text-xs leading-relaxed text-navy"
+                          className="text-[14px] font-medium leading-[17px] text-navy"
                           data-payload-subpath={`items.${i}.caption`}
                         >
                           {marks(side.caption)}

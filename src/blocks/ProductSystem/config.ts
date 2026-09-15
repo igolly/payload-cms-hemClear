@@ -86,6 +86,41 @@ export const ProductSystem: Block = {
             },
           ],
         },
+        {
+          type: 'row',
+          fields: [
+            {
+              name: 'icon',
+              type: 'select',
+              admin: {
+                description: 'Built-in icon, used when no card image is uploaded.',
+                width: '50%',
+              },
+              options: [
+                { label: 'Flask (ingredients)', value: 'flask' },
+                { label: 'Target (support system)', value: 'supportSystem' },
+                { label: 'Stethoscope', value: 'stethoscope' },
+                { label: 'Clipboard (research)', value: 'research' },
+                { label: 'Made in USA', value: 'madeInUsa' },
+                { label: 'Guarantee', value: 'guarantee' },
+              ],
+            },
+            {
+              name: 'titleSize',
+              type: 'select',
+              admin: {
+                description:
+                  'Leave empty for the default: 16px beside a number, 24px above a subtitle, 18px otherwise.',
+                width: '50%',
+              },
+              options: [
+                { label: 'Small (16px)', value: 'sm' },
+                { label: 'Medium (18px)', value: 'md' },
+                { label: 'Large (24px)', value: 'lg' },
+              ],
+            },
+          ],
+        },
         { name: 'title', type: 'text', required: true },
         { name: 'subtitle', type: 'text' },
       ],

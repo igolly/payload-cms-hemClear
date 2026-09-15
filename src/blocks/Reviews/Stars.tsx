@@ -11,12 +11,13 @@ import { cn } from '@/utilities/ui'
 export const Stars: React.FC<{
   className?: string
   count?: number | null
+  gap?: string
   size?: string
-}> = ({ className, count, size = 'h-5 w-5' }) => {
+}> = ({ className, count, gap = 'gap-0.5', size = 'h-5 w-5' }) => {
   const filled = Math.max(0, Math.min(5, Math.round(count ?? 5)))
 
   return (
-    <div aria-label={`${filled} out of 5 stars`} className="flex items-center gap-0.5" role="img">
+    <div aria-label={`${filled} out of 5 stars`} className={cn('flex items-center', gap)} role="img">
       {Array.from({ length: 5 }).map((_, i) => (
         <Star
           aria-hidden="true"

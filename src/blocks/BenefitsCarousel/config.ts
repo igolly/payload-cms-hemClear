@@ -24,6 +24,22 @@ export const BenefitsCarousel: Block = {
       fields: [
         { name: 'image', type: 'upload', relationTo: 'media' },
         {
+          name: 'badge',
+          type: 'select',
+          label: 'Badge artwork',
+          options: [
+            { label: 'Internal + External', value: 'internalExternal' },
+            { label: 'Vein', value: 'vein' },
+            { label: 'Circulation', value: 'circulation' },
+            { label: 'Regularity', value: 'regularity' },
+            { label: 'Soothing', value: 'soothing' },
+          ],
+          admin: {
+            description:
+              'Optional. The badge drawn for this section in the design; overrides the icon below.',
+          },
+        },
+        {
           type: 'row',
           fields: [
             {

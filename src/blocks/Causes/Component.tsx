@@ -71,18 +71,63 @@ export const CausesBlock: React.FC<Props> = ({
    */
   const columns = Math.min(Math.max(items.length, 1), 4)
 
+  /*
+   * The default treatment is the home PROBLEM comp: a 611.5px illustration with the footnote
+   * set beneath it, beside a 437.5px copy column stacked on an 18.75px rhythm. With an image
+   * the footnote belongs to the image column, so the three pieces are grid children that
+   * reflow — image, copy, note — when the columns stack below `lg`.
+   */
+  const split = !showcase && !noImage
+
+  const footnoteNode = footnote ? (
+    <div
+      className={cn(
+        'flex flex-col gap-[12.5px]',
+        /* The mobile PROBLEM comp ends on the factor cards — the note is desktop-only there. */
+        split ? 'w-full max-lg:hidden sm:px-[62.5px] lg:col-start-1 lg:row-start-2' : undefined,
+        split && imageRight && 'lg:col-start-2',
+      )}
+    >
+      {split && (
+        <span
+          aria-hidden="true"
+          className="-my-[1.25px] block h-[2.5px] w-full rounded-full bg-shell"
+        />
+      )}
+      <p
+        className="flex items-start gap-[12.5px] whitespace-pre-line text-left text-[10px] font-medium leading-[13.75px] text-[#999] sm:text-center"
+        data-payload-subpath="footnote"
+      >
+        {/* eslint-disable-next-line @next/next/no-img-element -- static 32px icon, nothing to optimise */}
+        <img
+          alt=""
+          className="size-[15px] shrink-0"
+          height={15}
+          src="/icons/causes/info.png"
+          width={15}
+        />
+        <span className="flex-1">{marks(footnote)}</span>
+      </p>
+    </div>
+  ) : null
+
   return (
     <section
       className={cn(
         'w-full bg-white',
-        overlay ? 'px-0 py-0' : cn('px-4 sm:px-6 lg:px-8', showcase ? 'py-8' : 'py-14'),
+        overlay
+          ? 'px-0 py-0'
+          : showcase
+            ? 'px-4 py-8 sm:px-6 lg:px-8'
+            : // Mobile comp: 16px band padding around a 437.5px column that pads itself 16px.
+              'px-[17.25px] py-4 font-inter sm:px-[31.25px] lg:py-[31.25px] [&_sup]:leading-[0]',
       )}
       style={backgroundStyle(bgColor, bgColorCustom)}
     >
       <div
         className={cn(
-          'mx-auto max-w-6xl items-center',
-          showcase ? 'gap-8' : 'gap-10 lg:gap-14',
+          'mx-auto items-center',
+          showcase ? 'max-w-6xl gap-8' : 'max-w-[1400px]',
           overlay
             ? /*
                * The photo spans the content column, not the viewport — the comp's band is
@@ -94,7 +139,18 @@ export const CausesBlock: React.FC<Props> = ({
               'relative isolate flex overflow-hidden px-6 py-10 lg:aspect-[1200/338] lg:px-[62px] lg:py-0'
             : noImage
               ? 'flex flex-col'
-              : 'grid lg:grid-cols-2',
+              : showcase
+                ? 'grid lg:grid-cols-2'
+                : cn(
+                    /*
+                     * Stacked (mobile comp) the copy column dissolves into this grid so the
+                     * illustration can sit between the heading and the body, on a 6px rhythm.
+                     */
+                    'grid grid-cols-[minmax(0,1fr)] gap-y-[6px] lg:justify-center lg:gap-x-[30px] lg:gap-y-5',
+                    imageRight
+                      ? 'lg:grid-cols-[437.5px_minmax(0,611.5px)]'
+                      : 'lg:grid-cols-[minmax(0,611.5px)_437.5px]',
+                  ),
         )}
       >
         {overlay && !noImage && (
@@ -117,9 +173,12 @@ export const CausesBlock: React.FC<Props> = ({
                 ? cn(
                     'overflow-hidden rounded-[19px]',
                     squareFrame ? 'aspect-square' : 'aspect-[503/606]',
+                    imageRight && 'lg:order-2',
                   )
-                : 'aspect-[9/7]',
-              imageRight && 'lg:order-2',
+                : cn(
+                    'aspect-[964/773] lg:row-start-1',
+                    imageRight ? 'lg:col-start-2' : 'lg:col-start-1',
+                  ),
             )}
             data-payload-subpath="image"
           >
@@ -143,8 +202,14 @@ export const CausesBlock: React.FC<Props> = ({
 
         <div
           className={cn(
-            imageRight && 'lg:order-1',
-            noImage && 'w-full text-center',
+            !showcase && 'flex flex-col gap-[18.75px]',
+            showcase && imageRight && 'lg:order-1',
+            split &&
+              cn(
+                'w-full max-lg:contents lg:row-span-2 lg:row-start-1 lg:self-center',
+                imageRight ? 'lg:col-start-1' : 'lg:col-start-2',
+              ),
+            noImage && 'w-full items-center text-center',
             /* The copy sits opposite the photo's subject, which `imagePosition` already
                names — image on the left means the column goes right, and vice versa. */
             overlay && cn('w-full max-w-[469px]', imageRight ? 'mr-auto' : 'ml-auto'),
@@ -155,6 +220,7 @@ export const CausesBlock: React.FC<Props> = ({
               className={cn(
                 'font-bold uppercase text-subheading',
                 showcase ? 'text-[18px] leading-5' : 'text-xs tracking-[0.15em] text-brand-500',
+                split && 'max-lg:order-first',
               )}
               data-payload-subpath="eyebrow"
             >
@@ -170,7 +236,8 @@ export const CausesBlock: React.FC<Props> = ({
                   ? 'mt-3 font-marcellus text-[26px] text-heading sm:text-[31px]'
                   : showcase
                     ? 'mt-3 font-marcellus text-[34px] text-heading sm:text-[46px] lg:text-[57px]'
-                    : 'mt-2 font-serif text-3xl text-subheading sm:text-4xl',
+                    : 'font-marcellus text-[36px] leading-[42px] text-subheading max-lg:text-center lg:text-[40px] lg:leading-[1.25]',
+                split && 'max-lg:order-first',
               )}
               data-payload-subpath="heading"
             >
@@ -181,7 +248,13 @@ export const CausesBlock: React.FC<Props> = ({
           {/* Short rule under the heading, per the comp: 90x5 there, scaled to 80x4 here.
               The showcase comp drops it — the display heading carries the section on its own. */}
           {heading && !showcase && (
-            <span aria-hidden="true" className="mt-5 block h-1 w-20 bg-brand-300" />
+            <span
+              aria-hidden="true"
+              className={cn(
+                '-my-[1.25px] block h-[2.5px] w-[62.5px] rounded-full bg-brand-300',
+                split && 'max-lg:hidden',
+              )}
+            />
           )}
 
           {description && (
@@ -192,7 +265,7 @@ export const CausesBlock: React.FC<Props> = ({
                   ? 'mt-3 text-[15px] leading-[18.75px] text-heading'
                   : showcase
                     ? 'mt-3 text-[18px] leading-[25px] text-heading'
-                    : 'mt-6 max-w-xl text-[15px] leading-relaxed text-black',
+                    : 'text-[12px] font-medium leading-4 text-black',
               )}
               data-payload-subpath="description"
             >
@@ -202,7 +275,10 @@ export const CausesBlock: React.FC<Props> = ({
 
           {gridLabel && (
             <p
-              className="mt-7 text-[15px] font-medium text-brand-300"
+              className={cn(
+                'font-medium text-brand-300',
+                showcase ? 'mt-7 text-[15px]' : 'text-[12px] leading-4',
+              )}
               data-payload-subpath="gridLabel"
             >
               {marks(gridLabel)}
@@ -212,14 +288,17 @@ export const CausesBlock: React.FC<Props> = ({
           {items.length > 0 && (
             <ul
               className={cn(
-                'mt-6',
+                showcase && 'mt-6',
                 checklist
                   ? 'flex flex-col gap-3 text-left'
                   : showcase
                     ? cn('grid grid-cols-2 gap-y-5', SHOWCASE_COLUMNS[columns])
                     : cn(
-                        'grid grid-cols-2 gap-2.5 sm:grid-cols-3',
-                        noImage && 'sm:grid-cols-4 lg:grid-cols-5',
+                        /* The comp's cards are a fixed 140px, three across the 437.5px column;
+                           the mobile comp sets 125px, centred, shrinking on narrower phones. */
+                        'grid grid-cols-[repeat(3,minmax(0,125px))] gap-2 self-stretch max-sm:justify-center sm:grid-cols-[repeat(3,140px)]',
+                        noImage &&
+                          'sm:grid-cols-[repeat(4,140px)] sm:justify-center lg:grid-cols-[repeat(5,140px)]',
                       ),
               )}
             >
@@ -241,7 +320,7 @@ export const CausesBlock: React.FC<Props> = ({
                       'flex flex-col items-center justify-start text-center',
                       showcase
                         ? 'gap-1 px-3 sm:border-l sm:border-tint-150'
-                        : 'gap-2 rounded-xl border border-brand-300 bg-white px-3 py-4',
+                        : 'min-h-[105px] gap-[3.125px] sm:h-[103px] sm:min-h-0 overflow-hidden rounded-[9.375px] border-[0.625px] border-brand-300 bg-white px-[6.25px] py-[9.375px]',
                     )}
                     data-payload-subpath={`factors.${i}.label`}
                     key={factor.id ?? i}
@@ -254,14 +333,17 @@ export const CausesBlock: React.FC<Props> = ({
                      */}
                     {factor.image && typeof factor.image === 'object' ? (
                       <span
-                        className={cn('block', showcase ? 'h-14 w-14' : 'h-16 w-16')}
+                        className={cn('block shrink-0', showcase ? 'h-14 w-14' : 'size-[50px]')}
                         data-payload-subpath={`factors.${i}.image`}
                       >
                         {/* `htmlElement={null}` so `Media` emits its `<picture>` bare —
                             its default `<div>` wrapper is not valid inside a span. */}
                         <Media
                           htmlElement={null}
-                          imgClassName={cn('object-contain', showcase ? 'h-14 w-14' : 'h-16 w-16')}
+                          imgClassName={cn(
+                            'object-contain',
+                            showcase ? 'h-14 w-14' : 'size-[50px]',
+                          )}
                           resource={factor.image}
                         />
                       </span>
@@ -269,7 +351,9 @@ export const CausesBlock: React.FC<Props> = ({
                       <BrandIcon
                         className={cn(
                           'text-brand-400',
-                          showcase ? '[&>svg]:h-14 [&>svg]:w-14' : '[&>svg]:h-7 [&>svg]:w-7',
+                          showcase
+                            ? '[&>svg]:h-14 [&>svg]:w-14'
+                            : 'flex size-[50px] shrink-0 items-center justify-center [&>svg]:h-7 [&>svg]:w-7',
                         )}
                         name={factor.icon}
                       />
@@ -279,10 +363,11 @@ export const CausesBlock: React.FC<Props> = ({
                         'font-bold',
                         showcase
                           ? 'text-[12.5px] leading-[15px] text-heading'
-                          : 'text-[13px] leading-tight text-subheading',
+                          : 'text-[12px] leading-[15px] text-subheading',
                       )}
                     >
-                      {marks(factor.label)}
+                      {/* A line break in the label sets the wrap, as the comp does. */}
+                      {multiline(factor.label)}
                     </span>
                   </li>
                 ),
@@ -290,29 +375,26 @@ export const CausesBlock: React.FC<Props> = ({
             </ul>
           )}
 
-          {footnote && (
+          {footnote && showcase && (
             <p
-              className={cn(
-                'flex whitespace-pre-line',
-                showcase
-                  ? 'mt-5 items-center gap-4 rounded-2xl bg-tint-50 p-[18px] text-[12.5px] leading-[17.5px] text-subheading'
-                  : 'mt-6 items-start gap-2 text-[11px] leading-relaxed text-steel-400',
-              )}
+              className="mt-5 flex items-center gap-4 whitespace-pre-line rounded-2xl bg-tint-50 p-[18px] text-[12.5px] leading-[17.5px] text-subheading"
               data-payload-subpath="footnote"
             >
-              <BrandIcon
-                className={cn(
-                  'shrink-0 text-brand-400',
-                  showcase ? '[&>svg]:h-9 [&>svg]:w-9' : 'mt-px [&>svg]:h-4 [&>svg]:w-4',
-                )}
-                name="info"
-              />
+              <BrandIcon className="shrink-0 text-brand-400 [&>svg]:h-9 [&>svg]:w-9" name="info" />
               {marks(footnote)}
             </p>
           )}
 
+          {!showcase && noImage && footnoteNode}
+
           {Array.isArray(links) && links.length > 0 && (
-            <div className={cn('mt-6 flex flex-wrap gap-3', noImage && 'justify-center')}>
+            <div
+              className={cn(
+                'flex flex-wrap gap-3',
+                showcase && 'mt-6',
+                noImage && 'justify-center',
+              )}
+            >
               {links.map(({ link }, i) => (
                 <CMSLink
                   {...link}
@@ -328,6 +410,8 @@ export const CausesBlock: React.FC<Props> = ({
             </div>
           )}
         </div>
+
+        {split && footnoteNode}
       </div>
     </section>
   )

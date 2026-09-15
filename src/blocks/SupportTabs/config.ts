@@ -46,8 +46,18 @@ export const SupportTabs: Block = {
               required: true,
               admin: { description: 'Used when no icon image is uploaded.', width: '50%' },
             },
-            { name: 'title', type: 'text', required: true, admin: { width: '50%' } },
+            {
+              name: 'title',
+              type: 'text',
+              required: true,
+              admin: { description: 'Tab label.', width: '50%' },
+            },
           ],
+        },
+        {
+          name: 'cardTitle',
+          type: 'text',
+          admin: { description: 'Heading on the card, e.g. "Healthy Vein Function". Defaults to the tab label.' },
         },
         {
           name: 'image',

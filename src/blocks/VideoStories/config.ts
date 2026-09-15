@@ -25,6 +25,16 @@ export const VideoStories: Block = {
       ],
     },
     {
+      name: 'posterIncludesChrome',
+      type: 'checkbox',
+      label: 'Posters already include the phone frame',
+      defaultValue: false,
+      admin: {
+        description:
+          'Tick when the poster images already show the status bar, "Customer Video" badge and duration, so they are not drawn again on top.',
+      },
+    },
+    {
       name: 'stories',
       type: 'array',
       label: 'Stories',

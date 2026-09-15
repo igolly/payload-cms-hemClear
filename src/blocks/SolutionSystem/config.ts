@@ -17,6 +17,14 @@ export const SolutionSystem: Block = {
           type: 'textarea',
           admin: { description: 'Use a line break to control where the heading wraps.' },
         },
+        {
+          name: 'underline',
+          type: 'text',
+          admin: {
+            description:
+              'Optional. A phrase from the heading to underline, e.g. "Meet HemClear". Must match the heading text exactly.',
+          },
+        },
         { name: 'subheading', type: 'text' },
       ],
     },
@@ -62,6 +70,21 @@ export const SolutionSystem: Block = {
         },
         { name: 'title', type: 'text', required: true },
         { name: 'subtitle', type: 'text' },
+        {
+          name: 'titleSize',
+          type: 'select',
+          defaultValue: 'auto',
+          options: [
+            { label: 'Auto', value: 'auto' },
+            { label: 'Small (16px)', value: 'sm' },
+            { label: 'Medium (18px)', value: 'md' },
+            { label: 'Large (24px)', value: 'lg' },
+          ],
+          admin: {
+            description:
+              'Auto: large with a subtitle, small beside a number, medium otherwise. Pick small for a long title that would run to three lines.',
+          },
+        },
         {
           name: 'image',
           type: 'upload',

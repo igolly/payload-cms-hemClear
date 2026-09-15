@@ -50,12 +50,20 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
 
   return (
     <header
-      className="relative z-20 w-full border-b border-border bg-white"
+      className="relative z-20 w-full bg-white"
       onMouseLeave={() => setOpenIndex(null)}
     >
-      <div className="container flex items-center justify-between py-5">
-        <Link href="/" className="flex items-center" onClick={() => setMobileOpen(false)}>
-          <Logo loading="eager" priority="high" />
+      {/* Figma `Header Container` (desktop 2002:31, mobile 6246:2938): 1400px max, 92.5px
+          tall, 50px sides on desktop; mobile centres the logo inside 16px sides. */}
+      <div className="relative mx-auto flex h-[92.5px] w-full max-w-[1400px] items-center justify-center px-4 md:px-8 lg:justify-between lg:px-[50px]">
+        {/* Figma `logo 4`/`logo 5` is a 234 x 66.86 box whose artwork is inset 5% / 1.36% — the
+            PNG is that artwork, so it sits at 60.17px tall inside the same box. */}
+        <Link
+          href="/"
+          className="flex h-[66.86px] w-[234px] shrink-0 items-center justify-center"
+          onClick={() => setMobileOpen(false)}
+        >
+          <Logo className="h-[60.17px]" loading="eager" priority="high" />
         </Link>
 
         <HeaderNav
@@ -69,7 +77,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
           aria-controls="mobile-nav"
           aria-expanded={mobileOpen}
           aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
-          className="-mr-2 flex size-10 items-center justify-center rounded-lg text-navy transition-colors hover:bg-mist lg:hidden"
+          className="absolute right-2 top-1/2 flex size-10 -translate-y-1/2 items-center justify-center rounded-lg text-navy-900 transition-colors hover:bg-mist md:right-6 lg:hidden"
           onClick={() => setMobileOpen((v) => !v)}
           type="button"
         >

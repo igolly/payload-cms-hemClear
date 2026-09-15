@@ -1,6 +1,5 @@
 'use client'
 import React, { useState } from 'react'
-import { Check } from 'lucide-react'
 
 import type { FormulaTableBlock } from '@/payload-types'
 
@@ -10,107 +9,156 @@ import { marks } from '@/utilities/marks'
 
 type Formula = NonNullable<FormulaTableBlock['formulas']>[number]
 
+/** The 30px radio drawn under each product tile in the Figma COMBO frame (exported artwork). */
+const TileRadio: React.FC<{ checked: boolean }> = ({ checked }) => (
+  // eslint-disable-next-line @next/next/no-img-element -- static artwork, nothing to optimise
+  <img
+    alt=""
+    className="size-[30px] shrink-0"
+    height={30}
+    src={`/icons/formula-table/radio-${checked ? 'checked' : 'unchecked'}.png`}
+    width={30}
+  />
+)
+
 export const Table: React.FC<{ formulas: Formula[] }> = ({ formulas }) => {
   const [index, setIndex] = useState(0)
   const formula = formulas[index]
   const rows = Array.isArray(formula?.rows) ? formula.rows : []
 
   return (
-    <div>
+    <div className="flex w-full flex-col items-center">
       {formulas.length > 1 && (
-        <div className="flex justify-center gap-3">
-          {formulas.map((item, i) => (
-            <button
-              aria-pressed={i === index}
-              className={cn(
-                'relative flex h-24 w-24 items-center justify-center rounded-lg border-2 transition-colors',
-                i === index
-                  ? 'border-brand bg-brand'
-                  : 'border-tint-100 bg-white hover:border-tint-300',
-              )}
-              key={item.id ?? i}
-              onClick={() => setIndex(i)}
-              type="button"
-            >
-              {item.image && typeof item.image === 'object' ? (
-                <Media
-                  className="absolute inset-2"
-                  fill
-                  imgClassName="object-contain"
-                  resource={item.image}
-                />
-              ) : (
-                <span className={cn('text-[10px]', i === index ? 'text-white' : 'text-steel-400')}>
-                  {marks(item.name)}
-                </span>
-              )}
-
-              <span
+        // Phone comp: one white 340×280 card (radius 30) holding two 170×280 tiles, only the selected one filled.
+        // Desktop comp: two 165×199 tiles butted together, each with a #ddd inside stroke and a 0 0 7 shadow.
+        <div
+          className="mt-[12.5px] flex overflow-hidden rounded-[30px] bg-white shadow-[inset_0_0_0_1.25px_#f9f9f9] lg:overflow-visible lg:bg-transparent lg:shadow-none"
+          role="group"
+        >
+          {formulas.map((item, i) => {
+            const selected = i === index
+            return (
+              <button
+                aria-pressed={selected}
                 className={cn(
-                  'absolute bottom-1 flex h-5 w-5 items-center justify-center rounded-full border',
-                  i === index ? 'border-white bg-white' : 'border-tint-150 bg-white',
+                  'relative flex h-[280px] w-[170px] flex-col items-center justify-end gap-[12.5px] overflow-hidden rounded-[30px] p-[31.25px] transition-colors lg:h-[199px] lg:w-[165px] lg:border lg:border-[#dddddd] lg:pt-0 lg:pb-3 lg:shadow-[0_0_7px_rgba(0,0,0,0.15)]',
+                  selected
+                    ? 'bg-linear-to-b from-brand-500 to-brand-600'
+                    : 'bg-transparent lg:bg-white',
                 )}
+                data-payload-subpath={`formulas.${i}.image`}
+                key={item.id ?? i}
+                onClick={() => setIndex(i)}
+                type="button"
               >
-                {i === index && <Check className="h-3 w-3 text-brand" strokeWidth={3} />}
-              </span>
-            </button>
-          ))}
+                <span className="relative flex h-[168px] w-[110px] shrink-0 items-end justify-center lg:h-[130px] lg:w-[70px]">
+                  {item.image && typeof item.image === 'object' ? (
+                    <Media
+                      className="relative size-full"
+                      fill
+                      imgClassName="object-contain object-bottom"
+                      resource={item.image}
+                    />
+                  ) : (
+                    <span
+                      className={cn(
+                        'self-center text-xs font-semibold',
+                        selected ? 'text-white' : 'text-navy',
+                      )}
+                    >
+                      {marks(item.name)}
+                    </span>
+                  )}
+                </span>
+                <span className="sr-only">{item.name}</span>
+                <TileRadio checked={selected} />
+              </button>
+            )
+          })}
         </div>
       )}
 
       {formula && (
         <>
-          <header className="mt-8 text-center">
-            <h3 className="font-serif text-3xl leading-tight sm:text-4xl">
-              {formula.titleBefore && (
-                <span className="text-heading">{marks(formula.titleBefore)} </span>
-              )}
+          <header
+            className={cn(
+              'flex w-full flex-col items-center text-center',
+              formulas.length > 1 ? 'mt-[34.75px] lg:mt-[20.75px]' : 'mt-0',
+            )}
+          >
+            <h3 className="text-balance font-marcellus text-5xl leading-[60px] font-normal text-navy-900 lg:text-[52px] lg:leading-[66px] [&_sup]:leading-[0]">
+              {formula.titleBefore && <span>{marks(formula.titleBefore)} </span>}
               {formula.titleAccent && (
                 <span className="text-brand-300">{marks(formula.titleAccent)}</span>
               )}
-              {formula.titleAfter && (
-                <span className="text-heading"> {marks(formula.titleAfter)}</span>
-              )}
+              {formula.titleAfter && <span> {marks(formula.titleAfter)}</span>}
             </h3>
             {formula.subtitle && (
-              <>
-                <p className="mt-3 text-sm font-semibold text-brand-500">
-                  {marks(formula.subtitle)}
-                </p>
-                <span aria-hidden="true" className="mx-auto mt-3 block h-0.5 w-16 bg-brand-300" />
-              </>
+              <p className="mt-3 text-2xl leading-[normal] font-medium text-brand-500 lg:mt-[12.5px] lg:leading-[29px]">
+                {marks(formula.subtitle)}
+              </p>
             )}
+            {/* Figma "Line 1": 62.5px, 2.5px round-capped stroke that takes no layout height. */}
+            <span
+              aria-hidden="true"
+              className="mt-[10.75px] block h-[2.5px] w-[65px] rounded-full bg-brand-300 lg:mt-[11.25px]"
+            />
           </header>
 
           {rows.length > 0 && (
-            <div className="mx-auto mt-6 max-w-3xl overflow-hidden rounded-xl border border-tint-50">
-              <table className="w-full border-collapse text-left">
-                <caption className="sr-only">{formula.name} ingredients</caption>
-                <tbody>
-                  {rows.map((row, i) => (
-                    <tr className="border-t border-tint-50 first:border-t-0" key={row.id ?? i}>
-                      <td className="w-20 p-2">
-                        <span className="relative flex h-10 w-14 items-center justify-center">
-                          {row.image && typeof row.image === 'object' ? (
-                            <Media fill imgClassName="object-contain" resource={row.image} />
-                          ) : (
-                            <span className="h-6 w-6 rounded-full bg-mist-100" />
-                          )}
-                        </span>
-                      </td>
-                      <th
-                        className="p-2 font-serif text-base font-semibold text-brand-500"
-                        scope="row"
-                      >
-                        {marks(row.name)}
-                      </th>
-                      <td className="p-2 text-right text-xs text-slate-600 sm:text-left">
-                        {marks(row.benefit)}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+            // Figma: #f8f9fd card, 0.625px #999 inside stroke, radius 31.25, every row ruled underneath.
+            <div
+              aria-label={`${formula.name} ingredients`}
+              className="mt-[10.75px] flex w-full max-w-[937.5px] flex-col overflow-hidden rounded-[31.25px] bg-[#f8f9fd] text-left shadow-[inset_0_0_0_0.625px_#999] lg:mt-[11.25px]"
+              role="table"
+            >
+              {rows.map((row, i) => (
+                <div
+                  className="flex items-center gap-2 py-2 shadow-[inset_0_-0.625px_0_#999] lg:h-[55px] lg:gap-[31.25px]"
+                  key={row.id ?? i}
+                  role="row"
+                >
+                  {/* Phone: 110px column, 81.25×62.5 art. Desktop: 162.5px column, 63.25×48.65 art. */}
+                  <span
+                    className="flex w-[110px] shrink-0 justify-center lg:w-[162.5px]"
+                    role="cell"
+                  >
+                    <span className="relative flex h-[62.5px] w-[81.25px] items-center justify-center lg:h-[48.65px] lg:w-[63.25px]">
+                      {row.image && typeof row.image === 'object' ? (
+                        <Media
+                          className="relative size-full"
+                          fill
+                          imgClassName="object-contain"
+                          resource={row.image}
+                        />
+                      ) : (
+                        <span className="size-6 rounded-full bg-mist-100" />
+                      )}
+                    </span>
+                  </span>
+                  <span
+                    aria-hidden="true"
+                    className="block h-[60px] w-[0.625px] shrink-0 bg-[#999] lg:h-[39px]"
+                  />
+                  <span
+                    className="flex min-w-0 flex-1 flex-col lg:flex-row lg:items-center lg:gap-[31.25px]"
+                    role="none"
+                  >
+                    <span
+                      className="block font-playfair text-[28px] leading-[normal] font-semibold text-brand-600 lg:w-[312.5px] lg:shrink-0 lg:text-2xl"
+                      role="rowheader"
+                    >
+                      {marks(row.name)}
+                    </span>
+                    <span
+                      className="block min-w-0 text-base leading-[normal] font-medium text-black lg:flex-1"
+                      role="cell"
+                    >
+                      {marks(row.benefit)}
+                    </span>
+                  </span>
+                </div>
+              ))}
             </div>
           )}
         </>

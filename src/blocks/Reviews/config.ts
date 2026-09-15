@@ -75,7 +75,7 @@ export const Reviews: Block = {
               name: 'score',
               type: 'text',
               admin: {
-                description: 'e.g. "5.5". Leave empty to hide.',
+                description: 'e.g. "5.0". Leave empty to hide.',
                 width: '50%',
               },
             },
@@ -118,6 +118,21 @@ export const Reviews: Block = {
           ],
         },
         {
+          name: 'source',
+          type: 'select',
+          options: [
+            { label: 'Amazon', value: 'amazon' },
+            { label: 'HemClear.com', value: 'hemclear' },
+            { label: 'Trustpilot', value: 'trustpilot' },
+            { label: 'Reddit', value: 'reddit' },
+            { label: 'Google', value: 'google' },
+          ],
+          admin: {
+            description:
+              'Platform the review came from — shows the built-in logo. An uploaded Source Logo below takes precedence.',
+          },
+        },
+        {
           name: 'sourceLogo',
           type: 'upload',
           relationTo: 'media',
@@ -125,6 +140,42 @@ export const Reviews: Block = {
             description:
               'Logo of the platform the review came from (Amazon, Trustpilot, Google…). Upload a transparent PNG or SVG.',
           },
+        },
+      ],
+    },
+    {
+      name: 'features',
+      type: 'array',
+      label: 'Trust Strip',
+      labels: {
+        singular: 'Trust Point',
+        plural: 'Trust Points',
+      },
+      maxRows: 4,
+      admin: {
+        description:
+          'Optional strip under the featured reviews. When set, the customer reviews stay hidden until the visitor clicks "Show More", and the strip gives way to them.',
+        initCollapsed: true,
+      },
+      fields: [
+        {
+          name: 'icon',
+          type: 'select',
+          required: true,
+          defaultValue: 'customers',
+          options: [
+            { label: 'Happy customers', value: 'customers' },
+            { label: 'Rating', value: 'rating' },
+            { label: 'Guarantee shield', value: 'guarantee' },
+            { label: 'Daily comfort', value: 'comfort' },
+          ],
+        },
+        {
+          type: 'row',
+          fields: [
+            { name: 'title', type: 'text', required: true, admin: { width: '50%' } },
+            { name: 'text', type: 'text', admin: { width: '50%' } },
+          ],
         },
       ],
     },
@@ -212,6 +263,16 @@ export const Reviews: Block = {
               admin: { width: '33%' },
             },
           ],
+        },
+        {
+          name: 'showMoreStep',
+          type: 'number',
+          min: 1,
+          admin: {
+            description:
+              'Optional. How many more reviews each further "Show More" click reveals. Leave empty to reveal all of them at once.',
+            step: 1,
+          },
         },
         {
           name: 'verifiedLabel',

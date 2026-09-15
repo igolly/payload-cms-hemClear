@@ -2,6 +2,16 @@ import type { Block } from 'payload'
 
 import { brandIconOptions } from '@/components/BrandIcons'
 
+import { productArtworkOptions } from './artwork'
+
+/** Optional Figma glyph beside the shared `icon` select; wins over it when set. */
+const artworkField = (width: string) => ({
+  name: 'artwork',
+  type: 'select' as const,
+  options: productArtworkOptions,
+  admin: { description: 'Product-page glyph. Overrides Icon when set.', width },
+})
+
 /**
  * The product detail — gallery, buy box, results, detail sections — as a block.
  *
@@ -38,7 +48,44 @@ export const ProductDetail: Block = {
               label: 'Gallery',
               labels: { singular: 'Image', plural: 'Images' },
               admin: { description: 'First image is shown by default.', initCollapsed: true },
-              fields: [{ name: 'image', type: 'upload', relationTo: 'media' }],
+              fields: [
+                { name: 'image', type: 'upload', relationTo: 'media' },
+                {
+                  name: 'thumbnail',
+                  type: 'upload',
+                  relationTo: 'media',
+                  admin: {
+                    description: 'Optional. Shown in the thumbnail strip instead of the image.',
+                  },
+                },
+                {
+                  type: 'collapsible',
+                  label: 'Overlay',
+                  admin: {
+                    description:
+                      'Optional copy set over the image (the comp does this on the first slide). The Review Badge shows on slides that have an overlay.',
+                    initCollapsed: true,
+                  },
+                  fields: [
+                    { name: 'overlayEyebrow', type: 'text' },
+                    {
+                      name: 'overlayHeading',
+                      type: 'textarea',
+                      admin: { description: 'Line breaks are kept.' },
+                    },
+                    {
+                      name: 'overlayText',
+                      type: 'textarea',
+                      admin: { description: 'Line breaks are kept.' },
+                    },
+                    {
+                      name: 'overlayTestedBadge',
+                      type: 'checkbox',
+                      label: 'Show the "3rd-party tested" seal',
+                    },
+                  ],
+                },
+              ],
             },
             {
               type: 'collapsible',
@@ -138,7 +185,13 @@ export const ProductDetail: Block = {
                     },
                   ],
                 },
-                { name: 'subtitle', type: 'text' },
+                {
+                  type: 'row',
+                  fields: [
+                    { name: 'subtitle', type: 'text', admin: { width: '70%' } },
+                    artworkField('30%'),
+                  ],
+                },
               ],
             },
           ],
@@ -231,6 +284,11 @@ export const ProductDetail: Block = {
                     { name: 'bonusHighlight', type: 'text' },
                     { name: 'bonusTitle', type: 'text' },
                     { name: 'bonusSubtitle', type: 'text' },
+                    {
+                      name: 'bonusNote',
+                      type: 'text',
+                      admin: { description: 'Optional third line, e.g. "($59.95 VALUE)".' },
+                    },
                     { name: 'bonusImage', type: 'upload', relationTo: 'media' },
                   ],
                 },
@@ -266,10 +324,18 @@ export const ProductDetail: Block = {
                       required: true,
                       admin: { width: '30%' },
                     },
-                    { name: 'lead', type: 'text', admin: { width: '70%' } },
+                    { name: 'lead', type: 'text', admin: { width: '40%' } },
+                    artworkField('30%'),
                   ],
                 },
-                { name: 'text', type: 'textarea', required: true },
+                {
+                  name: 'text',
+                  type: 'textarea',
+                  required: true,
+                  admin: {
+                    description: 'Wrap a phrase in **double asterisks** to set it in bold.',
+                  },
+                },
               ],
             },
             {
@@ -288,9 +354,10 @@ export const ProductDetail: Block = {
                       defaultValue: 'guarantee',
                       options: brandIconOptions,
                       required: true,
-                      admin: { width: '40%' },
+                      admin: { width: '30%' },
                     },
-                    { name: 'label', type: 'text', required: true, admin: { width: '60%' } },
+                    { name: 'label', type: 'text', required: true, admin: { width: '40%' } },
+                    artworkField('30%'),
                   ],
                 },
               ],
@@ -349,6 +416,11 @@ export const ProductDetail: Block = {
               label: 'Customer Videos',
               fields: [
                 { name: 'storiesTitle', type: 'text' },
+                {
+                  name: 'storiesPosterIncludesChrome',
+                  type: 'checkbox',
+                  label: 'Posters already include the phone status bar and badge',
+                },
                 {
                   name: 'stories',
                   type: 'array',

@@ -1,6 +1,5 @@
 'use client'
 import React, { useState } from 'react'
-import { Check } from 'lucide-react'
 
 import type { ProductDetailBlock } from '@/payload-types'
 
@@ -11,6 +10,11 @@ import { marks } from '@/utilities/marks'
 type Variant = NonNullable<ProductDetailBlock['variants']>[number]
 type Plan = NonNullable<ProductDetailBlock['plans']>[number]
 
+/**
+ * Figma 6210:2888 → 6215:3044: "Select Your System", the plan cards, the one-time link and
+ * the cart button. Rendered as a flex fragment of the buy column so each piece keeps the
+ * column's 10px rhythm, as the comp stacks them.
+ */
 export const BuyBox: React.FC<{
   ctaLabel?: string | null
   oneTimeLabel?: string | null
@@ -22,165 +26,202 @@ export const BuyBox: React.FC<{
   const [plan, setPlan] = useState(0)
 
   return (
-    <div>
+    <>
       {variants.length > 0 && (
-        <div>
+        /* Figma 6210:2888: 10px vertical padding, 16px gap, #ccc rule beneath. */
+        <div className="flex flex-col gap-4 border-b border-[#ccc] py-2.5">
           {variantsTitle && (
-            <p className="text-sm font-semibold text-brand">{marks(variantsTitle)}</p>
+            <p className="text-[16.25px] font-bold leading-5 text-navy">{marks(variantsTitle)}</p>
           )}
 
-          <ul className="mt-3 flex flex-wrap gap-6">
-            {variants.map((item, i) => (
-              <li key={item.id ?? i}>
-                <button
-                  aria-current={i === variant}
-                  className="flex w-24 flex-col items-center gap-2"
-                  onClick={() => setVariant(i)}
-                  type="button"
-                >
-                  <span
-                    className={cn(
-                      'relative flex h-20 w-20 items-center justify-center overflow-hidden rounded-full border-2 bg-white',
-                      i === variant ? 'border-brand' : 'border-tint-100',
-                    )}
+          <ul className="flex flex-wrap gap-4 @min-[480px]:gap-[30px]">
+            {variants.map((item, i) => {
+              const selected = i === variant
+
+              return (
+                <li key={item.id ?? i}>
+                  <button
+                    aria-current={selected}
+                    className="flex w-[100px] flex-col items-center gap-[5px] @min-[480px]:w-[110px]"
+                    onClick={() => setVariant(i)}
+                    type="button"
                   >
-                    {item.image && typeof item.image === 'object' ? (
-                      <Media fill imgClassName="object-contain p-2" resource={item.image} />
-                    ) : (
-                      <span className="text-[10px] text-slate-400">No image</span>
-                    )}
-                  </span>
-                  <span className="text-center text-xs font-semibold text-brand">
-                    {marks(item.name)}
-                  </span>
-                </button>
-              </li>
-            ))}
+                    {/* 110px disc, 3px ring: navy on a pale fill when chosen, pale blue otherwise. */}
+                    <span
+                      className={cn(
+                        'relative block aspect-square w-full overflow-hidden rounded-full border-[3px]',
+                        selected ? 'border-navy bg-mist-100' : 'border-tint-50 bg-white',
+                      )}
+                    >
+                      {item.image && typeof item.image === 'object' ? (
+                        <Media
+                          className="absolute inset-0"
+                          pictureClassName="absolute inset-0"
+                          fill
+                          imgClassName={cn('object-contain', selected ? 'px-[27px] py-2' : 'p-2.5')}
+                          resource={item.image}
+                          size="110px"
+                        />
+                      ) : (
+                        <span className="flex h-full items-center justify-center text-[10px] text-steel-400">
+                          No image
+                        </span>
+                      )}
+                    </span>
+                    <span className="text-center text-sm font-bold leading-5 text-navy [&_sup]:leading-[0]">
+                      {marks(item.name)}
+                    </span>
+                  </button>
+                </li>
+              )
+            })}
           </ul>
         </div>
       )}
 
-      {plans.length > 0 && (
-        <ul className="mt-6 flex flex-col gap-4">
-          {plans.map((item, i) => {
-            const selected = i === plan
+      {plans.map((item, i) => {
+        const selected = i === plan
 
-            return (
-              <li key={item.id ?? i}>
-                <div
+        return (
+          /* Figma 6210:2922 / 6214:2990: 30/20px padding, 16px gap, 20px radius. The chosen
+             card is pale blue with a navy rule, the other white with a #ccc rule. */
+          <div
+            className={cn(
+              'flex flex-col gap-4 rounded-[20px] border px-4 py-[30px] text-navy sm:px-5 [&_sup]:leading-[0]',
+              selected ? 'border-navy bg-mist-100' : 'border-[#ccc] bg-white',
+            )}
+            key={item.id ?? i}
+          >
+            <button
+              aria-pressed={selected}
+              className="flex w-full flex-wrap items-start justify-between gap-2.5 text-left"
+              onClick={() => setPlan(i)}
+              type="button"
+            >
+              <span className="flex flex-wrap items-center gap-2.5">
+                <span
                   className={cn(
-                    'rounded-xl border p-5',
-                    selected ? 'border-brand bg-mist' : 'border-tint-100 bg-white',
+                    'size-5 shrink-0 rounded-full border-navy bg-white',
+                    selected ? 'border-[6px]' : 'border-2',
                   )}
-                >
-                  <button
-                    aria-pressed={selected}
-                    className="flex w-full items-center gap-3 text-left"
-                    onClick={() => setPlan(i)}
-                    type="button"
+                />
+                <span className="text-[22px] font-bold leading-6">{marks(item.name)}</span>
+                {item.saveLabel && (
+                  <span
+                    className={cn(
+                      'flex h-6 items-center rounded-xl px-3 text-base font-bold uppercase leading-[18px]',
+                      selected ? 'bg-navy text-white' : 'border border-navy bg-white',
+                    )}
                   >
+                    {marks(item.saveLabel)}
+                  </span>
+                )}
+              </span>
+
+              {item.bestValue && (
+                <span className="flex h-6 items-center rounded-tr-xl rounded-bl-xl bg-navy px-3 text-base font-bold uppercase leading-[18px] text-white">
+                  {item.bestValueLabel || 'Best Value'}
+                </span>
+              )}
+            </button>
+
+            {/* Price row: 50/48 bold price, the struck regular price 20px after it, bottom-aligned. */}
+            <div className="flex flex-wrap items-end gap-x-5">
+              <span className="text-[50px] font-bold leading-[48px]">{marks(item.price)}</span>
+              {(item.comparePrice || item.priceSuffix) && (
+                <span className="py-1 text-[22px] font-medium leading-[22px]">
+                  {item.comparePrice && <s>{marks(item.comparePrice)}</s>}
+                  {item.priceSuffix && marks(item.priceSuffix)}
+                </span>
+              )}
+            </div>
+
+            {(item.billingNote || item.perServing) && (
+              <div className="flex flex-wrap justify-between gap-x-4 gap-y-1 text-sm leading-4 text-brand-600">
+                {item.billingNote && <span>{marks(item.billingNote)}</span>}
+                {item.perServing && <span className="font-bold">{marks(item.perServing)}</span>}
+              </div>
+            )}
+
+            {selected && Array.isArray(item.features) && item.features.length > 0 && (
+              <ul className="flex flex-col gap-1 border-y border-[#ccc] py-2.5">
+                {item.features.map((feature, f) => (
+                  <li className="flex items-center gap-2" key={feature.id ?? f}>
                     <span
-                      className={cn(
-                        'flex h-4 w-4 shrink-0 items-center justify-center rounded-full border-2',
-                        selected ? 'border-brand' : 'border-tint-300',
-                      )}
+                      aria-hidden="true"
+                      className="w-4 shrink-0 text-center text-lg font-bold leading-[22px]"
                     >
-                      {selected && <span className="h-2 w-2 rounded-full bg-brand" />}
+                      ✓
                     </span>
+                    <span className="text-sm font-bold leading-4">{marks(feature.text)}</span>
+                  </li>
+                ))}
+              </ul>
+            )}
 
-                    <span className="text-lg font-bold text-brand">{marks(item.name)}</span>
-
-                    {item.saveLabel && (
-                      <span className="rounded-full border border-brand px-2.5 py-0.5 text-[11px] font-bold text-brand">
-                        {marks(item.saveLabel)}
-                      </span>
-                    )}
-
-                    {item.bestValue && (
-                      <span className="ml-auto rounded bg-brand px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-white">
-                        {item.bestValueLabel || 'Best Value'}
-                      </span>
-                    )}
-                  </button>
-
-                  <div className="mt-3 flex flex-wrap items-baseline gap-2">
-                    <span className="text-4xl font-extrabold text-brand">{marks(item.price)}</span>
-                    {item.comparePrice && (
-                      <span className="text-lg text-slate-400 line-through">
-                        {marks(item.comparePrice)}
-                      </span>
-                    )}
-                    {item.priceSuffix && (
-                      <span className="text-lg text-slate-500">{marks(item.priceSuffix)}</span>
-                    )}
-                  </div>
-
-                  <div className="mt-1 flex flex-wrap justify-between gap-2 text-xs text-brand-500">
-                    {item.billingNote && <span>{marks(item.billingNote)}</span>}
-                    {item.perServing && (
-                      <span className="font-semibold text-brand">{marks(item.perServing)}</span>
-                    )}
-                  </div>
-
-                  {selected && Array.isArray(item.features) && item.features.length > 0 && (
-                    <ul className="mt-4 flex flex-col gap-2 border-t border-tint-100 pt-4">
-                      {item.features.map((feature, f) => (
-                        <li className="flex items-start gap-2" key={feature.id ?? f}>
-                          <Check className="mt-0.5 h-4 w-4 shrink-0 text-brand" strokeWidth={3} />
-                          <span className="text-xs font-semibold text-brand">
-                            {marks(feature.text)}
-                          </span>
-                        </li>
-                      ))}
-                    </ul>
+            {selected && (item.bonusTitle || item.bonusImage) && (
+              /* Figma 6214:2989: heading, then a navy 16px-radius box hugging a 110x96
+                 image and a 205px copy column, 20px apart. */
+              <div className="flex flex-col items-center gap-2.5">
+                {item.bonusHeading && (
+                  <p className="text-center text-sm font-bold uppercase leading-4">
+                    {marks(item.bonusHeading)}
+                  </p>
+                )}
+                <div className="flex max-w-full items-center gap-3 rounded-2xl bg-navy px-4 py-2.5 sm:gap-5 sm:px-[30px]">
+                  {item.bonusImage && typeof item.bonusImage === 'object' && (
+                    <span className="relative block h-[76px] w-[72px] shrink-0 sm:m-2.5 sm:w-[90px]">
+                      <Media
+                        className="absolute inset-0"
+                        pictureClassName="absolute inset-0"
+                        fill
+                        imgClassName="object-contain"
+                        resource={item.bonusImage}
+                        size="90px"
+                      />
+                    </span>
                   )}
-
-                  {selected && (item.bonusTitle || item.bonusImage) && (
-                    <div className="mt-4">
-                      {item.bonusHeading && (
-                        <p className="text-center text-[10px] font-bold uppercase tracking-wide text-brand">
-                          {marks(item.bonusHeading)}
-                        </p>
+                  <span className="flex min-w-0 flex-col gap-[5px] text-white sm:w-[205px]">
+                    <span className="text-2xl font-bold leading-6">
+                      {item.bonusHighlight && (
+                        <span className="text-[#f7ff05]">{marks(item.bonusHighlight)} </span>
                       )}
-                      <div className="mt-2 flex items-center gap-4 rounded-lg bg-brand p-4">
-                        <span className="relative h-16 w-16 shrink-0 overflow-hidden rounded">
-                          {item.bonusImage && typeof item.bonusImage === 'object' && (
-                            <Media fill imgClassName="object-contain" resource={item.bonusImage} />
-                          )}
-                        </span>
-                        <span className="min-w-0">
-                          <span className="block text-lg font-extrabold text-white">
-                            {item.bonusHighlight && (
-                              <span className="text-cream">{marks(item.bonusHighlight)} </span>
-                            )}
-                            {marks(item.bonusTitle)}
-                          </span>
-                          {item.bonusSubtitle && (
-                            <span className="block text-xs text-white/80">
-                              {marks(item.bonusSubtitle)}
-                            </span>
-                          )}
-                        </span>
-                      </div>
-                    </div>
-                  )}
+                      {marks(item.bonusTitle)}
+                    </span>
+                    {item.bonusSubtitle && (
+                      <span className="text-sm font-bold leading-4">
+                        {marks(item.bonusSubtitle)}
+                      </span>
+                    )}
+                    {item.bonusNote && (
+                      <span className="text-sm leading-4">{marks(item.bonusNote)}</span>
+                    )}
+                  </span>
                 </div>
-              </li>
-            )
-          })}
-        </ul>
-      )}
+              </div>
+            )}
+          </div>
+        )
+      })}
 
       {oneTimeLabel && (
-        <p className="mt-4 text-sm font-semibold text-brand underline">{marks(oneTimeLabel)}</p>
+        /* Figma 6215:3035: a 581px row centred in the 634px column, 8px vertical padding. */
+        <p className="mx-auto flex w-full max-w-[581px] py-2">
+          <button
+            className="text-sm font-semibold leading-4 text-brand-600 underline underline-offset-2"
+            type="button"
+          >
+            {marks(oneTimeLabel)}
+          </button>
+        </p>
       )}
 
       <button
-        className="mt-4 w-full rounded-lg bg-brand px-6 py-4 text-base font-bold uppercase tracking-wide text-white transition-colors hover:bg-brand-dark"
+        className="flex h-10 w-full items-center justify-center rounded-[20px] bg-navy px-[18.75px] text-base font-extrabold uppercase leading-4 text-white transition-colors hover:bg-navy-900"
         type="button"
       >
         {ctaLabel || 'Add to Cart'}
       </button>
-    </div>
+    </>
   )
 }

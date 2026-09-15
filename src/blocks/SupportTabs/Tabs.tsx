@@ -1,6 +1,5 @@
 'use client'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
-import { ChevronLeft, ChevronRight } from 'lucide-react'
 
 import type { SupportTabsBlock } from '@/payload-types'
 
@@ -11,16 +10,49 @@ import { marks } from '@/utilities/marks'
 
 type Item = NonNullable<SupportTabsBlock['items']>[number]
 
-const ItemIcon: React.FC<{ className?: string; item: Item }> = ({ className, item }) =>
-  item.image && typeof item.image === 'object' ? (
-    <Media
-      className={className}
-      imgClassName="h-full w-full object-contain"
-      resource={item.image}
-    />
-  ) : (
-    <BrandIcon className={className} name={item.icon} />
+/**
+ * The comp's illustrated, multi-colour icons, which the line icons in `BrandIcons` don't
+ * match. Keyed by the icon each support area already selects; an uploaded image still
+ * wins, and any other icon falls back to the shared line set.
+ */
+const illustrations: Record<string, string> = {
+  calendar: '/icons/support/regularity.svg',
+  droplet: '/icons/support/stool-comfort.svg',
+  flask: '/icons/support/antioxidants.svg',
+  leaf: '/icons/support/capillary.svg',
+  rotate: '/icons/support/circulation.svg',
+  shieldCheck: '/icons/support/skin-protection.svg',
+  snowflake: '/icons/support/external-soothing.svg',
+  supportSystem: '/icons/support/vein.svg',
+}
+
+const ItemIcon: React.FC<{ className: string; item: Item; size: number }> = ({
+  className,
+  item,
+  size,
+}) => {
+  if (item.image && typeof item.image === 'object') {
+    return (
+      <Media
+        className={cn('relative', className)}
+        fill
+        imgClassName="object-contain"
+        resource={item.image}
+        size={`${size}px`}
+      />
+    )
+  }
+
+  const src = item.icon ? illustrations[item.icon] : undefined
+  if (src) {
+    // eslint-disable-next-line @next/next/no-img-element -- static SVG, nothing to optimise
+    return <img alt="" className={className} height={size} src={src} width={size} />
+  }
+
+  return (
+    <BrandIcon className={cn('text-brand-500 [&>svg]:size-full', className)} name={item.icon} />
   )
+}
 
 /**
  * Tabs and cards over one scroll-snap track: the tabs scroll a card into view and the
@@ -31,11 +63,17 @@ export const Tabs: React.FC<{ items: Item[] }> = ({ items }) => {
   const trackRef = useRef<HTMLUListElement>(null)
   const [active, setActive] = useState(0)
 
+  // One card plus the gap between cards, measured from the layout rather than assumed.
+  const stepOf = (track: HTMLUListElement) => {
+    const [first, second] = Array.from(track.children) as HTMLElement[]
+    if (!first) return 1
+    return second ? second.offsetLeft - first.offsetLeft : first.offsetWidth
+  }
+
   const sync = useCallback(() => {
     const track = trackRef.current
     if (!track) return
-    const step = track.firstElementChild?.clientWidth ?? 1
-    setActive(Math.round(track.scrollLeft / step))
+    setActive(Math.round(track.scrollLeft / stepOf(track)))
   }, [])
 
   useEffect(() => {
@@ -53,72 +91,83 @@ export const Tabs: React.FC<{ items: Item[] }> = ({ items }) => {
   const scrollToIndex = (index: number) => {
     const track = trackRef.current
     if (!track) return
-    const step = track.firstElementChild?.clientWidth ?? 0
     const clamped = Math.max(0, Math.min(items.length - 1, index))
-    track.scrollTo({ behavior: 'smooth', left: step * clamped })
+    track.scrollTo({ behavior: 'smooth', left: stepOf(track) * clamped })
   }
 
   const arrow =
-    'flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white text-brand shadow-sm transition-colors hover:bg-slate-50 disabled:opacity-40'
+    'absolute top-1/2 z-10 size-8 shrink-0 -translate-y-1/2 opacity-60 transition-opacity hover:opacity-100 disabled:pointer-events-none disabled:opacity-25 md:static md:size-16 md:translate-y-0'
 
   return (
-    <div>
-      {/* Tabs */}
-      <ul className="flex flex-wrap items-center justify-center gap-2">
+    <>
+      <ul className="flex w-full flex-wrap items-start justify-center gap-2.5">
         {items.map((item, i) => (
           <li key={item.id ?? i}>
             <button
               aria-current={i === active}
               className={cn(
-                'flex items-center gap-2 rounded-lg border px-3 py-2 text-xs font-semibold transition-colors',
-                i === active
-                  ? 'border-brand bg-brand text-white'
-                  : 'border-tint-100 bg-white text-brand hover:bg-slate-50',
+                'flex items-center rounded-[14px] border bg-white p-0.5',
+                i === active ? 'border-aqua-200' : 'border-[#ddd] hover:border-brand-300',
               )}
               onClick={() => scrollToIndex(i)}
               type="button"
             >
-              <ItemIcon className="[&>svg]:h-4 [&>svg]:w-4 [&_img]:h-4 [&_img]:w-4" item={item} />
-              {marks(item.title)}
+              <span
+                className={cn(
+                  'flex items-center justify-center gap-1.5 rounded-xl px-2 py-1 text-xs font-medium leading-normal transition-colors',
+                  i === active ? 'bg-brand-500 text-white' : 'bg-white text-brand-500',
+                )}
+              >
+                <ItemIcon className="size-8 shrink-0" item={item} size={32} />
+                <span className="whitespace-nowrap">{marks(item.title)}</span>
+              </span>
             </button>
           </li>
         ))}
       </ul>
 
-      {/* Cards */}
-      <div className="mt-8 flex items-center gap-3">
+      <div className="relative flex w-full items-center justify-center gap-4 px-4 py-5 md:justify-between xl:px-[50px]">
         <button
           aria-label="Previous"
-          className={arrow}
+          className={cn(arrow, 'left-0')}
           disabled={active === 0}
           onClick={() => scrollToIndex(active - 1)}
           type="button"
         >
-          <ChevronLeft className="h-5 w-5" />
+          {/* eslint-disable-next-line @next/next/no-img-element -- static SVG, nothing to optimise */}
+          <img
+            alt=""
+            className="size-full"
+            height={64}
+            src="/icons/support/arrow-left.svg"
+            width={64}
+          />
         </button>
 
         <ul
-          className="flex grow snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth pb-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+          className="flex w-full max-w-[1000px] snap-x snap-mandatory gap-5 overflow-x-auto lg:gap-6 scroll-smooth [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
           ref={trackRef}
         >
           {items.map((item, i) => (
             <li className="w-full flex-none snap-center" key={item.id ?? i}>
-              <div
-                className="flex h-full items-center gap-5 rounded-xl border border-tint-150 bg-white p-6"
-                data-payload-subpath={`items.${i}.title`}
-              >
-                <ItemIcon
-                  className="shrink-0 text-brand-500 [&>svg]:h-14 [&>svg]:w-14 [&_img]:h-14 [&_img]:w-14"
-                  item={item}
-                />
-                <div className="min-w-0">
-                  <h3 className="font-serif text-2xl text-subheading">{marks(item.title)}</h3>
-                  <p
-                    className="mt-1 whitespace-pre-line text-sm leading-relaxed text-brand"
-                    data-payload-subpath={`items.${i}.description`}
-                  >
-                    {marks(item.description)}
-                  </p>
+              {/* The white card sits 10px low inside a gradient plate of the same radius, so only a gradient top edge shows. */}
+              <div className="h-full rounded-[30px] bg-gradient-to-r from-brand-300 via-brand-600 to-[rgba(44,128,226,0.36)] pt-2.5">
+                <div
+                  className="flex h-[370px] flex-col items-start justify-center gap-6 rounded-[30px] bg-white p-4 text-left sm:h-full sm:flex-row sm:items-center sm:justify-start lg:h-[160px]"
+                  data-payload-subpath={`items.${i}.title`}
+                >
+                  <ItemIcon className="size-[120px] shrink-0" item={item} size={120} />
+                  <div className="flex w-full min-w-0 flex-col gap-2.5 text-brand-500 sm:w-auto sm:flex-1">
+                    <h3 className="font-marcellus text-[32px] font-normal leading-[normal] lg:font-playfair lg:text-[42px] lg:font-medium lg:leading-normal [&_sup]:leading-[0]">
+                      {marks(item.cardTitle || item.title)}
+                    </h3>
+                    <p
+                      className="whitespace-pre-line text-lg font-medium leading-[normal] lg:leading-normal"
+                      data-payload-subpath={`items.${i}.description`}
+                    >
+                      {marks(item.description)}
+                    </p>
+                  </div>
                 </div>
               </div>
             </li>
@@ -127,14 +176,21 @@ export const Tabs: React.FC<{ items: Item[] }> = ({ items }) => {
 
         <button
           aria-label="Next"
-          className={arrow}
+          className={cn(arrow, 'right-0')}
           disabled={active >= items.length - 1}
           onClick={() => scrollToIndex(active + 1)}
           type="button"
         >
-          <ChevronRight className="h-5 w-5" />
+          {/* eslint-disable-next-line @next/next/no-img-element -- static SVG, nothing to optimise */}
+          <img
+            alt=""
+            className="size-full"
+            height={64}
+            src="/icons/support/arrow-right.svg"
+            width={64}
+          />
         </button>
       </div>
-    </div>
+    </>
   )
 }

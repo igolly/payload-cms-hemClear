@@ -12,6 +12,9 @@ const parts = (ms: number) => [
 ]
 
 /**
+ * The navy strip above the header (Figma `TOP BAR`, 2002:24): a two-line offer and a live
+ * countdown, every item spaced 5px apart in one centred 56px row.
+ *
  * The countdown starts empty and fills in after mount: rendering a live clock during SSR
  * would produce markup that never matches the client's first paint.
  */
@@ -35,28 +38,31 @@ export const AnnouncementBar: React.FC<{
   }, [endsAt])
 
   return (
-    <div className="w-full bg-navy px-4 py-2 text-white">
-      <div className="mx-auto flex max-w-7xl flex-col items-center justify-center gap-x-8 gap-y-1 text-center sm:flex-row">
-        <p className="text-xs leading-tight">
-          {title && <span className="block font-bold text-cream">{marks(title)}</span>}
-          {marks(text)}
+    <div className="w-full bg-navy px-1 font-inter text-white sm:px-4">
+      {/* Mobile (6246:2933): offer and countdown stack, 6px / 4px padding, 5px apart. */}
+      <div className="mx-auto flex min-h-14 max-w-[1400px] flex-col items-center justify-center gap-[5px] py-[6px] text-center sm:flex-row sm:py-0 [&_sup]:leading-[0]">
+        <p className="w-[401px] max-w-full leading-[normal] sm:w-[557px] sm:shrink-0">
+          {title && (
+            <span className="block text-[17px] font-bold text-cream">{marks(title)}</span>
+          )}
+          <span className="block text-[13px]">{marks(text)}</span>
         </p>
 
         {remaining !== null && (
-          <ul className="flex items-center justify-center h-full gap-3">
+          <ul className="flex h-[30px] items-center justify-center gap-[5px] sm:h-auto">
             {parts(remaining).map((part, i) => (
               <React.Fragment key={part.label}>
-                {/* Separator between units, centred on the unit block as a whole. */}
                 {i > 0 && (
-                  <li aria-hidden="true" className="text-sm font-bold leading-none text-white/50">
+                  <li
+                    aria-hidden="true"
+                    className="flex h-[42px] w-[7px] items-center justify-center text-[21px] font-bold leading-[normal] text-white/50"
+                  >
                     :
                   </li>
                 )}
-                <li className="flex flex-col items-center leading-none">
-                  <span className="text-sm font-bold tabular-nums">{marks(part.value)}</span>
-                  <span className="text-[9px] uppercase tracking-wide text-white/70">
-                    {marks(part.label)}
-                  </span>
+                <li className="flex h-[42px] w-[30px] flex-col items-center justify-center leading-[normal]">
+                  <span className="text-[17px] font-bold tabular-nums">{part.value}</span>
+                  <span className="text-[9px] uppercase">{part.label}</span>
                 </li>
               </React.Fragment>
             ))}

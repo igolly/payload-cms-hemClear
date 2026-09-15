@@ -444,6 +444,20 @@ export interface ProductDetailBlock {
   gallery?:
     | {
         image?: (string | null) | Media;
+        /**
+         * Optional. Shown in the thumbnail strip instead of the image.
+         */
+        thumbnail?: (string | null) | Media;
+        overlayEyebrow?: string | null;
+        /**
+         * Line breaks are kept.
+         */
+        overlayHeading?: string | null;
+        /**
+         * Line breaks are kept.
+         */
+        overlayText?: string | null;
+        overlayTestedBadge?: boolean | null;
         id?: string | null;
       }[]
     | null;
@@ -514,6 +528,7 @@ export interface ProductDetailBlock {
           | 'leaf'
           | 'droplet'
           | 'shieldCheck'
+          | 'shieldLeaf'
           | 'snowflake'
           | 'info';
         title: string;
@@ -522,6 +537,11 @@ export interface ProductDetailBlock {
          */
         percent?: string | null;
         subtitle?: string | null;
+        /**
+         * Product-page glyph. Overrides Icon when set.
+         */
+        artwork?:
+          ('heart' | 'padlock' | 'shield' | 'delivery' | 'cancel' | 'leaf' | 'smile' | 'recycle' | 'cardiogram') | null;
         id?: string | null;
       }[]
     | null;
@@ -563,6 +583,10 @@ export interface ProductDetailBlock {
         bonusHighlight?: string | null;
         bonusTitle?: string | null;
         bonusSubtitle?: string | null;
+        /**
+         * Optional third line, e.g. "($59.95 VALUE)".
+         */
+        bonusNote?: string | null;
         bonusImage?: (string | null) | Media;
         id?: string | null;
       }[]
@@ -598,9 +622,18 @@ export interface ProductDetailBlock {
           | 'leaf'
           | 'droplet'
           | 'shieldCheck'
+          | 'shieldLeaf'
           | 'snowflake'
           | 'info';
         lead?: string | null;
+        /**
+         * Product-page glyph. Overrides Icon when set.
+         */
+        artwork?:
+          ('heart' | 'padlock' | 'shield' | 'delivery' | 'cancel' | 'leaf' | 'smile' | 'recycle' | 'cardiogram') | null;
+        /**
+         * Wrap a phrase in **double asterisks** to set it in bold.
+         */
         text: string;
         id?: string | null;
       }[]
@@ -634,9 +667,15 @@ export interface ProductDetailBlock {
           | 'leaf'
           | 'droplet'
           | 'shieldCheck'
+          | 'shieldLeaf'
           | 'snowflake'
           | 'info';
         label: string;
+        /**
+         * Product-page glyph. Overrides Icon when set.
+         */
+        artwork?:
+          ('heart' | 'padlock' | 'shield' | 'delivery' | 'cancel' | 'leaf' | 'smile' | 'recycle' | 'cardiogram') | null;
         id?: string | null;
       }[]
     | null;
@@ -660,6 +699,7 @@ export interface ProductDetailBlock {
       }[]
     | null;
   storiesTitle?: string | null;
+  storiesPosterIncludesChrome?: boolean | null;
   /**
    * Same carousel used by the Video Stories block.
    */
@@ -919,7 +959,7 @@ export interface ReviewsBlock {
   featured?:
     | {
         /**
-         * e.g. "5.5". Leave empty to hide.
+         * e.g. "5.0". Leave empty to hide.
          */
         score?: string | null;
         /**
@@ -937,9 +977,24 @@ export interface ReviewsBlock {
          */
         authorNote?: string | null;
         /**
+         * Platform the review came from — shows the built-in logo. An uploaded Source Logo below takes precedence.
+         */
+        source?: ('amazon' | 'hemclear' | 'trustpilot' | 'reddit' | 'google') | null;
+        /**
          * Logo of the platform the review came from (Amazon, Trustpilot, Google…). Upload a transparent PNG or SVG.
          */
         sourceLogo?: (string | null) | Media;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Optional strip under the featured reviews. When set, the customer reviews stay hidden until the visitor clicks "Show More", and the strip gives way to them.
+   */
+  features?:
+    | {
+        icon: 'customers' | 'rating' | 'guarantee' | 'comfort';
+        title: string;
+        text?: string | null;
         id?: string | null;
       }[]
     | null;
@@ -968,6 +1023,10 @@ export interface ReviewsBlock {
   initialCount?: number | null;
   showMoreLabel?: string | null;
   showLessLabel?: string | null;
+  /**
+   * Optional. How many more reviews each further "Show More" click reveals. Leave empty to reveal all of them at once.
+   */
+  showMoreStep?: number | null;
   /**
    * Text of the badge shown on customer reviews marked as verified.
    */
@@ -1077,6 +1136,10 @@ export interface StatsBarBlock {
          */
         label?: string | null;
         showStar?: boolean | null;
+        /**
+         * Leave empty for the default: Small under a top label, Large otherwise.
+         */
+        valueSize?: ('lg' | 'md' | 'sm') | null;
         id?: string | null;
       }[]
     | null;
@@ -1152,6 +1215,7 @@ export interface CausesBlock {
           | 'leaf'
           | 'droplet'
           | 'shieldCheck'
+          | 'shieldLeaf'
           | 'snowflake'
           | 'info';
         label: string;
@@ -1248,6 +1312,14 @@ export interface ProductSystemBlock {
          * Large lead-in number, e.g. "13".
          */
         stat?: string | null;
+        /**
+         * Built-in icon, used when no card image is uploaded.
+         */
+        icon?: ('flask' | 'supportSystem' | 'stethoscope' | 'research' | 'madeInUsa' | 'guarantee') | null;
+        /**
+         * Leave empty for the default: 16px beside a number, 24px above a subtitle, 18px otherwise.
+         */
+        titleSize?: ('sm' | 'md' | 'lg') | null;
         title: string;
         subtitle?: string | null;
         id?: string | null;
@@ -1275,6 +1347,10 @@ export interface SolutionSystemBlock {
    * Use a line break to control where the heading wraps.
    */
   heading?: string | null;
+  /**
+   * Optional. A phrase from the heading to underline, e.g. "Meet HemClear". Must match the heading text exactly.
+   */
+  underline?: string | null;
   subheading?: string | null;
   /**
    * Centre diagram. A placeholder holds its space until one is set.
@@ -1312,6 +1388,7 @@ export interface SolutionSystemBlock {
           | 'leaf'
           | 'droplet'
           | 'shieldCheck'
+          | 'shieldLeaf'
           | 'snowflake'
           | 'info';
         /**
@@ -1320,6 +1397,10 @@ export interface SolutionSystemBlock {
         stat?: string | null;
         title: string;
         subtitle?: string | null;
+        /**
+         * Auto: large with a subtitle, small beside a number, medium otherwise. Pick small for a long title that would run to three lines.
+         */
+        titleSize?: ('auto' | 'sm' | 'md' | 'lg') | null;
         /**
          * Illustrated icon. Replaces the icon above when set; leave empty to keep using the icon.
          */
@@ -1354,6 +1435,10 @@ export interface VideoStoriesBlock {
    * Italic line below the heading.
    */
   subheading?: string | null;
+  /**
+   * Tick when the poster images already show the status bar, "Customer Video" badge and duration, so they are not drawn again on top.
+   */
+  posterIncludesChrome?: boolean | null;
   /**
    * Shown in a swipeable carousel — five at a time on desktop, one on mobile. Add as many as you like.
    */
@@ -1508,6 +1593,7 @@ export interface ClosingCtaBlock {
           | 'leaf'
           | 'droplet'
           | 'shieldCheck'
+          | 'shieldLeaf'
           | 'snowflake'
           | 'info';
         title: string;
@@ -1593,6 +1679,7 @@ export interface GuaranteeBlock {
           | 'leaf'
           | 'droplet'
           | 'shieldCheck'
+          | 'shieldLeaf'
           | 'snowflake'
           | 'info';
         text: string;
@@ -1631,6 +1718,7 @@ export interface GuaranteeBlock {
           | 'leaf'
           | 'droplet'
           | 'shieldCheck'
+          | 'shieldLeaf'
           | 'snowflake'
           | 'info';
         label: string;
@@ -1753,6 +1841,7 @@ export interface ComparisonBlock {
           | 'leaf'
           | 'droplet'
           | 'shieldCheck'
+          | 'shieldLeaf'
           | 'snowflake'
           | 'info';
         label: string;
@@ -1827,9 +1916,17 @@ export interface SupportTabsBlock {
           | 'leaf'
           | 'droplet'
           | 'shieldCheck'
+          | 'shieldLeaf'
           | 'snowflake'
           | 'info';
+        /**
+         * Tab label.
+         */
         title: string;
+        /**
+         * Heading on the card, e.g. "Healthy Vein Function". Defaults to the tab label.
+         */
+        cardTitle?: string | null;
         /**
          * Optional illustrated icon; overrides the icon above.
          */
@@ -1920,6 +2017,7 @@ export interface PairingBlock {
           | 'leaf'
           | 'droplet'
           | 'shieldCheck'
+          | 'shieldLeaf'
           | 'snowflake'
           | 'info';
         title: string;
@@ -2009,6 +2107,7 @@ export interface TotalCareBlock {
                 | 'leaf'
                 | 'droplet'
                 | 'shieldCheck'
+                | 'shieldLeaf'
                 | 'snowflake'
                 | 'info';
               label: string;
@@ -2081,6 +2180,7 @@ export interface MedicalReviewBlock {
           | 'leaf'
           | 'droplet'
           | 'shieldCheck'
+          | 'shieldLeaf'
           | 'snowflake'
           | 'info';
         title: string;
@@ -2165,6 +2265,7 @@ export interface FeatureStripBlock {
           | 'leaf'
           | 'droplet'
           | 'shieldCheck'
+          | 'shieldLeaf'
           | 'snowflake'
           | 'info';
         title: string;
@@ -2351,6 +2452,10 @@ export interface BenefitsCarouselBlock {
   items?:
     | {
         image?: (string | null) | Media;
+        /**
+         * Optional. The badge drawn for this section in the design; overrides the icon below.
+         */
+        badge?: ('internalExternal' | 'vein' | 'circulation' | 'regularity' | 'soothing') | null;
         icon:
           | 'pregnancy'
           | 'toilet'
@@ -2378,6 +2483,7 @@ export interface BenefitsCarouselBlock {
           | 'leaf'
           | 'droplet'
           | 'shieldCheck'
+          | 'shieldLeaf'
           | 'snowflake'
           | 'info';
         title: string;
@@ -2461,6 +2567,10 @@ export interface FormulaTableBlock {
  */
 export interface PricingOfferBlock {
   /**
+   * Selectable: visitors pick a plan (the most popular starts selected), then one shared button buys it; the chosen plan’s footnote shows under the button.
+   */
+  layout?: ('cards' | 'select') | null;
+  /**
    * e.g. "Limited Time Offer:"
    */
   bannerTitle?: string | null;
@@ -2522,6 +2632,7 @@ export interface PricingOfferBlock {
           | 'leaf'
           | 'droplet'
           | 'shieldCheck'
+          | 'shieldLeaf'
           | 'snowflake'
           | 'info';
         label: string;
@@ -3058,6 +3169,11 @@ export interface ProductDetailBlockSelect<T extends boolean = true> {
     | T
     | {
         image?: T;
+        thumbnail?: T;
+        overlayEyebrow?: T;
+        overlayHeading?: T;
+        overlayText?: T;
+        overlayTestedBadge?: T;
         id?: T;
       };
   rating?: T;
@@ -3093,6 +3209,7 @@ export interface ProductDetailBlockSelect<T extends boolean = true> {
         title?: T;
         percent?: T;
         subtitle?: T;
+        artwork?: T;
         id?: T;
       };
   variantsTitle?: T;
@@ -3125,6 +3242,7 @@ export interface ProductDetailBlockSelect<T extends boolean = true> {
         bonusHighlight?: T;
         bonusTitle?: T;
         bonusSubtitle?: T;
+        bonusNote?: T;
         bonusImage?: T;
         id?: T;
       };
@@ -3135,6 +3253,7 @@ export interface ProductDetailBlockSelect<T extends boolean = true> {
     | {
         icon?: T;
         lead?: T;
+        artwork?: T;
         text?: T;
         id?: T;
       };
@@ -3143,6 +3262,7 @@ export interface ProductDetailBlockSelect<T extends boolean = true> {
     | {
         icon?: T;
         label?: T;
+        artwork?: T;
         id?: T;
       };
   compositionTitle?: T;
@@ -3162,6 +3282,7 @@ export interface ProductDetailBlockSelect<T extends boolean = true> {
         id?: T;
       };
   storiesTitle?: T;
+  storiesPosterIncludesChrome?: T;
   stories?:
     | T
     | {
@@ -3222,7 +3343,16 @@ export interface ReviewsBlockSelect<T extends boolean = true> {
         quote?: T;
         author?: T;
         authorNote?: T;
+        source?: T;
         sourceLogo?: T;
+        id?: T;
+      };
+  features?:
+    | T
+    | {
+        icon?: T;
+        title?: T;
+        text?: T;
         id?: T;
       };
   reviews?:
@@ -3238,6 +3368,7 @@ export interface ReviewsBlockSelect<T extends boolean = true> {
   initialCount?: T;
   showMoreLabel?: T;
   showLessLabel?: T;
+  showMoreStep?: T;
   verifiedLabel?: T;
   disclaimer?: T;
   bgColor?: T;
@@ -3287,6 +3418,7 @@ export interface StatsBarBlockSelect<T extends boolean = true> {
         value?: T;
         label?: T;
         showStar?: T;
+        valueSize?: T;
         id?: T;
       };
   bgColor?: T;
@@ -3358,6 +3490,8 @@ export interface ProductSystemBlockSelect<T extends boolean = true> {
     | {
         image?: T;
         stat?: T;
+        icon?: T;
+        titleSize?: T;
         title?: T;
         subtitle?: T;
         id?: T;
@@ -3373,6 +3507,7 @@ export interface ProductSystemBlockSelect<T extends boolean = true> {
  */
 export interface SolutionSystemBlockSelect<T extends boolean = true> {
   heading?: T;
+  underline?: T;
   subheading?: T;
   image?: T;
   cards?:
@@ -3382,6 +3517,7 @@ export interface SolutionSystemBlockSelect<T extends boolean = true> {
         stat?: T;
         title?: T;
         subtitle?: T;
+        titleSize?: T;
         image?: T;
         id?: T;
       };
@@ -3398,6 +3534,7 @@ export interface VideoStoriesBlockSelect<T extends boolean = true> {
   eyebrow?: T;
   heading?: T;
   subheading?: T;
+  posterIncludesChrome?: T;
   stories?:
     | T
     | {
@@ -3589,6 +3726,7 @@ export interface SupportTabsBlockSelect<T extends boolean = true> {
     | {
         icon?: T;
         title?: T;
+        cardTitle?: T;
         image?: T;
         description?: T;
         id?: T;
@@ -3813,6 +3951,7 @@ export interface BenefitsCarouselBlockSelect<T extends boolean = true> {
     | T
     | {
         image?: T;
+        badge?: T;
         icon?: T;
         title?: T;
         details?: T;
@@ -3859,6 +3998,7 @@ export interface FormulaTableBlockSelect<T extends boolean = true> {
  * via the `definition` "PricingOfferBlock_select".
  */
 export interface PricingOfferBlockSelect<T extends boolean = true> {
+  layout?: T;
   bannerTitle?: T;
   bannerText?: T;
   bannerImage?: T;
@@ -4482,6 +4622,7 @@ export interface Footer {
           | 'leaf'
           | 'droplet'
           | 'shieldCheck'
+          | 'shieldLeaf'
           | 'snowflake'
           | 'info';
         label: string;
