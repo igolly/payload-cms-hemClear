@@ -93,15 +93,15 @@ export const FAQ: Block = {
     {
       name: 'defaultState',
       type: 'select',
-      defaultValue: 'allOpen',
+      defaultValue: 'allClosed',
       label: 'Default State',
       options: [
-        { label: 'All questions open', value: 'allOpen' },
-        { label: 'First question open', value: 'firstOpen' },
         { label: 'All questions closed', value: 'allClosed' },
+        { label: 'First question open', value: 'firstOpen' },
       ],
       admin: {
-        description: 'How the accordion appears before the visitor interacts with it.',
+        description:
+          'How the accordion appears before the visitor interacts with it. Only one question is ever open at a time, so there is no "all open".',
       },
     },
     {

@@ -8,33 +8,25 @@ import { marks } from '@/utilities/marks'
 
 type Item = NonNullable<FAQBlock['items']>[number]
 
-const initialOpen = (count: number, defaultState: FAQBlock['defaultState']): Set<number> => {
-  if (defaultState === 'allClosed') return new Set()
-  if (defaultState === 'firstOpen') return new Set(count > 0 ? [0] : [])
-  return new Set(Array.from({ length: count }, (_, i) => i))
-}
-
+/**
+ * One panel at a time: opening a question closes whichever was open, and clicking the open
+ * question closes it, leaving the list fully collapsed. `null` is "nothing open", which is
+ * also where the list starts unless the block asks for the first question to be open.
+ */
 export const FaqAccordion: React.FC<{
   defaultState: FAQBlock['defaultState']
   items: Item[]
 }> = ({ defaultState, items }) => {
-  const [open, setOpen] = useState(() => initialOpen(items.length, defaultState))
+  const [openIndex, setOpenIndex] = useState<null | number>(() =>
+    defaultState === 'firstOpen' && items.length > 0 ? 0 : null,
+  )
 
-  const toggle = (index: number) =>
-    setOpen((current) => {
-      const next = new Set(current)
-      if (next.has(index)) {
-        next.delete(index)
-      } else {
-        next.add(index)
-      }
-      return next
-    })
+  const toggle = (index: number) => setOpenIndex((current) => (current === index ? null : index))
 
   return (
     <ul className="flex flex-col gap-5">
       {items.map((item, i) => {
-        const isOpen = open.has(i)
+        const isOpen = openIndex === i
         const panelId = `faq-panel-${item.id ?? i}`
         const buttonId = `faq-button-${item.id ?? i}`
 
