@@ -193,7 +193,12 @@ export const Cards: React.FC<{ items: Item[] }> = ({ items }) => {
                       <div
                         className={cn(
                           'min-h-0',
-                          isOpen ? 'overflow-y-auto overscroll-contain' : 'overflow-hidden',
+                          /* Scrollable only as a safety net for copy longer than the
+                             card, and never with a visible bar — the same treatment the
+                             carousel track above gets. */
+                          isOpen
+                            ? 'overflow-y-auto overscroll-contain [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden'
+                            : 'overflow-hidden',
                         )}
                       >
                         <div
