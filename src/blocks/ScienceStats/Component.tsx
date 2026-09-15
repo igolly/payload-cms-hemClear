@@ -6,7 +6,7 @@ import { CMSLink } from '@/components/Link'
 import { ImageSlot } from '@/blocks/FAQ/ImagePlaceholder'
 import { backgroundStyle } from '@/fields/background'
 import { cn } from '@/utilities/ui'
-import { marks } from '@/utilities/marks'
+import { asText, marks } from '@/utilities/marks'
 
 /**
  * The comp sets the figures in Fraunces. A figure wider than three characters ("2-Part") drops from 56px to
@@ -111,7 +111,9 @@ export const ScienceStatsBlock: React.FC<Props> = ({
                     key={i}
                   >
                     {/* The comp trails every button label with two spaces and an arrow. */}
-                    {!link.label?.trim().endsWith('→') && <span aria-hidden="true">{'  →'}</span>}
+                    {!asText(link.label).trim().endsWith('→') && (
+                      <span aria-hidden="true">{'  →'}</span>
+                    )}
                   </CMSLink>
                 ))}
               </div>

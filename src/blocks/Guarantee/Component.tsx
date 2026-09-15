@@ -55,7 +55,12 @@ export const GuaranteeBlock: React.FC<Props> = ({
   const pointItems = Array.isArray(points) ? points : []
   const pills = Array.isArray(badges) ? badges : []
   // The exported seal artwork reads "90 DAY"; other wording gets the drawn fallback below.
-  const standardSeal = sealValue?.trim() === '90' && sealLabel?.trim().toUpperCase() === 'DAY'
+  // On the Puck canvas both arrive as inline-editable elements, so there is nothing to
+  // compare — assume the artwork, which is what the saved page almost always renders.
+  const standardSeal =
+    typeof sealValue !== 'string' || typeof sealLabel !== 'string'
+      ? true
+      : sealValue.trim() === '90' && sealLabel.trim().toUpperCase() === 'DAY'
 
   return (
     <section

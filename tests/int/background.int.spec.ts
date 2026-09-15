@@ -25,7 +25,15 @@ describe('backgroundStyle', () => {
   })
   it('offers the palette plus a custom escape hatch', () => {
     expect(backgroundOptions.map((o) => o.value)).toEqual([
-      'white', 'offWhite', 'paleBlue', 'lightBlue', 'skyBlue', 'brand', 'navy', 'deepNavy', 'custom',
+      'white',
+      'offWhite',
+      'paleBlue',
+      'lightBlue',
+      'skyBlue',
+      'brand',
+      'navy',
+      'deepNavy',
+      'custom',
     ])
   })
 })
@@ -50,15 +58,17 @@ describe('a block section wired to the background field', () => {
     )
   }
 
+  // `bg-mist` is Stats Bar's own designed background — the point is that the class stays
+  // put and the inline style is layered over it, not which shade the block happens to use.
   it('keeps its designed class and adds no inline style when unset', async () => {
     const html = await render({})
-    expect(html).toContain('bg-[#F7FAFF]')
+    expect(html).toContain('bg-mist')
     expect(html).not.toContain('style=')
   })
 
   it('paints the chosen preset over that class', async () => {
     const html = await render({ bgColor: 'navy' })
-    expect(html).toContain('bg-[#F7FAFF]')
+    expect(html).toContain('bg-mist')
     expect(html).toContain('style="background-color:#192f7c"')
   })
 

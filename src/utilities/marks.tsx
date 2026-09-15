@@ -92,3 +92,19 @@ export const marksInNode = (node: React.ReactNode): React.ReactNode => {
 
   return node
 }
+
+/**
+ * The plain string behind a text field, for the cases where a block needs to *read* a
+ * value rather than print it.
+ *
+ * Puck's inline editing hands the component a React element in place of the prop's string
+ * (see `isInlineEditable` in `src/puck/fields.tsx`), so calling a string method straight
+ * on a field — `label.trim()`, `text.split()` — throws the moment the editor opens, and
+ * takes the whole canvas down with it. Reading through this yields '' there instead, which
+ * lands on the same branch an empty field would: the block still renders and the editor
+ * still loads.
+ *
+ * This is only for inspecting a value. To print one, pass it to `marks`, which forwards a
+ * non-string through untouched and so keeps the field inline-editable.
+ */
+export const asText = (value: React.ReactNode): string => (typeof value === 'string' ? value : '')
