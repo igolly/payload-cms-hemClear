@@ -7,7 +7,7 @@ import type { BenefitsCarouselBlock } from '@/payload-types'
 import { BrandIcon } from '@/components/BrandIcons'
 import { Media } from '@/components/Media'
 import { cn } from '@/utilities/ui'
-import { marks, multiline } from '@/utilities/marks'
+import { multiline } from '@/utilities/marks'
 
 type Item = NonNullable<BenefitsCarouselBlock['items']>[number]
 
@@ -19,6 +19,21 @@ const badges: Record<NonNullable<Item['badge']>, string> = {
   soothing: '/icons/benefits/soothing.png',
   vein: '/icons/benefits/vein.png',
 }
+
+/**
+ * The revealed copy, as the comp sets it: paragraphs split on a blank line in the textarea.
+ *
+ * On the Puck canvas an inline-editable field arrives as an element rather than a string,
+ * which has nothing to split — print it as it comes.
+ */
+const paragraphs = (value: Item['details']): React.ReactNode =>
+  typeof value !== 'string'
+    ? value
+    : value.split(/\n{2,}/).map((para, i) => (
+        <p className={i > 0 ? 'mt-3' : undefined} key={i}>
+          {multiline(para)}
+        </p>
+      ))
 
 /**
  * Room around the scroller for what overflows a card — its 6.25px shadow and the plus
@@ -133,7 +148,23 @@ export const Cards: React.FC<{ items: Item[] }> = ({ items }) => {
                 </div>
 
                 {/* The white panel sits over the photo, so it can grow upward when details open. */}
-                <div className="absolute inset-x-0 bottom-0 flex min-h-[156.25px] flex-col items-center justify-center gap-[6.25px] rounded-[18.75px] bg-white px-[25.63px] py-[17.5px] text-center max-sm:px-[13.2%]">
+                {/*
+                 * The panel is anchored to the bottom of the card, so growing its content
+                 * pushes its top edge up over the photo — and carries the badge, which is
+                 * pinned to that edge, along with it. `max-h` keeps a strip of the photo
+                 * visible however long the copy runs.
+                 */}
+                <div
+                  className={cn(
+                    'absolute inset-x-0 bottom-0 flex max-h-[calc(100%-50px)] min-h-[156.25px] flex-col items-center justify-center gap-[6.25px] rounded-[18.75px] bg-white px-[25.63px] pb-[17.5px] text-center max-sm:px-[13.2%]',
+                    'transition-[padding-top] duration-[400ms] ease-[cubic-bezier(0.4,0,0.2,1)] motion-reduce:transition-none',
+                    /* Closed, the copy is centred and clears the half-badge on its own.
+                       Open, it starts at the panel's top edge, so the padding has to step
+                       up to the badge's radius — transitioned, so it grows with the panel
+                       rather than jumping at the start of it. */
+                    isOpen ? 'pt-[46px]' : 'pt-[17.5px]',
+                  )}
+                >
                   <span className="absolute left-1/2 top-0 flex size-[72.5px] -translate-x-1/2 -translate-y-1/2 items-center justify-center overflow-hidden rounded-full border-[0.63px] border-brand-300 bg-white text-brand-300 [&>span>svg]:size-9">
                     {badge ? (
                       <img alt="" className="size-9" height={36} src={badge} width={36} />
@@ -146,8 +177,36 @@ export const Cards: React.FC<{ items: Item[] }> = ({ items }) => {
                     {multiline(item.title)}
                   </h3>
 
-                  {isOpen && item.details && (
-                    <p className="text-sm leading-snug text-steel-600">{marks(item.details)}</p>
+                  {item.details && (
+                    /*
+                     * `grid-template-rows: 0fr → 1fr` is what makes this animate at all:
+                     * height alone cannot transition to `auto`, and measuring the copy in
+                     * JS would fight the carousel's own scrolling. The row collapses to
+                     * nothing when closed, so the card keeps its resting height.
+                     */
+                    <div
+                      className={cn(
+                        'grid w-full min-h-0 transition-[grid-template-rows] duration-[400ms] ease-[cubic-bezier(0.4,0,0.2,1)] motion-reduce:transition-none',
+                        isOpen ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]',
+                      )}
+                    >
+                      <div
+                        className={cn(
+                          'min-h-0',
+                          isOpen ? 'overflow-y-auto overscroll-contain' : 'overflow-hidden',
+                        )}
+                      >
+                        <div
+                          className={cn(
+                            'text-sm leading-snug text-steel-600 transition-opacity duration-300 motion-reduce:transition-none',
+                            isOpen ? 'opacity-100 delay-100' : 'opacity-0',
+                          )}
+                          data-payload-subpath={`items.${i}.details`}
+                        >
+                          {paragraphs(item.details)}
+                        </div>
+                      </div>
+                    </div>
                   )}
                 </div>
 
@@ -160,13 +219,23 @@ export const Cards: React.FC<{ items: Item[] }> = ({ items }) => {
                     onClick={() => setOpen(isOpen ? null : key)}
                     type="button"
                   >
-                    <img
-                      alt=""
-                      className={cn('size-[30px] transition-transform', isOpen && 'rotate-45')}
-                      height={30}
-                      src="/icons/benefits/plus.svg"
-                      width={30}
-                    />
+                    {/*
+                     * Drawn rather than swapped between two exported SVGs so the vertical
+                     * bar can retract into the horizontal one as the panel opens. Bar
+                     * thickness and length are `plus.svg`'s own, scaled from its 32px
+                     * artboard to this 30px button.
+                     */}
+                    <span className="flex size-[30px] items-center justify-center rounded-full bg-brand-600">
+                      <span className="relative block size-[13.6px]">
+                        <span className="absolute inset-x-0 top-1/2 h-[3.44px] -translate-y-1/2 rounded-[1px] bg-white" />
+                        <span
+                          className={cn(
+                            'absolute inset-y-0 left-1/2 w-[3.44px] -translate-x-1/2 rounded-[1px] bg-white transition-transform duration-[400ms] ease-[cubic-bezier(0.4,0,0.2,1)] motion-reduce:transition-none',
+                            isOpen && 'scale-y-0',
+                          )}
+                        />
+                      </span>
+                    </span>
                   </button>
                 )}
               </div>
