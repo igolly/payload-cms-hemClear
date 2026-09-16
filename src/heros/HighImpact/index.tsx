@@ -8,6 +8,7 @@ import { cn } from '@/utilities/ui'
 import { marks, multiline } from '@/utilities/marks'
 
 import { AboutHero } from './About'
+import { WhyHero } from './Why'
 
 /**
  * Ornaments and glyphs exported from the Figma HERO frame (2002:5). They are part of the
@@ -57,9 +58,13 @@ const Divider: React.FC<{ className?: string }> = ({ className }) => (
   <span aria-hidden="true" className={cn('block w-[0.625px] shrink-0 bg-ash-500', className)} />
 )
 
-export const HighImpactHero: React.FC<Page['hero']> = (props) =>
-  // The About comp is a different composition, not a tweak of this one; it lives on its own.
-  props.variant === 'about' ? <AboutHero {...props} /> : <SplitHero {...props} />
+export const HighImpactHero: React.FC<Page['hero']> = (props) => {
+  // The About and Why comps are different compositions, not tweaks of this one; each lives
+  // on its own.
+  if (props.variant === 'about') return <AboutHero {...props} />
+  if (props.variant === 'why') return <WhyHero {...props} />
+  return <SplitHero {...props} />
+}
 
 const SplitHero: React.FC<Page['hero']> = ({
   media,
@@ -81,6 +86,12 @@ const SplitHero: React.FC<Page['hero']> = ({
   const mediaRight = mediaPosition === 'right'
   const hasMedia = media && typeof media === 'object'
   /*
+   * The stacked box takes the photo's own ratio so nothing is cut off at phone and tablet
+   * widths; the comp's 685:580 stands in until an editor's upload reports its size.
+   */
+  const mediaRatio =
+    hasMedia && media.width && media.height ? `${media.width} / ${media.height}` : '685 / 580'
+  /*
    * The `/why` comp stacks each trust point's icon over its label AND lifts the row above
    * the buttons. Those move together there, so one control drives both rather than leaving
    * an editor to pair two settings correctly.
@@ -88,12 +99,14 @@ const SplitHero: React.FC<Page['hero']> = ({
   const stackedTrust = trustPointsStyle === 'stacked'
 
   /*
-   * From `xl` the band is a full-bleed 50/50 split: the photo runs from the screen edge to
-   * the centre line at any width (centre-cropped), and the copy sits in the other half, capped
-   * at 700px and hugging the centre line — below 1400px the half is already narrower than
-   * that, so the cap only bites on wide screens. Below `xl` the two stack: side by side there,
-   * the copy column is far taller than the photo and the photo became a hard-cropped sliver.
-   * Media on the right mirrors both halves.
+   * From `xl` the band is a 50/50 split inside the same 1400px column the header uses, so the
+   * photo's outer edge lines up with the logo's rather than running to the screen edge. Left
+   * full-bleed it looked wedged into the corner on a wide screen: the half grows with the
+   * viewport while the photo keeps its ratio, so at 1920 it painted 759px of a 960px half and
+   * left 200px of bare band between the photo and the copy. Capped, the half stays close to
+   * the photo's own width and the gap never opens. Below `xl` the two stack: side by side
+   * there, the copy column is far taller than the photo and the photo became a hard-cropped
+   * sliver. Media on the right mirrors both halves.
    */
   const columns = 'xl:grid-cols-2'
 
@@ -150,13 +163,13 @@ const SplitHero: React.FC<Page['hero']> = ({
 
   return (
     <section className="w-full bg-shell font-inter">
-      <div className={cn('grid w-full grid-cols-1 items-stretch', columns)}>
+      <div className={cn('mx-auto grid w-full max-w-[1400px] grid-cols-1 items-stretch', columns)}>
         {/*
-         * Image column. Stacked, the spacer sets the comp's 685:580 box. Side by side, the
-         * spacer only guarantees the comp's 580px minimum and the column stretches to the copy's
-         * height; either way the photo is laid over the whole column with `object-cover`, so a
-         * taller copy column (the /why treatment) crops the photo rather than leaving a strip of
-         * hero colour under it.
+         * Image column — the photo is never cropped. Stacked, the spacer carries the photo's own
+         * ratio, so the whole picture shows across the viewport. Side by side, the column is as
+         * tall as the copy (at least the comp's 580px) and the photo is fitted inside it with
+         * `object-contain`, so a copy column taller or shorter than the photo letterboxes against
+         * the hero colour instead of cutting into the subject.
          */}
         <div
           className={cn(
@@ -165,11 +178,10 @@ const SplitHero: React.FC<Page['hero']> = ({
             mediaRight && 'xl:order-2',
           )}
         >
-          {/* Stacked (below `xl`) the photo spans the viewport, so its height is capped: at
-              tablet widths the 685:580 box alone would be ~870px tall. */}
           <div
             aria-hidden="true"
-            className="aspect-[685/580] max-h-[600px] w-full xl:aspect-auto xl:h-full xl:max-h-none xl:min-h-[580px]"
+            className="w-full xl:aspect-auto! xl:h-full xl:min-h-[580px]"
+            style={{ aspectRatio: mediaRatio }}
           />
           {hasMedia && (
             <div className="absolute inset-0" data-payload-subpath="media">
@@ -178,9 +190,12 @@ const SplitHero: React.FC<Page['hero']> = ({
                 // that div collapses to content height and the `h-full` below resolves
                 // against nothing.
                 className="h-full w-full"
-                // Anchored a little above centre: when the capped, stacked box crops the photo,
-                // it keeps the subject's face rather than splitting the crop evenly.
-                imgClassName="h-full w-full object-cover object-[50%_35%] xl:object-center"
+                // Side by side, the fitted photo is pinned to the outside edge, so any letterbox
+                // room falls next to the copy instead of leaving a gap at the screen edge.
+                imgClassName={cn(
+                  'h-full w-full object-contain object-center',
+                  mediaRight ? 'xl:object-right' : 'xl:object-left',
+                )}
                 pictureClassName="block h-full w-full"
                 priority
                 resource={media}
