@@ -165,11 +165,12 @@ const SplitHero: React.FC<Page['hero']> = ({
     <section className="w-full bg-shell font-inter">
       <div className={cn('mx-auto grid w-full max-w-[1400px] grid-cols-1 items-stretch', columns)}>
         {/*
-         * Image column — the photo is never cropped. Stacked, the spacer carries the photo's own
-         * ratio, so the whole picture shows across the viewport. Side by side, the column is as
-         * tall as the copy (at least the comp's 580px) and the photo is fitted inside it with
-         * `object-contain`, so a copy column taller or shorter than the photo letterboxes against
-         * the hero colour instead of cutting into the subject.
+         * Image column. Stacked, the spacer carries the photo's own ratio and the photo is
+         * fitted inside it, so the whole picture shows across the viewport — nothing is cut.
+         * Side by side, the column is as tall as the copy (at least the comp's 580px) and the
+         * photo fills it: a photo wider than the column would otherwise letterbox against the
+         * hero colour. It is covered from the centre, so the trim comes off both edges evenly
+         * and the subject stays put.
          */}
         <div
           className={cn(
@@ -190,12 +191,7 @@ const SplitHero: React.FC<Page['hero']> = ({
                 // that div collapses to content height and the `h-full` below resolves
                 // against nothing.
                 className="h-full w-full"
-                // Side by side, the fitted photo is pinned to the outside edge, so any letterbox
-                // room falls next to the copy instead of leaving a gap at the screen edge.
-                imgClassName={cn(
-                  'h-full w-full object-contain object-center',
-                  mediaRight ? 'xl:object-right' : 'xl:object-left',
-                )}
+                imgClassName="h-full w-full object-contain object-center xl:object-cover"
                 pictureClassName="block h-full w-full"
                 priority
                 resource={media}
@@ -369,10 +365,12 @@ const SplitHero: React.FC<Page['hero']> = ({
                     {...link}
                     appearance="inline"
                     className={cn(
-                      'inline-flex h-[50px] max-w-full items-center justify-center gap-[12.5px] rounded-[6.25px] px-[12.5px] md:rounded-[25px] text-center text-[13.75px] font-medium leading-[13.75px] transition-colors [&_sup]:leading-[0]',
+                      'cta-gleam inline-flex h-[50px] max-w-full items-center justify-center gap-[12.5px] rounded-[6.25px] px-[12.5px] md:rounded-[25px] text-center text-[13.75px] font-medium leading-[13.75px] [&_sup]:leading-[0]',
                       isOutline
-                        ? 'border-[0.625px] border-subheading text-subheading hover:bg-white'
-                        : 'bg-brand text-white hover:bg-brand-dark',
+                        ? // A white band would vanish on the light fill, so the outline button
+                          // sweeps a tint of its own ink instead.
+                          'border-[0.625px] border-subheading text-subheading hover:bg-white [--cta-gleam-color:color-mix(in_oklab,currentcolor_16%,transparent)]'
+                        : 'bg-brand text-white hover:bg-brand-dark [--cta-glow:var(--color-brand)]',
                     )}
                   >
                     <img

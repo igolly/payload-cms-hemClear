@@ -291,6 +291,85 @@
   }
 }
 
+/*
+ * `.cta-gleam` — the call-to-action hover treatment: a band of light sweeps across the
+ * button from left to right while a coloured glow lifts underneath it.
+ *
+ * The sweep is an `::after` pseudo-element, so it costs no markup and animates on the
+ * compositor (`transform` only). `border-radius: inherit` plus `overflow: hidden` is what
+ * carries the light around the button's own corners, whatever radius the caller sets — the
+ * hero's pills are 6.25px on a phone and 25px from `md`, and both are followed exactly.
+ *
+ * Two custom properties let a caller retune it without new CSS:
+ *   --cta-gleam  the colour of the band. White reads well on a solid fill; on an outline
+ *                button set a tint of `currentColor` instead, or the sweep is invisible.
+ *   --cta-glow   the colour of the glow behind the button. Defaults to `currentColor`.
+ */
+@layer utilities {
+  .cta-gleam {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    transition:
+      background-color 200ms ease,
+      border-color 200ms ease,
+      color 200ms ease,
+      box-shadow 300ms ease;
+  }
+
+  .cta-gleam::after {
+    content: '';
+    position: absolute;
+    z-index: 1;
+    border-radius: inherit;
+    /* The two knobs carry their defaults as `var()` fallbacks rather than as declarations on
+       `.cta-gleam`: this rule is emitted after Tailwind's own utilities in the same layer, so
+       declaring them here would outrank a caller's `[--cta-glow:…]` and silently win. */
+    background: linear-gradient(
+      100deg,
+      transparent 20%,
+      var(--cta-gleam-color, rgb(255 255 255 / 55%)) 45%,
+      transparent 70%
+    );
+    pointer-events: none;
+    inset: 0;
+    /* Parked off the left edge; the sweep is the only thing that brings it into view. */
+    transform: translateX(-100%);
+  }
+
+  /* `hover: hover` keeps a touch device from firing the sweep on tap and leaving it lit. */
+  @media (hover: hover) {
+    .cta-gleam:hover {
+      box-shadow: 0 8px 24px -8px
+        color-mix(in oklab, var(--cta-glow, currentcolor) 55%, transparent);
+    }
+
+    .cta-gleam:hover::after {
+      animation: cta-sweep 700ms ease-out;
+    }
+  }
+
+  .cta-gleam:focus-visible::after {
+    animation: cta-sweep 700ms ease-out;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cta-gleam::after {
+      animation: none !important;
+    }
+  }
+}
+
+@keyframes cta-sweep {
+  from {
+    transform: translateX(-100%);
+  }
+
+  to {
+    transform: translateX(100%);
+  }
+}
+
 :root {
   --background: oklch(100% 0 0deg);
   --foreground: oklch(14.5% 0 0deg);
