@@ -23,6 +23,7 @@
  */
 import { blocksToPuckData } from '@/puck/blocksToPuck'
 import { getServerSideURL } from '@/utilities/getURL'
+import { rewriteMediaProxyURLs } from '@/utilities/storageURL'
 
 type EditorPage = {
   layout?: unknown
@@ -38,6 +39,15 @@ export const editorPreviewUrl = (page: EditorPage) => {
     if (!hasPuckContent && Array.isArray(blocks) && blocks.length > 0) {
       page.puckData = blocksToPuckData(blocks)
     }
+
+    /*
+     * Media picked before the bucket was served directly is snapshotted into `puckData`
+     * with a `/api/media/file/*` URL, and that route no longer exists —
+     * `disablePayloadAccessControl` took it away when the bucket went public. The frontend
+     * rewrites those as it reads a page (`queryPageBySlug`); the editor reads the document
+     * itself, so without the same pass the canvas opens with every image broken.
+     */
+    page.puckData = rewriteMediaProxyURLs(page.puckData)
   } catch {
     // Seeding is a convenience; never let it stop the editor from opening.
   }
