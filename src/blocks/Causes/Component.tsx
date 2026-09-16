@@ -13,6 +13,7 @@ import { backgroundStyle } from '@/fields/background'
 import { marks, multiline } from '@/utilities/marks'
 
 import { CausesAbout } from './About'
+import { CausesWhy } from './Why'
 
 /**
  * Showcase column counts, written out so Tailwind's scanner can see every class it has to
@@ -28,9 +29,11 @@ const SHOWCASE_COLUMNS: Record<number, string> = {
 }
 
 export const CausesBlock: React.FC<Props> = (props) =>
-  /* The About-page cuts are their own layouts; see `About.tsx`. */
+  /* The About- and Why-page cuts are their own layouts; see `About.tsx` and `Why.tsx`. */
   props.variant === 'aboutDiagnosed' || props.variant === 'aboutOffer' ? (
     <CausesAbout {...props} />
+  ) : props.variant === 'quality' || props.variant === 'overlay' ? (
+    <CausesWhy {...props} />
   ) : (
     <CausesDefault {...props} />
   )
@@ -56,21 +59,14 @@ const CausesDefault: React.FC<Props> = ({
   const noImage = imagePosition === 'none'
   const checklist = factorStyle === 'checklist'
   /*
-   * The `/why` comp restyles this section in six coordinated ways at once — display
-   * heading, no rule, larger eyebrow and body, borderless divided icon columns, tinted
-   * note. They only make sense together, so they ride on one named variant rather than
-   * six independent toggles, and `default` reproduces the original exactly for the pages
-   * already on it (`/home`, `/about-hemorrhoids`).
+   * Showcase restyles this section in six coordinated ways at once — display heading, no
+   * rule, larger eyebrow and body, borderless divided icon columns, tinted note. They only
+   * make sense together, so they ride on one named variant rather than six independent
+   * toggles, and `default` reproduces the original exactly for the pages already on it.
    */
-  const overlay = variant === 'overlay'
   /* A product shot that must not lose its edges keeps its own square frame. */
   const squareFrame = imageFrame === 'square'
-  /*
-   * Overlay is a second cut of the same restyle — it shares the eyebrow, icon columns and
-   * note treatment and only differs in shape, so the two ride together here and part
-   * company where the comps actually diverge (heading and body size, and the shell below).
-   */
-  const showcase = variant === 'showcase' || overlay
+  const showcase = variant === 'showcase'
 
   /*
    * Showcase divides the icon columns with hairlines, which means knowing where a row
@@ -125,12 +121,10 @@ const CausesDefault: React.FC<Props> = ({
     <section
       className={cn(
         'w-full bg-white',
-        overlay
-          ? 'px-0 py-0'
-          : showcase
-            ? 'px-4 py-8 sm:px-6 lg:px-8'
-            : // Mobile comp: 16px band padding around a 437.5px column that pads itself 16px.
-              'px-[17.25px] py-4 font-inter sm:px-[31.25px] lg:py-[31.25px] [&_sup]:leading-[0]',
+        showcase
+          ? 'px-4 py-8 sm:px-6 lg:px-8'
+          : // Mobile comp: 16px band padding around a 437.5px column that pads itself 16px.
+            'px-[17.25px] py-4 font-inter sm:px-[31.25px] lg:py-[31.25px] [&_sup]:leading-[0]',
       )}
       style={backgroundStyle(bgColor, bgColorCustom)}
     >
@@ -138,44 +132,23 @@ const CausesDefault: React.FC<Props> = ({
         className={cn(
           'mx-auto items-center',
           showcase ? 'max-w-6xl gap-8' : 'max-w-[1400px]',
-          overlay
-            ? /*
-               * The photo spans the content column, not the viewport — the comp's band is
-               * a 1200×338 image sitting in the centred 1200px column, so letting it bleed
-               * to the window edge would scale it up and crop the subject out of frame.
-               * The column takes the image's own aspect from `lg`, where there is room for
-               * the copy inside it; below that it is a backdrop behind flowing content.
-               */
-              'relative isolate flex overflow-hidden px-6 py-10 lg:aspect-[1200/338] lg:px-[62px] lg:py-0'
-            : noImage
-              ? 'flex flex-col'
-              : showcase
-                ? 'grid lg:grid-cols-2'
-                : cn(
-                    /*
-                     * Stacked (mobile comp) the copy column dissolves into this grid so the
-                     * illustration can sit between the heading and the body, on a 6px rhythm.
-                     */
-                    'grid grid-cols-[minmax(0,1fr)] gap-y-[6px] lg:justify-center lg:gap-x-[30px] lg:gap-y-5',
-                    imageRight
-                      ? 'lg:grid-cols-[437.5px_minmax(0,611.5px)]'
-                      : 'lg:grid-cols-[minmax(0,611.5px)_437.5px]',
-                  ),
+          noImage
+            ? 'flex flex-col'
+            : showcase
+              ? 'grid lg:grid-cols-2'
+              : cn(
+                  /*
+                   * Stacked (mobile comp) the copy column dissolves into this grid so the
+                   * illustration can sit between the heading and the body, on a 6px rhythm.
+                   */
+                  'grid grid-cols-[minmax(0,1fr)] gap-y-[6px] lg:justify-center lg:gap-x-[30px] lg:gap-y-5',
+                  imageRight
+                    ? 'lg:grid-cols-[437.5px_minmax(0,611.5px)]'
+                    : 'lg:grid-cols-[minmax(0,611.5px)_437.5px]',
+                ),
         )}
       >
-        {overlay && !noImage && (
-          <div className="absolute inset-0 -z-10" data-payload-subpath="image">
-            <ImageSlot
-              className="h-full w-full"
-              hint="Recommended 1200 × 338px photo, subject on the side away from the copy"
-              imgClassName="h-full w-full object-cover"
-              label="Section background"
-              resource={image}
-            />
-          </div>
-        )}
-
-        {!noImage && !overlay && (
+        {!noImage && (
           <div
             className={cn(
               'relative w-full',
@@ -220,9 +193,6 @@ const CausesDefault: React.FC<Props> = ({
                 imageRight ? 'lg:col-start-1' : 'lg:col-start-2',
               ),
             noImage && 'w-full items-center text-center',
-            /* The copy sits opposite the photo's subject, which `imagePosition` already
-               names — image on the left means the column goes right, and vice versa. */
-            overlay && cn('w-full max-w-[469px]', imageRight ? 'mr-auto' : 'ml-auto'),
           )}
         >
           {eyebrow && (
@@ -242,11 +212,9 @@ const CausesDefault: React.FC<Props> = ({
             <h2
               className={cn(
                 'leading-tight',
-                overlay
-                  ? 'mt-3 font-marcellus text-[26px] text-heading sm:text-[31px]'
-                  : showcase
-                    ? 'mt-3 font-marcellus text-[34px] text-heading sm:text-[46px] lg:text-[57px]'
-                    : 'font-marcellus text-[36px] leading-[42px] text-subheading max-lg:text-center lg:text-[40px] lg:leading-[1.25]',
+                showcase
+                  ? 'mt-3 font-marcellus text-[34px] text-heading sm:text-[46px] lg:text-[57px]'
+                  : 'font-marcellus text-[36px] leading-[42px] text-subheading max-lg:text-center lg:text-[40px] lg:leading-[1.25]',
                 split && 'max-lg:order-first',
               )}
               data-payload-subpath="heading"
@@ -271,11 +239,9 @@ const CausesDefault: React.FC<Props> = ({
             <p
               className={cn(
                 'whitespace-pre-line',
-                overlay
-                  ? 'mt-3 text-[15px] leading-[18.75px] text-heading'
-                  : showcase
-                    ? 'mt-3 text-[18px] leading-[25px] text-heading'
-                    : 'text-[12px] font-medium leading-4 text-black',
+                showcase
+                  ? 'mt-3 text-[18px] leading-[25px] text-heading'
+                  : 'text-[12px] font-medium leading-4 text-black',
               )}
               data-payload-subpath="description"
             >

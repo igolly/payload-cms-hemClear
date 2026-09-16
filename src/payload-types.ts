@@ -193,9 +193,9 @@ export interface Page {
     media?: (string | null) | Media;
     mediaPosition?: ('left' | 'right') | null;
     /**
-     * About is the /about-hemorrhoids treatment: a centred copy column with a ruled list of topics and a callout card beside a framed photo; badge, buttons and trust points are not shown. Split keeps the home and /why look.
+     * About is the /about-hemorrhoids treatment: a centred copy column with a ruled list of topics and a callout card beside a framed photo; badge, buttons and trust points are not shown. Why is the /why treatment: one 1200px photo centred on the page with the copy, stacked trust points and buttons laid over its left third. Split keeps the home look.
      */
-    variant?: ('split' | 'about') | null;
+    variant?: ('split' | 'about' | 'why') | null;
     /**
      * Small caps line above the heading.
      */
@@ -1235,9 +1235,9 @@ export interface CausesBlock {
    */
   footnote?: string | null;
   /**
-   * Showcase is the /why Quality treatment: a Marcellus display heading, no rule, borderless icon columns divided by hairlines, and the footnote in a tinted note card. Overlay is the /why Internal and External treatment: the image fills the whole band and the copy sits in a narrow column over it, on the side opposite "Image position". Default keeps the original look for pages already using it. The two About options are the /about-hemorrhoids Diagnosed and Offer treatments.
+   * Showcase: a Marcellus display heading, no rule, borderless icon columns divided by hairlines, and the footnote in a tinted note card. Quality is the /why Quality treatment: a 503 × 606 photo beside a 57.5px heading, icons in centred rows split by hairlines (seven wrap as three over four) and the note card. Overlay is the /why Internal and External treatment: the image fills a 1200 × 337.5 band and the copy sits in a 468.75px column over it, on the side opposite "Image position" (which names the side the photo's subject is on). Default keeps the original look for pages already using it. The two About options are the /about-hemorrhoids Diagnosed and Offer treatments.
    */
-  variant?: ('default' | 'showcase' | 'overlay' | 'aboutDiagnosed' | 'aboutOffer') | null;
+  variant?: ('default' | 'showcase' | 'overlay' | 'quality' | 'aboutDiagnosed' | 'aboutOffer') | null;
   /**
    * Showcase only. Tall is the /why Quality frame, which crops the photo to fill it. Square suits a product shot that must not be cropped.
    */
@@ -2288,7 +2288,20 @@ export interface FeatureStripBlock {
   /**
    * How the items are laid out.
    */
-  variant?: ('divided' | 'cards' | 'pills' | 'checklist' | 'trustBar' | 'iconCards' | 'trustRow') | null;
+  variant?:
+    | (
+        | 'divided'
+        | 'cards'
+        | 'pills'
+        | 'checklist'
+        | 'trustBar'
+        | 'iconCards'
+        | 'trustRow'
+        | 'whyFeatures'
+        | 'whyDifferent'
+        | 'whyQuick'
+      )
+    | null;
   /**
    * Optional artwork behind the whole section.
    */

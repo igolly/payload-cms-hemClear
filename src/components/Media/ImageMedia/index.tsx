@@ -84,8 +84,14 @@ export const ImageMedia: React.FC<MediaProps> = (props) => {
         .map(([, value]) => `(max-width: ${value}px) ${value * 2}w`)
         .join(', ')
 
+  /*
+   * <picture> is the image's real parent, so a `fill` image is laid out against it: as a plain
+   * inline box it has neither position nor height, which is what Next warns about (`display:
+   * contents` doesn't help — the element still computes as `position: static`). It therefore
+   * fills the wrapper `Media` positions. A caller that styles the <picture> keeps its classes.
+   */
   return (
-    <picture className={cn(pictureClassName)}>
+    <picture className={cn(fill && !pictureClassName ? 'relative block h-full w-full' : pictureClassName)}>
       <NextImage
         alt={alt || ''}
         className={cn(imgClassName)}

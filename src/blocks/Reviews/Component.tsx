@@ -168,10 +168,12 @@ export const ReviewsBlock: React.FC<Props> = ({
 
   return (
     <section
-      className="w-full bg-white px-4 py-5 font-inter text-navy xl:py-[31.25px]"
+      // The comp's container: 16px above and below, 50px sides, inside the 1200px column.
+      className="w-full bg-white px-4 py-5 font-inter text-navy xl:px-[50px] xl:py-4"
       style={backgroundStyle(bgColor, bgColorCustom)}
     >
-      <div className="mx-auto max-w-[1400px]">
+      {/* The comp's column is 1200px wide (1100 inside its 50px sides). */}
+      <div className="mx-auto max-w-[1100px]">
         {(heading || headingAccent) && (
           <h2 className="text-center font-marcellus text-[clamp(30px,8.2vw,36px)] font-normal leading-[normal] sm:text-[42px] xl:text-[51px]">
             {heading && (
@@ -189,7 +191,7 @@ export const ReviewsBlock: React.FC<Props> = ({
 
         {description && (
           <p
-            className="mx-auto mt-[12.5px] max-w-[750px] whitespace-pre-line [&_sup]:leading-[0] text-center text-[16px] font-medium leading-[19px] text-navy"
+            className="mx-auto mt-[12.5px] max-w-[750px] whitespace-pre-line text-center text-[16px] font-medium leading-[19px] text-navy xl:mt-[18px] [&_sup]:leading-[0]"
             data-payload-subpath="description"
           >
             {marks(description)}
@@ -197,7 +199,7 @@ export const ReviewsBlock: React.FC<Props> = ({
         )}
 
         {slides.length > 0 && (
-          <div className="mt-[12.5px]">
+          <div className="mt-[12.5px] xl:mt-[18px]">
             <FeaturedCarousel slides={slides} />
           </div>
         )}
@@ -213,12 +215,13 @@ export const ReviewsBlock: React.FC<Props> = ({
             verifiedLabel={verifiedLabel}
           />
         ) : (
-          featureStrip && <div className="mt-[12.5px]">{featureStrip}</div>
+          featureStrip && <div className="mt-[12.5px] xl:mt-[18px]">{featureStrip}</div>
         )}
 
         {disclaimer && (
           <p
-            className="mx-auto mt-2.5 whitespace-pre-line py-[12.5px] text-center text-[11.25px] leading-[15px] text-black xl:mt-[18px]"
+            // 640px wide and 12px/15 in the comp, so it wraps onto two centred lines.
+            className="mx-auto mt-2.5 whitespace-pre-line py-[12.5px] text-center text-[11.25px] leading-[15px] text-black xl:mt-[18px] xl:max-w-[640px] xl:text-[12px]"
             data-payload-subpath="disclaimer"
           >
             {marks(disclaimer)}

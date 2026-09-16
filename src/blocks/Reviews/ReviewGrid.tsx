@@ -69,10 +69,10 @@ export const ReviewGrid: React.FC<Props> = ({
 
   return (
     <div ref={rootRef}>
-      {features && visible === 0 && <div className="mt-[12.5px]">{features}</div>}
+      {features && visible === 0 && <div className="mt-[12.5px] xl:mt-[18px]">{features}</div>}
 
       {batches.length > 0 && (
-        <div className="mt-2.5 flex flex-col gap-4 xl:-mt-[1.75px] xl:gap-[15.5px]">
+        <div className="mt-2.5 flex flex-col gap-4 xl:mt-[18px] xl:gap-[15.5px]">
           {batches.map((batch, b) => (
             <ul
               className="-mx-4 flex snap-x snap-mandatory scroll-px-4 gap-[14px] overflow-x-auto px-4 py-1 [-ms-overflow-style:none] [scrollbar-width:none] xl:mx-auto xl:grid xl:w-[1115.75px] xl:grid-cols-[repeat(4,266px)] xl:justify-between xl:gap-y-[15.5px] xl:overflow-visible xl:p-0 [&::-webkit-scrollbar]:hidden"
@@ -144,7 +144,7 @@ export const ReviewGrid: React.FC<Props> = ({
       )}
 
       {hasMore && (
-        <div className="mt-2.5 flex justify-center xl:mt-[17px]">
+        <div className="mt-2.5 flex justify-center xl:mt-[18px]">
           <button
             aria-expanded={full}
             className="flex h-[50px] w-[280px] items-center justify-center gap-5 rounded-lg border-[0.63px] border-navy bg-white p-1.5 text-[18px] font-medium uppercase leading-[normal] text-navy transition-colors hover:bg-mist"

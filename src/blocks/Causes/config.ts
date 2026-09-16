@@ -106,6 +106,10 @@ export const Causes: Block = {
         { label: 'Showcase (large display heading, plain icon row)', value: 'showcase' },
         { label: 'Overlay (copy over a full-bleed photo)', value: 'overlay' },
         {
+          label: 'Quality (tall photo beside a display heading, divided icon rows, note card)',
+          value: 'quality',
+        },
+        {
           label: 'About: Diagnosed (photo beside a ruled checklist and note card)',
           value: 'aboutDiagnosed',
         },
@@ -113,7 +117,7 @@ export const Causes: Block = {
       ],
       admin: {
         description:
-          'Showcase is the /why Quality treatment: a Marcellus display heading, no rule, borderless icon columns divided by hairlines, and the footnote in a tinted note card. Overlay is the /why Internal and External treatment: the image fills the whole band and the copy sits in a narrow column over it, on the side opposite "Image position". Default keeps the original look for pages already using it. The two About options are the /about-hemorrhoids Diagnosed and Offer treatments.',
+          'Showcase: a Marcellus display heading, no rule, borderless icon columns divided by hairlines, and the footnote in a tinted note card. Quality is the /why Quality treatment: a 503 × 606 photo beside a 57.5px heading, icons in centred rows split by hairlines (seven wrap as three over four) and the note card. Overlay is the /why Internal and External treatment: the image fills a 1200 × 337.5 band and the copy sits in a 468.75px column over it, on the side opposite "Image position" (which names the side the photo\'s subject is on). Default keeps the original look for pages already using it. The two About options are the /about-hemorrhoids Diagnosed and Offer treatments.',
       },
     },
     {

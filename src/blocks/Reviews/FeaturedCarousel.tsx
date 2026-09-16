@@ -59,7 +59,7 @@ export const FeaturedCarousel: React.FC<{ slides: React.ReactNode[] }> = ({ slid
         {/* Full-bleed track: the 19.75px side padding lands the first card's outer stroke where
             Figma draws it (16px gutter + 5px inset − 1.25px outside stroke). */}
         <ul
-          className="-mx-4 flex snap-x snap-mandatory scroll-px-[19.75px] gap-[13.5px] overflow-x-auto px-[19.75px] py-[16.75px] [-ms-overflow-style:none] [scrollbar-width:none] sm:gap-[15px] xl:mx-0 xl:justify-center xl:overflow-visible xl:px-0 xl:py-[17.5px] [&::-webkit-scrollbar]:hidden"
+          className="-mx-4 flex snap-x snap-mandatory scroll-px-[19.75px] gap-[13.5px] overflow-x-auto px-[19.75px] py-[16.75px] [-ms-overflow-style:none] [scrollbar-width:none] sm:gap-[15px] xl:mx-0 xl:justify-center xl:overflow-visible xl:px-0 xl:py-0 [&::-webkit-scrollbar]:hidden"
           ref={trackRef}
         >
           {slides}

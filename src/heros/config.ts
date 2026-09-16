@@ -88,11 +88,12 @@ export const hero: Field = {
       options: [
         { label: 'Split (full-bleed photo beside the copy)', value: 'split' },
         { label: 'About (framed photo, ruled topic list, callout card)', value: 'about' },
+        { label: 'Why (copy laid over one centred photo)', value: 'why' },
       ],
       admin: {
         condition: (_, { type } = {}) => type === 'highImpact',
         description:
-          'About is the /about-hemorrhoids treatment: a centred copy column with a ruled list of topics and a callout card beside a framed photo; badge, buttons and trust points are not shown. Split keeps the home and /why look.',
+          'About is the /about-hemorrhoids treatment: a centred copy column with a ruled list of topics and a callout card beside a framed photo; badge, buttons and trust points are not shown. Why is the /why treatment: one 1200px photo centred on the page with the copy, stacked trust points and buttons laid over its left third. Split keeps the home look.',
       },
       label: 'Layout',
     },

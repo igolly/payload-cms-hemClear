@@ -11,6 +11,10 @@ import { backgroundStyle } from '@/fields/background'
 import { marks, multiline } from '@/utilities/marks'
 
 import { FeatureStripAbout } from './About'
+import { FeatureStripWhy } from './Why'
+
+/** The /why variants, each matched to its own frame in the WHY comp. */
+const WHY_VARIANTS = new Set(['whyFeatures', 'whyDifferent', 'whyQuick'])
 
 type Item = NonNullable<Props['items']>[number]
 
@@ -47,14 +51,14 @@ const ItemMark: React.FC<{ item: Item; size: MarkSize }> = ({ item, size }) =>
     <BrandIcon className={cn('shrink-0 text-brand-400', MARK_ICON[size])} name={item.icon} />
   )
 
-/* Only the /why page's `divided` row renders here; every other variant is an About-page
-   layout matched to its own Figma frame — see `About.tsx`. */
-export const FeatureStripBlock: React.FC<Props> = (props) =>
-  props.variant && props.variant !== 'divided' ? (
-    <FeatureStripAbout {...props} />
-  ) : (
-    <FeatureStripDivided {...props} />
-  )
+/* Only the generic `divided` row renders here; the `why*` variants are the /why page's
+   frames (`Why.tsx`) and every other variant is an About-page layout (`About.tsx`), each
+   matched to its own Figma frame. */
+export const FeatureStripBlock: React.FC<Props> = (props) => {
+  if (props.variant && WHY_VARIANTS.has(props.variant)) return <FeatureStripWhy {...props} />
+  if (props.variant && props.variant !== 'divided') return <FeatureStripAbout {...props} />
+  return <FeatureStripDivided {...props} />
+}
 
 const FeatureStripDivided: React.FC<Props> = ({
   bgColor,

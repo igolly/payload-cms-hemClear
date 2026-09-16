@@ -6,6 +6,7 @@ import { BrandIcon } from '@/components/BrandIcons'
 import { StepsCarousel } from './Carousel'
 import { ImageSlot } from '@/blocks/FAQ/ImagePlaceholder'
 import { backgroundStyle } from '@/fields/background'
+import { cn } from '@/utilities/ui'
 import { marks } from '@/utilities/marks'
 
 type Way = NonNullable<Props['ways']>[number]
@@ -28,14 +29,14 @@ type Way = NonNullable<Props['ways']>[number]
  * variant on this block instead of a near-duplicate of it.
  */
 const PhotoRow: React.FC<{ offset: number; ways: Way[] }> = ({ offset, ways }) => (
-  <ul className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:flex lg:items-start lg:justify-center lg:gap-x-8">
+  <ul className="grid grid-cols-1 gap-[31.25px] sm:grid-cols-2 lg:flex lg:items-start lg:justify-center lg:gap-x-[31.25px]">
     {ways.map((way, i) => (
       <li
-        className="flex flex-col items-center gap-3 text-center lg:w-[322px]"
+        className="flex flex-col items-center gap-[12.5px] text-center lg:w-[322.5px]"
         data-payload-subpath={`ways.${offset + i}.title`}
         key={way.id ?? i}
       >
-        <div className="relative aspect-[322/236] w-full">
+        <div className="relative aspect-[322.5/236.25] w-full">
           <ImageSlot
             className="h-full w-full"
             hint="Recommended 900 × 660px photo"
@@ -45,15 +46,20 @@ const PhotoRow: React.FC<{ offset: number; ways: Way[] }> = ({ offset, ways }) =
           />
           <span
             aria-hidden="true"
-            className="absolute left-3 top-3 flex h-9.5 w-9.5 items-center justify-center rounded-full bg-brand-300 text-[18px] font-bold leading-none text-white"
+            className="absolute left-[12.5px] top-[12.5px] flex h-[37.5px] w-[37.5px] items-center justify-center rounded-full bg-brand-300 text-[18.75px] font-bold leading-none text-white"
           >
             {offset + i + 1}
           </span>
         </div>
 
-        <h3 className="text-[17.5px] font-bold leading-[21px] text-heading">{way.title}</h3>
+        <h3 className="text-[17.5px] font-bold leading-[21.25px] text-heading">{way.title}</h3>
 
-        <span aria-hidden="true" className="block h-[3px] w-6 bg-tint-150" />
+        {/* The comp's rule: a zero-height vector with a 3.125px stroke centred on it, so it
+            takes no room in the 12.5px stack. */}
+        <span
+          aria-hidden="true"
+          className="-my-[1.5625px] block h-[3.125px] w-[25px] bg-brand-300"
+        />
 
         {way.description && (
           <p
@@ -140,14 +146,23 @@ export const WaysGridBlock: React.FC<Props> = ({
 
   return (
     <section
-      className="w-full bg-mist px-4 py-[50px] font-inter sm:px-6 lg:px-8 lg:py-7"
+      className={cn(
+        'w-full bg-mist px-4 py-[50px] font-inter sm:px-6',
+        // The /why routine band sits in the page's 1200px column with 43.75px of padding.
+        photo ? 'lg:px-[43.75px] lg:py-[43.75px]' : 'lg:px-8 lg:py-7',
+      )}
       style={backgroundStyle(bgColor, bgColorCustom)}
     >
-      <div className="mx-auto max-w-350">
+      <div className={cn('mx-auto', photo ? 'max-w-[1112.5px]' : 'max-w-350')}>
         <header className="text-center">
           {eyebrow && (
             <p
-              className="mb-3 text-xs font-bold uppercase tracking-[0.15em] text-brand-500"
+              className={cn(
+                'font-bold uppercase',
+                photo
+                  ? 'mb-[12.5px] text-[15px] leading-5 text-subheading sm:text-[18.75px]'
+                  : 'mb-3 text-xs tracking-[0.15em] text-brand-500',
+              )}
               data-payload-subpath="eyebrow"
             >
               {marks(eyebrow)}
@@ -160,7 +175,14 @@ export const WaysGridBlock: React.FC<Props> = ({
            * this section is the one held to the comp.
            */}
           {(headingBefore || headingAccent || headingAfter) && (
-            <h2 className="font-marcellus text-[44px] leading-[normal] text-navy-900 lg:text-[52px] lg:leading-tight [&_sup]:leading-[0]">
+            <h2
+              className={cn(
+                'font-marcellus [&_sup]:leading-[0]',
+                photo
+                  ? 'text-[34px] leading-[1.25] text-heading sm:text-[46px] lg:text-[57.5px]'
+                  : 'text-[44px] leading-[normal] text-navy-900 lg:text-[52px] lg:leading-tight',
+              )}
+            >
               {headingBefore && <span data-payload-subpath="headingBefore">{headingBefore} </span>}
               {headingAccent && (
                 <span className="text-brand-300" data-payload-subpath="headingAccent">
@@ -194,10 +216,10 @@ export const WaysGridBlock: React.FC<Props> = ({
         </header>
 
         {photo ? (
-          <div className="mt-4 py-5 lg:px-15">
+          <div className="mt-[12.5px] p-[6.25px]">
             {firstRow.length > 0 && <PhotoRow offset={0} ways={firstRow} />}
             {secondRow.length > 0 && (
-              <div className={firstRow.length > 0 ? 'mt-8' : undefined}>
+              <div className={firstRow.length > 0 ? 'mt-[31.25px]' : undefined}>
                 <PhotoRow offset={split} ways={secondRow} />
               </div>
             )}
@@ -236,11 +258,23 @@ export const WaysGridBlock: React.FC<Props> = ({
 
         {footnote && (
           <p
-            className="mx-auto mt-6 flex max-w-3xl items-start justify-center gap-2 whitespace-pre-line rounded-lg bg-white/70 px-4 py-3 text-center text-[11px] leading-relaxed text-slate-500"
+            className={cn(
+              'mx-auto flex whitespace-pre-line',
+              photo
+                ? // The /why comp's disclaimer card: 593.75px wide, pale blue, the shield at
+                  // 35px beside left-ranged fine print.
+                  'mt-[12.5px] w-[593.75px] max-w-full items-center gap-[18.75px] rounded-[15.625px] bg-tint-50 p-[18.75px] text-left text-[12.5px] leading-[17.5px] text-heading'
+                : 'mt-6 max-w-3xl items-start justify-center gap-2 rounded-lg bg-white/70 px-4 py-3 text-center text-[11px] leading-relaxed text-slate-500',
+            )}
             data-payload-subpath="footnote"
           >
             <BrandIcon
-              className="shrink-0 text-brand-400 [&>svg]:h-4 [&>svg]:w-4"
+              className={cn(
+                'shrink-0',
+                photo
+                  ? 'text-heading [&>svg]:h-[35px] [&>svg]:w-[35px]'
+                  : 'text-brand-400 [&>svg]:h-4 [&>svg]:w-4',
+              )}
               name="shieldCheck"
             />
             {marks(footnote)}

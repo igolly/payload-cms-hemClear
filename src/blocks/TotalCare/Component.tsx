@@ -143,20 +143,26 @@ export const TotalCareBlock: React.FC<Props> = ({
   return (
     <section
       className={cn(
-        'w-full bg-mist font-inter sm:px-6 lg:px-8 [&_sup]:leading-[0]',
+        'w-full font-inter sm:px-6 [&_sup]:leading-[0]',
         // The comp's band: 30px above the intro, 64px below the card — 30px on the phone comp
         // (6666:230), which also keeps a 50px side gutter.
-        showcase ? 'px-4 py-14' : 'px-[50px] pb-[30px] pt-[30px] sm:pb-[64px]',
+        showcase
+          ? // The /why comp puts this band on the page white, inside the page's 1200px column
+            // with 43.75px of padding all round.
+            'bg-white px-4 py-[43.75px] lg:px-[43.75px]'
+          : 'bg-mist px-[50px] pb-[30px] pt-[30px] sm:pb-[64px] lg:px-8',
       )}
       style={backgroundStyle(bgColor, bgColorCustom)}
     >
-      <div className={cn('mx-auto', showcase ? 'max-w-6xl' : 'max-w-[1102px]')}>
+      <div className={cn('mx-auto', showcase ? 'max-w-[1112.5px]' : 'max-w-[1102px]')}>
         <header className={cn('text-center', !showcase && 'flex flex-col items-center gap-2.5')}>
           {eyebrow && (
             <p
               className={cn(
-                'font-bold uppercase text-brand-500',
-                showcase ? 'text-[15px] tracking-[0.12em]' : 'text-xs tracking-[0.15em]',
+                'font-bold uppercase',
+                showcase
+                  ? 'text-[15px] leading-5 text-subheading sm:text-[18.75px]'
+                  : 'text-xs tracking-[0.15em] text-brand-500',
               )}
               data-payload-subpath="eyebrow"
             >
@@ -169,7 +175,7 @@ export const TotalCareBlock: React.FC<Props> = ({
               className={cn(
                 'leading-tight text-heading',
                 showcase
-                  ? 'mt-3 font-marcellus text-[34px] sm:text-[46px] lg:text-[57px]'
+                  ? 'mt-[12.5px] font-marcellus text-[34px] leading-[1.25] sm:text-[46px] lg:text-[57.5px]'
                   : 'font-marcellus text-[38px] leading-[normal] text-navy-900 sm:text-[42px] sm:leading-[1.25] lg:text-[52px]',
               )}
               data-payload-subpath="heading"
@@ -199,12 +205,12 @@ export const TotalCareBlock: React.FC<Props> = ({
               <RichText
                 className={cn(
                   showcase
-                    ? 'mx-auto mt-3 max-w-3xl text-brand text-[17px]'
+                    ? 'mx-auto mt-[12.5px] max-w-3xl text-[16px] leading-5 text-black sm:text-[18.75px] [&_p]:m-0 [&_strong]:font-bold'
                     : 'text-[17px] font-medium leading-[1.21] text-navy sm:text-[20px] lg:text-[24px] [&_p]:m-0 [&_strong]:font-bold',
                 )}
                 data={subheading}
                 enableGutter={false}
-                enableProse={showcase}
+                enableProse={false}
               />
             </div>
           )}
@@ -212,14 +218,16 @@ export const TotalCareBlock: React.FC<Props> = ({
 
         {sides.length > 0 &&
           (showcase ? (
-            <div className="mt-8 grid gap-8 lg:grid-cols-2">
+            // 500px cards, 31.25px apart, centred under the intro — fixed cards rather than a
+            // stretched grid, as the comp draws them.
+            <div className="mt-[12.5px] flex flex-wrap justify-center gap-[31.25px] px-[6.25px] py-[18.75px]">
               {sides.map((side, i) => (
                 <div
-                  className="flex flex-col items-center gap-4 rounded-[19px] bg-white pt-3 shadow-[0_0_5px_rgba(0,0,0,0.25)]"
+                  className="flex w-full max-w-[500px] flex-col items-center gap-[18.75px] rounded-[18.75px] bg-white pt-[12.5px] shadow-[0_0_9.375px_rgba(0,0,0,0.25)] sm:min-h-[360px]"
                   data-payload-subpath={`items.${i}.label`}
                   key={side.id ?? i}
                 >
-                  <p className="font-serif text-[30px] font-semibold leading-[35px] text-subheading">
+                  <p className="px-4 text-center font-playfair text-[26px] font-semibold leading-[35px] text-subheading sm:text-[30px]">
                     {marks(side.label)}
                   </p>
 
@@ -228,7 +236,7 @@ export const TotalCareBlock: React.FC<Props> = ({
                       too narrow for two-word labels, so the card stacks instead. */}
                   <div className="flex w-full flex-col items-center sm:flex-row">
                     <div
-                      className="relative aspect-[300/288] w-full shrink-0 overflow-hidden rounded-[19px] sm:w-3/5"
+                      className="relative aspect-[300/288] w-full shrink-0 overflow-hidden rounded-[18.75px] sm:w-3/5"
                       data-payload-subpath={`items.${i}.image`}
                     >
                       <ImageSlot
@@ -241,15 +249,15 @@ export const TotalCareBlock: React.FC<Props> = ({
                     </div>
 
                     {Array.isArray(side.features) && side.features.length > 0 && (
-                      <ul className="flex min-w-0 flex-1 flex-col justify-center gap-3 p-1.5">
+                      <ul className="flex min-w-0 flex-1 flex-col justify-center gap-[12.5px] p-[6.25px]">
                         {side.features.map((feature, f) => (
-                          <li className="flex items-center gap-3" key={feature.id ?? f}>
+                          <li className="flex items-center gap-[12.5px]" key={feature.id ?? f}>
                             <FeatureMark
                               feature={feature}
                               iconClass="[&>svg]:h-[50px] [&>svg]:w-[50px]"
                               size="h-[50px] w-[50px]"
                             />
-                            <span className="min-w-0 text-[11.25px] font-medium leading-normal text-heading">
+                            <span className="min-w-0 text-[11.25px] font-medium leading-[normal] text-heading">
                               {marks(feature.label)}
                             </span>
                           </li>
