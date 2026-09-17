@@ -12,6 +12,7 @@ import React from 'react'
 
 import { fullBleed } from '@/blocks/RenderBlocks'
 
+import { pinnedComponents } from './pinnedComponents'
 import { convertFields, defaultsFor } from './fields'
 
 // Block configs (field definitions). `Form/config.ts` is deliberately absent: it imports
@@ -185,10 +186,22 @@ components.formBlock = {
   },
 }
 
+// The header and footer, generated from their globals the same way. They are not page
+// content — see `src/puck/chrome.tsx` for where their edits are saved.
+Object.assign(components, pinnedComponents)
+
 /** Grouping for the editor's component list. Mirrors how the sections are talked about. */
 export const puckConfig: Config = {
   components,
   categories: {
+    // Hidden from the drawer: all three are pinned to every canvas already, so the only
+    // thing dragging another in could do is give the page a second header. They stay fully
+    // selectable and editable where they sit.
+    pinned: {
+      title: 'Header, Hero & Footer',
+      components: ['header', 'pageHero', 'footer'],
+      visible: false,
+    },
     hero: { title: 'Hero & Banners', components: ['bannerHero', 'featureStrip', 'statsBar'] },
     product: {
       title: 'Product & Science',

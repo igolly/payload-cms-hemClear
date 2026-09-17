@@ -15,6 +15,8 @@ import React, { useEffect, useRef } from 'react'
 import type { Plugin } from '@puckeditor/core'
 import { usePuck } from '@puckeditor/core'
 
+import { isPinnedSlug } from './pinned'
+
 /** `/admin/puck-editor/pages/<id>` — the route the plugin registers for this view. */
 const pageIdFromLocation = (): string | null => {
   if (typeof window === 'undefined') return null
@@ -27,7 +29,11 @@ const SeedFromBlocks: React.FC<{ children?: React.ReactNode }> = ({ children }) 
   // One attempt per editor session, so re-emptying a page by hand is not undone.
   const attempted = useRef(false)
 
-  const isEmpty = (appState?.data?.content?.length ?? 0) === 0
+  // The header and footer are pinned to the canvas by `chromeSyncPlugin` whatever the page
+  // holds, so they do not count as content — without this, no page would ever look empty
+  // and a block-authored page would open blank.
+  const isEmpty =
+    (appState?.data?.content ?? []).filter((item) => !isPinnedSlug(item.type)).length === 0
 
   useEffect(() => {
     if (attempted.current || !isEmpty) return

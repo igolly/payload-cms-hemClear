@@ -7,233 +7,31 @@ import {
   lexicalEditor,
 } from '@payloadcms/richtext-lexical'
 
-import { linkGroup } from '@/fields/linkGroup'
+import { heroFields } from './fields'
 
-export const hero: Field = {
-  name: 'hero',
-  type: 'group',
-  fields: [
-    {
-      name: 'type',
-      type: 'select',
-      defaultValue: 'lowImpact',
-      label: 'Type',
-      options: [
-        {
-          label: 'None',
-          value: 'none',
-        },
-        {
-          label: 'High Impact',
-          value: 'highImpact',
-        },
-        {
-          label: 'Medium Impact',
-          value: 'mediumImpact',
-        },
-        {
-          label: 'Low Impact',
-          value: 'lowImpact',
-        },
-      ],
-      required: true,
-    },
-    {
-      name: 'richText',
-      type: 'richText',
-      editor: lexicalEditor({
-        features: ({ rootFeatures }) => {
-          return [
+/**
+ * The hero's rich text gets the site's Lexical setup here rather than in `fields.ts`, which
+ * the Puck config reads — importing the editor there would pull Lexical into the browser
+ * bundle. One field list, two consumers.
+ */
+const withEditor = (field: Field): Field =>
+  field.type === 'richText'
+    ? {
+        ...field,
+        editor: lexicalEditor({
+          features: ({ rootFeatures }) => [
             ...rootFeatures,
             HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
             FixedToolbarFeature(),
             InlineToolbarFeature(),
-          ]
-        },
-      }),
-      admin: {
-        condition: (_, { type } = {}) => type !== 'highImpact',
-      },
-      label: false,
-    },
-    linkGroup({
-      overrides: {
-        maxRows: 2,
-      },
-    }),
-    {
-      name: 'media',
-      type: 'upload',
-      admin: {
-        condition: (_, { type } = {}) => ['highImpact', 'mediumImpact'].includes(type),
-      },
-      relationTo: 'media',
-      required: true,
-    },
-    {
-      name: 'mediaPosition',
-      type: 'select',
-      defaultValue: 'left',
-      options: [
-        { label: 'Image on the left', value: 'left' },
-        { label: 'Image on the right', value: 'right' },
-      ],
-      admin: { condition: (_, { type } = {}) => type === 'highImpact' },
-      label: 'Image Position',
-    },
-    {
-      name: 'variant',
-      type: 'select',
-      defaultValue: 'split',
-      options: [
-        { label: 'Split (full-bleed photo beside the copy)', value: 'split' },
-        { label: 'About (framed photo, ruled topic list, callout card)', value: 'about' },
-        { label: 'Why (copy laid over one centred photo)', value: 'why' },
-      ],
-      admin: {
-        condition: (_, { type } = {}) => type === 'highImpact',
-        description:
-          'About is the /about-hemorrhoids treatment: a centred copy column with a ruled list of topics and a callout card beside a framed photo; badge, buttons and trust points are not shown. Why is the /why treatment: one 1200px photo centred on the page with the copy, stacked trust points and buttons laid over its left third. Split keeps the home look.',
-      },
-      label: 'Layout',
-    },
-    {
-      name: 'eyebrow',
-      type: 'text',
-      admin: {
-        condition: (_, { type } = {}) => type === 'highImpact',
-        description: 'Small caps line above the heading.',
-      },
-    },
-    {
-      name: 'subheading',
-      type: 'text',
-      admin: {
-        condition: (_, { type } = {}) => type === 'highImpact',
-        description: 'Serif line between the heading and the description.',
-      },
-    },
-    {
-      name: 'badgeTitle',
-      // `textarea`, not `text`: the component renders this through `multiline`, so a line
-      // break is meaningful — and a single-line input gives an editor no way to enter one.
-      type: 'textarea',
-      admin: {
-        condition: (_, { type } = {}) => type === 'highImpact',
-        description: 'e.g. "Doctor\'s Choice". Use a line break for a two-line badge title.',
-      },
-      label: 'Badge Title',
-    },
-    {
-      name: 'badgeDescription',
-      type: 'textarea',
-      admin: {
-        condition: (_, { type } = {}) => type === 'highImpact',
-      },
-      label: 'Badge Description',
-    },
-    {
-      name: 'heading',
-      type: 'textarea',
-      admin: {
-        condition: (_, { type } = {}) => type === 'highImpact',
-        description: 'Use a line break to control where the heading wraps.',
-      },
-      label: 'Heading',
-    },
-    {
-      name: 'description',
-      type: 'textarea',
-      admin: {
-        condition: (_, { type } = {}) => type === 'highImpact',
-      },
-      label: 'Description',
-    },
-    {
-      name: 'benefits',
-      type: 'array',
-      admin: {
-        condition: (_, { type } = {}) => type === 'highImpact',
-      },
-      fields: [
-        {
-          name: 'text',
-          type: 'text',
-          required: true,
-        },
-        {
-          name: 'icon',
-          type: 'upload',
-          relationTo: 'media',
-          admin: {
-            description: 'Optional illustrated icon. Replaces the default tick when set.',
-          },
-        },
-      ],
-      label: 'Benefits',
-    },
-    {
-      name: 'calloutIcon',
-      type: 'upload',
-      relationTo: 'media',
-      admin: {
-        condition: (_, { type } = {}) => type === 'highImpact',
-        description: 'Optional icon for the callout box. Replaces the default tick when set.',
-      },
-      label: 'Callout Icon',
-    },
-    {
-      name: 'calloutTitle',
-      type: 'text',
-      admin: {
-        condition: (_, { type } = {}) => type === 'highImpact',
-        description: 'Optional highlighted box below the benefits.',
-      },
-    },
-    {
-      name: 'calloutText',
-      type: 'textarea',
-      admin: { condition: (_, { type } = {}) => type === 'highImpact' },
-    },
-    {
-      name: 'trustPoints',
-      type: 'array',
-      admin: {
-        condition: (_, { type } = {}) => type === 'highImpact',
-      },
-      fields: [
-        {
-          name: 'icon',
-          type: 'upload',
-          relationTo: 'media',
-          admin: {
-            description:
-              'Small square icon image. A dashed placeholder holds the space until one is set.',
-          },
-        },
-        {
-          name: 'label',
-          type: 'text',
-          required: true,
-        },
-      ],
-      label: 'Trust Points',
-    },
-    {
-      name: 'trustPointsStyle',
-      type: 'select',
-      defaultValue: 'inline',
-      options: [
-        { label: 'Inline, below the buttons', value: 'inline' },
-        { label: 'Stacked, above the buttons', value: 'stacked' },
-      ],
-      admin: {
-        condition: (_, { type } = {}) => type === 'highImpact',
-        description:
-          'Stacked is the /why treatment: each point sets its icon over its label and the row moves above the call-to-action buttons. The two go together in the comp, so one control drives both.',
-      },
-      label: 'Trust Points Layout',
-    },
-  ],
+          ],
+        }),
+      }
+    : field
+
+export const hero: Field = {
+  name: 'hero',
+  type: 'group',
+  fields: heroFields.map(withEditor),
   label: false,
 }

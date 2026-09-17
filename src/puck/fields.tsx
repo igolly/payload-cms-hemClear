@@ -163,13 +163,32 @@ const relationshipField = (field: PayloadField, label?: string): PuckField => {
 /** Best-effort one-line summary for an array row, so the Puck outline stays readable. */
 const summaryKeys = ['title', 'label', 'heading', 'name', 'question', 'quote', 'text']
 const itemSummary = (item: Record<string, unknown>, index = 0): string => {
-  for (const key of summaryKeys) {
-    const value = item?.[key]
-    if (typeof value === 'string' && value.trim()) return value.slice(0, 60)
+  const named = (source: Record<string, unknown> | undefined) => {
+    for (const key of summaryKeys) {
+      const value = source?.[key]
+      if (typeof value === 'string' && value.trim()) return value.slice(0, 60)
+    }
+    return null
   }
-  const firstString = Object.values(item ?? {}).find(
-    (value) => typeof value === 'string' && value.trim(),
-  )
+
+  const direct = named(item)
+  if (direct) return direct
+
+  /*
+   * A row whose copy sits one level down — a header nav item is a `link` group, and its
+   * label is the only human-readable thing on the row. Without this the fallback below
+   * settles on the row's `id` and the outline reads as a column of hashes.
+   */
+  for (const value of Object.values(item ?? {})) {
+    if (value && typeof value === 'object' && !Array.isArray(value)) {
+      const nested = named(value as Record<string, unknown>)
+      if (nested) return nested
+    }
+  }
+
+  const firstString = Object.entries(item ?? {}).find(
+    ([key, value]) => key !== 'id' && typeof value === 'string' && value.trim(),
+  )?.[1]
   return typeof firstString === 'string' ? firstString.slice(0, 60) : `Item ${index + 1}`
 }
 

@@ -702,6 +702,39 @@ Payload fields to Puck fields in `src/puck/fields.tsx`. Adding a block the way s
 describes therefore adds it to Puck too — the only manual step is dropping its slug into a
 category in `src/puck/config.tsx` so it appears under the right heading.
 
+**The header, hero and footer are on the canvas, but they are not page content.** A page
+reads wrong without them, and a nav label or a headline is easiest to fix where you can see
+it — so all three are Puck components, generated from the same field lists Payload uses and
+rendered by the same components the site renders. What differs is where the data goes:
+
+| Component  | Lives in                         |
+| ---------- | -------------------------------- |
+| `header`   | the Header global                |
+| `pageHero` | the page's own `hero` group      |
+| `footer`   | the Footer global                |
+
+| Step | What happens                                                                                                         |
+| ---- | -------------------------------------------------------------------------------------------------------------------- |
+| Open | `src/puck/pinnedSync.tsx` reads all three over REST and pins header + hero above the content, footer below            |
+| Save | `syncPuckPinned` (Pages `beforeChange`) sends each one home — `updateGlobal` or the `hero` field — and strips them out of `puckData` |
+
+So `puckData` never stores a copy, and one edit to the nav reaches every page. Three
+consequences worth knowing:
+
+- **Globals have no drafts.** A nav edit goes live on save even when the page is saved as a
+  draft — the same as editing the Header global directly, which is what it is. The hero is a
+  field on the page, so it follows the page's own draft status.
+- **Field lists are split from their configs.** `src/Header/fields.ts`, `src/Footer/fields.ts`
+  and `src/heros/fields.ts` hold the fields; the `config.ts` beside each adds what must stay
+  on the server — `afterChange` hooks importing `next/cache` for the globals, the Lexical
+  editor for the hero. Either one in the browser bundle fails the build.
+- **Two halves, one rule.** `src/puck/pinned.ts` is Puck-free and safe for the Payload config
+  to import; `src/puck/pinnedComponents.tsx` is the canvas half and must never be imported
+  from it, or plain Node chokes on the editor's stylesheet.
+
+The three are hidden from the component drawer: they are on every canvas already, so the
+only thing dragging another in could do is give a page a second header.
+
 Things worth knowing before you touch this:
 
 - **`src/puck/config.tsx` is evaluated on the server** as well as in the editor, so it must

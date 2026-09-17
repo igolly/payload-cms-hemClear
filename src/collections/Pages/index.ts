@@ -35,6 +35,7 @@ import { slugField } from 'payload'
 import { populatePublishedAt } from '../../hooks/populatePublishedAt'
 import { generatePreviewPath } from '../../utilities/generatePreviewPath'
 import { revalidateDelete, revalidatePage } from './hooks/revalidatePage'
+import { syncPuckPinned } from './hooks/syncPuckPinned'
 import { puckSeed } from './endpoints/puckSeed'
 
 import {
@@ -205,7 +206,9 @@ export const Pages: CollectionConfig<'pages'> = {
   endpoints: [puckSeed],
   hooks: {
     afterChange: [revalidatePage],
-    beforeChange: [populatePublishedAt],
+    // `syncPuckPinned` runs last: it is the one that empties the pinned components out of
+    // `puckData` again, after their edits have gone to the globals and the hero field.
+    beforeChange: [populatePublishedAt, syncPuckPinned],
     afterDelete: [revalidateDelete],
   },
   versions: {

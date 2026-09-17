@@ -11,10 +11,13 @@ import React from 'react'
 import { PuckConfigProvider } from '@delmaredigital/payload-puck/client'
 
 import { puckConfig } from '@/puck/config'
+import { pinnedSyncPlugin } from '@/puck/pinnedSync'
 import { seedFromBlocksPlugin } from '@/puck/seedFromBlocks'
 
 export const PuckProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => (
-  <PuckConfigProvider config={puckConfig} plugins={[seedFromBlocksPlugin]}>
+  // Seeding runs first: it fills an empty canvas from the page's blocks, and the pinned
+  // plugin then frames whatever ended up there with the header, hero and footer.
+  <PuckConfigProvider config={puckConfig} plugins={[seedFromBlocksPlugin, pinnedSyncPlugin]}>
     {children}
   </PuckConfigProvider>
 )
