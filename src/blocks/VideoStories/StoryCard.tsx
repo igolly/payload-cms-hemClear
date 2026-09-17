@@ -6,6 +6,7 @@ import type { VideoStoriesBlock } from '@/payload-types'
 
 import { Media } from '@/components/Media'
 import { cn } from '@/utilities/ui'
+import { getMediaUrl } from '@/utilities/getMediaUrl'
 import { marks, multiline } from '@/utilities/marks'
 
 type Story = NonNullable<VideoStoriesBlock['stories']>[number]
@@ -117,6 +118,21 @@ export const StoryCard: React.FC<{
               fill
               imgClassName="object-cover"
               resource={story.poster}
+            />
+          ) : hasVideoFile ? (
+            /*
+             * No still uploaded, but there is a video: its own opening frame stands in for
+             * one. `#t=0.1` is what makes a browser paint a frame at all — asked only for
+             * metadata, it otherwise shows a black box. Muted and never autoplaying, so the
+             * card stays a still until the visitor presses play.
+             */
+            // eslint-disable-next-line jsx-a11y/media-has-caption -- a silent still frame
+            <video
+              className="absolute inset-0 h-full w-full object-cover"
+              muted
+              playsInline
+              preload="metadata"
+              src={`${getMediaUrl((story.video as { url?: null | string }).url)}#t=0.1`}
             />
           ) : (
             <div
