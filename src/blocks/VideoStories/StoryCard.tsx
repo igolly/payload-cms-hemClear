@@ -96,10 +96,25 @@ export const StoryCard: React.FC<{
       data-payload-subpath={`stories.${index}.name`}
     >
       {playing && hasVideoFile ? (
-        <Media
-          className="absolute inset-0 h-full w-full"
-          resource={story.video as never}
-          videoClassName="h-full w-full object-cover"
+        /*
+         * Its own element rather than `Media`, whose `VideoMedia` is built for decorative
+         * background footage: muted, looped and controlless. This is a person talking —
+         * "press play to hear it in their words" — so it plays aloud, once, with controls,
+         * and `autoPlay` is what carries the press of the play button into playback.
+         */
+        // eslint-disable-next-line jsx-a11y/media-has-caption -- no caption track is uploaded
+        <video
+          autoPlay
+          className="absolute inset-0 h-full w-full bg-black object-cover"
+          controls
+          playsInline
+          poster={
+            story.poster && typeof story.poster === 'object'
+              ? getMediaUrl(story.poster.url)
+              : undefined
+          }
+          preload="auto"
+          src={getMediaUrl((story.video as { url?: null | string }).url)}
         />
       ) : playing && hasEmbed ? (
         <iframe
@@ -203,6 +218,14 @@ export const StoryCard: React.FC<{
               name, however many lines that wraps to. */}
           {!light && (
             <>
+              {/* The plate's white text used to sit on a flat grey placeholder, which was
+                  legible by definition. Over a real still it needs its own darkness: a
+                  bright frame — a window, a white bathroom — otherwise swallows the name. */}
+              <div
+                aria-hidden="true"
+                className="pointer-events-none absolute inset-x-0 bottom-0 top-[68%] z-10 bg-gradient-to-t from-black/85 via-black/50 to-transparent"
+              />
+
               {drawChrome && story.duration && (
                 <span className="absolute bottom-[22%] right-3 z-20 rounded bg-black/70 px-1.5 py-0.5 text-[10px] font-medium text-white">
                   {marks(story.duration)}
@@ -216,7 +239,14 @@ export const StoryCard: React.FC<{
                   {marks(story.name)}
                 </p>
                 {story.caption && (
-                  <p className="truncate font-inter text-[8px] uppercase">{marks(story.caption)}</p>
+                  /* Two lines, not one truncated line, and no uppercase: the comp's caption
+                     was the label "HemClear® Customer Review", where a single line and caps
+                     read as a kicker. It now carries what the customer actually says, and a
+                     sentence in caps reads as shouting. Two lines is what the name plate has
+                     room for before it runs off the foot of the card. */
+                  <p className="line-clamp-2 font-inter text-[8px] leading-[1.21]">
+                    {marks(story.caption)}
+                  </p>
                 )}
               </div>
             </>
