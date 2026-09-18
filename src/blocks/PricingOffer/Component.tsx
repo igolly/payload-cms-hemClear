@@ -57,7 +57,11 @@ export const PricingOfferBlock: React.FC<Props> = ({
   return (
     <section
       // Inter throughout, as in the comp — the global rule only reaches <p>, not list items or links.
-      className="w-full bg-navy p-4 font-inter sm:px-6 sm:py-8 lg:px-8 lg:py-[18.75px]"
+      className="w-full scroll-mt-4 bg-navy p-4 font-inter sm:px-6 sm:py-8 lg:px-8 lg:py-[18.75px]"
+      /* The page's own buy CTAs point here with `#buy`, which until now landed nowhere:
+         nothing on the page carried the id. `scroll-mt` keeps the banner clear of the
+         sticky header when it does. */
+      id="buy"
       style={backgroundStyle(bgColor, bgColorCustom)}
     >
       <div className="mx-auto flex max-w-[1400px] flex-col items-center gap-[6.25px]">
