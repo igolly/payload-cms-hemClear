@@ -2153,6 +2153,11 @@ export interface MedicalReviewBlock {
   eyebrow?: string | null;
   heading?: string | null;
   /**
+   * Outline button under the trust row, e.g. "HOW IT WORKS". Shown on phones and tablets only — the desktop comp has no button.
+   */
+  ctaLabel?: string | null;
+  ctaUrl?: string | null;
+  /**
    * The row of points above the reviewer cards.
    */
   highlights?:
@@ -2188,6 +2193,10 @@ export interface MedicalReviewBlock {
           | 'snowflake'
           | 'info';
         title: string;
+        /**
+         * The comp's 58px circular glyph. Leave empty to fall back to the icon beside it.
+         */
+        artwork?: ('doctorFormulated' | 'recommended' | 'research') | null;
         description?: string | null;
         id?: string | null;
       }[]
@@ -3832,11 +3841,14 @@ export interface TotalCareBlockSelect<T extends boolean = true> {
 export interface MedicalReviewBlockSelect<T extends boolean = true> {
   eyebrow?: T;
   heading?: T;
+  ctaLabel?: T;
+  ctaUrl?: T;
   highlights?:
     | T
     | {
         icon?: T;
         title?: T;
+        artwork?: T;
         description?: T;
         id?: T;
       };

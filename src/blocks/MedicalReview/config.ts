@@ -3,6 +3,7 @@ import type { Block } from 'payload'
 import { brandIconOptions } from '@/components/BrandIcons'
 
 import { backgroundField } from '@/fields/background'
+import { medicalReviewArtworkOptions } from './artwork'
 
 export const MedicalReview: Block = {
   slug: 'medicalReview',
@@ -19,6 +20,21 @@ export const MedicalReview: Block = {
           admin: { description: 'Flanked by laurel marks, e.g. "HemClear® Medical Review".' },
         },
         { name: 'heading', type: 'text' },
+      ],
+    },
+    {
+      type: 'row',
+      fields: [
+        {
+          name: 'ctaLabel',
+          type: 'text',
+          admin: {
+            description:
+              'Outline button under the trust row, e.g. "HOW IT WORKS". Shown on phones and tablets only — the desktop comp has no button.',
+            width: '50%',
+          },
+        },
+        { name: 'ctaUrl', type: 'text', admin: { width: '50%' } },
       ],
     },
     {
@@ -45,6 +61,15 @@ export const MedicalReview: Block = {
             },
             { name: 'title', type: 'text', required: true, admin: { width: '60%' } },
           ],
+        },
+        {
+          name: 'artwork',
+          type: 'select',
+          options: medicalReviewArtworkOptions,
+          admin: {
+            description:
+              "The comp's 58px circular glyph. Leave empty to fall back to the icon beside it.",
+          },
         },
         { name: 'description', type: 'textarea' },
       ],
