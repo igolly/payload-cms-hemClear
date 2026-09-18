@@ -149,7 +149,7 @@ export const TotalCareBlock: React.FC<Props> = ({
         showcase
           ? // The /why comp puts this band on the page white, inside the page's 1200px column
             // with 43.75px of padding all round.
-            'bg-white px-4 py-[43.75px] lg:px-[43.75px]'
+            'bg-white px-4 py-4 sm:py-[43.75px] lg:px-[43.75px]'
           : 'bg-mist px-[50px] pb-[30px] pt-[30px] sm:pb-[64px] lg:px-8',
       )}
       style={backgroundStyle(bgColor, bgColorCustom)}
@@ -236,7 +236,7 @@ export const TotalCareBlock: React.FC<Props> = ({
                       too narrow for two-word labels, so the card stacks instead. */}
                   <div className="flex w-full flex-col items-center sm:flex-row">
                     <div
-                      className="relative aspect-[300/288] w-full shrink-0 overflow-hidden rounded-[18.75px] sm:w-3/5"
+                      className="relative aspect-[300/288] w-full max-w-[300px] shrink-0 overflow-hidden rounded-[18.75px] sm:max-w-none sm:w-3/5"
                       data-payload-subpath={`items.${i}.image`}
                     >
                       <ImageSlot
@@ -249,7 +249,7 @@ export const TotalCareBlock: React.FC<Props> = ({
                     </div>
 
                     {Array.isArray(side.features) && side.features.length > 0 && (
-                      <ul className="flex min-w-0 flex-1 flex-col justify-center gap-[12.5px] p-[6.25px]">
+                      <ul className="grid min-w-0 flex-1 grid-cols-2 justify-center gap-x-3 gap-y-[12.5px] p-[6.25px] sm:flex sm:flex-col sm:gap-[12.5px]">
                         {side.features.map((feature, f) => (
                           <li className="flex items-center gap-[12.5px]" key={feature.id ?? f}>
                             <FeatureMark

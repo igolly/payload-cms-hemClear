@@ -34,7 +34,13 @@ const Feature: React.FC<{ factor: Factor; gap: string; i: number; tall?: boolean
   tall,
 }) => (
   <li
-    className={cn('flex flex-col items-center text-center', gap, tall && 'sm:h-[112.5px]')}
+    className={cn(
+      /* 100px on a phone, as the comp has it: left to size themselves the labels
+         wrap and the row breaks into two. */
+      'flex flex-col items-center text-center max-sm:w-[100px]',
+      gap,
+      tall && 'sm:h-[112.5px]',
+    )}
     data-payload-subpath={`factors.${i}.label`}
   >
     {factor.image && typeof factor.image === 'object' ? (
@@ -57,7 +63,7 @@ const Feature: React.FC<{ factor: Factor; gap: string; i: number; tall?: boolean
 
 /** The comp's 0.63px #aaa rule, drawn 1px wide at matching coverage so it never drops out. */
 const Divider: React.FC = () => (
-  <li aria-hidden="true" className="h-[81.25px] w-px shrink-0 bg-ash-400/[0.63] max-sm:hidden" />
+  <li aria-hidden="true" className="h-[81.25px] w-px shrink-0 bg-ash-400/[0.63]" />
 )
 
 /** A row of features with a hairline between neighbours. */

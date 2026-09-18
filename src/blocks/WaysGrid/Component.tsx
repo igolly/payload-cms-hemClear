@@ -36,7 +36,7 @@ const PhotoRow: React.FC<{ offset: number; ways: Way[] }> = ({ offset, ways }) =
         data-payload-subpath={`ways.${offset + i}.title`}
         key={way.id ?? i}
       >
-        <div className="relative aspect-[322.5/236.25] w-full">
+        <div className="relative aspect-[322.5/236.25] w-full max-w-[322.5px] sm:max-w-none">
           <ImageSlot
             className="h-full w-full"
             hint="Recommended 900 × 660px photo"
@@ -147,7 +147,7 @@ export const WaysGridBlock: React.FC<Props> = ({
   return (
     <section
       className={cn(
-        'w-full bg-mist px-4 py-[50px] font-inter sm:px-6',
+        'w-full bg-mist px-4 py-4 font-inter sm:px-6 sm:py-[50px]',
         // The /why routine band sits in the page's 1200px column with 43.75px of padding.
         photo ? 'lg:px-[43.75px] lg:py-[43.75px]' : 'lg:px-8 lg:py-7',
       )}

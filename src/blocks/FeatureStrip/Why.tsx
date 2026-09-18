@@ -52,13 +52,7 @@ export const FeatureStripWhy: React.FC<Props> = (props) => {
 }
 
 /* WHY FEATURES (2003:349) — 1200x125, four 246.88px boxes split by 0.63px #006db0 rules. */
-const WhyFeatures: React.FC<Props> = ({
-  bgColor,
-  bgColorCustom,
-  background,
-  items,
-  titleCase,
-}) => {
+const WhyFeatures: React.FC<Props> = ({ bgColor, bgColorCustom, background, items, titleCase }) => {
   const strip = Array.isArray(items) ? items : []
   const upper = titleCase !== 'none'
 
@@ -71,19 +65,22 @@ const WhyFeatures: React.FC<Props> = ({
       style={backgroundStyle(bgColor, bgColorCustom)}
     >
       <div className="mx-auto max-w-[1200px] lg:px-[43.75px] lg:py-[18.75px]">
-        <ul className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:flex lg:gap-[18.75px] lg:p-[6.25px]">
+        <ul className="grid grid-cols-4 gap-[10px] sm:gap-6 lg:flex lg:gap-[18.75px] lg:p-[6.25px]">
           {strip.map((item, i) => (
             <li
               className={cn(
-                'flex items-center gap-[12.5px]',
+                /* Four across on a phone as the comp has it — icon over the copy, a
+                   hairline between the columns — and icon-beside-copy from `lg`. */
+                'flex flex-col items-center gap-2 text-center',
+                'lg:flex-row lg:items-center lg:gap-[12.5px] lg:text-left',
                 'lg:box-content lg:min-w-0 lg:grow lg:basis-0',
-                'lg:[&+li]:border-l lg:[&+li]:border-info lg:[&+li]:pl-[18.75px]',
+                '[&+li]:border-l [&+li]:border-info [&+li]:pl-[10px] lg:[&+li]:pl-[18.75px]',
               )}
               data-payload-subpath={`items.${i}.title`}
               key={item.id ?? i}
             >
-              <Art box="h-[75px] w-[75px]" item={item} />
-              <div className="min-w-0 flex-1">
+              <Art box="h-[60px] w-[60px] sm:h-[75px] sm:w-[75px]" item={item} />
+              <div className="min-w-0 lg:flex-1">
                 <h3
                   className={cn(
                     'text-[12.5px] font-bold leading-[15px] text-subheading [&_sup]:leading-[0]',
@@ -231,7 +228,7 @@ const WhyQuick: React.FC<Props> = ({
     >
       <div className="mx-auto flex max-w-[1200px] flex-col items-center lg:p-[43.75px]">
         {strip.length > 0 && (
-          <ul className="grid w-full grid-cols-1 gap-8 sm:grid-cols-2 lg:flex lg:min-h-[193.75px] lg:w-auto lg:items-center lg:gap-[50px] lg:px-[6.25px] lg:pt-[6.25px] lg:pb-[25px]">
+          <ul className="grid w-full grid-cols-2 gap-x-[25px] gap-y-8 lg:flex lg:min-h-[193.75px] lg:w-auto lg:items-center lg:gap-[50px] lg:px-[6.25px] lg:pt-[6.25px] lg:pb-[25px]">
             {strip.map((item, i) => (
               <li
                 className={cn(
