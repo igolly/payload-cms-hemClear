@@ -239,9 +239,10 @@ export const ProductDetailBlockComponent: React.FC<ProductDetailBlock> = (produc
             </ul>
           )}
 
-          {/* What you'll feel — Figma 6216:3078 */}
+          {/* What you'll feel — Figma 6216:3078. The 8px radius is written out because
+              `rounded-lg` is the shadcn scale here and lands on 10px. */}
           {feel.length > 0 && (
-            <div className="flex flex-col gap-4 rounded-lg border border-navy bg-mist-100 px-5 py-[13px]">
+            <div className="flex flex-col gap-4 rounded-[8px] border border-navy bg-mist-100 px-5 py-[13px]">
               {product.feelTitle && (
                 <p className="text-center text-lg font-bold leading-[22px]">
                   {marks(product.feelTitle)}
