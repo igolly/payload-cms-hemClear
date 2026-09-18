@@ -112,6 +112,7 @@
   --color-tint-50: #e0ecfc; /* pale blue band */
   --color-line: #e2e5ef; /* neutral card rule */
   --color-mist-100: #eef4fd; /* tinted card fill */
+  --color-mist-50: #f0f5fc; /* hero band — reads apart from the white header above it */
   --color-mist: #f5f8fc; /* off-white section fill */
   --color-shell: #f5f5f7; /* warm grey, hero */
   --color-sand: #efeae4; /* product photography backdrop */

@@ -32,8 +32,12 @@ export const AboutHero: React.FC<Page['hero']> = ({
   const hasMedia = media && typeof media === 'object'
   const mediaLeft = mediaPosition === 'left'
 
+  /*
+   * The band is tinted rather than white: the header above it is white, so a white hero ran
+   * straight into it and the page opened with no edge between the two.
+   */
   return (
-    <section className="w-full bg-white px-4 font-inter sm:px-6 [&_sup]:leading-[0]">
+    <section className="w-full bg-mist-50 px-4 font-inter sm:px-6 [&_sup]:leading-[0]">
       <div className="mx-auto grid w-full max-w-[1063px] grid-cols-1 lg:grid-cols-[minmax(0,500fr)_minmax(0,563fr)]">
         <div
           className={cn(
@@ -60,7 +64,10 @@ export const AboutHero: React.FC<Page['hero']> = ({
           )}
 
           {/* The comp's short rule under the headline. */}
-          <span aria-hidden="true" className="mt-1 block h-[3.5px] w-16 rounded-full bg-brand-600" />
+          <span
+            aria-hidden="true"
+            className="mt-1 block h-[3.5px] w-16 rounded-full bg-brand-600"
+          />
 
           {subheading && (
             <p
