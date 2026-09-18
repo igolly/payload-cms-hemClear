@@ -71,8 +71,10 @@ export const HeaderNav: React.FC<{
 }> = ({ className, data, onOpenChange, openIndex }) => {
   const navItems = data?.navItems || []
 
+  // The comp's 20px gap holds from `xl`; tighter below it, where the bar is narrower than the
+  // 1400px it was drawn at and eight items would otherwise push past the logo.
   return (
-    <nav className={cn('flex h-9 items-center gap-5', className)}>
+    <nav className={cn('flex h-9 items-center gap-3 xl:gap-5', className)}>
       {navItems.map((item, i) => {
         const menu = hasMenu(item)
         const open = menu && openIndex === i

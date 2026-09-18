@@ -51,8 +51,10 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
   return (
     <header className="relative z-20 w-full bg-white" onMouseLeave={() => setOpenIndex(null)}>
       {/* Figma `Header Container` (desktop 2002:31, mobile 6246:2938): 1400px max, 92.5px
-          tall, 50px sides on desktop; mobile centres the logo inside 16px sides. */}
-      <div className="relative mx-auto flex h-[92.5px] w-full max-w-[1400px] items-center justify-center px-4 md:px-8 lg:justify-between lg:px-[50px]">
+          tall, 50px sides on desktop; mobile centres the logo inside 16px sides. The comp's
+          50px only holds from `xl`: between there and `lg` the bar is narrower than the
+          1400 it was drawn at, and the nav needs the room. */}
+      <div className="relative mx-auto flex h-[92.5px] w-full max-w-[1400px] items-center justify-center px-4 md:px-8 lg:justify-between lg:px-6 xl:px-[50px]">
         {/* Figma `logo 4`/`logo 5` is a 234 x 66.86 box whose artwork is inset 5% / 1.36% — the
             PNG is that artwork, so it sits at 60.17px tall inside the same box. */}
         <Link
