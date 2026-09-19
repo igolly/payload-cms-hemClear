@@ -42,7 +42,9 @@ export const BenefitsCarouselBlock: React.FC<Props> = ({
         <img
           alt=""
           className="-my-[1.25px] block h-[2.5px] w-[62.5px]"
+          decoding="async"
           height={2.5}
+          loading="lazy"
           src="/icons/benefits/line.svg"
           width={62.5}
         />

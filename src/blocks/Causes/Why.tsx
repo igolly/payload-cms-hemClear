@@ -200,7 +200,9 @@ const Quality: React.FC<Props> = ({
               <img
                 alt=""
                 className="size-[35px] shrink-0"
+                decoding="async"
                 height={35}
+                loading="lazy"
                 src="/icons/causes-why/info.png"
                 width={35}
               />

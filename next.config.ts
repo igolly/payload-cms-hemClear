@@ -26,7 +26,9 @@ const nextConfig: NextConfig = {
         pathname: '/**',
       },
     ],
-    formats: ['image/avif', 'image/webp'],
+    // WebP only. AVIF is a little smaller but costs far more CPU to encode, which is paid
+    // on every optimizer cache miss, and the saving does not show on artwork this size.
+    formats: ['image/webp'],
     // Media URLs carry `?<updatedAt>`, so a replaced file gets a new URL and a long
     // TTL never serves a stale image.
     minimumCacheTTL: 2678400, // 31 days

@@ -107,14 +107,18 @@ export const Cards: React.FC<{ items: Item[] }> = ({ items }) => {
         <img
           alt=""
           className="max-sm:hidden"
+          decoding="async"
           height={64}
+          loading="lazy"
           src="/icons/benefits/arrow-left.svg"
           width={64}
         />
         <img
           alt=""
           className="block size-8 sm:hidden"
+          decoding="async"
           height={32}
+          loading="lazy"
           src="/icons/benefits/carousel-left.svg"
           width={32}
         />
@@ -143,7 +147,8 @@ export const Cards: React.FC<{ items: Item[] }> = ({ items }) => {
               >
                 <div className="absolute inset-0 overflow-hidden rounded-[18.75px]">
                   {item.image && typeof item.image === 'object' && (
-                    <Media fill imgClassName="object-cover" resource={item.image} />
+                    // The card is 208.75px wide, 194px at most on a phone.
+                    <Media fill imgClassName="object-cover" resource={item.image} size="209px" />
                   )}
                 </div>
 
@@ -259,14 +264,18 @@ export const Cards: React.FC<{ items: Item[] }> = ({ items }) => {
         <img
           alt=""
           className="max-sm:hidden"
+          decoding="async"
           height={64}
+          loading="lazy"
           src="/icons/benefits/arrow-right.svg"
           width={64}
         />
         <img
           alt=""
           className="block size-8 sm:hidden"
+          decoding="async"
           height={32}
+          loading="lazy"
           src="/icons/benefits/carousel-right.svg"
           width={32}
         />

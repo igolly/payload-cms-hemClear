@@ -108,7 +108,9 @@ const CausesDefault: React.FC<Props> = ({
         <img
           alt=""
           className="size-[15px] shrink-0"
+          decoding="async"
           height={15}
+          loading="lazy"
           src="/icons/causes/info.png"
           width={15}
         />

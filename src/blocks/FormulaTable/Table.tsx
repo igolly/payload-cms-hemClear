@@ -15,7 +15,9 @@ const TileRadio: React.FC<{ checked: boolean }> = ({ checked }) => (
   <img
     alt=""
     className="size-[30px] shrink-0"
+    decoding="async"
     height={30}
+    loading="lazy"
     src={`/icons/formula-table/radio-${checked ? 'checked' : 'unchecked'}.png`}
     width={30}
   />
@@ -57,6 +59,8 @@ export const Table: React.FC<{ formulas: Formula[] }> = ({ formulas }) => {
                       className="relative size-full"
                       fill
                       imgClassName="object-contain object-bottom"
+                      // 110px tab artwork on a phone, 70px from `lg`.
+                      size="110px"
                       resource={item.image}
                     />
                   ) : (
@@ -129,6 +133,8 @@ export const Table: React.FC<{ formulas: Formula[] }> = ({ formulas }) => {
                           className="relative size-full"
                           fill
                           imgClassName="object-contain"
+                          // 81.25px ingredient art on a phone, 63.25px from `lg`.
+                          size="82px"
                           resource={row.image}
                         />
                       ) : (

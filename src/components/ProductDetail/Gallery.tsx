@@ -59,7 +59,9 @@ export const Gallery: React.FC<{ badgeLabel?: string | null; slides: Slide[] }> 
                   <img
                     alt=""
                     className="h-[5.333cqw] w-[7.407cqw] shrink-0"
+                    decoding="async"
                     height={36}
+                    loading="lazy"
                     src="/icons/product-detail/reviews-bubble.png"
                     width={52}
                   />
@@ -97,7 +99,9 @@ export const Gallery: React.FC<{ badgeLabel?: string | null; slides: Slide[] }> 
               <img
                 alt="3rd-party tested"
                 className="h-[17.78cqw] w-[13.33cqw]"
+                decoding="async"
                 height={120}
+                loading="lazy"
                 src="/icons/product-detail/third-party-tested.png"
                 width={90}
               />

@@ -133,6 +133,8 @@ export const StoryCard: React.FC<{
               fill
               imgClassName="object-cover"
               resource={story.poster}
+              // Roughly half the screen on a phone, never more than a ~300px card above it.
+              size="(max-width: 640px) 50vw, 300px"
             />
           ) : hasVideoFile ? (
             /*
@@ -196,7 +198,9 @@ export const StoryCard: React.FC<{
               <img
                 alt=""
                 className="absolute left-1/2 top-[92.08px] size-[24.92px] -translate-x-1/2 transition-transform hover:scale-105"
+                decoding="async"
                 height={25}
+                loading="lazy"
                 src="/icons/product-detail/play.png"
                 width={25}
               />
@@ -205,7 +209,9 @@ export const StoryCard: React.FC<{
               <img
                 alt=""
                 className="absolute left-1/2 top-[38.8%] h-[46px] w-[46px] -translate-x-1/2 transition-transform hover:scale-105"
+                decoding="async"
                 height={46}
+                loading="lazy"
                 src="/icons/video-stories/play.svg"
                 width={46}
               />

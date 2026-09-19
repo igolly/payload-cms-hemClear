@@ -138,7 +138,9 @@ export const Tabs: React.FC<{ items: Item[] }> = ({ items }) => {
           <img
             alt=""
             className="size-full"
+            decoding="async"
             height={64}
+            loading="lazy"
             src="/icons/support/arrow-left.svg"
             width={64}
           />
@@ -185,7 +187,9 @@ export const Tabs: React.FC<{ items: Item[] }> = ({ items }) => {
           <img
             alt=""
             className="size-full"
+            decoding="async"
             height={64}
+            loading="lazy"
             src="/icons/support/arrow-right.svg"
             width={64}
           />

@@ -16,7 +16,9 @@ export const Disclaimer: React.FC<{ text?: string | null; title?: string | null 
         <img
           alt=""
           className="h-7 w-7 shrink-0 sm:h-[35px] sm:w-[35px]"
+          decoding="async"
           height={35}
+          loading="lazy"
           src="/icons/ingredients/info.svg"
           width={35}
         />

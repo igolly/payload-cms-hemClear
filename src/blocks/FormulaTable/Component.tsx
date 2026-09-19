@@ -46,7 +46,9 @@ export const FormulaTableBlock: React.FC<Props> = ({
             <img
               alt=""
               className="size-16 shrink-0"
+              decoding="async"
               height={64}
+              loading="lazy"
               src="/icons/formula-table/backed-by-science.svg"
               width={64}
             />

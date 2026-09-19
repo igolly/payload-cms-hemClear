@@ -92,7 +92,9 @@ export const MedicalReviewBlock: React.FC<Props> = ({
                       <img
                         alt=""
                         className="size-[58px] shrink-0"
+                        decoding="async"
                         height={58}
+                        loading="lazy"
                         src={src}
                         width={58}
                       />

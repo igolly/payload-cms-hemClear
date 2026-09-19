@@ -68,7 +68,9 @@ export const StepsCarousel: React.FC<{ slides: React.ReactNode[] }> = ({ slides 
           <img
             alt=""
             className="size-8"
+            decoding="async"
             height={32}
+            loading="lazy"
             src="/icons/support/arrow-left.svg"
             width={32}
           />
@@ -84,7 +86,9 @@ export const StepsCarousel: React.FC<{ slides: React.ReactNode[] }> = ({ slides 
           <img
             alt=""
             className="size-8"
+            decoding="async"
             height={32}
+            loading="lazy"
             src="/icons/support/arrow-right.svg"
             width={32}
           />

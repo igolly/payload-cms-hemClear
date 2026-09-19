@@ -113,7 +113,9 @@ export const PlanCard: React.FC<{ index: number; plan: Plan; selected?: boolean 
                 <img
                   alt=""
                   className="size-4 shrink-0"
+                  decoding="async"
                   height={16}
+                  loading="lazy"
                   src="/icons/pricing/check.svg"
                   width={16}
                 />

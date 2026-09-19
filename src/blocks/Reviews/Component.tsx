@@ -112,7 +112,9 @@ export const ReviewsBlock: React.FC<Props> = ({
               alt={logo.alt}
               className="h-[31.25px] shrink-0"
               data-payload-subpath={`featured.${i}.source`}
+              decoding="async"
               height={31.25}
+              loading="lazy"
               src={`/icons/reviews/logo-${item.source}.png`}
               style={{ width: logo.width }}
               width={logo.width}
@@ -141,7 +143,9 @@ export const ReviewsBlock: React.FC<Props> = ({
             <img
               alt=""
               className="size-[58px] shrink-0"
+              decoding="async"
               height={58}
+              loading="lazy"
               src={FEATURE_ICONS[item.icon] ?? FEATURE_ICONS.customers}
               width={58}
             />

@@ -26,7 +26,9 @@ const CheckBadge: React.FC = () => (
   <img
     alt=""
     className="size-[26px] shrink-0"
+    decoding="async"
     height={26}
+    loading="lazy"
     src="/icons/about/diagnosed-check.svg"
     width={26}
   />
@@ -231,7 +233,9 @@ export const CausesAbout: React.FC<Props> = ({
               <img
                 alt=""
                 className="size-[35px] shrink-0"
+                decoding="async"
                 height={35}
+                loading="lazy"
                 src="/icons/about/diagnosed-info.svg"
                 width={35}
               />

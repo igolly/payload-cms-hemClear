@@ -156,7 +156,9 @@ export const Carousel: React.FC<{
               <img
                 alt=""
                 className="size-8"
+                decoding="async"
                 height={32}
+                loading="lazy"
                 src="/icons/product-detail/carousel-left.svg"
                 width={32}
               />
@@ -171,7 +173,9 @@ export const Carousel: React.FC<{
               <img
                 alt=""
                 className="size-8"
+                decoding="async"
                 height={32}
+                loading="lazy"
                 src="/icons/product-detail/carousel-right.svg"
                 width={32}
               />
@@ -228,7 +232,9 @@ export const Carousel: React.FC<{
               <img
                 alt=""
                 className="block size-8"
+                decoding="async"
                 height={32}
+                loading="lazy"
                 src={`/icons/video-stories/carousel-${direction < 0 ? 'left' : 'right'}.svg`}
                 width={32}
               />
@@ -245,7 +251,9 @@ export const Carousel: React.FC<{
           <img
             alt=""
             className="h-16 w-16"
+            decoding="async"
             height={64}
+            loading="lazy"
             src="/icons/video-stories/arrow-left.svg"
             width={64}
           />
@@ -284,7 +292,9 @@ export const Carousel: React.FC<{
           <img
             alt=""
             className="h-16 w-16"
+            decoding="async"
             height={64}
+            loading="lazy"
             src="/icons/video-stories/arrow-right.svg"
             width={64}
           />

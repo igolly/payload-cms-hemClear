@@ -113,7 +113,9 @@ export const BannerHeroBlock: React.FC<Props> = ({
                   <img
                     alt=""
                     className="h-5 w-5 shrink-0"
+                    decoding="async"
                     height={20}
+                    loading="lazy"
                     src="/icons/ingredients/arrow-right-circle.png"
                     width={20}
                   />

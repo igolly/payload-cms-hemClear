@@ -118,7 +118,9 @@ export const PairingBlock: React.FC<Props> = ({
           <img
             alt=""
             className="-my-[1.46px] block h-[2.917px] w-[75.833px] lg:hidden"
+            decoding="async"
             height={3}
+            loading="lazy"
             src="/icons/pairing/line-mobile.svg"
             width={76}
           />
@@ -126,7 +128,9 @@ export const PairingBlock: React.FC<Props> = ({
           <img
             alt=""
             className="-my-[1.46px] hidden h-[2.92px] w-[500px] max-w-full lg:block"
+            decoding="async"
             height={3}
+            loading="lazy"
             src="/icons/pairing/line.svg"
             width={500}
           />

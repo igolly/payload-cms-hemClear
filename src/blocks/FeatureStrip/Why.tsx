@@ -279,7 +279,9 @@ const WhyQuick: React.FC<Props> = ({
                   <img
                     alt=""
                     className="order-first block h-[24px] w-[24px] shrink-0 lg:h-[30px] lg:w-[30px]"
+                    decoding="async"
                     height={30}
+                    loading="lazy"
                     src="/icons/why-quick/lock.png"
                     width={30}
                   />
@@ -287,7 +289,9 @@ const WhyQuick: React.FC<Props> = ({
                   <img
                     alt=""
                     className="block h-[20px] w-[20px] shrink-0 lg:h-[25px] lg:w-[25px]"
+                    decoding="async"
                     height={25}
+                    loading="lazy"
                     src="/icons/why-quick/arrow-right.png"
                     width={25}
                   />
@@ -306,7 +310,9 @@ const WhyQuick: React.FC<Props> = ({
             <img
               alt=""
               className="block h-[26.25px] w-[26.25px] shrink-0"
+              decoding="async"
               height={26}
+              loading="lazy"
               src="/icons/why-quick/secure-shield.svg"
               width={26}
             />

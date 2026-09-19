@@ -79,7 +79,9 @@ export const CardsCarousel: React.FC<{ slides: React.ReactNode[] }> = ({ slides 
         <img
           alt=""
           className="size-8"
+          decoding="async"
           height={32}
+          loading="lazy"
           src="/icons/support/arrow-right.svg"
           width={32}
         />

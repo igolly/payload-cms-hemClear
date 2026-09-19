@@ -113,7 +113,9 @@ export const GuaranteeBlock: React.FC<Props> = ({
               <img
                 alt={`${sealValue} ${sealLabel}`}
                 className="size-[140.625px] shrink-0"
+                decoding="async"
                 height={141}
+                loading="lazy"
                 src="/icons/guarantee/seal-90-day.png"
                 width={141}
               />

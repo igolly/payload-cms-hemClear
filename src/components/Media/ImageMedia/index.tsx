@@ -8,10 +8,7 @@ import React from 'react'
 
 import type { Props as MediaProps } from '../types'
 
-import { cssVariables } from '@/cssVariables'
 import { getMediaUrl } from '@/utilities/getMediaUrl'
-
-const { breakpoints } = cssVariables
 
 // A base64 encoded image to use as a placeholder while the image is loading
 const placeholderBlur =
@@ -77,12 +74,19 @@ export const ImageMedia: React.FC<MediaProps> = (props) => {
 
   const loading = loadingFromProps || (!priority ? 'lazy' : undefined)
 
-  // NOTE: this is used by the browser to determine which image to download at different screen sizes
-  const sizes = sizeFromProps
-    ? sizeFromProps
-    : Object.entries(breakpoints)
-        .map(([, value]) => `(max-width: ${value}px) ${value * 2}w`)
-        .join(', ')
+  /*
+   * `sizes` tells the browser how wide the image will be laid out, so it can pick a
+   * candidate. It takes CSS lengths; the list this used to build was written with `w`
+   * descriptors (`3840w`), which is not a length, so every browser threw the whole
+   * attribute away and fell back to `100vw` — a 63px ingredient icon was asking the
+   * optimizer for 1920px.
+   *
+   * An intrinsic image does not need it at all: Next builds a 1x/2x srcset from `width`,
+   * which asks for something close to the box rather than the viewport. `fill` has no
+   * intrinsic width to work from, so it keeps a value, and any caller that knows its
+   * layout should pass `size` and beat both.
+   */
+  const sizes = sizeFromProps ?? (fill ? '100vw' : undefined)
 
   /*
    * <picture> is the image's real parent, so a `fill` image is laid out against it: as a plain
@@ -91,14 +95,20 @@ export const ImageMedia: React.FC<MediaProps> = (props) => {
    * fills the wrapper `Media` positions. A caller that styles the <picture> keeps its classes.
    */
   return (
-    <picture className={cn(fill && !pictureClassName ? 'relative block h-full w-full' : pictureClassName)}>
+    <picture
+      className={cn(fill && !pictureClassName ? 'relative block h-full w-full' : pictureClassName)}
+    >
       <NextImage
         alt={alt || ''}
         className={cn(imgClassName)}
         fill={fill}
         height={!fill ? height : undefined}
-        placeholder="blur"
-        blurDataURL={placeholderBlur}
+        // One generic grey blur for every photo on the site is 2KB of base64 in the markup
+        // and again in the Flight payload — around 210KB of the home page's HTML for a
+        // placeholder that matches none of the images. Kept only for `priority` images,
+        // where it covers the one gap a visitor actually watches.
+        placeholder={priority ? 'blur' : 'empty'}
+        blurDataURL={priority ? placeholderBlur : undefined}
         priority={priority}
         quality={75}
         loading={loading}

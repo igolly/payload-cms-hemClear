@@ -108,7 +108,9 @@ export const PlanCarousel: React.FC<{
             <img
               alt=""
               className="block size-8"
+              decoding="async"
               height={32}
+              loading="lazy"
               src={`/icons/pricing/carousel-${direction < 0 ? 'left' : 'right'}.svg`}
               width={32}
             />

@@ -248,7 +248,9 @@ export const FeatureStripAbout: React.FC<Props> = ({
               <img
                 alt=""
                 className="h-[26px] w-[26px] shrink-0"
+                decoding="async"
                 height={26}
+                loading="lazy"
                 src="/icons/feature-strip/check.svg"
                 width={26}
               />

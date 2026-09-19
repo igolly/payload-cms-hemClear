@@ -106,7 +106,9 @@ export const ReviewGrid: React.FC<Props> = ({
                           <img
                             alt=""
                             className="size-[22px] shrink-0"
+                            decoding="async"
                             height={22}
+                            loading="lazy"
                             src="/icons/reviews/verified.png"
                             width={22}
                           />
@@ -156,7 +158,9 @@ export const ReviewGrid: React.FC<Props> = ({
             <img
               alt=""
               className={cn('size-5 transition-transform', full && 'rotate-180')}
+              decoding="async"
               height={20}
+              loading="lazy"
               src="/icons/reviews/arrow-down.png"
               width={20}
             />

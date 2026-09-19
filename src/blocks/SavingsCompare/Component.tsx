@@ -35,7 +35,9 @@ const Tick = () => (
     alt=""
     aria-hidden="true"
     className="size-[13.54px] shrink-0"
+    decoding="async"
     height={14}
+    loading="lazy"
     src="/icons/savings-compare/check.svg"
     width={14}
   />
@@ -217,7 +219,9 @@ export const SavingsCompareBlock: React.FC<Props> = ({
                     alt=""
                     aria-hidden="true"
                     className="h-[31.77px] w-[27.08px] shrink-0"
+                    decoding="async"
                     height={32}
+                    loading="lazy"
                     src="/icons/savings-compare/formula.png"
                     width={27}
                   />

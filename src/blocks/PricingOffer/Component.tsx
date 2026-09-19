@@ -73,7 +73,9 @@ export const PricingOfferBlock: React.FC<Props> = ({
                 <img
                   alt=""
                   className="size-10 lg:size-[70px]"
+                  decoding="async"
                   height={70}
+                  loading="lazy"
                   src="/icons/pricing/gift.svg"
                   width={70}
                 />
@@ -154,7 +156,9 @@ export const PricingOfferBlock: React.FC<Props> = ({
                   <img
                     alt=""
                     className="size-10 shrink-0"
+                    decoding="async"
                     height={40}
+                    loading="lazy"
                     src={trustBadges[item.icon]}
                     width={40}
                   />

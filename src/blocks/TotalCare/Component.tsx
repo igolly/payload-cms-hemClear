@@ -193,7 +193,9 @@ export const TotalCareBlock: React.FC<Props> = ({
               alt=""
               aria-hidden="true"
               className="-my-[1.458px] block h-[2.917px] w-[75.833px] max-w-none"
+              decoding="async"
               height={3}
+              loading="lazy"
               src="/icons/totalCare/line.svg"
               width={76}
             />
@@ -288,7 +290,9 @@ export const TotalCareBlock: React.FC<Props> = ({
                         alt=""
                         aria-hidden="true"
                         className="block size-8 shrink-0"
+                        decoding="async"
                         height={32}
+                        loading="lazy"
                         src="/icons/totalCare/plus.svg"
                         width={32}
                       />

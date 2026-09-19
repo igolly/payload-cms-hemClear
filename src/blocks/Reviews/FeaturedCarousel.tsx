@@ -85,7 +85,9 @@ export const FeaturedCarousel: React.FC<{
               <img
                 alt=""
                 className="size-8"
+                decoding="async"
                 height={32}
+                loading="lazy"
                 src="/icons/reviews/carousel-left.svg"
                 width={32}
               />
@@ -101,7 +103,9 @@ export const FeaturedCarousel: React.FC<{
               <img
                 alt=""
                 className="size-8"
+                decoding="async"
                 height={32}
+                loading="lazy"
                 src="/icons/reviews/carousel-right.svg"
                 width={32}
               />

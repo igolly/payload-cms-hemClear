@@ -124,7 +124,9 @@ export const WhyDaysBlock: React.FC<Props> = ({
                 <img
                   alt=""
                   className="size-[18px] shrink-0"
+                  decoding="async"
                   height={18}
+                  loading="lazy"
                   src="/icons/why-days/arrow-circle-right-white.svg"
                   width={18}
                 />
