@@ -1,4 +1,4 @@
-import type { Block } from 'payload'
+import type { Block, Field } from 'payload'
 
 import { brandIconOptions } from '@/components/BrandIcons'
 
@@ -23,6 +23,83 @@ const artworkField = (width: string) => ({
  *
  * The fields are grouped into tabs because a flat list of ~30 is unusable in the admin.
  */
+/**
+ * One plan's fields. Shared by the block's own `plans` and by each variant's, so a variant
+ * that prices differently is described in the same shape rather than a parallel one.
+ */
+const planFields: Field[] = [
+  {
+    type: 'row',
+    fields: [
+      { name: 'name', type: 'text', required: true, admin: { width: '50%' } },
+      {
+        name: 'saveLabel',
+        type: 'text',
+        admin: { description: 'e.g. "Save 30%"', width: '50%' },
+      },
+    ],
+  },
+  {
+    type: 'row',
+    fields: [
+      { name: 'price', type: 'text', required: true, admin: { width: '33%' } },
+      {
+        name: 'comparePrice',
+        type: 'text',
+        admin: { description: 'Struck through.', width: '33%' },
+      },
+      {
+        name: 'priceSuffix',
+        type: 'text',
+        defaultValue: '/mo',
+        admin: { width: '33%' },
+      },
+    ],
+  },
+  {
+    type: 'row',
+    fields: [
+      { name: 'billingNote', type: 'text', admin: { width: '50%' } },
+      { name: 'perServing', type: 'text', admin: { width: '50%' } },
+    ],
+  },
+  {
+    type: 'row',
+    fields: [
+      { name: 'bestValue', type: 'checkbox', admin: { width: '50%' } },
+      {
+        name: 'bestValueLabel',
+        type: 'text',
+        defaultValue: 'Best Value',
+        admin: { width: '50%' },
+      },
+    ],
+  },
+  {
+    name: 'features',
+    type: 'array',
+    labels: { singular: 'Feature', plural: 'Features' },
+    admin: { initCollapsed: true },
+    fields: [{ name: 'text', type: 'text', required: true }],
+  },
+  {
+    type: 'collapsible',
+    label: 'Bonus',
+    fields: [
+      { name: 'bonusHeading', type: 'text' },
+      { name: 'bonusHighlight', type: 'text' },
+      { name: 'bonusTitle', type: 'text' },
+      { name: 'bonusSubtitle', type: 'text' },
+      {
+        name: 'bonusNote',
+        type: 'text',
+        admin: { description: 'Optional third line, e.g. "($59.95 VALUE)".' },
+      },
+      { name: 'bonusImage', type: 'upload', relationTo: 'media' },
+    ],
+  },
+]
+
 export const ProductDetail: Block = {
   slug: 'productDetail',
   interfaceName: 'ProductDetailBlock',
@@ -209,6 +286,19 @@ export const ProductDetail: Block = {
               fields: [
                 { name: 'name', type: 'text', required: true },
                 { name: 'image', type: 'upload', relationTo: 'media' },
+                {
+                  name: 'plans',
+                  type: 'array',
+                  label: 'Plans for this variant',
+                  labels: { singular: 'Plan', plural: 'Plans' },
+                  admin: {
+                    description:
+                      'Leave empty and the shared plans below are used. Fill it in and choosing this variant shows these prices instead.',
+                    initCollapsed: true,
+                    components: { RowLabel: '@/blocks/ProductDetail/RowLabel#PlanRowLabel' },
+                  },
+                  fields: planFields,
+                },
               ],
             },
             {
@@ -217,82 +307,12 @@ export const ProductDetail: Block = {
               label: 'Purchase Plans',
               labels: { singular: 'Plan', plural: 'Plans' },
               admin: {
-                description: 'The first plan is selected by default.',
+                description:
+                  'The first plan is selected by default. A variant with plans of its own overrides these.',
                 initCollapsed: true,
                 components: { RowLabel: '@/blocks/ProductDetail/RowLabel#PlanRowLabel' },
               },
-              fields: [
-                {
-                  type: 'row',
-                  fields: [
-                    { name: 'name', type: 'text', required: true, admin: { width: '50%' } },
-                    {
-                      name: 'saveLabel',
-                      type: 'text',
-                      admin: { description: 'e.g. "Save 30%"', width: '50%' },
-                    },
-                  ],
-                },
-                {
-                  type: 'row',
-                  fields: [
-                    { name: 'price', type: 'text', required: true, admin: { width: '33%' } },
-                    {
-                      name: 'comparePrice',
-                      type: 'text',
-                      admin: { description: 'Struck through.', width: '33%' },
-                    },
-                    {
-                      name: 'priceSuffix',
-                      type: 'text',
-                      defaultValue: '/mo',
-                      admin: { width: '33%' },
-                    },
-                  ],
-                },
-                {
-                  type: 'row',
-                  fields: [
-                    { name: 'billingNote', type: 'text', admin: { width: '50%' } },
-                    { name: 'perServing', type: 'text', admin: { width: '50%' } },
-                  ],
-                },
-                {
-                  type: 'row',
-                  fields: [
-                    { name: 'bestValue', type: 'checkbox', admin: { width: '50%' } },
-                    {
-                      name: 'bestValueLabel',
-                      type: 'text',
-                      defaultValue: 'Best Value',
-                      admin: { width: '50%' },
-                    },
-                  ],
-                },
-                {
-                  name: 'features',
-                  type: 'array',
-                  labels: { singular: 'Feature', plural: 'Features' },
-                  admin: { initCollapsed: true },
-                  fields: [{ name: 'text', type: 'text', required: true }],
-                },
-                {
-                  type: 'collapsible',
-                  label: 'Bonus',
-                  fields: [
-                    { name: 'bonusHeading', type: 'text' },
-                    { name: 'bonusHighlight', type: 'text' },
-                    { name: 'bonusTitle', type: 'text' },
-                    { name: 'bonusSubtitle', type: 'text' },
-                    {
-                      name: 'bonusNote',
-                      type: 'text',
-                      admin: { description: 'Optional third line, e.g. "($59.95 VALUE)".' },
-                    },
-                    { name: 'bonusImage', type: 'upload', relationTo: 'media' },
-                  ],
-                },
-              ],
+              fields: planFields,
             },
             {
               type: 'row',

@@ -554,11 +554,49 @@ export interface ProductDetailBlock {
     | {
         name: string;
         image?: (string | null) | Media;
+        /**
+         * Leave empty and the shared plans below are used. Fill it in and choosing this variant shows these prices instead.
+         */
+        plans?:
+          | {
+              name: string;
+              /**
+               * e.g. "Save 30%"
+               */
+              saveLabel?: string | null;
+              price: string;
+              /**
+               * Struck through.
+               */
+              comparePrice?: string | null;
+              priceSuffix?: string | null;
+              billingNote?: string | null;
+              perServing?: string | null;
+              bestValue?: boolean | null;
+              bestValueLabel?: string | null;
+              features?:
+                | {
+                    text: string;
+                    id?: string | null;
+                  }[]
+                | null;
+              bonusHeading?: string | null;
+              bonusHighlight?: string | null;
+              bonusTitle?: string | null;
+              bonusSubtitle?: string | null;
+              /**
+               * Optional third line, e.g. "($59.95 VALUE)".
+               */
+              bonusNote?: string | null;
+              bonusImage?: (string | null) | Media;
+              id?: string | null;
+            }[]
+          | null;
         id?: string | null;
       }[]
     | null;
   /**
-   * The first plan is selected by default.
+   * The first plan is selected by default. A variant with plans of its own overrides these.
    */
   plans?:
     | {
@@ -3261,6 +3299,32 @@ export interface ProductDetailBlockSelect<T extends boolean = true> {
     | {
         name?: T;
         image?: T;
+        plans?:
+          | T
+          | {
+              name?: T;
+              saveLabel?: T;
+              price?: T;
+              comparePrice?: T;
+              priceSuffix?: T;
+              billingNote?: T;
+              perServing?: T;
+              bestValue?: T;
+              bestValueLabel?: T;
+              features?:
+                | T
+                | {
+                    text?: T;
+                    id?: T;
+                  };
+              bonusHeading?: T;
+              bonusHighlight?: T;
+              bonusTitle?: T;
+              bonusSubtitle?: T;
+              bonusNote?: T;
+              bonusImage?: T;
+              id?: T;
+            };
         id?: T;
       };
   plans?:

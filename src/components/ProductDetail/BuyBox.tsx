@@ -25,6 +25,20 @@ export const BuyBox: React.FC<{
   const [variant, setVariant] = useState(0)
   const [plan, setPlan] = useState(0)
 
+  /*
+   * A variant may price differently. When it carries plans of its own those are what the
+   * cards show; otherwise the block's shared plans stand for every variant, which is how
+   * this behaved before variants could be priced at all.
+   */
+  const variantPlans = variants[variant]?.plans
+  const activePlans = Array.isArray(variantPlans) && variantPlans.length > 0 ? variantPlans : plans
+
+  /*
+   * Plans are chosen by position, and two variants need not offer the same number of them,
+   * so the choice is clamped rather than left pointing past the end of a shorter list.
+   */
+  const planIndex = Math.min(plan, Math.max(activePlans.length - 1, 0))
+
   return (
     <>
       {variants.length > 0 && (
@@ -79,8 +93,8 @@ export const BuyBox: React.FC<{
         </div>
       )}
 
-      {plans.map((item, i) => {
-        const selected = i === plan
+      {activePlans.map((item, i) => {
+        const selected = i === planIndex
 
         return (
           /* Figma 6210:2922 / 6214:2990: 30/20px padding, 16px gap, 20px radius. The chosen
