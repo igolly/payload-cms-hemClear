@@ -52,19 +52,31 @@ export const StickyOfferBar: React.FC<{
           shown ? 'translate-y-0' : '-translate-y-full',
         )}
       >
-        <div className="container flex items-center justify-between gap-4 py-3">
-          <span className="hidden shrink-0 brightness-0 invert sm:block">
+        {/*
+         * One slim strip at every width. The logo is the full site mark, 212x56 — left at
+         * that size it takes a third of a 900px bar, squeezes the offer into a 244px
+         * column and wraps it onto a second line, so the bar grows and the message stops
+         * reading. Held to 32px it keeps its place and the offer keeps the room.
+         */}
+        <div className="container flex items-center justify-between gap-4 py-2.5">
+          <span className="hidden shrink-0 brightness-0 invert lg:block [&_img]:h-8 [&_img]:w-auto">
             <Logo />
           </span>
 
-          <p className="min-w-0 flex-1 text-center text-xs font-semibold sm:text-sm">
+          <p className="min-w-0 flex-1 text-center text-xs font-semibold text-balance sm:text-sm">
             {text && <span className="text-amber">{marks(text)}</span>}
+            {/* The note is the quieter half and the first to go: the two together run to
+                about 70 characters, which needs ~500px to stay on one line. Below `lg`
+                there is no such room once the logo and button have theirs, and the strip
+                would take a second line for copy nobody reads twice. */}
             {text && note && (
-              <span aria-hidden="true" className="mx-2 text-white/40">
+              <span aria-hidden="true" className="mx-2 hidden text-white/40 lg:inline">
                 |
               </span>
             )}
-            {note && <span className="font-normal text-white/90">{marks(note)}</span>}
+            {note && (
+              <span className="hidden font-normal text-white/90 lg:inline">{marks(note)}</span>
+            )}
           </p>
 
           {ctaLabel && (
