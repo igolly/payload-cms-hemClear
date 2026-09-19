@@ -63,10 +63,7 @@ export const ProductDetailBlockComponent: React.FC<ProductDetailBlock> = (produc
         <StickyBars
           ctaLabel={product.ctaLabel}
           gallery={product.gallery}
-          offerNote={product.stickyOfferNote}
-          offerText={product.stickyOfferText}
           plans={Array.isArray(product.plans) ? product.plans : []}
-          stickyCtaLabel={product.stickyCtaLabel}
           stickyCtaUrl={product.stickyCtaUrl}
           title={product.title}
         />

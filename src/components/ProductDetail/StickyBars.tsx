@@ -1,11 +1,10 @@
 'use client'
 
 import React, { useEffect, useRef, useState } from 'react'
-import { ArrowRight, ChevronDown } from 'lucide-react'
+import { ChevronDown } from 'lucide-react'
 
 import type { ProductDetailBlock } from '@/payload-types'
 
-import { Logo } from '@/components/Logo/Logo'
 import { Media } from '@/components/Media'
 import { cn } from '@/utilities/ui'
 import { marks } from '@/utilities/marks'
@@ -13,32 +12,24 @@ import { marks } from '@/utilities/marks'
 type Plan = NonNullable<ProductDetailBlock['plans']>[number]
 
 /**
- * The pair of bars that slide in once the buy box has scrolled away — an offer strip at the
- * top and a buy strip at the bottom.
+ * The buy strip that slides up once the buy box has scrolled away.
  *
- * Both are driven by the product data that is already on the block: the bottom bar takes its
- * thumbnail from the first gallery image, its name from the title, and its prices from the
- * same `plans` the buy box uses, so there is no second copy of the pricing to keep in sync.
+ * It is driven by the product data already on the block: the thumbnail from the first
+ * gallery image, the name from the title, the prices from the same `plans` the buy box uses,
+ * so there is no second copy of the pricing to keep in sync.
+ *
+ * The offer strip that used to sit along the top went to the Header global — it runs on
+ * every page now (`src/components/StickyOfferBar`), so rendering it here too would put two
+ * of them on this one.
  */
 export const StickyBars: React.FC<{
   ctaLabel?: string | null
   gallery?: ProductDetailBlock['gallery']
-  offerNote?: string | null
-  offerText?: string | null
   plans?: Plan[]
-  stickyCtaLabel?: string | null
+  /** Where the buy button goes — the block's own `stickyCtaUrl`. */
   stickyCtaUrl?: string | null
   title?: string | null
-}> = ({
-  ctaLabel,
-  gallery,
-  offerNote,
-  offerText,
-  plans = [],
-  stickyCtaLabel,
-  stickyCtaUrl,
-  title,
-}) => {
+}> = ({ ctaLabel, gallery, plans = [], stickyCtaUrl, title }) => {
   const sentinel = useRef<HTMLDivElement>(null)
   const [shown, setShown] = useState(false)
   const [planIndex, setPlanIndex] = useState(() => {
@@ -68,41 +59,6 @@ export const StickyBars: React.FC<{
   return (
     <>
       <div aria-hidden="true" ref={sentinel} />
-
-      {/* Top: offer strip */}
-      <div
-        className={cn(
-          'fixed inset-x-0 top-0 z-40 border-b border-white/10 bg-navy text-white',
-          'transition-transform duration-300 ease-out motion-reduce:transition-none',
-          shown ? 'translate-y-0' : '-translate-y-full',
-        )}
-      >
-        <div className="container flex items-center justify-between gap-4 py-3">
-          <span className="hidden shrink-0 brightness-0 invert sm:block">
-            <Logo />
-          </span>
-
-          <p className="min-w-0 flex-1 text-center text-xs font-semibold sm:text-sm">
-            {offerText && <span className="text-amber">{marks(offerText)}</span>}
-            {offerText && offerNote && (
-              <span aria-hidden="true" className="mx-2 text-white/40">
-                |
-              </span>
-            )}
-            {offerNote && <span className="font-normal text-white/90">{marks(offerNote)}</span>}
-          </p>
-
-          {stickyCtaLabel && (
-            <a
-              className="hidden shrink-0 items-center gap-2 rounded-full bg-white px-5 py-2.5 text-xs font-bold uppercase tracking-wide text-heading transition-colors hover:bg-white/90 sm:inline-flex"
-              href={stickyCtaUrl || '#'}
-            >
-              {marks(stickyCtaLabel)}
-              <ArrowRight aria-hidden="true" className="size-4" />
-            </a>
-          )}
-        </div>
-      </div>
 
       {/* Bottom: buy strip */}
       <div
@@ -148,7 +104,7 @@ export const StickyBars: React.FC<{
           )}
 
           <a
-            className="flex flex-1 shrink-0 items-center justify-center gap-2 rounded-xl bg-brand px-6 py-3 text-sm font-bold uppercase tracking-wide text-white transition-colors hover:bg-brand-dark sm:flex-none"
+            className="cta-gleam [--cta-glow:var(--color-brand)] flex flex-1 shrink-0 items-center justify-center gap-2 rounded-xl bg-brand px-6 py-3 text-sm font-bold uppercase tracking-wide text-white transition-colors hover:bg-brand-dark sm:flex-none"
             href={stickyCtaUrl || '#'}
           >
             {marks(ctaLabel || 'Add to cart')}

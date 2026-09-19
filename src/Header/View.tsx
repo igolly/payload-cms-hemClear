@@ -4,6 +4,7 @@ import type { Header as HeaderType } from '@/payload-types'
 
 import { AnnouncementBar } from './AnnouncementBar'
 import { HeaderClient } from './Component.client'
+import { StickyOfferBar } from '@/components/StickyOfferBar'
 
 /**
  * The header, rendered from data it is handed rather than data it fetches.
@@ -22,5 +23,16 @@ export const HeaderView: React.FC<{ data: HeaderType }> = ({ data }) => (
       />
     )}
     <HeaderClient data={data} />
+
+    {/* Rendered here rather than in the layout so it travels with the header, including
+        onto the Puck canvas where the header is pinned. */}
+    {data?.stickyEnabled && (
+      <StickyOfferBar
+        ctaLabel={data.stickyCtaLabel}
+        ctaUrl={data.stickyCtaUrl}
+        note={data.stickyNote}
+        text={data.stickyText}
+      />
+    )}
   </>
 )

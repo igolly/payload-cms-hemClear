@@ -4572,6 +4572,17 @@ export interface Header {
    * Countdown target. Leave empty to hide the timer.
    */
   announcementEndsAt?: string | null;
+  stickyEnabled?: boolean | null;
+  /**
+   * The offer itself, rendered in amber.
+   */
+  stickyText?: string | null;
+  /**
+   * The quieter half after the divider.
+   */
+  stickyNote?: string | null;
+  stickyCtaLabel?: string | null;
+  stickyCtaUrl?: string | null;
   navItems?:
     | {
         link: {
@@ -4724,6 +4735,11 @@ export interface HeaderSelect<T extends boolean = true> {
   announcementTitle?: T;
   announcementText?: T;
   announcementEndsAt?: T;
+  stickyEnabled?: T;
+  stickyText?: T;
+  stickyNote?: T;
+  stickyCtaLabel?: T;
+  stickyCtaUrl?: T;
   navItems?:
     | T
     | {

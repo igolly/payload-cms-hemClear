@@ -30,6 +30,34 @@ export const headerFields: Field[] = [
     ],
   },
   {
+    type: 'collapsible',
+    label: 'Sticky Offer Bar',
+    admin: {
+      description:
+        'The strip that slides down once the reader scrolls past the header. It began on the product page and now runs on every page.',
+    },
+    fields: [
+      { name: 'stickyEnabled', type: 'checkbox', label: 'Show the sticky offer bar' },
+      {
+        name: 'stickyText',
+        type: 'text',
+        admin: { description: 'The offer itself, rendered in amber.' },
+      },
+      {
+        name: 'stickyNote',
+        type: 'text',
+        admin: { description: 'The quieter half after the divider.' },
+      },
+      {
+        type: 'row',
+        fields: [
+          { name: 'stickyCtaLabel', type: 'text', admin: { width: '50%' } },
+          { name: 'stickyCtaUrl', type: 'text', admin: { width: '50%' } },
+        ],
+      },
+    ],
+  },
+  {
     name: 'navItems',
     type: 'array',
     fields: [
