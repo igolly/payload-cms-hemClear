@@ -92,8 +92,8 @@ const Links: React.FC<{ links: Props['links'] }> = ({ links }) =>
           appearance="inline"
           className={
             link.appearance === 'outline'
-              ? 'inline-flex items-center rounded-md border border-brand px-6 py-3 text-sm font-semibold text-brand transition-colors hover:bg-slate-50'
-              : 'inline-flex items-center rounded-md bg-brand px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-brand-dark'
+              ? 'cta-gleam [--cta-gleam-color:color-mix(in_oklab,currentcolor_10%,transparent)] inline-flex items-center rounded-md border border-brand px-6 py-3 text-sm font-semibold text-brand transition-colors hover:bg-slate-50'
+              : 'cta-gleam [--cta-glow:var(--color-brand)] inline-flex items-center rounded-md bg-brand px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-brand-dark'
           }
           key={i}
         />

@@ -136,8 +136,8 @@ export const ClosingCtaBlock: React.FC<Props> = ({
                 appearance="inline"
                 className={
                   link.appearance === 'outline'
-                    ? 'inline-flex h-[56.25px] w-[287.5px] max-w-full items-center justify-center rounded-[6.25px] border-[0.63px] border-navy text-lg leading-[22px] font-medium text-navy transition-colors hover:bg-white/60'
-                    : 'inline-flex h-[56.25px] w-[287.5px] max-w-full items-center justify-center rounded-[6.25px] bg-navy text-lg leading-[22px] font-medium text-white transition-colors hover:bg-brand-dark'
+                    ? 'cta-gleam [--cta-gleam-color:color-mix(in_oklab,currentcolor_10%,transparent)] inline-flex h-[56.25px] w-[287.5px] max-w-full items-center justify-center rounded-[6.25px] border-[0.63px] border-navy text-lg leading-[22px] font-medium text-navy transition-colors hover:bg-white/60'
+                    : 'cta-gleam [--cta-glow:var(--color-navy)] inline-flex h-[56.25px] w-[287.5px] max-w-full items-center justify-center rounded-[6.25px] bg-navy text-lg leading-[22px] font-medium text-white transition-colors hover:bg-brand-dark'
                 }
                 key={i}
               />

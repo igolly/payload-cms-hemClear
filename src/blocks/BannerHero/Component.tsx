@@ -106,7 +106,7 @@ export const BannerHeroBlock: React.FC<Props> = ({
                 <CMSLink
                   {...link}
                   appearance="inline"
-                  className="inline-flex h-[38.75px] items-center gap-[18.75px] rounded-full bg-brand-300 px-[18.75px] text-[12.5px] font-bold uppercase leading-[12.5px] text-white transition-colors hover:bg-brand-400"
+                  className="cta-gleam [--cta-glow:var(--color-brand-300)] inline-flex h-[38.75px] items-center gap-[18.75px] rounded-full bg-brand-300 px-[18.75px] text-[12.5px] font-bold uppercase leading-[12.5px] text-white transition-colors hover:bg-brand-400"
                   key={i}
                 >
                   {/* eslint-disable-next-line @next/next/no-img-element */}

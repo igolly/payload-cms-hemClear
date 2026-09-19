@@ -305,6 +305,10 @@
  *   --cta-gleam  the colour of the band. White reads well on a solid fill; on an outline
  *                button set a tint of `currentColor` instead, or the sweep is invisible.
  *   --cta-glow   the colour of the glow behind the button. Defaults to `currentColor`.
+ *
+ * Both are pitched about 40% below where they started: the first pass read as a flash
+ * rather than a sheen. The band is narrower (34% of the button, not 50%) and dimmer, and
+ * the glow sits closer to the edge with less blur behind it.
  */
 @layer utilities {
   .cta-gleam {
@@ -328,9 +332,9 @@
        declaring them here would outrank a caller's `[--cta-glow:…]` and silently win. */
     background: linear-gradient(
       100deg,
-      transparent 20%,
-      var(--cta-gleam-color, rgb(255 255 255 / 55%)) 45%,
-      transparent 70%
+      transparent 28%,
+      var(--cta-gleam-color, rgb(255 255 255 / 33%)) 45%,
+      transparent 62%
     );
     pointer-events: none;
     inset: 0;
@@ -341,8 +345,8 @@
   /* `hover: hover` keeps a touch device from firing the sweep on tap and leaving it lit. */
   @media (hover: hover) {
     .cta-gleam:hover {
-      box-shadow: 0 8px 24px -8px
-        color-mix(in oklab, var(--cta-glow, currentcolor) 55%, transparent);
+      box-shadow: 0 6px 14px -8px
+        color-mix(in oklab, var(--cta-glow, currentcolor) 33%, transparent);
     }
 
     .cta-gleam:hover::after {

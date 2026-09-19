@@ -117,7 +117,7 @@ export const WhyDaysBlock: React.FC<Props> = ({
               <CMSLink
                 {...link}
                 appearance="inline"
-                className="inline-flex h-[31.57px] items-center gap-[15.28px] rounded-[15.79px] bg-brand-600 px-[15.28px] py-[5.09px] text-[10px] font-bold uppercase leading-[normal] text-white transition-colors hover:bg-brand-dark"
+                className="cta-gleam [--cta-glow:var(--color-brand-600)] inline-flex h-[31.57px] items-center gap-[15.28px] rounded-[15.79px] bg-brand-600 px-[15.28px] py-[5.09px] text-[10px] font-bold uppercase leading-[normal] text-white transition-colors hover:bg-brand-dark"
                 key={i}
               >
                 {/* eslint-disable-next-line @next/next/no-img-element -- static SVG, nothing to optimise */}

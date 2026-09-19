@@ -312,7 +312,7 @@ export const SavingsCompareBlock: React.FC<Props> = ({
                     )}
                     {ctaLabel && (
                       <a
-                        className="inline-flex h-[32.29px] w-[156.25px] items-center justify-center rounded-[16.15px] bg-brand-600 p-[5.21px] text-xs font-bold leading-[15px] text-white transition-colors hover:bg-brand-dark"
+                        className="cta-gleam [--cta-glow:var(--color-brand-600)] inline-flex h-[32.29px] w-[156.25px] items-center justify-center rounded-[16.15px] bg-brand-600 p-[5.21px] text-xs font-bold leading-[15px] text-white transition-colors hover:bg-brand-dark"
                         href={ctaUrl || '#'}
                       >
                         {marks(ctaLabel)}

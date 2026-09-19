@@ -136,7 +136,7 @@ export const PlanCard: React.FC<{ index: number; plan: Plan; selected?: boolean 
           <>
             <a
               className={cn(
-                'flex h-[38.75px] w-full items-center justify-center rounded-[15.625px] p-[6.25px] text-lg uppercase text-white transition-colors',
+                'cta-gleam flex h-[38.75px] w-full items-center justify-center rounded-[15.625px] p-[6.25px] text-lg uppercase text-white',
                 popular
                   ? 'bg-success-bright font-bold hover:bg-success-deep'
                   : 'bg-brand-600 font-medium hover:bg-brand-dark',

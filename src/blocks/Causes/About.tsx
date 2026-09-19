@@ -79,7 +79,7 @@ const Links: React.FC<{ links: Props['links'] }> = ({ links }) => {
           {...link}
           appearance="inline"
           className={cn(
-            'inline-flex h-14 items-center rounded-[6.25px] px-5 text-[18.75px] leading-[normal] transition-colors',
+            'cta-gleam inline-flex h-14 items-center rounded-[6.25px] px-5 text-[18.75px] leading-[normal] transition-colors',
             link.appearance === 'outline'
               ? 'border-[1.25px] border-brand-500 bg-white px-[18.75px] text-brand-500 hover:bg-mist'
               : 'bg-brand-500 text-white hover:bg-brand',

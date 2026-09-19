@@ -201,8 +201,8 @@ const FeatureStripDivided: React.FC<Props> = ({
                 appearance="inline"
                 className={
                   link.appearance === 'outline'
-                    ? 'inline-flex items-center gap-3 rounded-full border border-brand py-3 pl-8 pr-4 text-sm font-bold uppercase tracking-wide text-brand transition-colors hover:bg-slate-50'
-                    : 'inline-flex items-center gap-3 rounded-full bg-success py-3 pl-8 pr-4 text-sm font-bold uppercase tracking-wide text-white transition-colors hover:bg-success-dark'
+                    ? 'cta-gleam [--cta-gleam-color:color-mix(in_oklab,currentcolor_10%,transparent)] inline-flex items-center gap-3 rounded-full border border-brand py-3 pl-8 pr-4 text-sm font-bold uppercase tracking-wide text-brand transition-colors hover:bg-slate-50'
+                    : 'cta-gleam [--cta-glow:var(--color-success)] inline-flex items-center gap-3 rounded-full bg-success py-3 pl-8 pr-4 text-sm font-bold uppercase tracking-wide text-white transition-colors hover:bg-success-dark'
                 }
                 key={i}
               >

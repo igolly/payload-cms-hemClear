@@ -119,7 +119,7 @@ export const MedicalReviewBlock: React.FC<Props> = ({
             {/* The mobile comp's outline button; the desktop frame has none. */}
             {ctaLabel && (
               <a
-                className="flex items-center justify-center rounded-xl border border-brand-600 px-4 py-3 text-center text-base font-bold leading-[normal] text-brand-600 transition-colors hover:bg-brand-600 hover:text-white xl:hidden"
+                className="cta-gleam [--cta-gleam-color:color-mix(in_oklab,currentcolor_10%,transparent)] flex items-center justify-center rounded-xl border border-brand-600 px-4 py-3 text-center text-base font-bold leading-[normal] text-brand-600 transition-colors hover:bg-brand-600 hover:text-white xl:hidden"
                 data-payload-subpath="ctaLabel"
                 href={ctaUrl || '#'}
               >

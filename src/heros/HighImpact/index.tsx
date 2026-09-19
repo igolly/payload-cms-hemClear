@@ -369,7 +369,7 @@ const SplitHero: React.FC<Page['hero']> = ({
                       isOutline
                         ? // A white band would vanish on the light fill, so the outline button
                           // sweeps a tint of its own ink instead.
-                          'border-[0.625px] border-subheading text-subheading hover:bg-white [--cta-gleam-color:color-mix(in_oklab,currentcolor_16%,transparent)]'
+                          'border-[0.625px] border-subheading text-subheading hover:bg-white [--cta-gleam-color:color-mix(in_oklab,currentcolor_10%,transparent)]'
                         : 'bg-brand text-white hover:bg-brand-dark [--cta-glow:var(--color-brand)]',
                     )}
                   >

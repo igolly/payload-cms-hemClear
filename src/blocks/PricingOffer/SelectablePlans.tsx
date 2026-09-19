@@ -84,7 +84,7 @@ export const SelectablePlans: React.FC<{ plans: Plan[] }> = ({ plans }) => {
       {chosen && (
         <>
           <a
-            className="flex h-[38.75px] w-full items-center justify-center rounded-[15.625px] bg-success-bright p-[6.25px] text-lg font-medium uppercase sm:h-[38px] sm:max-w-[504px] sm:font-bold text-white transition-colors hover:bg-success-deep"
+            className="cta-gleam [--cta-glow:var(--color-success-bright)] flex h-[38.75px] w-full items-center justify-center rounded-[15.625px] bg-success-bright p-[6.25px] text-lg font-medium uppercase sm:h-[38px] sm:max-w-[504px] sm:font-bold text-white transition-colors hover:bg-success-deep"
             href={chosen.ctaUrl || '#'}
           >
             {chosen.ctaLabel || 'Buy Now'}

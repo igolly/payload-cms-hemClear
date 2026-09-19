@@ -105,8 +105,8 @@ export const ScienceStatsBlock: React.FC<Props> = ({
                       // Phone comp: 260×40 pill, 14px label. Desktop comp: 187.5×38.75, 10px label.
                       'inline-flex h-10 w-[260px] max-w-full items-center justify-center whitespace-pre rounded-[20px] p-[6px] text-center text-sm font-medium leading-[normal] transition-colors [&_sup]:leading-[0] lg:h-[38.75px] lg:w-[187.5px] lg:rounded-[19.375px] lg:p-[6.25px] lg:text-[10px] lg:leading-3',
                       link.appearance === 'outline'
-                        ? 'border-[1.25px] border-brand-600 text-brand-600 hover:bg-white'
-                        : 'bg-brand-600 text-white hover:bg-brand-dark',
+                        ? 'cta-gleam [--cta-gleam-color:color-mix(in_oklab,currentcolor_10%,transparent)] border-[1.25px] border-brand-600 text-brand-600 hover:bg-white'
+                        : 'cta-gleam [--cta-glow:var(--color-brand-600)] bg-brand-600 text-white hover:bg-brand-dark',
                     )}
                     key={i}
                   >
