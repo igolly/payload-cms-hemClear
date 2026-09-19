@@ -175,13 +175,24 @@ const IngredientCard: React.FC<{ item: Ingredient }> = ({ item }) => {
           className={cn(face, 'flex flex-col', item.latin ? 'gap-[11px]' : 'gap-[18px]')}
           inert={flipped}
         >
-          <div className="relative aspect-[264/152.87] w-full shrink-0 bg-mist-100">
+          {/*
+           * An intrinsic image, not `fill`: these cards are built in the browser when a
+           * category is chosen, and an element created that way is not in the document when
+           * the browser picks from `srcset`. No media condition can match yet, so a `sizes`
+           * with them in falls back to `100vw` and a 264px card asks for the 3840px file,
+           * which never arrives. With width and height Next writes a 1x/2x `srcset` and no
+           * `sizes`, so the choice is the same whenever it is made.
+           */}
+          <div className="relative aspect-[264/152.87] w-full shrink-0 overflow-hidden bg-mist-100">
             {item.image && typeof item.image === 'object' && (
               <Media
-                fill
-                imgClassName="object-cover"
+                imgClassName="h-full w-full object-cover"
+                // Not lazy: the card's faces are `backface-visibility: hidden` inside a 3D
+                // flip, and Chrome never decides such an image is near the viewport, so a
+                // lazy one simply never loads. They are a few KB each.
+                loading="eager"
+                pictureClassName="block h-full w-full"
                 resource={item.image}
-                size="(min-width: 1024px) 264px, (min-width: 640px) 50vw, 100vw"
               />
             )}
           </div>
