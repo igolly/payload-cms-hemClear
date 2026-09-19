@@ -41,7 +41,7 @@ export const WhyHero: React.FC<Page['hero']> = ({
             whole band and the copy sits on top of it. */}
         {hasMedia && (
           <div
-            className="relative aspect-[1200/582] w-full overflow-hidden xl:absolute xl:inset-0 xl:aspect-auto"
+            className="relative aspect-[440/330] w-full overflow-hidden sm:aspect-[1200/582] xl:absolute xl:inset-0 xl:aspect-auto"
             data-payload-subpath="media"
           >
             <Media
@@ -59,13 +59,16 @@ export const WhyHero: React.FC<Page['hero']> = ({
         {/* Copy column: 625px wide with 50px sides in the comp, centred in the band. */}
         <div
           className={cn(
-            'relative flex w-full max-w-[625px] flex-col items-start gap-[12.5px] px-5 py-8 sm:px-[50px]',
+            /* 16px sides and no band padding of its own on a phone: the comp's photo sits
+               behind the copy rather than above it, and the buttons carry their own
+               12.5px. */
+            'relative flex w-full max-w-[625px] flex-col items-start gap-[12.5px] px-4 py-0 sm:px-[50px] sm:py-8',
             'xl:min-h-[581.875px] xl:justify-center xl:py-0',
           )}
         >
           {eyebrow && (
             <p
-              className="text-[15px] font-semibold uppercase leading-[normal] text-heading sm:text-[17.5px] sm:leading-[17.5px]"
+              className="text-[17.5px] font-semibold uppercase leading-[17.5px] text-heading"
               data-payload-subpath="eyebrow"
             >
               {marks(eyebrow)}
@@ -80,14 +83,17 @@ export const WhyHero: React.FC<Page['hero']> = ({
           />
 
           {heading && (
-            <h1 className="hero-heading text-heading" data-payload-subpath="heading">
+            <h1
+              className="hero-heading text-heading max-lg:text-[48px]! max-lg:leading-[50px]!"
+              data-payload-subpath="heading"
+            >
               {multiline(heading)}
             </h1>
           )}
 
           {subheading && (
             <p
-              className="font-playfair text-[20px] font-semibold leading-[27px] text-heading sm:text-[22.5px] sm:leading-[30px]"
+              className="font-playfair text-[22.5px] font-semibold leading-[30px] text-heading"
               data-payload-subpath="subheading"
             >
               {marks(subheading)}
@@ -151,10 +157,12 @@ export const WhyHero: React.FC<Page['hero']> = ({
                     {...link}
                     appearance="inline"
                     className={cn(
-                      'inline-flex h-[50px] max-w-full items-center justify-center gap-[12.5px] whitespace-pre-line rounded-[6.25px] px-[12.5px] text-center text-[13.75px] font-medium leading-[13.75px] transition-colors',
+                      'cta-gleam inline-flex h-[50px] max-w-full items-center justify-center gap-[12.5px] whitespace-pre-line rounded-[6.25px] px-[12.5px] text-center text-[13.75px] font-medium leading-[13.75px]',
                       isOutline
-                        ? 'border-[0.625px] border-subheading text-subheading hover:bg-white'
-                        : 'bg-subheading text-white hover:bg-brand-dark',
+                        ? // A white band would vanish on the light fill, so the outline
+                          // button sweeps a tint of its own ink instead.
+                          'border-[0.625px] border-subheading text-subheading hover:bg-white [--cta-gleam-color:color-mix(in_oklab,currentcolor_10%,transparent)]'
+                        : 'bg-subheading text-white hover:bg-brand-dark [--cta-glow:var(--color-subheading)]',
                     )}
                   >
                     <img

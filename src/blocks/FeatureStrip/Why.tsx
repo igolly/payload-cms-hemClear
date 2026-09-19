@@ -142,7 +142,7 @@ const WhyDifferent: React.FC<Props> = ({
 
         {heading && (
           <h2
-            className="mt-[12.5px] text-center font-marcellus text-[32px] font-normal leading-[1.08] text-heading sm:text-[44px] lg:text-[57.5px] lg:leading-[58px]"
+            className="mt-[12.5px] text-center font-marcellus text-[36px] font-normal leading-[46px] text-heading sm:text-[44px] sm:leading-[1.08] lg:text-[57.5px] lg:leading-[58px]"
             data-payload-subpath="heading"
           >
             {multiline(heading)}
@@ -164,7 +164,13 @@ const WhyDifferent: React.FC<Props> = ({
               <li
                 className={cn(
                   'relative flex flex-col items-center text-center lg:w-[156.25px]',
-                  'lg:[&+li]:before:absolute lg:[&+li]:before:top-0 lg:[&+li]:before:-left-[31.25px] lg:[&+li]:before:h-[218.75px] lg:[&+li]:before:w-px lg:[&+li]:before:bg-ash-400',
+                  /* The rule: down the left of the right-hand box on a phone (the grid has
+                     two columns, so that is every even item), and between every pair once
+                     the row goes flat at `lg`. */
+                  'before:absolute before:top-0 before:h-[218.75px] before:w-px before:bg-ash-400',
+                  '[&:nth-child(odd)]:before:hidden lg:[&:nth-child(odd)]:before:block',
+                  'before:-left-3 lg:before:-left-[31.25px]',
+                  'lg:first:before:hidden',
                 )}
                 data-payload-subpath={`items.${i}.title`}
                 key={item.id ?? i}
@@ -269,7 +275,7 @@ const WhyQuick: React.FC<Props> = ({
               <CMSLink
                 {...link}
                 appearance="inline"
-                className="inline-flex max-w-full items-center gap-[12.5px] rounded-[15.63px] bg-success-dark px-[18.75px] py-[14px] text-center text-[15px] font-bold uppercase leading-[25px] text-white transition-colors hover:bg-success-deep sm:text-[20px] lg:py-[18.75px] lg:text-[25px] [&_sup]:leading-[0]"
+                className="cta-gleam [--cta-glow:var(--color-success-dark)] inline-flex max-w-full items-center gap-[12.5px] rounded-[15.63px] bg-success-dark px-[18.75px] py-[14px] text-center text-[15px] font-bold uppercase leading-[25px] text-white transition-colors hover:bg-success-deep sm:text-[20px] lg:py-[18.75px] lg:text-[25px] [&_sup]:leading-[0]"
                 key={i}
               >
                 {/* One fragment, not two siblings: `CMSLink` renders `children` straight out, and
