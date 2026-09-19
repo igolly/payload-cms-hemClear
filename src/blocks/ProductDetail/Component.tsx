@@ -122,7 +122,9 @@ export const ProductDetailBlockComponent: React.FC<ProductDetailBlock> = (produc
 
             {benefits.length > 0 && (
               /* Figma 6207:2811: 38px pills, 1.25px brand-300 rule, 8px apart, #ccc rule beneath. */
-              <ul className="flex flex-wrap items-center gap-2 border-b border-ash-300 py-4">
+              /* Hidden on a phone: the mobile frame marks this row `hidden`, and left in it
+                   wraps to three rows of pills and costs the intro 225px. */
+              <ul className="hidden flex-wrap items-center gap-2 border-b border-ash-300 py-4 @min-[600px]:flex">
                 {benefits.map((benefit, i) => (
                   <li
                     className="flex h-[38px] items-center gap-2 rounded-[20px] border-[1.25px] border-brand-300 px-[18.75px]"
@@ -150,18 +152,20 @@ export const ProductDetailBlockComponent: React.FC<ProductDetailBlock> = (produc
                 </p>
               )}
 
-              <ul className="grid grid-cols-2 gap-x-2 gap-y-6 @min-[600px]:grid-cols-4">
+              <ul className="grid grid-cols-4 gap-x-2 gap-y-6">
                 {results.map((result, i) => (
                   <li
                     className="flex flex-col gap-[5px] text-center @min-[600px]:h-[141px]"
                     key={result.id ?? i}
                   >
-                    <p className="font-fraunces text-[50px] font-bold leading-[50px]">
+                    <p className="font-fraunces text-[30px] font-bold leading-9 @min-[600px]:text-[50px] @min-[600px]:leading-[50px]">
                       {marks(result.value)}
                     </p>
-                    <p className="text-[13px] font-bold leading-4">{marks(result.label)}</p>
+                    <p className="text-[12.5px] font-bold leading-4 @min-[600px]:text-[13px]">
+                      {marks(result.label)}
+                    </p>
                     {result.detail && (
-                      <p className="text-xs font-medium leading-[14px] text-brand-300">
+                      <p className="hidden text-xs font-medium leading-[14px] text-brand-300 @min-[600px]:block">
                         {marks(result.detail)}
                       </p>
                     )}

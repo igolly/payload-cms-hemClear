@@ -52,22 +52,26 @@ export const Composition: React.FC<{
         <div className="flex flex-col gap-4 pb-4 text-navy [&_sup]:leading-[0]" id={panelId}>
           {note && <p className="text-center text-base font-bold leading-5">{marks(note)}</p>}
 
-          <div className="grid grid-cols-1 gap-x-2.5 gap-y-6 @min-[560px]:grid-cols-2">
+          {/* Two columns from the start: the mobile frame keeps both boxes side by side at
+              199px each, and stacking them costs this block 338px. */}
+          <div className="grid grid-cols-2 gap-x-2.5 gap-y-6">
             <div className="flex min-w-0 flex-col gap-2.5">
               {containsTitle && (
-                <p className="flex items-center gap-1.5 text-base font-bold uppercase leading-5">
+                <p className="flex items-center gap-1.5 text-[12.5px] font-bold uppercase leading-[15px] @min-[560px]:text-base @min-[560px]:leading-5">
                   <Tick />
                   {marks(containsTitle)}
                 </p>
               )}
-              <ul className="flex flex-col gap-2.5">
+              <ul className="flex flex-col gap-2 @min-[560px]:gap-2.5">
                 {contains.map((item, i) => (
                   <li
-                    className="flex items-center gap-2 rounded-[50px] border border-aqua-200 px-2.5 py-1"
+                    className="flex items-center gap-1.5 rounded-[50px] border border-aqua-200 px-2 py-0.5 @min-[560px]:gap-2 @min-[560px]:px-2.5 @min-[560px]:py-1"
                     key={item.id ?? i}
                   >
                     <Tick />
-                    <span className="text-sm leading-5">{marks(item.text)}</span>
+                    <span className="text-[11px] leading-[14px] @min-[560px]:text-sm @min-[560px]:leading-5">
+                      {marks(item.text)}
+                    </span>
                   </li>
                 ))}
               </ul>
@@ -75,19 +79,21 @@ export const Composition: React.FC<{
 
             <div className="flex min-w-0 flex-col gap-2.5">
               {notContainsTitle && (
-                <p className="flex items-center gap-1.5 text-base font-bold uppercase leading-5">
+                <p className="flex items-center gap-1.5 text-[12.5px] font-bold uppercase leading-[15px] @min-[560px]:text-base @min-[560px]:leading-5">
                   <Cross />
                   {marks(notContainsTitle)}
                 </p>
               )}
-              <ul className="flex flex-wrap content-start gap-2.5">
+              <ul className="flex flex-wrap content-start gap-2 @min-[560px]:gap-2.5">
                 {notContains.map((item, i) => (
                   <li
-                    className="flex items-center gap-2 rounded-[50px] border border-danger-tint bg-white px-2.5 py-1"
+                    className="flex items-center gap-1.5 rounded-[50px] border border-danger-tint bg-white px-2 py-0.5 @min-[560px]:gap-2 @min-[560px]:px-2.5 @min-[560px]:py-1"
                     key={item.id ?? i}
                   >
                     <Cross />
-                    <span className="text-sm leading-5 text-danger-bright">{marks(item.text)}</span>
+                    <span className="text-[11px] leading-[14px] text-danger-bright @min-[560px]:text-sm @min-[560px]:leading-5">
+                      {marks(item.text)}
+                    </span>
                   </li>
                 ))}
               </ul>
