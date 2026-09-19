@@ -24,7 +24,7 @@ export const FaqAccordion: React.FC<{
   const toggle = (index: number) => setOpenIndex((current) => (current === index ? null : index))
 
   return (
-    <ul className="flex flex-col gap-5">
+    <ul className="flex flex-col gap-2.5">
       {items.map((item, i) => {
         const isOpen = openIndex === i
         const panelId = `faq-panel-${item.id ?? i}`
@@ -38,38 +38,41 @@ export const FaqAccordion: React.FC<{
              * rule), so this only interrupts the list visually.
              */}
             {item.groupLabel && (
-              <li aria-hidden="true" className="mt-3 flex items-center gap-5">
-                <span className="h-px grow bg-tint-150" />
-                <span className="shrink-0 font-serif text-xl text-heading">
-                  {marks(item.groupLabel)}
-                </span>
-                <span className="h-px grow bg-tint-150" />
+              <li
+                aria-hidden="true"
+                className="px-[31.25px] py-[18.75px] text-center text-[22.5px] font-bold leading-[28.75px] text-brand-600"
+              >
+                {marks(item.groupLabel)}
               </li>
             )}
 
             <li
-              className="rounded-2xl border border-tint-50 bg-white shadow-[0_1px_3px_rgba(16,60,120,0.06)]"
+              className="rounded-[18.75px] border-[1.875px] border-tint-50 bg-white"
               data-payload-subpath={`items.${i}.question`}
             >
               <h3>
                 <button
                   aria-controls={panelId}
                   aria-expanded={isOpen}
-                  className="flex w-full items-center gap-4 px-6 py-5 text-left"
+                  className="flex w-full items-center gap-4 px-[18.75px] py-[18.75px] text-left sm:px-[31.25px]"
                   id={buttonId}
                   onClick={() => toggle(i)}
                   type="button"
                 >
-                  <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-brand-600 text-sm font-semibold text-white">
+                  <span className="flex size-10 shrink-0 items-center justify-center rounded-[20px] bg-brand-600 text-[18.75px] font-semibold leading-[23.75px] text-white">
                     {i + 1}
                   </span>
 
-                  <span className="grow text-base font-bold text-subheading">
+                  <span className="grow text-[18.75px] font-bold leading-[23.75px] text-brand-600">
                     {marks(item.question)}
                   </span>
 
-                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-navy-400 text-navy-400">
-                    {isOpen ? <Minus className="h-4 w-4" /> : <PlusIcon className="h-3 w-3" />}
+                  <span className="flex size-10 shrink-0 items-center justify-center rounded-[20px] border-[1.25px] border-brand-600 text-brand-600">
+                    {isOpen ? (
+                      <Minus className="size-5" strokeWidth={3} />
+                    ) : (
+                      <PlusIcon className="size-4" />
+                    )}
                   </span>
                 </button>
               </h3>
@@ -77,7 +80,7 @@ export const FaqAccordion: React.FC<{
               {isOpen && (
                 <div
                   aria-labelledby={buttonId}
-                  className="px-6 pb-6 text-[15px] leading-relaxed text-slate-700"
+                  className="px-[18.75px] pb-[18.75px] text-[13.75px] leading-[18.75px] text-black sm:px-[31.25px]"
                   data-payload-subpath={`items.${i}.answer`}
                   id={panelId}
                   role="region"

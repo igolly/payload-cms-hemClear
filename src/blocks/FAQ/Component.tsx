@@ -81,7 +81,14 @@ export const FAQBlock: React.FC<Props> = ({
               data-payload-subpath="backgroundImage"
             >
               {backgroundImage && typeof backgroundImage === 'object' ? (
-                <Media fill imgClassName="object-cover" priority resource={backgroundImage} />
+                <Media
+                  fill
+                  imgClassName="object-cover"
+                  priority
+                  resource={backgroundImage}
+                  // The hero panel is capped at the 1152px `max-w-6xl` column.
+                  size="(max-width: 1152px) 100vw, 1152px"
+                />
               ) : (
                 <div className="h-full w-full bg-[radial-gradient(60%_80%_at_20%_40%,var(--color-mist-100)_0%,#fff_70%)]" />
               )}
@@ -139,7 +146,7 @@ export const FAQBlock: React.FC<Props> = ({
 
           {/* Closing callout: an icon, a line of copy and one button, per the comp. */}
           {(supportTitle || supportText || supportLinkLabel) && (
-            <div className="mt-5 flex flex-col items-center gap-5 rounded-2xl border border-tint-50 bg-white p-6 text-center shadow-[0_1px_3px_rgba(16,60,120,0.06)] sm:flex-row sm:text-left">
+            <div className="mt-2.5 flex flex-col items-center gap-2.5 rounded-[18.75px] border-[1.875px] border-tint-50 bg-white p-4 text-center sm:flex-row sm:gap-5 sm:p-6 sm:text-left">
               {supportIcon && typeof supportIcon === 'object' && (
                 <span className="block h-20 w-20 shrink-0" data-payload-subpath="supportIcon">
                   {/* `htmlElement={null}` so `Media` emits its `<picture>` bare — its default
@@ -155,7 +162,7 @@ export const FAQBlock: React.FC<Props> = ({
               <div className="grow">
                 {supportTitle && (
                   <p
-                    className="font-serif text-xl font-bold text-heading"
+                    className="text-[22.5px] font-bold leading-[normal] text-brand-600"
                     data-payload-subpath="supportTitle"
                   >
                     {marks(supportTitle)}
@@ -163,7 +170,7 @@ export const FAQBlock: React.FC<Props> = ({
                 )}
                 {supportText && (
                   <p
-                    className="mt-1 text-[15px] leading-relaxed text-slate-700"
+                    className="mt-1.5 text-[17.5px] leading-[normal] text-black"
                     data-payload-subpath="supportText"
                   >
                     {marks(supportText)}
@@ -173,7 +180,7 @@ export const FAQBlock: React.FC<Props> = ({
 
               {supportLinkLabel && (
                 <a
-                  className="inline-flex shrink-0 items-center gap-3 rounded-xl bg-brand px-5 py-4 text-[15px] font-semibold text-white transition-colors hover:bg-brand-dark"
+                  className="cta-gleam [--cta-glow:var(--color-brand-500)] inline-flex h-[56.25px] shrink-0 items-center gap-[6.25px] rounded-[6.25px] bg-brand-500 px-[18.75px] text-[18.75px] font-medium text-white transition-colors hover:bg-brand-600"
                   href={supportLinkUrl || '#'}
                 >
                   {supportLinkIcon && typeof supportLinkIcon === 'object' && (
