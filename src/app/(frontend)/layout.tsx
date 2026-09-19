@@ -3,7 +3,7 @@ import type { Metadata } from 'next'
 import { cn } from '@/utilities/ui'
 import { GeistMono } from 'geist/font/mono'
 import { GeistSans } from 'geist/font/sans'
-import { Fraunces, Inter, Marcellus, Playfair_Display } from 'next/font/google'
+import { Fraunces, Gentium_Book_Plus, Inter, Marcellus, Playfair_Display } from 'next/font/google'
 import React from 'react'
 
 import { AdminBar } from '@/components/AdminBar'
@@ -50,6 +50,16 @@ const fraunces = Fraunces({
   variable: '--font-fraunces-display',
 })
 
+// The figures on the product page's customer report. The comp names Gentium Book Basic,
+// which Google Fonts retired in favour of Gentium Book Plus — the same SIL typeface under
+// its current name. Only the bold is used, so only the bold is loaded.
+const gentium = Gentium_Book_Plus({
+  subsets: ['latin'],
+  weight: '700',
+  display: 'swap',
+  variable: '--font-gentium-book',
+})
+
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const { isEnabled } = await draftMode()
 
@@ -62,6 +72,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         marcellus.variable,
         playfair.variable,
         fraunces.variable,
+        gentium.variable,
       )}
       lang="en"
       suppressHydrationWarning

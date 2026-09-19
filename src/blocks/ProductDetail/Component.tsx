@@ -143,7 +143,9 @@ export const ProductDetailBlockComponent: React.FC<ProductDetailBlock> = (produc
             )}
           </div>
 
-          {/* Reported results — Figma 6207:2832 */}
+          {/* Reported results — Figma 6207:2832. The frame sets the figures in Gentium Book
+              Basic Bold; Google Fonts retired that name and ships the same face as Gentium
+              Book Plus, which is what `font-gentium` loads. */}
           {results.length > 0 && (
             <div className="flex flex-col gap-4 rounded-[20px] border border-navy bg-mist-100 p-5">
               {product.resultsTitle && (
@@ -158,7 +160,7 @@ export const ProductDetailBlockComponent: React.FC<ProductDetailBlock> = (produc
                     className="flex flex-col gap-[5px] text-center @min-[600px]:h-[141px]"
                     key={result.id ?? i}
                   >
-                    <p className="font-fraunces text-[30px] font-bold leading-9 @min-[600px]:text-[50px] @min-[600px]:leading-[50px]">
+                    <p className="font-gentium text-[30px] font-bold leading-9 @min-[600px]:text-[50px] @min-[600px]:leading-[50px]">
                       {marks(result.value)}
                     </p>
                     <p className="text-[12.5px] font-bold leading-4 @min-[600px]:text-[13px]">

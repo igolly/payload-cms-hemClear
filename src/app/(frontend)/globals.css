@@ -168,6 +168,8 @@
   --font-playfair: var(--font-playfair-display), ui-serif, Georgia, serif;
   /* Hero badge title. Loaded in the frontend layout as `--font-fraunces-display`. */
   --font-fraunces: var(--font-fraunces-display), ui-serif, Georgia, serif;
+  /* Customer report figures. Loaded in the frontend layout as `--font-gentium-book`. */
+  --font-gentium: var(--font-gentium-book), ui-serif, Georgia, serif;
 }
 
 @layer utilities {
