@@ -37,6 +37,24 @@
   }
 
   /*
+   * Tailwind v4's Preflight gives buttons the default arrow cursor, matching the browser
+   * rather than v3. Every button on this site is a call to action, a carousel arrow or an
+   * accordion toggle, so they all want the hand. Links get it natively, but only with an
+   * `href` — a `CMSLink` whose destination is not set yet still needs to read as clickable.
+   */
+  button:not(:disabled),
+  summary,
+  [role='button']:not([aria-disabled='true']),
+  a:not([href]) {
+    cursor: pointer;
+  }
+
+  button:disabled,
+  [aria-disabled='true'] {
+    cursor: not-allowed;
+  }
+
+  /*
    * Every paragraph and description on the site is body copy, so Inter is applied to
    * `p` here rather than to ~30 block components one class at a time. An element rule
    * loses to a class, so the handful of paragraphs that carry `font-serif` (display
