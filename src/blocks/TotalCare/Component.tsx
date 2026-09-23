@@ -41,19 +41,22 @@ const FeatureMark: React.FC<{ feature: Feature; iconClass: string; size: string 
  * The About comp's TYPES OF HEMORRHOIDS band (2002:77): a centred display heading and plain
  * intro line, then two 468.75px white cards 31.25px apart, each a 125px round photo beside the
  * side's name (Playfair) and its caption. No rule under the heading and no "+" between cards.
+ *
+ * ABOUT MOBILE (6252:4459) keeps the photo beside the copy on a phone rather than above it,
+ * which holds each card to about half the height a stacked one takes.
  */
 const AboutTypes: React.FC<
   Pick<Props, 'bgColor' | 'bgColorCustom' | 'heading' | 'subheading'> & { sides: Side[] }
 > = ({ bgColor, bgColorCustom, heading, sides, subheading }) => (
   <section
-    className="w-full bg-mist px-4 pb-[62.5px] pt-10 font-inter sm:px-6 lg:pt-[43.5px] [&_sup]:leading-[0]"
+    className="w-full bg-mist px-4 py-5 font-inter sm:px-6 sm:pb-[62.5px] sm:pt-10 lg:pt-[43.5px] [&_sup]:leading-[0]"
     style={backgroundStyle(bgColor, bgColorCustom)}
   >
     <div className="mx-auto max-w-[968.75px]">
       <header className="flex flex-col items-center gap-[11px] text-center">
         {heading && (
           <h2
-            className="font-marcellus text-[38px] leading-[48px] text-navy sm:text-[46px] sm:leading-[60px] lg:text-[57.5px] lg:leading-[72px]"
+            className="font-marcellus text-[48px] leading-[52px] text-navy sm:text-[46px] sm:leading-[60px] lg:text-[57.5px] lg:leading-[72px]"
             data-payload-subpath="heading"
           >
             {marks(heading)}
@@ -62,7 +65,7 @@ const AboutTypes: React.FC<
         {subheading && (
           <div data-payload-subpath="subheading">
             <RichText
-              className="text-[16px] leading-[normal] text-black sm:text-[18.75px] [&_p]:m-0 [&_strong]:font-bold"
+              className="text-[18.75px] leading-5 text-black sm:leading-[normal] [&_p]:m-0 [&_strong]:font-bold"
               data={subheading}
               enableGutter={false}
               enableProse={false}
@@ -72,10 +75,10 @@ const AboutTypes: React.FC<
       </header>
 
       {sides.length > 0 && (
-        <div className="mt-[30px] grid gap-[31.25px] lg:grid-cols-2">
+        <div className="mt-3 grid gap-2.5 sm:mt-[30px] sm:gap-[31.25px] lg:grid-cols-2">
           {sides.map((side, i) => (
             <div
-              className="flex flex-col items-center gap-5 rounded-[18.75px] bg-white px-6 pb-[18.75px] pt-[18.75px] shadow-[0_0_5px_rgba(0,0,0,0.25)] sm:flex-row sm:items-start sm:gap-[31.25px] sm:pl-[37.5px] sm:pr-[37.5px]"
+              className="flex items-start gap-3 rounded-[18.75px] bg-white px-[25px] py-4 shadow-[0_0_4.688px_rgba(0,0,0,0.25)] sm:gap-[31.25px] sm:px-[37.5px] sm:py-[18.75px] sm:shadow-[0_0_5px_rgba(0,0,0,0.25)]"
               data-payload-subpath={`items.${i}.label`}
               key={side.id ?? i}
             >
@@ -89,13 +92,13 @@ const AboutTypes: React.FC<
                 />
               </div>
 
-              <div className="flex min-w-0 flex-1 flex-col gap-[8.5px] text-center sm:text-left">
-                <p className="font-playfair text-[22.5px] font-semibold leading-[25px] text-brand-500">
+              <div className="flex min-w-0 flex-1 flex-col gap-[6.25px] text-left sm:gap-[8.5px]">
+                <p className="font-playfair text-[22.5px] font-semibold leading-[27.5px] text-brand-500 sm:leading-[25px]">
                   {marks(side.label)}
                 </p>
                 {side.caption && (
                   <p
-                    className="text-[15px] leading-5 text-black"
+                    className="text-[16.25px] leading-5 text-black sm:text-[15px]"
                     data-payload-subpath={`items.${i}.caption`}
                   >
                     {marks(side.caption)}

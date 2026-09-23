@@ -69,11 +69,15 @@ const Checklist: React.FC<{
   )
 }
 
+/**
+ * The phone frame stacks the two buttons centred, 10px apart; from `sm` they sit side by
+ * side as the desktop comp draws them.
+ */
 const Links: React.FC<{ links: Props['links'] }> = ({ links }) => {
   if (!Array.isArray(links) || links.length === 0) return null
 
   return (
-    <div className="flex flex-wrap gap-[18.75px]">
+    <div className="flex flex-col items-center gap-2.5 py-[9.375px] sm:flex-row sm:flex-wrap sm:items-stretch sm:gap-[18.75px] sm:py-0">
       {links.map(({ link }, i) => (
         <CMSLink
           {...link}
@@ -113,11 +117,11 @@ export const CausesAbout: React.FC<Props> = ({
         className="w-full bg-ash-50 px-4 py-8 font-inter sm:px-6 xl:px-5 xl:py-0 [&_sup]:leading-[0]"
         style={backgroundStyle(bgColor, bgColorCustom)}
       >
-        <div className="relative isolate mx-auto flex max-w-[1400px] flex-col gap-6 xl:h-[635px] xl:justify-center xl:pb-3 xl:pl-[50px]">
+        <div className="relative isolate mx-auto flex max-w-[1400px] flex-col gap-20 sm:gap-6 xl:h-[635px] xl:justify-center xl:pb-3 xl:pl-[50px]">
           <div className="flex w-full max-w-[500px] flex-col">
             {eyebrow && (
               <p
-                className="text-[16px] font-semibold uppercase leading-[normal] text-navy sm:text-[17.5px]"
+                className="text-[17.5px] font-semibold uppercase leading-[17.5px] text-navy sm:leading-[normal]"
                 data-payload-subpath="eyebrow"
               >
                 {marks(eyebrow)}
@@ -126,7 +130,7 @@ export const CausesAbout: React.FC<Props> = ({
 
             {heading && (
               <h2
-                className="mt-4 font-marcellus text-[40px] leading-[1.1] text-brand-500 sm:text-[52px] xl:mt-[11.5px] xl:text-[57.5px] xl:leading-[62.5px]"
+                className="mt-[12.5px] font-marcellus text-[48px] leading-[52px] text-brand-500 sm:mt-4 sm:text-[52px] sm:leading-[1.1] xl:mt-[11.5px] xl:text-[57.5px] xl:leading-[62.5px]"
                 data-payload-subpath="heading"
               >
                 {multiline(heading)}
@@ -135,7 +139,7 @@ export const CausesAbout: React.FC<Props> = ({
 
             {description && (
               <p
-                className="mt-4 whitespace-pre-line text-[17px] font-semibold leading-[1.25] text-navy xl:mt-[13.5px] xl:text-[18.75px] xl:leading-[23.25px]"
+                className="mt-[12.5px] whitespace-pre-line text-[18.75px] font-semibold leading-[23.75px] text-navy sm:mt-4 sm:text-[17px] sm:leading-[1.25] xl:mt-[13.5px] xl:text-[18.75px] xl:leading-[23.25px]"
                 data-payload-subpath="description"
               >
                 {marks(description)}
@@ -143,13 +147,13 @@ export const CausesAbout: React.FC<Props> = ({
             )}
 
             {items.length > 0 && (
-              <div className="mt-5 xl:mt-[12.5px]">
+              <div className="mt-[12.5px] sm:mt-5 xl:mt-[12.5px]">
                 <Checklist factors={items} size="offer" />
               </div>
             )}
 
             {Array.isArray(links) && links.length > 0 && (
-              <div className="mt-7 xl:mt-[22px]">
+              <div className="mt-[12.5px] sm:mt-7 xl:mt-[22px]">
                 <Links links={links} />
               </div>
             )}
@@ -157,13 +161,13 @@ export const CausesAbout: React.FC<Props> = ({
 
           {!noImage && (
             <div
-              className="relative aspect-[1920/1016] w-full xl:absolute xl:inset-0 xl:-z-10 xl:aspect-auto"
+              className="relative -order-1 -mx-4 h-[350px] sm:order-none sm:mx-0 sm:aspect-[1920/1016] sm:h-auto sm:w-full xl:absolute xl:inset-0 xl:-z-10 xl:aspect-auto"
               data-payload-subpath="image"
             >
               <ImageSlot
                 className="h-full w-full"
                 hint="Recommended 1920 × 1016px, product on the right, left side faded to the band colour"
-                imgClassName="h-full w-full object-cover"
+                imgClassName="h-full w-full object-cover object-right sm:object-center"
                 label="Product photo"
                 resource={image}
               />

@@ -2,6 +2,7 @@ import React from 'react'
 
 import type { FeatureStripBlock as Props } from '@/payload-types'
 
+import { FeaturedCarousel } from '@/blocks/Reviews/FeaturedCarousel'
 import { BrandIcon } from '@/components/BrandIcons'
 import { Media } from '@/components/Media'
 import { cn } from '@/utilities/ui'
@@ -23,6 +24,12 @@ type Item = NonNullable<Props['items']>[number]
  *   trustRow   OFFER FEATURES       large round icons split by blue rules
  *
  * The `divided` row (the /why page) stays in `Component.tsx`, untouched.
+ *
+ * ABOUT MOBILE (Figma 6252:4404) reshapes four of them on a phone: the two long rows —
+ * SYMPTOMS and CONTRIBUTE — become swipe tracks, MANAGE narrows to one 300px column, and
+ * OFFER FEATURES keeps all four columns side by side rather than stacking. The desktop
+ * treatments above are unchanged; every rule below is either mobile-first with an `xl:`
+ * (or `sm:`) restore, or new.
  */
 
 /**
@@ -59,6 +66,29 @@ const SECTION_PADDING: Record<string, string> = {
   trustRow: 'lg:py-[25px]',
 }
 
+/**
+ * The phone headings, which the mobile frame sizes section by section rather than on one
+ * scale. Above `sm` they all return to the shared desktop ramp.
+ */
+const HEADING_SIZE: Record<string, string> = {
+  checklist: 'text-[48px] leading-[54px]',
+  cards: 'text-[36px] leading-[52px]',
+  iconCards: 'text-[48px] leading-[52px]',
+  pills: 'text-[38px] leading-[44px]',
+  trustBar: '',
+  trustRow: '',
+}
+
+/** The gap the mobile frame leaves between the header and the body of each section. */
+const BODY_GAP: Record<string, string> = {
+  checklist: 'mt-4',
+  cards: 'mt-2.5',
+  iconCards: 'mt-3',
+  pills: 'mt-5',
+  trustBar: '',
+  trustRow: '',
+}
+
 export const FeatureStripAbout: React.FC<Props> = ({
   background,
   bgColor,
@@ -80,7 +110,10 @@ export const FeatureStripAbout: React.FC<Props> = ({
     <header className="text-center">
       {heading && (
         <h2
-          className="font-marcellus text-[34px] leading-[1.2] text-heading sm:text-[46px] lg:text-[57.5px] lg:leading-[normal]"
+          className={cn(
+            'font-marcellus text-heading sm:text-[46px] sm:leading-[1.2] lg:text-[57.5px] lg:leading-[normal]',
+            HEADING_SIZE[style] || 'text-[34px] leading-[1.2]',
+          )}
           data-payload-subpath="heading"
         >
           {multiline(heading)}
@@ -88,7 +121,7 @@ export const FeatureStripAbout: React.FC<Props> = ({
       )}
       {subheading && (
         <p
-          className="mt-3 whitespace-pre-line text-[17px] leading-[normal] text-brand-500 lg:mt-[10.5px] lg:text-[18.75px]"
+          className="mt-3 whitespace-pre-line text-[18.75px] leading-5 text-brand-500 sm:text-[17px] sm:leading-[normal] lg:mt-[10.5px] lg:text-[18.75px]"
           data-payload-subpath="subheading"
         >
           {marks(subheading)}
@@ -142,69 +175,91 @@ export const FeatureStripAbout: React.FC<Props> = ({
   }
 
   if (style === 'iconCards') {
+    /*
+     * The six cards are 162.5px wide at every width — the same figure the desktop grid
+     * arrives at (1037.5 less five 12.5px gutters, over six columns) — so the one track
+     * serves both: a swipe carousel on a phone, a centred row from `xl`.
+     */
     body = (
-      <ul className="mx-auto mt-8 grid max-w-[1037.5px] grid-cols-2 gap-[12.5px] sm:grid-cols-3 lg:mt-[16px] lg:grid-cols-6">
-        {strip.map((item, i) => (
-          <li
-            className="flex flex-col items-center rounded-[16px] bg-white px-[17px] pb-[25px] pt-[19.5px] text-center shadow-[0_0_5px_rgba(0,0,0,0.2)] lg:min-h-[337px]"
-            data-payload-subpath={`items.${i}.title`}
-            key={item.id ?? i}
-          >
-            <Art box="h-[78px] w-[78px]" fallback="rounded-full bg-[#f2f7fe]" item={item} />
-            <h3
-              className={cn(
-                'mt-[21.5px] text-[13.75px] font-bold leading-[16.25px] text-brand-500',
-                upper && 'uppercase',
-              )}
+      <div className={cn(BODY_GAP[style], 'lg:mt-[16px]')}>
+        <FeaturedCarousel
+          slides={strip.map((item, i) => (
+            <li
+              className="flex w-[162.5px] shrink-0 snap-center flex-col items-center gap-[3.125px] rounded-[18.75px] bg-white p-[18.75px] text-center shadow-[0_0_4.688px_rgba(0,0,0,0.25)] xl:gap-0 xl:rounded-[16px] xl:px-[17px] xl:pb-[25px] xl:pt-[19.5px] xl:shadow-[0_0_5px_rgba(0,0,0,0.2)] xl:min-h-[337px]"
+              data-payload-subpath={`items.${i}.title`}
+              key={item.id ?? i}
             >
-              {marks(item.title)}
-            </h3>
-            {item.description && (
-              <p
-                className="mt-[21.5px] text-[13.75px] leading-[16.5px] text-black"
-                data-payload-subpath={`items.${i}.description`}
-              >
-                {marks(item.description)}
-              </p>
-            )}
-          </li>
-        ))}
-      </ul>
+              <Art box="h-[78px] w-[78px]" fallback="rounded-full bg-[#f2f7fe]" item={item} />
+              {/* The title sits in a fixed box so the descriptions below it line up across
+                  cards of different title lengths; the desktop card spaces them instead. */}
+              <div className="flex h-[68.75px] items-center justify-center xl:mt-[21.5px] xl:h-auto">
+                <h3
+                  className={cn(
+                    'text-[13.75px] font-bold leading-[16.25px] text-brand-500',
+                    upper && 'uppercase',
+                  )}
+                >
+                  {marks(item.title)}
+                </h3>
+              </div>
+              {item.description && (
+                <p
+                  className="text-[13.75px] leading-[16.25px] text-black xl:mt-[21.5px] xl:leading-[16.5px]"
+                  data-payload-subpath={`items.${i}.description`}
+                >
+                  {marks(item.description)}
+                </p>
+              )}
+            </li>
+          ))}
+          trackClassName="gap-[14px] px-4 py-[6px] scroll-px-4 sm:gap-[14px] xl:mx-auto xl:max-w-[1037.5px] xl:gap-[12.5px]"
+        />
+      </div>
     )
   }
 
   if (style === 'pills') {
+    /* Eight causes are too many to wrap on a phone, so the frame swipes them: the tile
+       stands the icon above its label, and from `xl` it lies back down as the wide pill. */
     body = (
-      <ul className="mx-auto mt-8 flex max-w-[1143.75px] flex-wrap justify-center gap-[12.5px] lg:mt-[43.5px]">
-        {strip.map((item, i) => (
-          <li
-            className="flex min-h-[72px] w-[calc(50%-6.25px)] items-center gap-2 rounded-[15px] bg-white py-2 pl-3 pr-2 sm:pr-[14px] shadow-[0_0_10px_rgba(0,0,0,0.2)] sm:h-[81.25px] sm:w-[218.75px] sm:gap-[12.5px] sm:pl-[18.75px]"
-            data-payload-subpath={`items.${i}.title`}
-            key={item.id ?? i}
-          >
-            <Art box="h-10 w-10 sm:h-14 sm:w-14" fallback="" item={item} />
-            <span className="min-w-0 text-[14px] leading-[18px] text-heading sm:text-[16px] sm:leading-[20px]">
-              {marks(item.title)}
-            </span>
-          </li>
-        ))}
-      </ul>
+      <div className={cn(BODY_GAP[style], 'lg:mt-[43.5px]')}>
+        <FeaturedCarousel
+          slides={strip.map((item, i) => (
+            <li
+              className="flex w-[160px] shrink-0 snap-center flex-col items-center gap-2.5 rounded-[18.75px] bg-white px-4 py-3 shadow-[0_0_4.688px_rgba(0,0,0,0.25)] xl:h-[81.25px] xl:w-[218.75px] xl:flex-row xl:gap-[12.5px] xl:rounded-[15px] xl:py-2 xl:pl-[18.75px] xl:pr-[14px] xl:shadow-[0_0_10px_rgba(0,0,0,0.2)]"
+              data-payload-subpath={`items.${i}.title`}
+              key={item.id ?? i}
+            >
+              <Art box="h-14 w-14" fallback="" item={item} />
+              <span className="min-w-0 text-center text-[16.25px] leading-5 text-heading xl:text-left xl:text-[16px]">
+                {marks(item.title)}
+              </span>
+            </li>
+          ))}
+          trackClassName="gap-2.5 px-4 py-[6px] scroll-px-4 sm:gap-2.5 xl:mx-auto xl:max-w-[1143.75px] xl:flex-wrap xl:gap-[12.5px]"
+        />
+      </div>
     )
   }
 
   if (style === 'cards') {
     body = (
-      <ul className="mx-auto mt-8 grid max-w-[1103px] grid-cols-1 gap-[13px] sm:grid-cols-2 lg:mt-[38px] xl:grid-cols-4">
+      <ul
+        className={cn(
+          BODY_GAP[style],
+          'mx-auto grid max-w-[300px] grid-cols-1 gap-[12.5px] sm:mt-8 sm:max-w-[1103px] sm:grid-cols-2 sm:gap-[13px] lg:mt-[38px] xl:grid-cols-4',
+        )}
+      >
         {strip.map((item, i) => (
           <li
-            className="flex min-h-[166px] items-center gap-[6px] rounded-[20px] bg-white py-3 pl-[16px] pr-[18px] shadow-[0_0_8px_rgba(0,0,0,0.2)]"
+            className="flex items-center gap-3 rounded-[18.75px] bg-white px-4 py-[14px] shadow-[0_0_4.688px_rgba(0,0,0,0.25)] sm:min-h-[166px] sm:gap-[6px] sm:rounded-[20px] sm:py-3 sm:pl-[16px] sm:pr-[18px] sm:shadow-[0_0_8px_rgba(0,0,0,0.2)]"
             data-payload-subpath={`items.${i}.title`}
             key={item.id ?? i}
           >
             <Art
-              box="h-[124px] w-[88px]"
+              box="h-[105px] w-[78.75px] sm:h-[124px] sm:w-[88px]"
               fallback="rounded-full bg-mist-100"
-              fallbackBox="h-[88px] w-[88px]"
+              fallbackBox="h-[78.75px] w-[78.75px] sm:h-[88px] sm:w-[88px]"
               item={item}
             />
             <div className="min-w-0 flex-1">
@@ -218,7 +273,7 @@ export const FeatureStripAbout: React.FC<Props> = ({
               </h3>
               {item.description && (
                 <p
-                  className="mt-[6.5px] text-[13.75px] leading-[16.5px] text-black"
+                  className="mt-[6.25px] text-[13.75px] leading-[16.25px] text-black sm:mt-[6.5px] sm:leading-[16.5px]"
                   data-payload-subpath={`items.${i}.description`}
                 >
                   {marks(item.description)}
@@ -233,9 +288,16 @@ export const FeatureStripAbout: React.FC<Props> = ({
 
   if (style === 'checklist') {
     body = (
-      <div className="mx-auto mt-8 flex max-w-[850px] flex-col items-center gap-8 lg:mt-[30px] lg:flex-row lg:items-stretch lg:gap-[50px]">
+      <div
+        className={cn(
+          BODY_GAP[style],
+          'mx-auto flex max-w-[850px] flex-col items-center gap-4 sm:mt-8 sm:gap-8 lg:mt-[30px] lg:flex-row lg:items-stretch lg:gap-[50px]',
+        )}
+      >
+        {/* The frame indents the phone list 80px inside the section, which reads as a
+            column rather than a full-width sweep of short lines. */}
         <ul
-          className="grid w-full grid-cols-1 gap-y-[12.5px] sm:w-auto sm:grid-flow-col sm:grid-cols-2 sm:grid-rows-[repeat(var(--rows),auto)] sm:gap-x-[50px]"
+          className="grid w-full grid-cols-1 gap-y-[12.5px] px-[80px] sm:w-auto sm:grid-flow-col sm:grid-cols-2 sm:grid-rows-[repeat(var(--rows),auto)] sm:gap-x-[50px] sm:px-0"
           style={{ '--rows': Math.ceil(strip.length / 2) } as React.CSSProperties}
         >
           {strip.map((item, i) => (
@@ -254,7 +316,7 @@ export const FeatureStripAbout: React.FC<Props> = ({
                 src="/icons/feature-strip/check.svg"
                 width={26}
               />
-              <span className="text-[15px] font-medium leading-[26px] text-subheading">
+              <span className="text-[15px] font-medium leading-[15px] text-subheading sm:leading-[26px]">
                 {marks(item.title)}
               </span>
             </li>
@@ -263,7 +325,7 @@ export const FeatureStripAbout: React.FC<Props> = ({
 
         {footnote && (
           <p
-            className="flex w-full max-w-[250px] shrink-0 items-center justify-center rounded-[20px] bg-tint-50 px-[22px] py-5 text-center text-[15px] font-medium leading-[21.25px] text-subheading lg:min-h-[141.5px]"
+            className="flex w-full shrink-0 items-center justify-center rounded-[18.75px] bg-tint-50 p-4 text-center text-[15px] font-medium leading-[21.25px] text-subheading sm:max-w-[250px] sm:rounded-[20px] sm:px-[22px] sm:py-5 lg:min-h-[141.5px]"
             data-payload-subpath="footnote"
           >
             {marks(footnote)}
@@ -274,16 +336,18 @@ export const FeatureStripAbout: React.FC<Props> = ({
   }
 
   if (style === 'trustRow') {
+    // The phone keeps all four columns in the row rather than stacking them: the icon moves
+    // above its text and the blue rules stay, 18.75px clear of each column.
     body = (
-      <ul className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:flex lg:justify-center lg:gap-0">
+      <ul className="flex justify-center p-[6.25px] sm:grid sm:grid-cols-2 sm:gap-6 sm:p-0 lg:flex lg:justify-center lg:gap-0">
         {strip.map((item, i) => (
           <li
-            className="flex items-center gap-[13px] lg:box-content lg:w-[296.5px] lg:shrink-0 lg:[&+li]:ml-[19px] lg:[&+li]:border-l lg:[&+li]:border-brand-300 lg:[&+li]:pl-[18px]"
+            className="flex w-[70.75px] flex-col items-center gap-[12.5px] text-center [&+li]:ml-[18.75px] [&+li]:border-l [&+li]:border-brand-300 [&+li]:pl-[18.75px] sm:w-auto sm:flex-row sm:items-center sm:gap-[13px] sm:text-left sm:[&+li]:ml-0 sm:[&+li]:border-l-0 sm:[&+li]:pl-0 lg:box-content lg:w-[296.5px] lg:shrink-0 lg:[&+li]:ml-[19px] lg:[&+li]:border-l lg:[&+li]:border-brand-300 lg:[&+li]:pl-[18px]"
             data-payload-subpath={`items.${i}.title`}
             key={item.id ?? i}
           >
             <Art box="h-[75px] w-[75px]" fallback="rounded-full bg-ash-250" item={item} />
-            <div className="min-w-0 flex-1">
+            <div className="min-w-0 sm:flex-1">
               <h3
                 className={cn(
                   'text-[12.5px] font-bold leading-[15px] text-subheading',
@@ -294,7 +358,7 @@ export const FeatureStripAbout: React.FC<Props> = ({
               </h3>
               {item.description && (
                 <p
-                  className="mt-[5.5px] text-[11.25px] leading-[15px] text-heading"
+                  className="mt-[6.25px] text-[11.25px] leading-[normal] text-heading sm:mt-[5.5px] sm:leading-[15px]"
                   data-payload-subpath={`items.${i}.description`}
                 >
                   {marks(item.description)}
@@ -313,7 +377,7 @@ export const FeatureStripAbout: React.FC<Props> = ({
     <section
       className={cn(
         'w-full px-4 font-inter sm:px-6',
-        trustBar ? 'bg-white lg:px-5' : 'py-10 lg:px-8',
+        trustBar ? 'bg-white lg:px-5' : 'py-5 sm:py-10 lg:px-8',
         !trustBar && (background === 'light' ? 'bg-mist-100' : 'bg-white'),
         SECTION_PADDING[style],
       )}
@@ -324,7 +388,7 @@ export const FeatureStripAbout: React.FC<Props> = ({
         {body}
         {footnote && style !== 'checklist' && (
           <p
-            className="mx-auto mt-8 max-w-[600px] whitespace-pre-line text-center text-[17px] leading-[23px] text-brand-500 lg:mt-[42px] lg:text-[18.75px] lg:leading-[25px]"
+            className="mx-auto mt-5 max-w-[600px] whitespace-pre-line text-center text-[18.75px] leading-[25px] text-brand-500 sm:mt-8 sm:text-[17px] sm:leading-[23px] lg:mt-[42px] lg:text-[18.75px] lg:leading-[25px]"
             data-payload-subpath="footnote"
           >
             {marks(footnote)}
