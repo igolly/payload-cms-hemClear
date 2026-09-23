@@ -8,6 +8,25 @@ const getPublicStorageURL = () =>
     (process.env.S3_ENDPOINT || '').replace(/\/s3\/?$/, '/object/public')
   ).replace(/\/$/, '')
 
+/**
+ * The bucket URL has to carry its own scheme and host, and nothing downstream notices when
+ * it does not: a host-less base still builds a URL, the browser resolves it against the
+ * site, and every media file 404s while the pages themselves render fine. That has now
+ * shipped twice, so the check runs when this module loads — a deploy with the wrong value
+ * fails at build with the reason, and the previous deploy keeps serving.
+ */
+if (isStorageEnabled()) {
+  const base = getPublicStorageURL()
+  if (!/^https?:\/\//.test(base)) {
+    throw new Error(
+      `Storage is enabled but the public bucket URL is not absolute: "${base}". ` +
+        'Set S3_ENDPOINT to the full endpoint, e.g. ' +
+        'https://<project-ref>.storage.supabase.co/storage/v1/s3 ' +
+        '(or set S3_PUBLIC_URL to the full public bucket URL).',
+    )
+  }
+}
+
 /** Direct public URL for an object in the media bucket. `filename` must be unencoded. */
 export const getPublicFileURL = ({ filename, prefix }: { filename: string; prefix?: string }) =>
   [getPublicStorageURL(), process.env.S3_BUCKET, prefix, encodeURIComponent(filename)]
