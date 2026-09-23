@@ -147,23 +147,23 @@ export const ProductDetailBlockComponent: React.FC<ProductDetailBlock> = (produc
               Basic Bold; Google Fonts retired that name and ships the same face as Gentium
               Book Plus, which is what `font-gentium` loads. */}
           {results.length > 0 && (
-            <div className="flex flex-col gap-4 rounded-[20px] border border-navy bg-mist-100 p-5">
+            <div className="flex flex-col gap-[9px] rounded-[20px] border border-navy bg-mist-100 p-2.5 @min-[600px]:gap-4 @min-[600px]:p-5">
               {product.resultsTitle && (
                 <p className="text-center text-[16.25px] font-bold uppercase leading-5 text-brand-600">
                   {marks(product.resultsTitle)}
                 </p>
               )}
 
-              <ul className="grid grid-cols-4 gap-x-2 gap-y-6">
+              <ul className="grid grid-cols-4 gap-x-[7px] gap-y-6 @min-[600px]:gap-x-2">
                 {results.map((result, i) => (
                   <li
                     className="flex flex-col gap-[5px] text-center @min-[600px]:h-[141px]"
                     key={result.id ?? i}
                   >
-                    <p className="font-gentium text-[30px] font-bold leading-9 @min-[600px]:text-[50px] @min-[600px]:leading-[50px]">
+                    <p className="font-gentium text-[36px] font-bold leading-9 @min-[600px]:text-[50px] @min-[600px]:leading-[50px]">
                       {marks(result.value)}
                     </p>
-                    <p className="text-[12.5px] font-bold leading-4 @min-[600px]:text-[13px]">
+                    <p className="text-[13px] font-bold leading-4">
                       {marks(result.label)}
                     </p>
                     {result.detail && (

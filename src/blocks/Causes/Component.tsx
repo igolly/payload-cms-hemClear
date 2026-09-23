@@ -188,6 +188,9 @@ const CausesDefault: React.FC<Props> = ({
         <div
           className={cn(
             !showcase && 'flex flex-col gap-[18.75px]',
+            // Stacked under its photo on a phone, the showcase column reads better centred;
+            // beside the photo from `lg` it goes back to the comp's left-ranged column.
+            showcase && 'flex flex-col items-center text-center lg:items-start lg:text-left',
             showcase && imageRight && 'lg:order-1',
             split &&
               cn(

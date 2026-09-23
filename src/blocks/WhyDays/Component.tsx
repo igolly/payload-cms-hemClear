@@ -53,7 +53,7 @@ export const WhyDaysBlock: React.FC<Props> = ({
         </div>
 
         {/* Copy column */}
-        <div className="relative flex w-full max-w-[483.8px] flex-col items-start gap-[10px]">
+        <div className="relative flex w-full max-w-[483.8px] flex-col items-center gap-[10px] text-center xl:items-start xl:text-left">
           {heading && (
             <h2
               className="font-marcellus text-[36px] font-normal leading-[normal] text-navy-900 sm:text-[52px] sm:leading-[65px] [&_sup]:leading-[0]"
@@ -69,7 +69,7 @@ export const WhyDaysBlock: React.FC<Props> = ({
           </span>
 
           <div className="flex w-full items-center gap-[10.19px]">
-            <div className="flex min-w-0 flex-1 flex-col items-start gap-[10.19px] sm:w-[331.02px] sm:flex-none">
+            <div className="flex min-w-0 flex-1 flex-col items-center gap-[10.19px] text-center sm:w-[331.02px] sm:flex-none xl:items-start xl:text-left">
               {paras.length > 0 && (
                 <div className="flex flex-col gap-[7.4px] text-base font-medium leading-[19.36px] text-navy">
                   {paras.map((paragraph, i) => (
