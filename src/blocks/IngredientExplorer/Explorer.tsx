@@ -162,10 +162,10 @@ const IngredientCard: React.FC<{ item: Ingredient }> = ({ item }) => {
   }
 
   return (
-    <li className="[perspective:1600px]">
+    <li className="[perspective:1600px] mx-auto">
       <div
         className={cn(
-          'grid h-full min-h-[420px] transition-transform duration-500 [transform-style:preserve-3d] motion-reduce:transition-none',
+          'grid h-full min-h-[420px] transition-transform duration-500 [transform-style:preserve-3d] motion-reduce:transition-none md:w-full max-w-[270px] items-center',
           flipped && '[transform:rotateY(180deg)]',
         )}
       >

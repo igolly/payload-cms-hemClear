@@ -41,7 +41,12 @@ const Checklist: React.FC<{
   const diagnosed = size === 'diagnosed'
 
   return (
-    <ul className={cn('flex w-full flex-col', diagnosed ? 'lg:w-[562.5px]' : 'max-w-[410px]')}>
+    <ul
+      className={cn(
+        'flex w-full flex-col text-left',
+        diagnosed ? 'lg:w-[562.5px]' : 'max-w-[410px]',
+      )}
+    >
       {factors.map((factor, i) => (
         <li
           className="flex items-center gap-[12.5px]"
@@ -118,7 +123,7 @@ export const CausesAbout: React.FC<Props> = ({
         style={backgroundStyle(bgColor, bgColorCustom)}
       >
         <div className="relative isolate mx-auto flex max-w-[1400px] flex-col gap-20 sm:gap-6 xl:h-[635px] xl:justify-center xl:pb-3 xl:pl-[50px]">
-          <div className="flex w-full max-w-[500px] flex-col">
+          <div className="flex w-full max-w-[500px] flex-col items-center text-center sm:items-start sm:text-left">
             {eyebrow && (
               <p
                 className="text-[17.5px] font-semibold uppercase leading-[17.5px] text-navy sm:leading-[normal]"
@@ -167,7 +172,7 @@ export const CausesAbout: React.FC<Props> = ({
               <ImageSlot
                 className="h-full w-full"
                 hint="Recommended 1920 × 1016px, product on the right, left side faded to the band colour"
-                imgClassName="h-full w-full object-cover object-right sm:object-center"
+                imgClassName="h-full w-full object-cover object-center"
                 label="Product photo"
                 resource={image}
               />
@@ -207,7 +212,7 @@ export const CausesAbout: React.FC<Props> = ({
           </div>
         )}
 
-        <div className="flex w-full min-w-0 flex-col gap-[12.5px] lg:w-[562.5px] lg:py-[18.75px]">
+        <div className="flex w-full min-w-0 flex-col items-center gap-[12.5px] text-center sm:items-start sm:text-left lg:w-[562.5px] lg:py-[18.75px]">
           {heading && (
             <h2
               className="font-marcellus text-[40px] leading-[1.05] text-navy sm:text-[48px] lg:text-[58px] lg:leading-[58px]"
@@ -230,7 +235,7 @@ export const CausesAbout: React.FC<Props> = ({
 
           {footnote && (
             <p
-              className="flex items-center gap-[18.75px] rounded-[15.625px] bg-tint-50 p-[18.75px] text-[12.5px] leading-[17.5px] text-subheading"
+              className="flex items-center gap-[18.75px] rounded-[15.625px] bg-tint-50 p-[18.75px] text-left text-[12.5px] leading-[17.5px] text-subheading"
               data-payload-subpath="footnote"
             >
               {/* eslint-disable-next-line @next/next/no-img-element -- static SVG, nothing to optimise */}

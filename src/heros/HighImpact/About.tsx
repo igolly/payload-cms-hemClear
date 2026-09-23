@@ -41,7 +41,9 @@ export const AboutHero: React.FC<Page['hero']> = ({
       <div className="mx-auto grid w-full max-w-[1063px] grid-cols-1 lg:grid-cols-[minmax(0,500fr)_minmax(0,563fr)]">
         <div
           className={cn(
-            'flex min-w-0 flex-col items-start justify-center py-5 sm:py-[30px] lg:justify-start lg:pb-[30px] lg:pt-[29px]',
+            // Centred on a phone, where a single narrow column reads better ranged to the
+            // middle; from `sm` it returns to the comp's left-ranged column.
+            'flex min-w-0 flex-col items-center justify-center py-5 text-center sm:items-start sm:py-[30px] sm:text-left lg:justify-start lg:pb-[30px] lg:pt-[29px]',
             mediaLeft && 'lg:order-2 lg:pl-8',
           )}
         >
@@ -89,7 +91,7 @@ export const AboutHero: React.FC<Page['hero']> = ({
 
           {/* A 26px icon disc beside each line; a pale rule under every line but the last. */}
           {Array.isArray(benefits) && benefits.length > 0 && (
-            <ul className="mt-[12.5px] flex w-full max-w-[412.5px] flex-col gap-0 sm:mt-[15.5px] sm:gap-[3.125px]">
+            <ul className="mt-[12.5px] flex w-full max-w-[412.5px] flex-col gap-0 text-left sm:mt-[15.5px] sm:gap-[3.125px]">
               {benefits.map((benefit, i) => (
                 <li
                   className="flex items-center gap-[12.5px]"
@@ -125,7 +127,7 @@ export const AboutHero: React.FC<Page['hero']> = ({
           )}
 
           {(calloutTitle || calloutText) && (
-            <div className="mt-[12.5px] flex min-h-[100px] w-full max-w-[412.5px] items-center gap-[18.75px] rounded-[15.625px] bg-tint-50 p-[18.75px] sm:mt-[11.5px] sm:rounded-[12.5px] sm:px-[18.75px] sm:py-3">
+            <div className="mt-[12.5px] flex min-h-[100px] w-full max-w-[412.5px] items-center gap-[18.75px] rounded-[15.625px] bg-tint-50 p-[18.75px] text-left sm:mt-[11.5px] sm:rounded-[12.5px] sm:px-[18.75px] sm:py-3">
               {calloutIcon && typeof calloutIcon === 'object' && (
                 <span className="block size-[62.5px] shrink-0">
                   <Media
