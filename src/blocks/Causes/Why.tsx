@@ -156,7 +156,7 @@ const Quality: React.FC<Props> = ({
           </div>
         )}
 
-        <div className="flex w-full flex-col gap-[12.5px] lg:w-[562.5px] lg:shrink-0 lg:py-[18.75px]">
+        <div className="flex w-full flex-col items-center gap-[12.5px] text-center lg:w-[562.5px] lg:shrink-0 lg:items-start lg:py-[18.75px] lg:text-left">
           <Eyebrow value={eyebrow} />
 
           {heading && (
@@ -193,7 +193,7 @@ const Quality: React.FC<Props> = ({
 
           {footnote && (
             <p
-              className="flex items-center gap-[18.75px] whitespace-pre-line rounded-[15.625px] bg-tint-50 p-[18.75px] text-[12.5px] leading-[17.5px] text-subheading"
+              className="flex items-center gap-[18.75px] whitespace-pre-line rounded-[15.625px] bg-tint-50 p-[18.75px] text-left text-[12.5px] leading-[17.5px] text-subheading"
               data-payload-subpath="footnote"
             >
               {/* eslint-disable-next-line @next/next/no-img-element -- static 70px icon from the comp */}
@@ -252,9 +252,15 @@ const Overlay: React.FC<Props> = ({
             <ImageSlot
               className="h-full w-full"
               hint="Recommended 1200 × 338px photo, subject on the side away from the copy"
+              /*
+               * The side crop belongs to the desktop treatment, where the photo is a
+               * full-bleed backdrop and its subject has to clear the copy column. Stacked
+               * above the copy on a phone the photo is its own box, and the same crop just
+               * shunts the subject against one edge — so there it centres.
+               */
               imgClassName={cn(
-                'h-full w-full object-cover',
-                subjectLeft ? 'object-left' : 'object-right',
+                'h-full w-full object-cover object-center',
+                subjectLeft ? 'lg:object-left' : 'lg:object-right',
               )}
               label="Section background"
               resource={image}
@@ -262,7 +268,7 @@ const Overlay: React.FC<Props> = ({
           </div>
         )}
 
-        <div className="flex w-full flex-col gap-[12.5px] px-4 py-8 sm:px-6 lg:w-[468.75px] lg:shrink-0 lg:p-0">
+        <div className="flex w-full flex-col items-center gap-[12.5px] px-4 py-8 text-center sm:px-6 lg:w-[468.75px] lg:shrink-0 lg:items-start lg:p-0 lg:text-left">
           <Eyebrow value={eyebrow} />
 
           {heading && (
@@ -284,7 +290,11 @@ const Overlay: React.FC<Props> = ({
           )}
 
           {items.length > 0 && (
-            <FeatureRow className="p-[6.25px]" factors={items} gap="gap-[6.25px]" />
+            <FeatureRow
+              className="justify-center p-[6.25px] lg:justify-start"
+              factors={items}
+              gap="gap-[6.25px]"
+            />
           )}
 
           <Links links={links} />

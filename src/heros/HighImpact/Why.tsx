@@ -62,7 +62,7 @@ export const WhyHero: React.FC<Page['hero']> = ({
             /* 16px sides and no band padding of its own on a phone: the comp's photo sits
                behind the copy rather than above it, and the buttons carry their own
                12.5px. */
-            'relative flex w-full max-w-[625px] flex-col items-start gap-[12.5px] px-4 py-0 sm:px-[50px] sm:py-8',
+            'relative flex w-full max-w-[625px] flex-col items-center gap-[12.5px] px-4 py-0 text-center sm:items-start sm:px-[50px] sm:py-8 sm:text-left',
             'xl:min-h-[581.875px] xl:justify-center xl:py-0',
           )}
         >
