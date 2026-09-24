@@ -5,6 +5,7 @@ import type { SolutionSystemBlock as Props } from '@/payload-types'
 import { ImageSlot } from '@/blocks/FAQ/ImagePlaceholder'
 import { BrandIcon } from '@/components/BrandIcons'
 import { Media } from '@/components/Media'
+import { ScrollArrows } from '@/components/ScrollArrows'
 import { backgroundStyle } from '@/fields/background'
 import { marks } from '@/utilities/marks'
 import { cn } from '@/utilities/ui'
@@ -203,23 +204,25 @@ export const SolutionSystemBlockComponent: React.FC<Props> = ({
            * The mobile comp runs all the cards as one row of upright 120px cards off the right
            * edge, so below `sm` the wrapper is that sideways-scrolling row and the lists dissolve.
            */}
-          <div className="-mr-[5px] flex snap-x gap-2 overflow-x-auto pr-[5px] [scrollbar-width:none] sm:contents">
-            {left.length > 0 && (
-              <ul className={cn(column, 'max-sm:contents xl:order-1')}>
-                {left.map((card, i) => (
-                  <FeatureCard card={card} index={i} key={card.id ?? i} />
-                ))}
-              </ul>
-            )}
+          <ScrollArrows className="w-full sm:contents" label="card">
+            <div className="-mr-[5px] flex snap-x gap-2 overflow-x-auto pr-[5px] [scrollbar-width:none] sm:contents">
+              {left.length > 0 && (
+                <ul className={cn(column, 'max-sm:contents xl:order-1')}>
+                  {left.map((card, i) => (
+                    <FeatureCard card={card} index={i} key={card.id ?? i} />
+                  ))}
+                </ul>
+              )}
 
-            {right.length > 0 && (
-              <ul className={cn(column, 'max-sm:contents xl:order-3')}>
-                {right.map((card, i) => (
-                  <FeatureCard card={card} index={split + i} key={card.id ?? i} />
-                ))}
-              </ul>
-            )}
-          </div>
+              {right.length > 0 && (
+                <ul className={cn(column, 'max-sm:contents xl:order-3')}>
+                  {right.map((card, i) => (
+                    <FeatureCard card={card} index={split + i} key={card.id ?? i} />
+                  ))}
+                </ul>
+              )}
+            </div>
+          </ScrollArrows>
         </div>
       </div>
     </section>

@@ -3,6 +3,7 @@ import React from 'react'
 import type { ProductSystemBlock as Props } from '@/payload-types'
 
 import { Media } from '@/components/Media'
+import { ScrollArrows } from '@/components/ScrollArrows'
 import { ImageSlot } from '@/blocks/FAQ/ImagePlaceholder'
 import { backgroundStyle } from '@/fields/background'
 import { marks, multiline } from '@/utilities/marks'
@@ -155,42 +156,47 @@ export const ProductSystemBlock: React.FC<Props> = ({
           {/* Right column — feature cards. The mobile comp runs them as one row of upright
               120px cards that runs off the right edge, so there it scrolls sideways. */}
           {cards.length > 0 && (
-            <ul className="order-3 flex w-full max-w-[500px] flex-col gap-[6.25px] max-sm:-mr-[5px] max-sm:w-auto max-sm:max-w-none max-sm:snap-x max-sm:flex-row max-sm:gap-2 max-sm:self-stretch max-sm:overflow-x-auto max-sm:pr-[5px] max-sm:[scrollbar-width:none] xl:w-[281.25px] xl:shrink-0">
-              {cards.map((feature, i) => (
-                <li
-                  className="flex items-center gap-[18.75px] overflow-hidden rounded-[18.75px] bg-white p-[18.75px] text-brand-600 shadow-[inset_0_0_0_0.625px_var(--color-tint-50)] max-sm:h-[208px] max-sm:w-[120px] max-sm:shrink-0 max-sm:snap-start max-sm:flex-col max-sm:text-center"
-                  data-payload-subpath={`features.${i}.title`}
-                  key={feature.id ?? i}
-                >
-                  <FeatureIcon feature={feature} />
+            <ScrollArrows
+              className="order-3 w-full max-w-[500px] max-sm:w-auto max-sm:max-w-none max-sm:self-stretch xl:w-[281.25px] xl:shrink-0"
+              label="feature"
+            >
+              <ul className="flex w-full flex-col gap-[6.25px] max-sm:-mr-[5px] max-sm:snap-x max-sm:flex-row max-sm:gap-2 max-sm:overflow-x-auto max-sm:pr-[5px] max-sm:[scrollbar-width:none]">
+                {cards.map((feature, i) => (
+                  <li
+                    className="flex items-center gap-[18.75px] overflow-hidden rounded-[18.75px] bg-white p-[18.75px] text-brand-600 shadow-[inset_0_0_0_0.625px_var(--color-tint-50)] max-sm:h-[208px] max-sm:w-[120px] max-sm:shrink-0 max-sm:snap-start max-sm:flex-col max-sm:text-center"
+                    data-payload-subpath={`features.${i}.title`}
+                    key={feature.id ?? i}
+                  >
+                    <FeatureIcon feature={feature} />
 
-                  <div className="flex min-w-0 flex-1 items-center gap-[6.25px] max-sm:block max-sm:w-full max-sm:flex-none max-sm:text-[14px] max-sm:leading-[normal]">
-                    {/* Upright, the number joins the title's line at the title's size. */}
-                    {feature.stat && (
-                      <p className="shrink-0 whitespace-nowrap text-[42px] font-bold leading-[normal] max-sm:mr-[0.25em] max-sm:inline max-sm:text-[14px]">
-                        {marks(feature.stat)}
-                      </p>
-                    )}
-                    <div className={cn('min-w-0 flex-1', feature.stat && 'max-sm:inline')}>
-                      <p
-                        className={cn(
-                          'font-bold',
-                          titleSizes[titleSizeFor(feature)],
-                          feature.stat && 'max-sm:inline',
-                        )}
-                      >
-                        {marks(feature.title)}
-                      </p>
-                      {feature.subtitle && (
-                        <p className="text-xs font-medium leading-[17px] max-sm:leading-[22.5px]">
-                          {marks(feature.subtitle)}
+                    <div className="flex min-w-0 flex-1 items-center gap-[6.25px] max-sm:block max-sm:w-full max-sm:flex-none max-sm:text-[14px] max-sm:leading-[normal]">
+                      {/* Upright, the number joins the title's line at the title's size. */}
+                      {feature.stat && (
+                        <p className="shrink-0 whitespace-nowrap text-[42px] font-bold leading-[normal] max-sm:mr-[0.25em] max-sm:inline max-sm:text-[14px]">
+                          {marks(feature.stat)}
                         </p>
                       )}
+                      <div className={cn('min-w-0 flex-1', feature.stat && 'max-sm:inline')}>
+                        <p
+                          className={cn(
+                            'font-bold',
+                            titleSizes[titleSizeFor(feature)],
+                            feature.stat && 'max-sm:inline',
+                          )}
+                        >
+                          {marks(feature.title)}
+                        </p>
+                        {feature.subtitle && (
+                          <p className="text-xs font-medium leading-[17px] max-sm:leading-[22.5px]">
+                            {marks(feature.subtitle)}
+                          </p>
+                        )}
+                      </div>
                     </div>
-                  </div>
-                </li>
-              ))}
-            </ul>
+                  </li>
+                ))}
+              </ul>
+            </ScrollArrows>
           )}
         </div>
       </div>

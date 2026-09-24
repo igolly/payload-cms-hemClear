@@ -3,6 +3,7 @@ import React, { useRef, useState } from 'react'
 
 import type { ReviewsBlock } from '@/payload-types'
 
+import { ScrollArrows } from '@/components/ScrollArrows'
 import { cn } from '@/utilities/ui'
 import { Stars } from './Stars'
 import { marks } from '@/utilities/marks'
@@ -74,73 +75,72 @@ export const ReviewGrid: React.FC<Props> = ({
       {batches.length > 0 && (
         <div className="mt-2.5 flex flex-col gap-4 xl:mt-[18px] xl:gap-[15.5px]">
           {batches.map((batch, b) => (
-            <ul
-              className="-mx-4 flex snap-x snap-mandatory scroll-px-4 gap-[14px] overflow-x-auto px-4 py-1 [-ms-overflow-style:none] [scrollbar-width:none] xl:mx-auto xl:grid xl:w-[1115.75px] xl:grid-cols-[repeat(4,266px)] xl:justify-between xl:gap-y-[15.5px] xl:overflow-visible xl:p-0 [&::-webkit-scrollbar]:hidden"
-              key={b}
-            >
-              {batch.map((review) => {
-                const i = reviews.indexOf(review)
-                return (
-                  <li
-                    className="flex min-h-[322px] w-[266px] shrink-0 snap-start flex-col justify-between gap-3 rounded-[18.75px] border border-ash-200 bg-white p-4 shadow-[0_0_6.25px_rgba(0,0,0,0.15)]"
-                    data-payload-subpath={`reviews.${i}.title`}
-                    data-review-card
-                    key={review.id ?? i}
-                  >
-                    <div className="flex flex-col gap-3">
-                      <div className="flex h-[29px] items-center">
-                        <Stars
-                          className="text-navy"
-                          count={review.stars}
-                          gap="gap-0"
-                          size="size-6"
-                        />
+            <ScrollArrows key={b} label="review">
+              <ul className="-mx-4 flex snap-x snap-mandatory scroll-px-4 gap-[14px] overflow-x-auto px-4 py-1 [-ms-overflow-style:none] [scrollbar-width:none] xl:mx-auto xl:grid xl:w-[1115.75px] xl:grid-cols-[repeat(4,266px)] xl:justify-between xl:gap-y-[15.5px] xl:overflow-visible xl:p-0 [&::-webkit-scrollbar]:hidden">
+                {batch.map((review) => {
+                  const i = reviews.indexOf(review)
+                  return (
+                    <li
+                      className="flex min-h-[322px] w-[266px] shrink-0 snap-start flex-col justify-between gap-3 rounded-[18.75px] border border-ash-200 bg-white p-4 shadow-[0_0_6.25px_rgba(0,0,0,0.15)]"
+                      data-payload-subpath={`reviews.${i}.title`}
+                      data-review-card
+                      key={review.id ?? i}
+                    >
+                      <div className="flex flex-col gap-3">
+                        <div className="flex h-[29px] items-center">
+                          <Stars
+                            className="text-navy"
+                            count={review.stars}
+                            gap="gap-0"
+                            size="size-6"
+                          />
+                        </div>
+
+                        {review.verified && (
+                          <p
+                            className="flex h-[22px] items-center gap-2 text-[16px] font-medium leading-[19px] text-brand-600"
+                            data-payload-subpath={`reviews.${i}.verified`}
+                          >
+                            {/* eslint-disable-next-line @next/next/no-img-element -- 44px crop, nothing to optimise; decorative next to its label */}
+                            <img
+                              alt=""
+                              className="size-[22px] shrink-0"
+                              decoding="async"
+                              height={22}
+                              loading="lazy"
+                              src="/icons/reviews/verified.png"
+                              width={22}
+                            />
+                            {verifiedLabel || 'Verified Purchase'}
+                          </p>
+                        )}
+
+                        <h3
+                          className="font-playfair text-[18px] font-bold leading-[normal] text-navy"
+                          data-payload-subpath={`reviews.${i}.title`}
+                        >
+                          &ldquo;{review.title}&rdquo;
+                        </h3>
+
+                        <p
+                          className="whitespace-pre-line text-[16px] font-medium leading-[19px] text-navy"
+                          data-payload-subpath={`reviews.${i}.quote`}
+                        >
+                          &ldquo;{review.quote}&rdquo;
+                        </p>
                       </div>
 
-                      {review.verified && (
-                        <p
-                          className="flex h-[22px] items-center gap-2 text-[16px] font-medium leading-[19px] text-brand-600"
-                          data-payload-subpath={`reviews.${i}.verified`}
-                        >
-                          {/* eslint-disable-next-line @next/next/no-img-element -- 44px crop, nothing to optimise; decorative next to its label */}
-                          <img
-                            alt=""
-                            className="size-[22px] shrink-0"
-                            decoding="async"
-                            height={22}
-                            loading="lazy"
-                            src="/icons/reviews/verified.png"
-                            width={22}
-                          />
-                          {verifiedLabel || 'Verified Purchase'}
-                        </p>
-                      )}
-
-                      <h3
-                        className="font-playfair text-[18px] font-bold leading-[normal] text-navy"
-                        data-payload-subpath={`reviews.${i}.title`}
-                      >
-                        &ldquo;{review.title}&rdquo;
-                      </h3>
-
                       <p
-                        className="whitespace-pre-line text-[16px] font-medium leading-[19px] text-navy"
-                        data-payload-subpath={`reviews.${i}.quote`}
+                        className="text-[16px] font-bold leading-[19px] text-navy"
+                        data-payload-subpath={`reviews.${i}.author`}
                       >
-                        &ldquo;{review.quote}&rdquo;
+                        {marks(review.author)}
                       </p>
-                    </div>
-
-                    <p
-                      className="text-[16px] font-bold leading-[19px] text-navy"
-                      data-payload-subpath={`reviews.${i}.author`}
-                    >
-                      {marks(review.author)}
-                    </p>
-                  </li>
-                )
-              })}
-            </ul>
+                    </li>
+                  )
+                })}
+              </ul>
+            </ScrollArrows>
           ))}
         </div>
       )}
