@@ -231,7 +231,7 @@ const SplitHero: React.FC<Page['hero']> = ({
                     width={16}
                   />
                   <span
-                    className="shrink-0 text-center font-fraunces text-[15px] font-semibold leading-[15px] text-heading"
+                    className="shrink-0 text-center text-[15px] font-semibold leading-[15px] text-heading"
                     data-payload-subpath="badgeTitle"
                   >
                     {multiline(badgeTitle)}

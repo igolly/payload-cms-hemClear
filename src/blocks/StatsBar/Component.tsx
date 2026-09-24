@@ -10,8 +10,8 @@ type Stat = NonNullable<Props['stats']>[number]
 /**
  * Figure sizes from the desktop comp (`lg`, Marcellus): 50px for a short figure, 42px for a
  * long one ("500,000+") so it stays inside its column, and 40px for a figure under a top label
- * ("The / Original"). The mobile comp sets the figures in Fraunces Bold: 48/50, 36/40 and 36/38 on the 440px artboard, scaled with the viewport
- * below it so a 390px phone keeps the labels inside their cells.
+ * ("The / Original"). The mobile sizes are 48/50, 36/40 and 36/38 on the 440px artboard,
+ * scaled with the viewport below it so a 390px phone keeps the labels inside their cells.
  */
 const valueSizes: Record<NonNullable<Stat['valueSize']>, string> = {
   lg: 'text-[min(48px,10.91vw)] leading-[50px] lg:h-[55px] lg:text-[50px] lg:leading-[55px]',
@@ -26,8 +26,9 @@ export const StatsBarBlock: React.FC<Props> = ({ bgColor, bgColorCustom, stats }
 
   return (
     <section
-      // Mobile comp: Fraunces, a 2x2 grid of 200px cells inset 16px / 10px. Desktop: Marcellus.
-      className="w-full bg-mist px-4 py-[10px] font-fraunces sm:px-6 lg:px-8 lg:py-0 lg:font-marcellus"
+      // Mobile comp: a 2x2 grid of 200px cells inset 16px / 10px. Marcellus at every width —
+      // the comp sets the phone figures in Fraunces, which the site no longer loads.
+      className="w-full bg-mist px-4 py-[10px] font-marcellus sm:px-6 lg:px-8 lg:py-0"
       style={backgroundStyle(bgColor, bgColorCustom)}
     >
       <ul className="mx-auto grid max-w-[1116px] grid-cols-[repeat(2,minmax(0,200px))] justify-start text-center text-brand-600 sm:justify-center lg:flex lg:items-center lg:py-[3px]">

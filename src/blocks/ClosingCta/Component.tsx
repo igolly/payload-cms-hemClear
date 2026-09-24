@@ -67,7 +67,7 @@ export const ClosingCtaBlock: React.FC<Props> = ({
           />
         )}
         <div className="flex min-w-0 flex-1 flex-col gap-[6.25px]">
-          <h3 className="font-fraunces text-xs font-bold leading-[15px] text-navy [&_sup]:leading-[0]">
+          <h3 className="text-xs font-bold leading-[15px] text-navy [&_sup]:leading-[0]">
             {marks(card.title)}
           </h3>
           {card.description && (

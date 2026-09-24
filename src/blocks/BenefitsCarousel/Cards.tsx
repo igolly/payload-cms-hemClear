@@ -186,7 +186,7 @@ export const Cards: React.FC<{ items: Item[] }> = ({ items }) => {
                     )}
                   </span>
 
-                  <h3 className="font-fraunces text-lg font-normal leading-[22px] text-info-dark [&_sup]:leading-[0]">
+                  <h3 className="text-lg font-normal leading-[22px] text-info-dark [&_sup]:leading-[0]">
                     {multiline(item.title)}
                   </h3>
 

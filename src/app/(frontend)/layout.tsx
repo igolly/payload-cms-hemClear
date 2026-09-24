@@ -3,7 +3,7 @@ import type { Metadata } from 'next'
 import { cn } from '@/utilities/ui'
 import { GeistMono } from 'geist/font/mono'
 import { GeistSans } from 'geist/font/sans'
-import { Fraunces, Gentium_Book_Plus, Inter, Marcellus, Playfair_Display } from 'next/font/google'
+import { Gentium_Book_Plus, Inter, Marcellus, Playfair_Display } from 'next/font/google'
 import React from 'react'
 
 import { AdminBar } from '@/components/AdminBar'
@@ -43,13 +43,6 @@ const playfair = Playfair_Display({
   variable: '--font-playfair-display',
 })
 
-// Hero "Doctor's Choice" badge title. Variable font, so the weight range is loaded as one file.
-const fraunces = Fraunces({
-  subsets: ['latin'],
-  display: 'swap',
-  variable: '--font-fraunces-display',
-})
-
 // The figures on the product page's customer report. The comp names Gentium Book Basic,
 // which Google Fonts retired in favour of Gentium Book Plus — the same SIL typeface under
 // its current name. Only the bold is used, so only the bold is loaded.
@@ -71,7 +64,6 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         inter.variable,
         marcellus.variable,
         playfair.variable,
-        fraunces.variable,
         gentium.variable,
       )}
       lang="en"

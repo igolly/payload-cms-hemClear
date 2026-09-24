@@ -9,7 +9,7 @@ import { cn } from '@/utilities/ui'
 import { asText, marks } from '@/utilities/marks'
 
 /**
- * The comp sets the figures in Fraunces. A figure wider than three characters ("2-Part") drops from 56px to
+ * A figure wider than three characters ("2-Part") drops from 56px to
  * 42px so it still fits the fixed 143.75px figure column (the phone comp uses the same sizes).
  */
 const valueSize = (value: string) =>
@@ -75,14 +75,14 @@ export const ScienceStatsBlock: React.FC<Props> = ({
                 >
                   <span
                     className={cn(
-                      'w-[143.75px] shrink-0 whitespace-nowrap text-center font-fraunces font-bold text-heading',
+                      'w-[143.75px] shrink-0 whitespace-nowrap text-center font-bold text-heading',
                       valueSize(stat.value),
                     )}
                   >
                     {marks(stat.value)}
                   </span>
                   <span className="flex min-w-0 flex-1 flex-col gap-[6.25px] leading-normal">
-                    <span className="font-fraunces text-base font-semibold leading-5 text-info-dark">
+                    <span className="text-base font-semibold leading-5 text-info-dark">
                       {marks(stat.title)}
                     </span>
                     {stat.description && (
@@ -126,7 +126,7 @@ export const ScienceStatsBlock: React.FC<Props> = ({
           <ul className="flex w-full items-center justify-center sm:w-auto sm:flex-wrap sm:gap-y-2">
             {chips.map((chip, i) => (
               <li
-                className="min-w-0 flex-1 border-l border-ash-500 px-[10px] py-[6px] text-center font-fraunces text-base font-semibold leading-5 text-heading first:border-l-0 sm:flex-none sm:whitespace-nowrap sm:px-6 sm:py-0 sm:font-bold"
+                className="min-w-0 flex-1 border-l border-ash-500 px-[10px] py-[6px] text-center text-base font-semibold leading-5 text-heading first:border-l-0 sm:flex-none sm:whitespace-nowrap sm:px-6 sm:py-0 sm:font-bold"
                 key={chip.id ?? i}
               >
                 {marks(chip.text)}
