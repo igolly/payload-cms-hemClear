@@ -173,7 +173,9 @@ export const GuaranteeBlock: React.FC<Props> = ({
             {pills.map((pill, i) => (
               <li
                 className={cn(
-                  'flex h-[41.25px] items-center gap-[14.0625px] rounded-[14.06px] border-[0.9375px] border-brand-300 bg-gradient-to-r from-mist to-white px-4 sm:px-[22.5px]',
+                  // Fully rounded ends on a phone, where the row reads as a cluster of
+                  // separate badges rather than the comp's squarer strip.
+                  'flex h-[41.25px] items-center gap-[14.0625px] rounded-full border-[0.9375px] border-brand-300 bg-gradient-to-r from-mist to-white px-4 sm:rounded-[14.06px] sm:px-[22.5px]',
                   SHADOW,
                 )}
                 data-payload-subpath={`badges.${i}.label`}
