@@ -16,6 +16,15 @@ export const WhyDays: Block = {
       admin: { description: 'Large lifestyle image on the left.' },
     },
     {
+      name: 'mobileImage',
+      type: 'upload',
+      relationTo: 'media',
+      admin: {
+        description:
+          'Optional. Shown instead of the image above on phones, where the photo sits below the copy rather than behind it. Leave empty to use the same image at both sizes.',
+      },
+    },
+    {
       name: 'heading',
       type: 'textarea',
       admin: { description: 'Use line breaks to control where the heading wraps.' },

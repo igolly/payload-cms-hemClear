@@ -5,6 +5,7 @@ import type { WhyDaysBlock as Props } from '@/payload-types'
 import { CMSLink } from '@/components/Link'
 import { ImageSlot } from '@/blocks/FAQ/ImagePlaceholder'
 import { backgroundStyle } from '@/fields/background'
+import { cn } from '@/utilities/ui'
 import { marks, multiline } from '@/utilities/marks'
 
 /**
@@ -25,10 +26,14 @@ export const WhyDaysBlock: React.FC<Props> = ({
   heading,
   image,
   links,
+  mobileImage,
   paragraphs,
   productImage,
 }) => {
   const paras = Array.isArray(paragraphs) ? paragraphs : []
+  // A phone photo of its own is optional; without one the band shows the same image at
+  // every width, as it did before the field existed.
+  const hasMobileImage = Boolean(mobileImage && typeof mobileImage === 'object')
 
   return (
     <section
@@ -42,7 +47,11 @@ export const WhyDaysBlock: React.FC<Props> = ({
          * the 240px it was held to.
          */}
         <div
-          className="relative order-4 mt-5 w-full max-w-[400px] sm:order-none sm:mt-0 xl:absolute xl:left-0 xl:top-0 xl:order-none xl:w-[calc(100%-651px)] xl:max-w-[749px]"
+          className={cn(
+            'relative order-4 mt-5 w-full max-w-[400px] sm:order-none sm:mt-0 xl:absolute xl:left-0 xl:top-0 xl:order-none xl:w-[calc(100%-651px)] xl:max-w-[749px]',
+            // With a phone photo of its own, this one starts at `sm`.
+            hasMobileImage && 'max-sm:hidden',
+          )}
           data-payload-subpath="image"
         >
           <div className="relative aspect-[1012/846] w-full xl:mt-[10.4%]">
@@ -55,6 +64,23 @@ export const WhyDaysBlock: React.FC<Props> = ({
             />
           </div>
         </div>
+
+        {/* The phone photo, when one is set. It keeps its own proportions rather than the
+            wide box above, which is cut for sitting behind the copy on a desktop. */}
+        {hasMobileImage && (
+          <div
+            className="relative order-4 mt-5 w-full max-w-[400px] sm:hidden"
+            data-payload-subpath="mobileImage"
+          >
+            <ImageSlot
+              className="w-full"
+              hint="Phone photo"
+              imgClassName="h-auto w-full object-contain mix-blend-multiply"
+              label="Section image (phone)"
+              resource={mobileImage}
+            />
+          </div>
+        )}
 
         {/* Copy column. The heading is centred on a phone, the prose below it is not: a
             paragraph of four ranged-centre lines is harder to read than one with an edge. */}

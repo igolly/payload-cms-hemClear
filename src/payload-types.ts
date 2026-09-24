@@ -1790,6 +1790,10 @@ export interface WhyDaysBlock {
    */
   image?: (string | null) | Media;
   /**
+   * Optional. Shown instead of the image above on phones, where the photo sits below the copy rather than behind it. Leave empty to use the same image at both sizes.
+   */
+  mobileImage?: (string | null) | Media;
+  /**
    * Use line breaks to control where the heading wraps.
    */
   heading?: string | null;
@@ -3758,6 +3762,7 @@ export interface GuaranteeBlockSelect<T extends boolean = true> {
  */
 export interface WhyDaysBlockSelect<T extends boolean = true> {
   image?: T;
+  mobileImage?: T;
   heading?: T;
   paragraphs?:
     | T
