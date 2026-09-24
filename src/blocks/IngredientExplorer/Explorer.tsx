@@ -165,7 +165,13 @@ const IngredientCard: React.FC<{ item: Ingredient }> = ({ item }) => {
     <li className="[perspective:1600px] mx-auto">
       <div
         className={cn(
-          'grid h-full min-h-[420px] transition-transform duration-500 [transform-style:preserve-3d] motion-reduce:transition-none md:w-full max-w-[270px] items-center',
+          /*
+           * The two faces share one grid cell, so the cell has to size to the taller of
+           * them and both have to fill it — `items-stretch`, the default. Centring them
+           * instead let each face take its own content height, and the back, which has no
+           * photo, turned over visibly smaller than the front it replaced.
+           */
+          'grid h-full min-h-[420px] items-stretch transition-transform duration-500 [transform-style:preserve-3d] motion-reduce:transition-none md:w-full max-w-[270px]',
           flipped && '[transform:rotateY(180deg)]',
         )}
       >
