@@ -23,6 +23,14 @@ export const Gallery: React.FC<{ badgeLabel?: string | null; slides: Slide[] }> 
   slides,
 }) => {
   const [active, setActive] = useState(0)
+  /** The phone-only arrows over the photo; from `lg` the thumbnails carry the gallery. */
+  const arrow = (side: string) =>
+    cn(
+      'absolute top-1/2 z-10 size-8 -translate-y-1/2 opacity-80 transition-opacity',
+      'hover:opacity-100 disabled:pointer-events-none disabled:opacity-0 lg:hidden',
+      side,
+    )
+
   const current = slides[active]
   const hasOverlay = Boolean(
     current && (current.overlayEyebrow || current.overlayHeading || current.overlayText),
@@ -45,6 +53,53 @@ export const Gallery: React.FC<{ badgeLabel?: string | null; slides: Slide[] }> 
           <div className="flex h-full w-full items-center justify-center text-sm text-steel-400">
             Product image
           </div>
+        )}
+
+        {/*
+         * Arrows over the photo, on a phone only. The thumbnails underneath are the way
+         * through the gallery once there is room for them; stacked above the buy column
+         * they are small enough that the photo itself wants a way forward too. Desktop is
+         * left as it was.
+         */}
+        {slides.length > 1 && (
+          <>
+            <button
+              aria-label="Previous image"
+              className={arrow('left-2')}
+              disabled={active === 0}
+              onClick={() => setActive((i) => Math.max(0, i - 1))}
+              type="button"
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element -- static SVG, nothing to optimise */}
+              <img
+                alt=""
+                className="size-8"
+                decoding="async"
+                height={32}
+                loading="lazy"
+                src="/icons/reviews/carousel-left.svg"
+                width={32}
+              />
+            </button>
+            <button
+              aria-label="Next image"
+              className={arrow('right-2')}
+              disabled={active === slides.length - 1}
+              onClick={() => setActive((i) => Math.min(slides.length - 1, i + 1))}
+              type="button"
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element -- static SVG, nothing to optimise */}
+              <img
+                alt=""
+                className="size-8"
+                decoding="async"
+                height={32}
+                loading="lazy"
+                src="/icons/reviews/carousel-right.svg"
+                width={32}
+              />
+            </button>
+          </>
         )}
 
         {(hasOverlay || current?.overlayTestedBadge) && (
