@@ -15,6 +15,9 @@ type Feature = NonNullable<Props['features']>[number]
  * Badges drawn for this section in the Figma comp (filled circle, bolder glyph), which the
  * line icons in `BrandIcons` don't match. Any other icon an editor picks falls back to the
  * shared set, drawn in the same circle.
+ *
+ * A fifth of the comp's 100px below `xl`, with the product shot cut to match: at the comp
+ * size a badge takes a quarter of a phone's width away from the words beside it.
  */
 const featureBadges: Record<string, string> = {
   droplet: '/icons/pairing/droplet.svg',
@@ -31,7 +34,7 @@ const FeatureBadge: React.FC<{ icon: Feature['icon'] }> = ({ icon }) => {
       // eslint-disable-next-line @next/next/no-img-element -- static SVG, nothing to optimise
       <img
         alt=""
-        className="size-[100px] shrink-0"
+        className="size-20 shrink-0 xl:size-[100px]"
         decoding="async"
         height={100}
         loading="lazy"
@@ -42,7 +45,7 @@ const FeatureBadge: React.FC<{ icon: Feature['icon'] }> = ({ icon }) => {
   }
 
   return (
-    <span className="flex size-[100px] shrink-0 items-center justify-center rounded-full bg-mist-100 text-navy [&>span>svg]:size-12">
+    <span className="flex size-20 shrink-0 items-center justify-center rounded-full bg-mist-100 text-navy [&>span>svg]:size-12 xl:size-[100px]">
       <BrandIcon name={icon} />
     </span>
   )
@@ -163,7 +166,7 @@ export const PairingBlock: React.FC<Props> = ({
           />
 
           <div
-            className="relative order-1 mx-auto aspect-[454/422] w-full max-w-[454px] md:col-span-2 xl:order-2 xl:mx-0 xl:h-[353px] xl:w-[379px] xl:shrink-0"
+            className="relative order-1 mx-auto aspect-[454/422] w-4/5 max-w-[454px] md:col-span-2 xl:order-2 xl:mx-0 xl:h-[353px] xl:w-[379px] xl:shrink-0"
             data-payload-subpath="image"
           >
             <ImageSlot
