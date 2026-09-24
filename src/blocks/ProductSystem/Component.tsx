@@ -52,7 +52,15 @@ const FeatureIcon: React.FC<{ feature: Feature }> = ({ feature }) => {
     return (
       // The research glyph is narrower than its 44px box; `object-contain` keeps it centred at its drawn ratio.
       // eslint-disable-next-line @next/next/no-img-element -- static SVG, nothing to optimise
-      <img alt="" className="size-11 shrink-0 object-contain" height={44} src={src} width={44} />
+      <img
+        alt=""
+        className="size-11 shrink-0 object-contain"
+        decoding="async"
+        height={44}
+        loading="lazy"
+        src={src}
+        width={44}
+      />
     )
   }
 

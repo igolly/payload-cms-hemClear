@@ -93,7 +93,15 @@ const FeatureCard: React.FC<{ card: Card; index: number }> = ({ card, index }) =
         </span>
       ) : localIcon ? (
         // eslint-disable-next-line @next/next/no-img-element
-        <img alt="" className="block size-11 shrink-0" height={44} src={localIcon} width={44} />
+        <img
+          alt=""
+          className="block size-11 shrink-0"
+          decoding="async"
+          height={44}
+          loading="lazy"
+          src={localIcon}
+          width={44}
+        />
       ) : (
         <BrandIcon
           className="block size-11 shrink-0 text-brand-600 [&>svg]:h-full [&>svg]:w-full"

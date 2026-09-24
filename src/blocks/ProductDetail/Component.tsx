@@ -163,9 +163,7 @@ export const ProductDetailBlockComponent: React.FC<ProductDetailBlock> = (produc
                     <p className="font-gentium text-[36px] font-bold leading-9 @min-[600px]:text-[50px] @min-[600px]:leading-[50px]">
                       {marks(result.value)}
                     </p>
-                    <p className="text-[13px] font-bold leading-4">
-                      {marks(result.label)}
-                    </p>
+                    <p className="text-[13px] font-bold leading-4">{marks(result.label)}</p>
                     {result.detail && (
                       <p className="hidden text-xs font-medium leading-[14px] text-brand-300 @min-[600px]:block">
                         {marks(result.detail)}
@@ -204,7 +202,15 @@ export const ProductDetailBlockComponent: React.FC<ProductDetailBlock> = (produc
                 key={note.id ?? i}
               >
                 {src ? (
-                  <img alt="" className="size-7 shrink-0" height={28} src={src} width={28} />
+                  <img
+                    alt=""
+                    className="size-7 shrink-0"
+                    decoding="async"
+                    height={28}
+                    loading="lazy"
+                    src={src}
+                    width={28}
+                  />
                 ) : (
                   <BrandIcon className="shrink-0 text-navy [&>svg]:size-7" name={note.icon} />
                 )}
@@ -230,7 +236,15 @@ export const ProductDetailBlockComponent: React.FC<ProductDetailBlock> = (produc
                   >
                     <span className="flex size-16 items-center justify-center rounded-[20px] border border-ash-300 text-navy">
                       {src ? (
-                        <img alt="" className="size-7" height={28} src={src} width={28} />
+                        <img
+                          alt=""
+                          className="size-7"
+                          decoding="async"
+                          height={28}
+                          loading="lazy"
+                          src={src}
+                          width={28}
+                        />
                       ) : (
                         <BrandIcon className="[&>svg]:size-7" name={item.icon} />
                       )}
@@ -271,7 +285,15 @@ export const ProductDetailBlockComponent: React.FC<ProductDetailBlock> = (produc
                           style={tile ? { backgroundImage: tile } : undefined}
                         >
                           {src ? (
-                            <img alt="" className="size-[18px]" height={18} src={src} width={18} />
+                            <img
+                              alt=""
+                              className="size-[18px]"
+                              decoding="async"
+                              height={18}
+                              loading="lazy"
+                              src={src}
+                              width={18}
+                            />
                           ) : (
                             <BrandIcon
                               className="text-brand-400 [&>svg]:size-[18px]"

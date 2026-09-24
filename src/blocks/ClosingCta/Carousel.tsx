@@ -66,7 +66,15 @@ export const CardsCarousel: React.FC<{ slides: React.ReactNode[] }> = ({ slides 
         type="button"
       >
         {/* eslint-disable-next-line @next/next/no-img-element -- static SVG, nothing to optimise */}
-        <img alt="" className="size-8" height={32} src="/icons/support/arrow-left.svg" width={32} />
+        <img
+          alt=""
+          className="size-8"
+          decoding="async"
+          height={32}
+          loading="lazy"
+          src="/icons/support/arrow-left.svg"
+          width={32}
+        />
       </button>
       <button
         aria-label="Next card"

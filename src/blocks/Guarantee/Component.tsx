@@ -36,7 +36,15 @@ const SHADOW = 'shadow-[0_1.875px_7.031px_rgba(0,0,0,0.25)]'
 const Icon: React.FC<{ map: Record<string, string>; name?: string | null }> = ({ map, name }) =>
   name && map[name] ? (
     // eslint-disable-next-line @next/next/no-img-element -- static SVG, nothing to optimise
-    <img alt="" className="size-[30px] shrink-0" height={30} src={map[name]} width={30} />
+    <img
+      alt=""
+      className="size-[30px] shrink-0"
+      decoding="async"
+      height={30}
+      loading="lazy"
+      src={map[name]}
+      width={30}
+    />
   ) : (
     <BrandIcon className="shrink-0 text-brand-600 [&>svg]:size-[30px]" name={name} />
   )
@@ -69,7 +77,15 @@ export const GuaranteeBlock: React.FC<Props> = ({
     >
       <div className="mx-auto flex max-w-[1400px] flex-col items-center gap-[9.375px] py-[23.4375px]">
         {/* eslint-disable-next-line @next/next/no-img-element -- static SVG, nothing to optimise */}
-        <img alt="" className="size-16" height={64} src="/icons/guarantee/shield.svg" width={64} />
+        <img
+          alt=""
+          className="size-16"
+          decoding="async"
+          height={64}
+          loading="lazy"
+          src="/icons/guarantee/shield.svg"
+          width={64}
+        />
 
         {badgeLabel && (
           <span

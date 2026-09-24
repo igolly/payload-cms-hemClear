@@ -46,7 +46,17 @@ const ItemIcon: React.FC<{ className: string; item: Item; size: number }> = ({
   const src = item.icon ? illustrations[item.icon] : undefined
   if (src) {
     // eslint-disable-next-line @next/next/no-img-element -- static SVG, nothing to optimise
-    return <img alt="" className={className} height={size} src={src} width={size} />
+    return (
+      <img
+        alt=""
+        className={className}
+        decoding="async"
+        height={size}
+        loading="lazy"
+        src={src}
+        width={size}
+      />
+    )
   }
 
   return (

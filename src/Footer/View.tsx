@@ -119,6 +119,8 @@ export const FooterView: React.FC<{ data: FooterType }> = ({ data: footer }) => 
                         alt=""
                         className="size-[25px] shrink-0"
                         height={25}
+                        decoding="async"
+                        loading="lazy"
                         src={promiseIcons[item.icon]}
                         width={25}
                       />
@@ -152,6 +154,8 @@ export const FooterView: React.FC<{ data: FooterType }> = ({ data: footer }) => 
                           <img
                             alt=""
                             className="max-h-[15px] max-w-[15px]"
+                            decoding="async"
+                            loading="lazy"
                             src={socialIcons[item.platform]}
                           />
                         </span>

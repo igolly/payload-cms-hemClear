@@ -172,7 +172,15 @@ export const Cards: React.FC<{ items: Item[] }> = ({ items }) => {
                 >
                   <span className="absolute left-1/2 top-0 flex size-[72.5px] -translate-x-1/2 -translate-y-1/2 items-center justify-center overflow-hidden rounded-full border-[0.63px] border-brand-300 bg-white text-brand-300 [&>span>svg]:size-9">
                     {badge ? (
-                      <img alt="" className="size-9" height={36} src={badge} width={36} />
+                      <img
+                        alt=""
+                        className="size-9"
+                        decoding="async"
+                        height={36}
+                        loading="lazy"
+                        src={badge}
+                        width={36}
+                      />
                     ) : (
                       <BrandIcon name={item.icon} />
                     )}

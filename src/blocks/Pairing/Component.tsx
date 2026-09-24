@@ -29,7 +29,15 @@ const FeatureBadge: React.FC<{ icon: Feature['icon'] }> = ({ icon }) => {
   if (src) {
     return (
       // eslint-disable-next-line @next/next/no-img-element -- static SVG, nothing to optimise
-      <img alt="" className="size-[100px] shrink-0" height={100} src={src} width={100} />
+      <img
+        alt=""
+        className="size-[100px] shrink-0"
+        decoding="async"
+        height={100}
+        loading="lazy"
+        src={src}
+        width={100}
+      />
     )
   }
 

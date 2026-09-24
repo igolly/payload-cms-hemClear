@@ -57,9 +57,21 @@ export const MedicalReviewBlock: React.FC<Props> = ({
               className="flex max-w-[292px] items-center gap-0.5 text-center font-marcellus text-[28px] leading-[32px] text-navy sm:max-w-none sm:gap-2.5 lg:text-[32px] lg:leading-[15px]"
               data-payload-subpath="eyebrow"
             >
-              <img alt="" className="h-[60px] w-[35px] shrink-0" src="/icons/hero/oat-left.svg" />
+              <img
+                alt=""
+                className="h-[60px] w-[35px] shrink-0"
+                decoding="async"
+                loading="lazy"
+                src="/icons/hero/oat-left.svg"
+              />
               {marks(eyebrow)}
-              <img alt="" className="h-[60px] w-[35px] shrink-0" src="/icons/hero/oat-right.svg" />
+              <img
+                alt=""
+                className="h-[60px] w-[35px] shrink-0"
+                decoding="async"
+                loading="lazy"
+                src="/icons/hero/oat-right.svg"
+              />
             </p>
           )}
 
