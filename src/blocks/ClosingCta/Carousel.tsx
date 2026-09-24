@@ -94,6 +94,26 @@ export const CardsCarousel: React.FC<{ slides: React.ReactNode[] }> = ({ slides 
           width={32}
         />
       </button>
+
+      {/* A dot per card below the row, as the mobile frames draw them. The row becomes a
+          centred line at `xl`, where there is nothing left to page through. */}
+      {maxIndex > 0 && (
+        <div className="flex items-start justify-center gap-2.5 py-2.5 xl:hidden">
+          {slides.map((_, i) => (
+            <button
+              aria-current={i === active}
+              aria-label={`Card ${i + 1}`}
+              className={cn(
+                'size-2 shrink-0 rounded-full transition-colors',
+                i === active ? 'bg-brand-600' : 'bg-ash-250',
+              )}
+              key={i}
+              onClick={() => scrollToIndex(i)}
+              type="button"
+            />
+          ))}
+        </div>
+      )}
     </div>
   )
 }

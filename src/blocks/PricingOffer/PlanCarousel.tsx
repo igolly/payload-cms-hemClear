@@ -116,6 +116,26 @@ export const PlanCarousel: React.FC<{
             />
           </button>
         ))}
+
+      {/* A dot per plan below the row, as the mobile frames draw them; the row is a
+          side-by-side set again at `xl`, with nothing left to page through. */}
+      {count > 1 && (
+        <div className="flex items-start justify-center gap-2.5 py-2.5 xl:hidden">
+          {Array.from({ length: count }, (_, i) => (
+            <button
+              aria-current={i === active}
+              aria-label={`Plan ${i + 1}`}
+              className={cn(
+                'size-2 shrink-0 rounded-full transition-colors',
+                i === active ? 'bg-brand-600' : 'bg-ash-250',
+              )}
+              key={i}
+              onClick={() => go(i)}
+              type="button"
+            />
+          ))}
+        </div>
+      )}
     </div>
   )
 }
