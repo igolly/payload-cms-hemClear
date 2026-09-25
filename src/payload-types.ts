@@ -592,6 +592,114 @@ export interface ProductDetailBlock {
               id?: string | null;
             }[]
           | null;
+        eyebrow?: string | null;
+        title?: string | null;
+        description?: string | null;
+        badgeLabel?: string | null;
+        ctaLabel?: string | null;
+        /**
+         * First image is shown by default.
+         */
+        gallery?:
+          | {
+              image?: (string | null) | Media;
+              /**
+               * Optional. Shown in the thumbnail strip instead of the image.
+               */
+              thumbnail?: (string | null) | Media;
+              overlayEyebrow?: string | null;
+              /**
+               * Line breaks are kept.
+               */
+              overlayHeading?: string | null;
+              /**
+               * Line breaks are kept.
+               */
+              overlayText?: string | null;
+              overlayTestedBadge?: boolean | null;
+              id?: string | null;
+            }[]
+          | null;
+        benefits?:
+          | {
+              text: string;
+              id?: string | null;
+            }[]
+          | null;
+        resultsTitle?: string | null;
+        results?:
+          | {
+              value: string;
+              label: string;
+              detail?: string | null;
+              id?: string | null;
+            }[]
+          | null;
+        resultsFootnote?: string | null;
+        feelTitle?: string | null;
+        feel?:
+          | {
+              icon:
+                | 'pregnancy'
+                | 'toilet'
+                | 'sitting'
+                | 'lifting'
+                | 'fiber'
+                | 'tissueChange'
+                | 'flask'
+                | 'supportSystem'
+                | 'stethoscope'
+                | 'research'
+                | 'madeInUsa'
+                | 'guarantee'
+                | 'clipboardCheck'
+                | 'clock'
+                | 'documentSearch'
+                | 'packageLock'
+                | 'gmp'
+                | 'packageBox'
+                | 'truck'
+                | 'calendar'
+                | 'refund'
+                | 'rotate'
+                | 'badgeAward'
+                | 'leaf'
+                | 'droplet'
+                | 'shieldCheck'
+                | 'shieldLeaf'
+                | 'snowflake'
+                | 'info';
+              title: string;
+              /**
+               * e.g. "92%"
+               */
+              percent?: string | null;
+              subtitle?: string | null;
+              /**
+               * Product-page glyph. Overrides Icon when set.
+               */
+              artwork?:
+                | ('heart' | 'padlock' | 'shield' | 'delivery' | 'cancel' | 'leaf' | 'smile' | 'recycle' | 'cardiogram')
+                | null;
+              id?: string | null;
+            }[]
+          | null;
+        compositionTitle?: string | null;
+        compositionNote?: string | null;
+        containsTitle?: string | null;
+        contains?:
+          | {
+              text: string;
+              id?: string | null;
+            }[]
+          | null;
+        notContainsTitle?: string | null;
+        notContains?:
+          | {
+              text: string;
+              id?: string | null;
+            }[]
+          | null;
         id?: string | null;
       }[]
     | null;
@@ -3340,6 +3448,65 @@ export interface ProductDetailBlockSelect<T extends boolean = true> {
               bonusSubtitle?: T;
               bonusNote?: T;
               bonusImage?: T;
+              id?: T;
+            };
+        eyebrow?: T;
+        title?: T;
+        description?: T;
+        badgeLabel?: T;
+        ctaLabel?: T;
+        gallery?:
+          | T
+          | {
+              image?: T;
+              thumbnail?: T;
+              overlayEyebrow?: T;
+              overlayHeading?: T;
+              overlayText?: T;
+              overlayTestedBadge?: T;
+              id?: T;
+            };
+        benefits?:
+          | T
+          | {
+              text?: T;
+              id?: T;
+            };
+        resultsTitle?: T;
+        results?:
+          | T
+          | {
+              value?: T;
+              label?: T;
+              detail?: T;
+              id?: T;
+            };
+        resultsFootnote?: T;
+        feelTitle?: T;
+        feel?:
+          | T
+          | {
+              icon?: T;
+              title?: T;
+              percent?: T;
+              subtitle?: T;
+              artwork?: T;
+              id?: T;
+            };
+        compositionTitle?: T;
+        compositionNote?: T;
+        containsTitle?: T;
+        contains?:
+          | T
+          | {
+              text?: T;
+              id?: T;
+            };
+        notContainsTitle?: T;
+        notContains?:
+          | T
+          | {
+              text?: T;
               id?: T;
             };
         id?: T;

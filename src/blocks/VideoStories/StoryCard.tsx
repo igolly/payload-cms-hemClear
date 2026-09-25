@@ -1,5 +1,5 @@
 'use client'
-import React, { useState } from 'react'
+import React from 'react'
 /* eslint-disable @next/next/no-img-element */
 
 import type { VideoStoriesBlock } from '@/payload-types'
@@ -69,13 +69,15 @@ const StatusBar = ({ compact }: { compact?: boolean }) => (
  */
 export const StoryCard: React.FC<{
   index: number
+  /** Raised to the carousel so only one story can be playing at a time. */
+  onPlayChange: (playing: boolean) => void
+  playing: boolean
   /** The poster already carries the status bar, badge and duration (as the Figma stills
       do), so they are not drawn a second time on top of it. */
   posterIncludesChrome?: boolean
   story: Story
   tone?: 'dark' | 'light'
-}> = ({ index, posterIncludesChrome = false, story, tone = 'dark' }) => {
-  const [playing, setPlaying] = useState(false)
+}> = ({ index, onPlayChange, playing, posterIncludesChrome = false, story, tone = 'dark' }) => {
   const light = tone === 'light'
 
   const hasVideoFile = story.video && typeof story.video === 'object'
@@ -95,6 +97,35 @@ export const StoryCard: React.FC<{
       )}
       data-payload-subpath={`stories.${index}.name`}
     >
+      {/*
+       * Closing is the only way back to the still: the native controls can pause a clip but
+       * not leave it, and an embed has no exit at all. Sits above the video's own chrome,
+       * clear of the controls along the bottom.
+       */}
+      {playing && (
+        <button
+          aria-label={`Stop ${story.name}'s video`}
+          className={cn(
+            'absolute right-2 top-2 z-30 flex items-center justify-center rounded-full bg-black/60 text-white backdrop-blur-sm transition-colors hover:bg-black/80',
+            light ? 'size-6' : 'size-8',
+          )}
+          onClick={() => onPlayChange(false)}
+          type="button"
+        >
+          <svg
+            aria-hidden="true"
+            className={light ? 'size-3' : 'size-4'}
+            fill="none"
+            stroke="currentColor"
+            strokeLinecap="round"
+            strokeWidth="2.25"
+            viewBox="0 0 24 24"
+          >
+            <path d="M6 6l12 12M18 6L6 18" />
+          </svg>
+        </button>
+      )}
+
       {playing && hasVideoFile ? (
         /*
          * Its own element rather than `Media`, whose `VideoMedia` is built for decorative
@@ -113,6 +144,7 @@ export const StoryCard: React.FC<{
               ? getMediaUrl(story.poster.url)
               : undefined
           }
+          onEnded={() => onPlayChange(false)}
           preload="auto"
           src={getMediaUrl((story.video as { url?: null | string }).url)}
         />
@@ -190,7 +222,7 @@ export const StoryCard: React.FC<{
             aria-label={`Play ${story.name}'s video`}
             className="absolute inset-0 z-20 flex items-center justify-center"
             disabled={!canPlay}
-            onClick={() => setPlaying(true)}
+            onClick={() => onPlayChange(true)}
             type="button"
           >
             {light ? (

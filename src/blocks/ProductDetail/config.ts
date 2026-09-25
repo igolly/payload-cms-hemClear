@@ -100,6 +100,127 @@ const planFields: Field[] = [
   },
 ]
 
+const galleryField: Field = {
+  name: 'gallery',
+  type: 'array',
+  label: 'Gallery',
+  labels: { singular: 'Image', plural: 'Images' },
+  admin: { description: 'First image is shown by default.', initCollapsed: true },
+  fields: [
+    { name: 'image', type: 'upload', relationTo: 'media' },
+    {
+      name: 'thumbnail',
+      type: 'upload',
+      relationTo: 'media',
+      admin: {
+        description: 'Optional. Shown in the thumbnail strip instead of the image.',
+      },
+    },
+    {
+      type: 'collapsible',
+      label: 'Overlay',
+      admin: {
+        description:
+          'Optional copy set over the image (the comp does this on the first slide). The Review Badge shows on slides that have an overlay.',
+        initCollapsed: true,
+      },
+      fields: [
+        { name: 'overlayEyebrow', type: 'text' },
+        {
+          name: 'overlayHeading',
+          type: 'textarea',
+          admin: { description: 'Line breaks are kept.' },
+        },
+        {
+          name: 'overlayText',
+          type: 'textarea',
+          admin: { description: 'Line breaks are kept.' },
+        },
+        {
+          name: 'overlayTestedBadge',
+          type: 'checkbox',
+          label: 'Show the "3rd-party tested" seal',
+        },
+      ],
+    },
+  ],
+}
+
+const benefitsField: Field = {
+  name: 'benefits',
+  type: 'array',
+  label: 'Benefit Pills',
+  labels: { singular: 'Pill', plural: 'Pills' },
+  admin: { initCollapsed: true },
+  fields: [{ name: 'text', type: 'text', required: true }],
+}
+
+const resultsField: Field = {
+  name: 'results',
+  type: 'array',
+  labels: { singular: 'Result', plural: 'Results' },
+  admin: { initCollapsed: true },
+  fields: [
+    {
+      type: 'row',
+      fields: [
+        { name: 'value', type: 'text', required: true, admin: { width: '30%' } },
+        { name: 'label', type: 'text', required: true, admin: { width: '70%' } },
+      ],
+    },
+    { name: 'detail', type: 'textarea' },
+  ],
+}
+
+const feelField: Field = {
+  name: 'feel',
+  type: 'array',
+  label: 'What You’ll Feel',
+  labels: { singular: 'Row', plural: 'Rows' },
+  admin: { initCollapsed: true },
+  fields: [
+    {
+      type: 'row',
+      fields: [
+        {
+          name: 'icon',
+          type: 'select',
+          defaultValue: 'leaf',
+          options: brandIconOptions,
+          required: true,
+          admin: { width: '30%' },
+        },
+        { name: 'title', type: 'text', required: true, admin: { width: '45%' } },
+        {
+          name: 'percent',
+          type: 'text',
+          admin: { description: 'e.g. "92%"', width: '25%' },
+        },
+      ],
+    },
+    {
+      type: 'row',
+      fields: [{ name: 'subtitle', type: 'text', admin: { width: '70%' } }, artworkField('30%')],
+    },
+  ],
+}
+
+const containsField: Field = {
+  name: 'contains',
+  type: 'array',
+  labels: { singular: 'Item', plural: 'Items' },
+  admin: { initCollapsed: true },
+  fields: [{ name: 'text', type: 'text', required: true }],
+}
+
+const notContainsField: Field = {
+  name: 'notContains',
+  type: 'array',
+  labels: { singular: 'Item', plural: 'Items' },
+  admin: { initCollapsed: true },
+  fields: [{ name: 'text', type: 'text', required: true }],
+}
+
 export const ProductDetail: Block = {
   slug: 'productDetail',
   interfaceName: 'ProductDetailBlock',
@@ -119,51 +240,7 @@ export const ProductDetail: Block = {
               admin: { description: 'Small caps line above the title.' },
             },
             { name: 'description', type: 'textarea' },
-            {
-              name: 'gallery',
-              type: 'array',
-              label: 'Gallery',
-              labels: { singular: 'Image', plural: 'Images' },
-              admin: { description: 'First image is shown by default.', initCollapsed: true },
-              fields: [
-                { name: 'image', type: 'upload', relationTo: 'media' },
-                {
-                  name: 'thumbnail',
-                  type: 'upload',
-                  relationTo: 'media',
-                  admin: {
-                    description: 'Optional. Shown in the thumbnail strip instead of the image.',
-                  },
-                },
-                {
-                  type: 'collapsible',
-                  label: 'Overlay',
-                  admin: {
-                    description:
-                      'Optional copy set over the image (the comp does this on the first slide). The Review Badge shows on slides that have an overlay.',
-                    initCollapsed: true,
-                  },
-                  fields: [
-                    { name: 'overlayEyebrow', type: 'text' },
-                    {
-                      name: 'overlayHeading',
-                      type: 'textarea',
-                      admin: { description: 'Line breaks are kept.' },
-                    },
-                    {
-                      name: 'overlayText',
-                      type: 'textarea',
-                      admin: { description: 'Line breaks are kept.' },
-                    },
-                    {
-                      name: 'overlayTestedBadge',
-                      type: 'checkbox',
-                      label: 'Show the "3rd-party tested" seal',
-                    },
-                  ],
-                },
-              ],
-            },
+            galleryField,
             {
               type: 'collapsible',
               label: 'Review Bar',
@@ -198,14 +275,7 @@ export const ProductDetail: Block = {
                 },
               ],
             },
-            {
-              name: 'benefits',
-              type: 'array',
-              label: 'Benefit Pills',
-              labels: { singular: 'Pill', plural: 'Pills' },
-              admin: { initCollapsed: true },
-              fields: [{ name: 'text', type: 'text', required: true }],
-            },
+            benefitsField,
             {
               name: 'badgeLabel',
               type: 'text',
@@ -218,59 +288,10 @@ export const ProductDetail: Block = {
           label: 'Results',
           fields: [
             { name: 'resultsTitle', type: 'text', defaultValue: 'Customer-Reported Results*' },
-            {
-              name: 'results',
-              type: 'array',
-              labels: { singular: 'Result', plural: 'Results' },
-              admin: { initCollapsed: true },
-              fields: [
-                {
-                  type: 'row',
-                  fields: [
-                    { name: 'value', type: 'text', required: true, admin: { width: '30%' } },
-                    { name: 'label', type: 'text', required: true, admin: { width: '70%' } },
-                  ],
-                },
-                { name: 'detail', type: 'textarea' },
-              ],
-            },
+            resultsField,
             { name: 'resultsFootnote', type: 'textarea' },
             { name: 'feelTitle', type: 'text', defaultValue: "What You'll Feel" },
-            {
-              name: 'feel',
-              type: 'array',
-              label: 'What You’ll Feel',
-              labels: { singular: 'Row', plural: 'Rows' },
-              admin: { initCollapsed: true },
-              fields: [
-                {
-                  type: 'row',
-                  fields: [
-                    {
-                      name: 'icon',
-                      type: 'select',
-                      defaultValue: 'leaf',
-                      options: brandIconOptions,
-                      required: true,
-                      admin: { width: '30%' },
-                    },
-                    { name: 'title', type: 'text', required: true, admin: { width: '45%' } },
-                    {
-                      name: 'percent',
-                      type: 'text',
-                      admin: { description: 'e.g. "92%"', width: '25%' },
-                    },
-                  ],
-                },
-                {
-                  type: 'row',
-                  fields: [
-                    { name: 'subtitle', type: 'text', admin: { width: '70%' } },
-                    artworkField('30%'),
-                  ],
-                },
-              ],
-            },
+            feelField,
           ],
         },
         // ---------------------------------------------------------------- Buy box
@@ -298,6 +319,40 @@ export const ProductDetail: Block = {
                     components: { RowLabel: '@/blocks/ProductDetail/RowLabel#PlanRowLabel' },
                   },
                   fields: planFields,
+                },
+                {
+                  type: 'collapsible',
+                  label: 'Content for this variant',
+                  admin: { initCollapsed: true },
+                  fields: [
+                    {
+                      type: 'ui',
+                      name: 'variantContentNote',
+                      admin: {
+                        components: {
+                          Field: '@/blocks/ProductDetail/OverrideNote#OverrideNote',
+                        },
+                      },
+                    },
+                    { name: 'eyebrow', type: 'text' },
+                    { name: 'title', type: 'text' },
+                    { name: 'description', type: 'textarea' },
+                    { name: 'badgeLabel', type: 'text' },
+                    { name: 'ctaLabel', type: 'text' },
+                    galleryField,
+                    benefitsField,
+                    { name: 'resultsTitle', type: 'text' },
+                    resultsField,
+                    { name: 'resultsFootnote', type: 'textarea' },
+                    { name: 'feelTitle', type: 'text' },
+                    feelField,
+                    { name: 'compositionTitle', type: 'text' },
+                    { name: 'compositionNote', type: 'textarea' },
+                    { name: 'containsTitle', type: 'text' },
+                    containsField,
+                    { name: 'notContainsTitle', type: 'text' },
+                    notContainsField,
+                  ],
                 },
               ],
             },
@@ -415,20 +470,8 @@ export const ProductDetail: Block = {
                     },
                   ],
                 },
-                {
-                  name: 'contains',
-                  type: 'array',
-                  labels: { singular: 'Item', plural: 'Items' },
-                  admin: { initCollapsed: true },
-                  fields: [{ name: 'text', type: 'text', required: true }],
-                },
-                {
-                  name: 'notContains',
-                  type: 'array',
-                  labels: { singular: 'Item', plural: 'Items' },
-                  admin: { initCollapsed: true },
-                  fields: [{ name: 'text', type: 'text', required: true }],
-                },
+                containsField,
+                notContainsField,
               ],
             },
             {

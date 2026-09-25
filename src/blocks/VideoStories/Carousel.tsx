@@ -31,9 +31,25 @@ export const Carousel: React.FC<{
   tone?: 'dark' | 'light'
 }> = ({ arrows = true, itemClassName, posterIncludesChrome, stories, tone = 'dark' }) => {
   const trackRef = useRef<HTMLUListElement>(null)
+  /*
+   * One story plays at a time, so which one is the carousel's business rather than each
+   * card's. Starting a second swaps the index, which unmounts the first card's <video> or
+   * <iframe> — stopping it dead and putting its still and play button back.
+   */
+  const [playingIndex, setPlayingIndex] = useState<null | number>(null)
   const [active, setActive] = useState(0)
   const [atStart, setAtStart] = useState(true)
   const [atEnd, setAtEnd] = useState(false)
+
+  // Escape stops the clip, the same key that closes the mega menu and the mobile drawer.
+  useEffect(() => {
+    if (playingIndex === null) return
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setPlayingIndex(null)
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [playingIndex])
 
   /** Phone widths (dark tone): cards snap to the centre of the track, as Figma 6246:3126 does. */
   const centred = useCallback(
@@ -136,6 +152,8 @@ export const Carousel: React.FC<{
             >
               <StoryCard
                 index={i}
+                onPlayChange={(next) => setPlayingIndex(next ? i : null)}
+                playing={playingIndex === i}
                 posterIncludesChrome={posterIncludesChrome}
                 story={story}
                 tone="light"
@@ -274,6 +292,8 @@ export const Carousel: React.FC<{
             >
               <StoryCard
                 index={i}
+                onPlayChange={(next) => setPlayingIndex(next ? i : null)}
+                playing={playingIndex === i}
                 posterIncludesChrome={posterIncludesChrome}
                 story={story}
                 tone="dark"

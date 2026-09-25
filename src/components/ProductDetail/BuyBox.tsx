@@ -18,11 +18,13 @@ type Plan = NonNullable<ProductDetailBlock['plans']>[number]
 export const BuyBox: React.FC<{
   ctaLabel?: string | null
   oneTimeLabel?: string | null
+  /** The chosen variant, held by the block so the gallery and the copy follow it too. */
+  onVariantChange: (index: number) => void
   plans: Plan[]
+  variant: number
   variants: Variant[]
   variantsTitle?: string | null
-}> = ({ ctaLabel, oneTimeLabel, plans, variants, variantsTitle }) => {
-  const [variant, setVariant] = useState(0)
+}> = ({ ctaLabel, oneTimeLabel, onVariantChange, plans, variant, variants, variantsTitle }) => {
   const [plan, setPlan] = useState(0)
 
   /*
@@ -57,7 +59,7 @@ export const BuyBox: React.FC<{
                   <button
                     aria-current={selected}
                     className="flex w-[100px] flex-col items-center gap-[5px] @min-[480px]:w-[110px]"
-                    onClick={() => setVariant(i)}
+                    onClick={() => onVariantChange(i)}
                     type="button"
                   >
                     {/* 110px disc, 3px ring: navy on a pale fill when chosen, pale blue otherwise. */}

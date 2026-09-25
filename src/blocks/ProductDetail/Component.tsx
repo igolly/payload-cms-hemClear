@@ -1,4 +1,5 @@
-import React from 'react'
+'use client'
+import React, { useState } from 'react'
 /* eslint-disable @next/next/no-img-element -- static design-system glyphs, nothing to optimise */
 
 import type { ProductDetailBlock } from '@/payload-types'
@@ -40,7 +41,53 @@ const withBold = (text: React.ReactNode): React.ReactNode =>
  * so the pieces that need ~600px (results row, composition columns) fold on its width rather
  * than the viewport's.
  */
-export const ProductDetailBlockComponent: React.FC<ProductDetailBlock> = (product) => {
+
+/**
+ * The fields a variant may carry instead of the product's own. Anything left empty on the
+ * variant falls through to the product, so an editor fills in only what actually differs.
+ */
+const OVERRIDABLE = new Set([
+  'badgeLabel',
+  'benefits',
+  'compositionNote',
+  'compositionTitle',
+  'contains',
+  'containsTitle',
+  'ctaLabel',
+  'description',
+  'eyebrow',
+  'feel',
+  'feelTitle',
+  'gallery',
+  'notContains',
+  'notContainsTitle',
+  'plans',
+  'results',
+  'resultsFootnote',
+  'resultsTitle',
+  'title',
+])
+
+/** `block` with the chosen variant's filled-in fields laid over it. */
+const withVariant = (block: ProductDetailBlock, index: number): ProductDetailBlock => {
+  const variant = Array.isArray(block.variants) ? block.variants[index] : undefined
+  if (!variant) return block
+
+  const filled = Object.entries(variant).filter(([key, value]) => {
+    if (!OVERRIDABLE.has(key)) return false
+    // An empty array or a blank string is "not set", not "set to nothing": either would
+    // otherwise blank out the product's own copy for that variant.
+    if (Array.isArray(value)) return value.length > 0
+    return value !== null && value !== undefined && value !== ''
+  })
+
+  return filled.length > 0 ? { ...block, ...Object.fromEntries(filled) } : block
+}
+
+export const ProductDetailBlockComponent: React.FC<ProductDetailBlock> = (block) => {
+  const [variant, setVariant] = useState(0)
+  const product = withVariant(block, variant)
+
   const gallery = Array.isArray(product.gallery) ? product.gallery : []
   const benefits = Array.isArray(product.benefits) ? product.benefits : []
   const results = Array.isArray(product.results) ? product.results : []
@@ -185,7 +232,9 @@ export const ProductDetailBlockComponent: React.FC<ProductDetailBlock> = (produc
             ctaLabel={product.ctaLabel}
             oneTimeLabel={product.oneTimeLabel}
             plans={Array.isArray(product.plans) ? product.plans : []}
-            variants={Array.isArray(product.variants) ? product.variants : []}
+            onVariantChange={setVariant}
+            variant={variant}
+            variants={Array.isArray(block.variants) ? block.variants : []}
             variantsTitle={product.variantsTitle}
           />
 
