@@ -27,12 +27,13 @@ import { marks, multiline } from '@/utilities/marks'
 type Factor = NonNullable<Props['factors']>[number]
 
 /** One feature: a 56px icon over a bold label whose line breaks set its width. */
-const Feature: React.FC<{ factor: Factor; gap: string; i: number; tall?: boolean }> = ({
-  factor,
-  gap,
-  i,
-  tall,
-}) => (
+const Feature: React.FC<{
+  className?: string
+  factor: Factor
+  gap: string
+  i: number
+  tall?: boolean
+}> = ({ className, factor, gap, i, tall }) => (
   <li
     className={cn(
       /* 100px on a phone, as the comp has it: left to size themselves the labels
@@ -40,6 +41,7 @@ const Feature: React.FC<{ factor: Factor; gap: string; i: number; tall?: boolean
       'flex flex-col items-center text-center max-sm:w-[100px]',
       gap,
       tall && 'sm:h-[112.5px]',
+      className,
     )}
     data-payload-subpath={`factors.${i}.label`}
   >
@@ -177,8 +179,35 @@ const Quality: React.FC<Props> = ({
             </p>
           )}
 
+          {/*
+           * Two columns with a rule between them on a phone, as the frame draws it. The
+           * labels are set `nowrap` line by line, so left to size themselves the widest of
+           * them ("Current Good Manufacturing Practices") pushed every feature onto a row
+           * of its own. Fixed columns hold the pairs whatever the words are, and an odd
+           * last feature sits across both.
+           */}
+          {items.length > 0 && (
+            <ul className="grid w-full grid-cols-2 gap-y-5 p-[6.25px] sm:hidden">
+              {items.map(({ factor, i }, n) => (
+                <Feature
+                  className={cn(
+                    // Beats the 100px the feature gives itself on a phone, same variant so
+                    // the merge keeps one of them.
+                    'px-2 max-sm:w-full',
+                    n % 2 === 1 && 'border-l border-ash-400/[0.63]',
+                    items.length % 2 === 1 && n === items.length - 1 && 'col-span-2 border-l-0',
+                  )}
+                  factor={factor}
+                  gap="gap-[3.125px]"
+                  i={i}
+                  key={factor.id ?? i}
+                />
+              ))}
+            </ul>
+          )}
+
           {rows.length > 0 && (
-            <div className="flex flex-col gap-[18.75px] p-[6.25px]">
+            <div className="hidden flex-col gap-[18.75px] p-[6.25px] sm:flex">
               {rows.map((row, r) => (
                 <FeatureRow
                   className="justify-center"
