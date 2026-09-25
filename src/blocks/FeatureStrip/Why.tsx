@@ -244,7 +244,12 @@ const WhyQuick: React.FC<Props> = ({
                 data-payload-subpath={`items.${i}.title`}
                 key={item.id ?? i}
               >
-                <div className="flex items-center gap-[12.5px]">
+                {/*
+                 * The glyph sits above its title on a phone. Beside it, as the desktop row
+                 * has it, the 80px glyph and its gap leave 67px of a 159px card for the
+                 * words — narrower than "GUARANTEE" — so the titles broke mid-word.
+                 */}
+                <div className="flex flex-col items-start gap-2 lg:flex-row lg:items-center lg:gap-[12.5px]">
                   <Art box="h-[80px] w-[80px]" item={item} />
                   <h3
                     className={cn(
