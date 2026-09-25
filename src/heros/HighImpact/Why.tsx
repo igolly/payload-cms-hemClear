@@ -36,9 +36,10 @@ export const WhyHero: React.FC<Page['hero']> = ({
   return (
     <section className="w-full bg-[#f7f8fa] font-inter [&_sup]:leading-[0]">
       <div className="mx-auto w-full max-w-[1200px] xl:relative xl:min-h-[581.875px]">
-        {/* Picture. Stacked it sets its own 1200:582 box, anchored right of centre so the
-            couple and both products stay in frame on a phone; from `xl` it is laid over the
-            whole band and the copy sits on top of it. */}
+        {/* Picture. Stacked it sets its own 1200:582 box, anchored right because the photo
+            keeps its subject in its right half — a phone's taller crop throws away the empty
+            left rather than the couple; from `xl` it is laid over the whole band and the
+            copy sits on top of it. */}
         {hasMedia && (
           <div
             className="relative aspect-[440/330] w-full overflow-hidden sm:aspect-[1200/582] xl:absolute xl:inset-0 xl:aspect-auto"
@@ -48,7 +49,7 @@ export const WhyHero: React.FC<Page['hero']> = ({
               // `Media` wraps its <picture> in a div of its own; without a height here that
               // div collapses to content height and `h-full` below resolves against nothing.
               className="h-full w-full"
-              imgClassName="h-full w-full object-cover object-[72%_center] xl:object-center"
+              imgClassName="h-full w-full object-cover object-right xl:object-center"
               pictureClassName="block h-full w-full"
               priority
               resource={media}
@@ -62,7 +63,9 @@ export const WhyHero: React.FC<Page['hero']> = ({
             /* 16px sides and no band padding of its own on a phone: the comp's photo sits
                behind the copy rather than above it, and the buttons carry their own
                12.5px. */
-            'relative flex w-full max-w-[625px] flex-col items-center gap-[12.5px] px-4 py-0 text-center sm:items-start sm:px-[50px] sm:py-8 sm:text-left',
+            // Ranged left at every width, as the About hero is: the eyebrow, the headline
+            // and the copy under it share the column's left edge.
+            'relative flex w-full max-w-[625px] flex-col items-start gap-[12.5px] px-4 py-0 text-left sm:px-[50px] sm:py-8',
             'xl:min-h-[581.875px] xl:justify-center xl:py-0',
           )}
         >

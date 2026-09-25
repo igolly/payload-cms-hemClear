@@ -246,21 +246,22 @@ const Overlay: React.FC<Props> = ({
       >
         {!noImage && (
           <div
-            className="relative aspect-[4/3] w-full sm:aspect-[16/7] lg:absolute lg:inset-0 lg:-z-10 lg:aspect-auto"
+            className="relative aspect-[16/7] w-full lg:absolute lg:inset-0 lg:-z-10 lg:aspect-auto"
             data-payload-subpath="image"
           >
             <ImageSlot
               className="h-full w-full"
               hint="Recommended 1200 × 338px photo, subject on the side away from the copy"
               /*
-               * The side crop belongs to the desktop treatment, where the photo is a
-               * full-bleed backdrop and its subject has to clear the copy column. Stacked
-               * above the copy on a phone the photo is its own box, and the same crop just
-               * shunts the subject against one edge — so there it centres.
+               * These photos put their subject on the side away from the copy — the field's
+               * own instruction — so the crop follows the subject at every width. Centring
+               * it on a phone framed the empty half instead and cut the subject off against
+               * an edge. The box keeps the source's own proportions there too, so the tall
+               * crop no longer throws most of the width away.
                */
               imgClassName={cn(
-                'h-full w-full object-cover object-center',
-                subjectLeft ? 'lg:object-left' : 'lg:object-right',
+                'h-full w-full object-cover',
+                subjectLeft ? 'object-left' : 'object-right',
               )}
               label="Section background"
               resource={image}
