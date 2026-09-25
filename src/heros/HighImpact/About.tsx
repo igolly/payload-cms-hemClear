@@ -41,9 +41,9 @@ export const AboutHero: React.FC<Page['hero']> = ({
       <div className="mx-auto grid w-full max-w-[1063px] grid-cols-1 lg:grid-cols-[minmax(0,500fr)_minmax(0,563fr)]">
         <div
           className={cn(
-            // Centred on a phone, where a single narrow column reads better ranged to the
-            // middle; from `sm` it returns to the comp's left-ranged column.
-            'flex min-w-0 flex-col items-center justify-center py-5 text-center sm:items-start sm:py-[30px] sm:text-left lg:justify-start lg:pb-[30px] lg:pt-[29px]',
+            // Ranged left at every width, as the phone frame draws it: the eyebrow, the
+            // headline, the rule beneath it and the copy all share the column's left edge.
+            'flex min-w-0 flex-col items-start justify-center py-5 text-left sm:py-[30px] lg:justify-start lg:pb-[30px] lg:pt-[29px]',
             mediaLeft && 'lg:order-2 lg:pl-8',
           )}
         >
