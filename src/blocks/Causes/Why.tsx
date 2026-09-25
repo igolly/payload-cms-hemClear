@@ -319,9 +319,32 @@ const Overlay: React.FC<Props> = ({
             </p>
           )}
 
+          {/*
+           * One row on a phone, as the frame draws it. Sized by their own labels the three
+           * marks and the rules between them need about 377px and a phone column has 343,
+           * so the last one dropped to a line of its own. Equal columns fit whatever the
+           * count is, and the hairline still separates them.
+           */}
+          {items.length > 0 && (
+            <ul
+              className="grid w-full items-start p-[6.25px] sm:hidden"
+              style={{ gridTemplateColumns: `repeat(${items.length}, minmax(0,1fr))` }}
+            >
+              {items.map(({ factor, i }, n) => (
+                <Feature
+                  className={cn('px-1 max-sm:w-full', n > 0 && 'border-l border-ash-400/[0.63]')}
+                  factor={factor}
+                  gap="gap-[6.25px]"
+                  i={i}
+                  key={factor.id ?? i}
+                />
+              ))}
+            </ul>
+          )}
+
           {items.length > 0 && (
             <FeatureRow
-              className="justify-center p-[6.25px] lg:justify-start"
+              className="hidden justify-center p-[6.25px] sm:flex lg:justify-start"
               factors={items}
               gap="gap-[6.25px]"
             />
