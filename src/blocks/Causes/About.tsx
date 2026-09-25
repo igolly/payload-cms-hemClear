@@ -172,7 +172,14 @@ export const CausesAbout: React.FC<Props> = ({
               <ImageSlot
                 className="h-full w-full"
                 hint="Recommended 1920 × 1016px, product on the right, left side faded to the band colour"
-                imgClassName="h-full w-full object-cover object-center"
+                /*
+                 * The photo is composed for the desktop band: the products sit in its right
+                 * half (their mass is about three quarters across) and the left is empty
+                 * backdrop for the copy to sit over. Cropped from the centre on a phone that
+                 * empty half fills the frame and pushes the products against the right edge,
+                 * clipping the jar. Anchored right, the crop lands them near the middle.
+                 */
+                imgClassName="h-full w-full object-cover object-right sm:object-center"
                 label="Product photo"
                 resource={image}
               />
