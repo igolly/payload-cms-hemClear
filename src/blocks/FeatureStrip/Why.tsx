@@ -314,7 +314,9 @@ const WhyQuick: React.FC<Props> = ({
 
         {footnote && (
           <p
-            className="mt-[12.5px] flex items-center justify-center gap-[12.5px] text-center text-[16.25px] leading-[21.25px] text-heading"
+            // The shield sits above the line on a phone: side by side the two together run
+            // past a phone's width and the sentence wraps under the shield anyway.
+            className="mt-[12.5px] flex flex-col items-center justify-center gap-2 text-center text-[16.25px] leading-[21.25px] text-heading lg:flex-row lg:gap-[12.5px]"
             data-payload-subpath="footnote"
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
