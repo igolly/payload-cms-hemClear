@@ -11,6 +11,7 @@ import { ItalicFeatureClient as ItalicFeatureClient_e70f5e05f09f93e00b997edb1ef0
 import { LinkFeatureClient as LinkFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
 import { PuckLayoutNotice as PuckLayoutNotice_7e1a787aadea86ec3e63929c5402d7a3 } from '@/components/PuckLayoutNotice'
 import { PlanRowLabel as PlanRowLabel_037531769fa81ee3ede4b3daf04ae43b } from '@/blocks/ProductDetail/RowLabel'
+import { OverrideNote as OverrideNote_639940a35c17d0f3291a25ba539f4116 } from '@/blocks/ProductDetail/OverrideNote'
 import { StoryRowLabel as StoryRowLabel_037531769fa81ee3ede4b3daf04ae43b } from '@/blocks/ProductDetail/RowLabel'
 import { SectionRowLabel as SectionRowLabel_037531769fa81ee3ede4b3daf04ae43b } from '@/blocks/ProductDetail/RowLabel'
 import { FeaturedRowLabel as FeaturedRowLabel_29eb3efd14cc16327e9559d61007eed3 } from '@/blocks/Reviews/RowLabel'
@@ -78,6 +79,7 @@ export const importMap = {
   "@payloadcms/richtext-lexical/client#LinkFeatureClient": LinkFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
   "@/components/PuckLayoutNotice#PuckLayoutNotice": PuckLayoutNotice_7e1a787aadea86ec3e63929c5402d7a3,
   "@/blocks/ProductDetail/RowLabel#PlanRowLabel": PlanRowLabel_037531769fa81ee3ede4b3daf04ae43b,
+  "@/blocks/ProductDetail/OverrideNote#OverrideNote": OverrideNote_639940a35c17d0f3291a25ba539f4116,
   "@/blocks/ProductDetail/RowLabel#StoryRowLabel": StoryRowLabel_037531769fa81ee3ede4b3daf04ae43b,
   "@/blocks/ProductDetail/RowLabel#SectionRowLabel": SectionRowLabel_037531769fa81ee3ede4b3daf04ae43b,
   "@/blocks/Reviews/RowLabel#FeaturedRowLabel": FeaturedRowLabel_29eb3efd14cc16327e9559d61007eed3,

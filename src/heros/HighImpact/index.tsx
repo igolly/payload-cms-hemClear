@@ -99,16 +99,25 @@ const SplitHero: React.FC<Page['hero']> = ({
   const stackedTrust = trustPointsStyle === 'stacked'
 
   /*
-   * From `xl` the band is a 50/50 split inside the same 1400px column the header uses, so the
-   * photo's outer edge lines up with the logo's rather than running to the screen edge. Left
-   * full-bleed it looked wedged into the corner on a wide screen: the half grows with the
-   * viewport while the photo keeps its ratio, so at 1920 it painted 759px of a 960px half and
-   * left 200px of bare band between the photo and the copy. Capped, the half stays close to
-   * the photo's own width and the gap never opens. Below `xl` the two stack: side by side
-   * there, the copy column is far taller than the photo and the photo became a hard-cropped
-   * sliver. Media on the right mirrors both halves.
+   * From `xl` the photo runs to the screen's own edge while the copy stays in the 1400px
+   * column the header uses. The copy keeps its 700px and the gutter that column gave it, so
+   * it sits exactly where an even split put it; the photo takes everything left over and
+   * grows with the window instead of stopping at the container. Below `xl` the two stack:
+   * side by side there, the copy column is far taller than the photo and the photo became a
+   * hard-cropped sliver. Media on the right mirrors both halves.
    */
-  const columns = 'xl:grid-cols-2'
+  const columns = mediaRight
+    ? 'xl:max-w-none xl:grid-cols-[minmax(0,calc(700px+max(0px,(100%-1400px)/2)))_1fr]'
+    : 'xl:max-w-none xl:grid-cols-[1fr_minmax(0,calc(700px+max(0px,(100%-1400px)/2)))]'
+
+  /*
+   * The gutter the 1400px column used to give the copy, now that the grid spans the screen.
+   * The copy's own column carries it as well as the margin, so the words keep their 700px
+   * and move outward rather than narrowing.
+   */
+  const copyGutter = mediaRight
+    ? 'xl:ml-[max(0px,calc((100%-1400px)/2))]'
+    : 'xl:mr-[max(0px,calc((100%-1400px)/2))]'
 
   /*
    * Inline trust points: the mobile comp lists them one per row, full width, 10px above and
@@ -206,6 +215,7 @@ const SplitHero: React.FC<Page['hero']> = ({
         <div
           className={cn(
             'mx-auto flex w-full min-w-0 max-w-[715px] flex-col items-start justify-center gap-[12.5px] px-[31.25px] py-4 md:px-6 md:py-10 xl:mx-0 xl:max-w-[700px] xl:px-[31.25px] xl:py-[35.9375px]',
+            copyGutter,
             mediaRight ? 'xl:order-1 xl:justify-self-end' : 'xl:justify-self-start',
           )}
         >
