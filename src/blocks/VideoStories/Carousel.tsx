@@ -1,5 +1,5 @@
 'use client'
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useId, useRef, useState } from 'react'
 /* eslint-disable @next/next/no-img-element */
 
 import type { VideoStoriesBlock } from '@/payload-types'
@@ -8,6 +8,15 @@ import { cn } from '@/utilities/ui'
 import { StoryCard } from './StoryCard'
 
 type Story = NonNullable<VideoStoriesBlock['stories']>[number]
+
+/*
+ * One story plays per page, not merely per carousel: the product page carries two of
+ * these, and two people talking over each other is the thing this was meant to stop.
+ * Starting a clip announces it, and every other carousel drops whatever it was playing.
+ * A window event is enough for one boolean — a context or a store would be more machinery
+ * than the problem deserves.
+ */
+const PLAY_EVENT = 'videostories:play'
 
 /**
  * Scroll-snap carousel — no carousel library. The track is a native horizontal scroller,
@@ -37,7 +46,24 @@ export const Carousel: React.FC<{
    * <iframe> — stopping it dead and putting its still and play button back.
    */
   const [playingIndex, setPlayingIndex] = useState<null | number>(null)
+  const carouselId = useId()
   const [active, setActive] = useState(0)
+
+  const play = useCallback(
+    (index: null | number) => {
+      setPlayingIndex(index)
+      if (index !== null) window.dispatchEvent(new CustomEvent(PLAY_EVENT, { detail: carouselId }))
+    },
+    [carouselId],
+  )
+
+  useEffect(() => {
+    const onOtherPlay = (e: Event) => {
+      if ((e as CustomEvent<string>).detail !== carouselId) setPlayingIndex(null)
+    }
+    window.addEventListener(PLAY_EVENT, onOtherPlay)
+    return () => window.removeEventListener(PLAY_EVENT, onOtherPlay)
+  }, [carouselId])
   const [atStart, setAtStart] = useState(true)
   const [atEnd, setAtEnd] = useState(false)
 
@@ -152,7 +178,7 @@ export const Carousel: React.FC<{
             >
               <StoryCard
                 index={i}
-                onPlayChange={(next) => setPlayingIndex(next ? i : null)}
+                onPlayChange={(next) => play(next ? i : null)}
                 playing={playingIndex === i}
                 posterIncludesChrome={posterIncludesChrome}
                 story={story}
@@ -292,7 +318,7 @@ export const Carousel: React.FC<{
             >
               <StoryCard
                 index={i}
-                onPlayChange={(next) => setPlayingIndex(next ? i : null)}
+                onPlayChange={(next) => play(next ? i : null)}
                 playing={playingIndex === i}
                 posterIncludesChrome={posterIncludesChrome}
                 story={story}
