@@ -40,6 +40,50 @@ export const FormBlock: Block = {
       }),
       label: 'Intro Content',
     },
+    {
+      name: 'variant',
+      type: 'select',
+      defaultValue: 'default',
+      label: 'Layout',
+      options: [
+        { label: 'Default — form in the page column', value: 'default' },
+        { label: 'Split — photo beside the form', value: 'split' },
+      ],
+      admin: {
+        description:
+          'Split fills the screen: a photo on one side, the form centred on a tinted panel beside it.',
+      },
+    },
+    {
+      name: 'heading',
+      type: 'text',
+      label: 'Heading',
+      admin: {
+        condition: (_, { variant }) => variant === 'split',
+        description: 'Sits above the form, in the display face.',
+      },
+    },
+    {
+      name: 'image',
+      type: 'upload',
+      relationTo: 'media',
+      label: 'Photo',
+      admin: {
+        condition: (_, { variant }) => variant === 'split',
+        description: 'Fills its half of the screen. A placeholder holds the space until set.',
+      },
+    },
+    {
+      name: 'imagePosition',
+      type: 'select',
+      defaultValue: 'left',
+      label: 'Photo Side',
+      options: [
+        { label: 'Left', value: 'left' },
+        { label: 'Right', value: 'right' },
+      ],
+      admin: { condition: (_, { variant }) => variant === 'split' },
+    },
   ],
   graphQL: {
     singularName: 'FormBlock',

@@ -809,6 +809,19 @@ export interface FormBlock {
     };
     [k: string]: unknown;
   } | null;
+  /**
+   * Split fills the screen: a photo on one side, the form centred on a tinted panel beside it.
+   */
+  variant?: ('default' | 'split') | null;
+  /**
+   * Sits above the form, in the display face.
+   */
+  heading?: string | null;
+  /**
+   * Fills its half of the screen. A placeholder holds the space until set.
+   */
+  image?: (string | null) | Media;
+  imagePosition?: ('left' | 'right') | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'formBlock';
@@ -3434,6 +3447,10 @@ export interface FormBlockSelect<T extends boolean = true> {
   form?: T;
   enableIntro?: T;
   introContent?: T;
+  variant?: T;
+  heading?: T;
+  image?: T;
+  imagePosition?: T;
   id?: T;
   blockName?: T;
 }

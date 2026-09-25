@@ -72,7 +72,14 @@ export const BuyBox: React.FC<{
                           className="absolute inset-0"
                           pictureClassName="absolute inset-0"
                           fill
-                          imgClassName={cn('object-contain', selected ? 'px-[27px] py-2' : 'p-2.5')}
+                          /*
+                           * The chosen variant's artwork grows because its padding shrinks,
+                           * and evenly on both axes. Insetting the sides instead only grew
+                           * the tall bottle, which is bound by its height: the wider jar and
+                           * the square bundle are bound by their width, so the same rule
+                           * shrank them on the click that was meant to pick them out.
+                           */
+                          imgClassName={cn('object-contain', selected ? 'p-1.5' : 'p-3')}
                           resource={item.image}
                           size="110px"
                         />
