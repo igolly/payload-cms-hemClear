@@ -200,7 +200,16 @@ const SplitHero: React.FC<Page['hero']> = ({
                 // that div collapses to content height and the `h-full` below resolves
                 // against nothing.
                 className="h-full w-full"
-                imgClassName="h-full w-full object-contain object-center xl:object-cover"
+                /*
+                 * Stacked, the photo is framed tighter than it was shot: it is a wide
+                 * kitchen scene, and at a phone's width the woman and the two products were
+                 * a small group in the middle of it. Half again the size, held a little up
+                 * and to the left, shows the middle two thirds — source 9-75% across and
+                 * 11-78% down — and the column's `overflow-hidden` takes the rest. The
+                 * source is 1320px wide, so 880 of them still land on a 390px screen and
+                 * nothing is upscaled. Side by side from `xl` it is covered as before.
+                 */
+                imgClassName="h-full w-full origin-[26%_34%] scale-150 object-contain object-center xl:origin-center xl:scale-100 xl:object-cover"
                 pictureClassName="block h-full w-full"
                 priority
                 resource={media}
