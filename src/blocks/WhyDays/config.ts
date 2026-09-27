@@ -33,7 +33,10 @@ export const WhyDays: Block = {
       name: 'paragraphs',
       type: 'array',
       labels: { singular: 'Paragraph', plural: 'Paragraphs' },
-      admin: { initCollapsed: true },
+      admin: {
+        initCollapsed: true,
+        components: { RowLabel: '@/blocks/WhyDays/RowLabel#ParagraphRowLabel' },
+      },
       fields: [{ name: 'text', type: 'textarea', required: true }],
     },
     {

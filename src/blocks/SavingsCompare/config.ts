@@ -32,7 +32,11 @@ export const SavingsCompare: Block = {
           name: 'separateRows',
           type: 'array',
           labels: { singular: 'Row', plural: 'Rows' },
-          admin: { initCollapsed: true },
+          admin: {
+            description: 'One line per product bought on its own, with what it costs.',
+            initCollapsed: true,
+            components: { RowLabel: '@/blocks/SavingsCompare/RowLabel#CostRowLabel' },
+          },
           fields: [
             {
               type: 'row',
@@ -48,7 +52,11 @@ export const SavingsCompare: Block = {
           type: 'array',
           label: 'Total Rows',
           labels: { singular: 'Total', plural: 'Totals' },
-          admin: { initCollapsed: true },
+          admin: {
+            description: 'The summed lines under the list, e.g. "Monthly total".',
+            initCollapsed: true,
+            components: { RowLabel: '@/blocks/SavingsCompare/RowLabel#TotalRowLabel' },
+          },
           fields: [
             {
               type: 'row',

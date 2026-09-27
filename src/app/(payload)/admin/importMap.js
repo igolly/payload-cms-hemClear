@@ -27,6 +27,7 @@ import { WayRowLabel as WayRowLabel_d0eca5bef3e6afe0c2214eaf4aa2487f } from '@/b
 import { CtaCardRowLabel as CtaCardRowLabel_eccc6856eaf1a75df0068a13021d0705 } from '@/blocks/ClosingCta/RowLabel'
 import { PointRowLabel as PointRowLabel_20805242aae51e1de8837b7a78ae5228 } from '@/blocks/Guarantee/RowLabel'
 import { BadgeRowLabel as BadgeRowLabel_20805242aae51e1de8837b7a78ae5228 } from '@/blocks/Guarantee/RowLabel'
+import { ParagraphRowLabel as ParagraphRowLabel_05a1637124e283cec2e21f6d31825c14 } from '@/blocks/WhyDays/RowLabel'
 import { ProductRowLabel as ProductRowLabel_c691b248e368b2404d49613b708247a5 } from '@/blocks/Comparison/RowLabel'
 import { FeatureRowLabel as FeatureRowLabel_c691b248e368b2404d49613b708247a5 } from '@/blocks/Comparison/RowLabel'
 import { AreaRowLabel as AreaRowLabel_7586919ef51fd24489e805708890dd5c } from '@/blocks/SupportTabs/RowLabel'
@@ -41,6 +42,8 @@ import { BenefitRowLabel as BenefitRowLabel_493aa6ea988d874b0aff8bd08291fcbc } f
 import { IngredientRowLabel as IngredientRowLabel_6a53a73243c5e0066be31c1eb77c68ed } from '@/blocks/FormulaTable/RowLabel'
 import { FormulaRowLabel as FormulaRowLabel_6a53a73243c5e0066be31c1eb77c68ed } from '@/blocks/FormulaTable/RowLabel'
 import { PlanRowLabel as PlanRowLabel_f5c5c46127f7344e44a431c9ab5bf36f } from '@/blocks/PricingOffer/RowLabel'
+import { CostRowLabel as CostRowLabel_48ee1a5509581b6f0a6a69be1d68ba84 } from '@/blocks/SavingsCompare/RowLabel'
+import { TotalRowLabel as TotalRowLabel_48ee1a5509581b6f0a6a69be1d68ba84 } from '@/blocks/SavingsCompare/RowLabel'
 import { StatRowLabel as StatRowLabel_67386a86055e51f518296ade3d633f98 } from '@/blocks/ScienceStats/RowLabel'
 import { OverviewComponent as OverviewComponent_a8a977ebc872c5d5ea7ee689724c0860 } from '@payloadcms/plugin-seo/client'
 import { MetaTitleComponent as MetaTitleComponent_a8a977ebc872c5d5ea7ee689724c0860 } from '@payloadcms/plugin-seo/client'
@@ -95,6 +98,7 @@ export const importMap = {
   "@/blocks/ClosingCta/RowLabel#CtaCardRowLabel": CtaCardRowLabel_eccc6856eaf1a75df0068a13021d0705,
   "@/blocks/Guarantee/RowLabel#PointRowLabel": PointRowLabel_20805242aae51e1de8837b7a78ae5228,
   "@/blocks/Guarantee/RowLabel#BadgeRowLabel": BadgeRowLabel_20805242aae51e1de8837b7a78ae5228,
+  "@/blocks/WhyDays/RowLabel#ParagraphRowLabel": ParagraphRowLabel_05a1637124e283cec2e21f6d31825c14,
   "@/blocks/Comparison/RowLabel#ProductRowLabel": ProductRowLabel_c691b248e368b2404d49613b708247a5,
   "@/blocks/Comparison/RowLabel#FeatureRowLabel": FeatureRowLabel_c691b248e368b2404d49613b708247a5,
   "@/blocks/SupportTabs/RowLabel#AreaRowLabel": AreaRowLabel_7586919ef51fd24489e805708890dd5c,
@@ -109,6 +113,8 @@ export const importMap = {
   "@/blocks/FormulaTable/RowLabel#IngredientRowLabel": IngredientRowLabel_6a53a73243c5e0066be31c1eb77c68ed,
   "@/blocks/FormulaTable/RowLabel#FormulaRowLabel": FormulaRowLabel_6a53a73243c5e0066be31c1eb77c68ed,
   "@/blocks/PricingOffer/RowLabel#PlanRowLabel": PlanRowLabel_f5c5c46127f7344e44a431c9ab5bf36f,
+  "@/blocks/SavingsCompare/RowLabel#CostRowLabel": CostRowLabel_48ee1a5509581b6f0a6a69be1d68ba84,
+  "@/blocks/SavingsCompare/RowLabel#TotalRowLabel": TotalRowLabel_48ee1a5509581b6f0a6a69be1d68ba84,
   "@/blocks/ScienceStats/RowLabel#StatRowLabel": StatRowLabel_67386a86055e51f518296ade3d633f98,
   "@payloadcms/plugin-seo/client#OverviewComponent": OverviewComponent_a8a977ebc872c5d5ea7ee689724c0860,
   "@payloadcms/plugin-seo/client#MetaTitleComponent": MetaTitleComponent_a8a977ebc872c5d5ea7ee689724c0860,

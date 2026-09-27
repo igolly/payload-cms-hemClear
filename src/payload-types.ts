@@ -2869,6 +2869,9 @@ export interface SavingsCompareBlock {
   separateTitle?: string | null;
   separateColLabel?: string | null;
   separateCostLabel?: string | null;
+  /**
+   * One line per product bought on its own, with what it costs.
+   */
   separateRows?:
     | {
         name: string;
@@ -2876,6 +2879,9 @@ export interface SavingsCompareBlock {
         id?: string | null;
       }[]
     | null;
+  /**
+   * The summed lines under the list, e.g. "Monthly total".
+   */
   separateTotals?:
     | {
         label: string;
