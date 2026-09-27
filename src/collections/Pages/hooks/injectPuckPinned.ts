@@ -1,5 +1,6 @@
 import type { CollectionAfterReadHook } from 'payload'
 
+import { blocksToPuckData } from '@/puck/blocksToPuck'
 import {
   PINNED_ABOVE,
   PINNED_BELOW,
@@ -42,9 +43,34 @@ export const injectPuckPinned: CollectionAfterReadHook = async ({ context, doc, 
   if (context?.skipPinnedInject) return doc
   if (!req?.user) return doc
 
-  const content = doc?.puckData?.content
+  /*
+   * Only the editor's own endpoint. Both of these belong to the page as the editor holds
+   * it, not as it is stored, and the seed below is a conversion rather than saved content:
+   * were the ordinary admin view to receive either, saving a page from it would write them
+   * into the document and quietly move the page onto a rendering path it was never put on.
+   * A visitor never reaches here at all — that read has no user.
+   */
+  if (!String(req.url ?? '').includes('/api/puck/')) return doc
+
+  const stored = doc?.puckData?.content
+  if (Array.isArray(stored) && stored.some((item) => isPinnedSlug((item as Item)?.type))) return doc
+
+  /*
+   * A page that has never been saved from the editor has no `puckData`, and its sections
+   * live in `layout`. Those were being converted on the canvas instead, which is the same
+   * mistake the chrome made: the conversion arrived as an edit to a page the editor had
+   * already taken its reading of, so the page opened dirty. Converted here it is simply
+   * the page that was loaded.
+   */
+  const blocks = Array.isArray(doc?.layout) ? doc.layout : []
+  const content =
+    Array.isArray(stored) && stored.length > 0
+      ? stored
+      : blocks.length > 0
+        ? blocksToPuckData(blocks).content
+        : stored
+
   if (!Array.isArray(content)) return doc
-  if (content.some((item) => isPinnedSlug((item as Item)?.type))) return doc
 
   const load = async (slug: PinnedSlug): Promise<Item | null> => {
     const source = PINNED_SOURCE[slug]
