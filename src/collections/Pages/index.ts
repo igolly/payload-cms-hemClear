@@ -34,6 +34,7 @@ import { puckData } from '@/fields/puckData'
 import { slugField } from 'payload'
 import { populatePublishedAt } from '../../hooks/populatePublishedAt'
 import { generatePreviewPath } from '../../utilities/generatePreviewPath'
+import { injectPuckPinned } from './hooks/injectPuckPinned'
 import { revalidateDelete, revalidatePage } from './hooks/revalidatePage'
 import { syncPuckPinned } from './hooks/syncPuckPinned'
 import { puckSeed } from './endpoints/puckSeed'
@@ -206,6 +207,10 @@ export const Pages: CollectionConfig<'pages'> = {
   endpoints: [puckSeed],
   hooks: {
     afterChange: [revalidatePage],
+    // The mirror of `syncPuckPinned`: it puts the header, hero and footer into `puckData`
+    // as the editor reads the page, so they arrive as part of the page rather than as an
+    // edit made to it.
+    afterRead: [injectPuckPinned],
     // `syncPuckPinned` runs last: it is the one that empties the pinned components out of
     // `puckData` again, after their edits have gone to the globals and the hero field.
     beforeChange: [populatePublishedAt, syncPuckPinned],

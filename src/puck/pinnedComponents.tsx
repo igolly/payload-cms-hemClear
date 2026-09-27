@@ -34,21 +34,12 @@ const Hero = RenderHero as AnyComponent
  * `globalType` and the timestamps; those are not fields, so they are dropped on the way in
  * rather than being handed back to Payload on the way out.
  */
-export const pinnedFieldNames = (slug: PinnedSlug): string[] =>
-  Object.keys(convertFields(PINNED_FIELDS[slug]))
-
-/** A document reduced to the props its canvas component takes. */
-export const toPinnedProps = (
-  slug: PinnedSlug,
-  data: Record<string, unknown> | null | undefined,
-): Record<string, unknown> => {
-  const out: Record<string, unknown> = {}
-  if (!data) return out
-  for (const name of pinnedFieldNames(slug)) {
-    if (name in data) out[name] = data[name]
-  }
-  return out
-}
+/*
+ * Both live in `./pinned`, which a Payload hook can import without dragging the editor's
+ * field components in with them: the canvas and the read hook must agree on exactly which
+ * props a pinned component carries.
+ */
+export { pinnedFieldNames, toPinnedProps } from './pinned'
 
 const toPinnedConfig = (
   slug: PinnedSlug,

@@ -55,3 +55,46 @@ export const PINNED_SOURCE: Record<PinnedSlug, PinnedSource> = {
   header: { slug: 'header', type: 'global' },
   pageHero: { name: 'hero', type: 'pageField' },
 }
+
+/**
+ * The prop names each pinned component takes, read straight off the Payload field list.
+ *
+ * The editor derives the same list through `convertFields`, which is a Puck module: a
+ * Payload hook that imported it would pull the editor's own field components — and their
+ * stylesheets — into the server bundle. Row, collapsible and unnamed tab wrappers hold no
+ * data of their own, so their children are collected in their place, exactly as Payload
+ * stores them.
+ */
+export const pinnedFieldNames = (slug: PinnedSlug): string[] => {
+  const names: string[] = []
+
+  const walk = (fields: Field[]) => {
+    for (const field of fields) {
+      if ('name' in field && typeof field.name === 'string') {
+        names.push(field.name)
+        continue
+      }
+      if ('fields' in field && Array.isArray(field.fields)) walk(field.fields as Field[])
+      if ('tabs' in field && Array.isArray(field.tabs)) {
+        for (const tab of field.tabs) {
+          if ('name' in tab && typeof tab.name === 'string') names.push(tab.name)
+          else if (Array.isArray(tab.fields)) walk(tab.fields as Field[])
+        }
+      }
+    }
+  }
+
+  walk(PINNED_FIELDS[slug])
+  return names
+}
+
+/** A document reduced to the props its canvas component takes. */
+export const toPinnedProps = (
+  slug: PinnedSlug,
+  data: Record<string, unknown> | null | undefined,
+): Record<string, unknown> => {
+  if (!data) return {}
+  const out: Record<string, unknown> = {}
+  for (const name of pinnedFieldNames(slug)) if (name in data) out[name] = data[name]
+  return out
+}
