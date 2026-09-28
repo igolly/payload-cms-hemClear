@@ -70,7 +70,6 @@ export interface Config {
     pages: Page;
     media: Media;
     users: User;
-    websites: Website;
     redirects: Redirect;
     forms: Form;
     'form-submissions': FormSubmission;
@@ -91,7 +90,6 @@ export interface Config {
     pages: PagesSelect<false> | PagesSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
-    websites: WebsitesSelect<false> | WebsitesSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
     'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
@@ -253,7 +251,6 @@ export interface Page {
   layout?:
     | (
         | ProductDetailBlock
-        | RawHtmlBlock
         | FormBlock
         | ReviewsBlock
         | FAQBlock
@@ -897,36 +894,6 @@ export interface ProductDetailBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'productDetail';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "RawHtmlBlock".
- */
-export interface RawHtmlBlock {
-  /**
-   * Optional title above the content. Leave empty when the pasted markup carries its own.
-   */
-  heading?: string | null;
-  /**
-   * Pasted exactly as written. Headings, paragraphs, lists, tables and links are styled to match the site — you do not need to add classes. Anything you paste here runs on the live page, so only paste markup you trust.
-   */
-  html: string;
-  /**
-   * Reading width holds the text to a comfortable measure. Full width suits a table or an embed that needs the room.
-   */
-  width?: ('prose' | 'wide') | null;
-  /**
-   * Leave empty to keep this section's designed default.
-   */
-  bgColor?:
-    ('white' | 'offWhite' | 'paleBlue' | 'lightBlue' | 'skyBlue' | 'brand' | 'navy' | 'deepNavy' | 'custom') | null;
-  /**
-   * Any CSS colour, e.g. #051959.
-   */
-  bgColorCustom?: string | null;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'rawHtml';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -3036,76 +3003,6 @@ export interface User {
   collection: 'users';
 }
 /**
- * Identity and brand colours for this deployment. The Active record is the one the site renders.
- *
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "websites".
- */
-export interface Website {
-  id: string;
-  /**
-   * Brand name, as it reads in the admin and in metadata.
-   */
-  name: string;
-  /**
-   * Production domain, without a scheme — e.g. shop.hemclear.com.
-   */
-  domain?: string | null;
-  /**
-   * The record this deployment renders. Only one should be ticked; the site takes the first it finds.
-   */
-  isActive?: boolean | null;
-  logo?: (string | null) | Media;
-  /**
-   * Short line under the brand name, where a layout uses one.
-   */
-  tagline?: string | null;
-  /**
-   * Buttons, links and icons. Drives --color-brand.
-   */
-  primary?: string | null;
-  /**
-   * The darker press state of the primary.
-   */
-  primaryDark?: string | null;
-  /**
-   * Inline links and small labels.
-   */
-  accent?: string | null;
-  /**
-   * Section headings and full-width dark bands.
-   */
-  navy?: string | null;
-  /**
-   * Display headings on a tinted band, and the footer.
-   */
-  navyDeep?: string | null;
-  /**
-   * Card titles and kickers.
-   */
-  subheading?: string | null;
-  /**
-   * The pale band behind a closing call to action.
-   */
-  bandTint?: string | null;
-  /**
-   * The off-white band most sections sit on.
-   */
-  bandMist?: string | null;
-  email?: string | null;
-  phone?: string | null;
-  address?: string | null;
-  socials?:
-    | {
-        platform: 'facebook' | 'instagram' | 'youtube' | 'tiktok' | 'x' | 'linkedin';
-        url: string;
-        id?: string | null;
-      }[]
-    | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects".
  */
@@ -3311,10 +3208,6 @@ export interface PayloadLockedDocument {
         value: string | User;
       } | null)
     | ({
-        relationTo: 'websites';
-        value: string | Website;
-      } | null)
-    | ({
         relationTo: 'redirects';
         value: string | Redirect;
       } | null)
@@ -3434,7 +3327,6 @@ export interface PagesSelect<T extends boolean = true> {
     | T
     | {
         productDetail?: T | ProductDetailBlockSelect<T>;
-        rawHtml?: T | RawHtmlBlockSelect<T>;
         formBlock?: T | FormBlockSelect<T>;
         reviews?: T | ReviewsBlockSelect<T>;
         faq?: T | FAQBlockSelect<T>;
@@ -3717,19 +3609,6 @@ export interface ProductDetailBlockSelect<T extends boolean = true> {
   stickyOfferNote?: T;
   stickyCtaLabel?: T;
   stickyCtaUrl?: T;
-  id?: T;
-  blockName?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "RawHtmlBlock_select".
- */
-export interface RawHtmlBlockSelect<T extends boolean = true> {
-  heading?: T;
-  html?: T;
-  width?: T;
-  bgColor?: T;
-  bgColorCustom?: T;
   id?: T;
   blockName?: T;
 }
@@ -4674,37 +4553,6 @@ export interface UsersSelect<T extends boolean = true> {
         createdAt?: T;
         expiresAt?: T;
       };
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "websites_select".
- */
-export interface WebsitesSelect<T extends boolean = true> {
-  name?: T;
-  domain?: T;
-  isActive?: T;
-  logo?: T;
-  tagline?: T;
-  primary?: T;
-  primaryDark?: T;
-  accent?: T;
-  navy?: T;
-  navyDeep?: T;
-  subheading?: T;
-  bandTint?: T;
-  bandMist?: T;
-  email?: T;
-  phone?: T;
-  address?: T;
-  socials?:
-    | T
-    | {
-        platform?: T;
-        url?: T;
-        id?: T;
-      };
-  updatedAt?: T;
-  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
