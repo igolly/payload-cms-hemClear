@@ -11,6 +11,8 @@ import { Footer } from '@/Footer/Component'
 import { Header } from '@/Header/Component'
 import { Providers } from '@/providers'
 import { InitTheme } from '@/providers/Theme/InitTheme'
+import { brandCss } from '@/utilities/brandCss'
+import { getCachedWebsite } from '@/utilities/getWebsite'
 import { mergeOpenGraph } from '@/utilities/mergeOpenGraph'
 import { draftMode } from 'next/headers'
 
@@ -55,6 +57,8 @@ const gentium = Gentium_Book_Plus({
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const { isEnabled } = await draftMode()
+  const website = await getCachedWebsite()
+  const brand = brandCss(website)
 
   return (
     <html
@@ -73,6 +77,13 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <InitTheme />
         <link href="/favicon.ico" rel="icon" sizes="32x32" />
         <link href="/favicon.svg" rel="icon" type="image/svg+xml" />
+        {/*
+         * The active website's palette, re-declaring the custom properties `globals.css`
+         * sets. Every brand utility compiles to one of these, so this is what makes the
+         * template wear another brand's colours without a rebuild. Emitted only when the
+         * record actually sets a colour; otherwise the stylesheet stands as written.
+         */}
+        {brand && <style dangerouslySetInnerHTML={{ __html: brand }} id="brand-palette" />}
       </head>
       <body>
         <Providers>
