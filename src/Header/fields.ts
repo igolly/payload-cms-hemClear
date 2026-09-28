@@ -20,11 +20,30 @@ export const headerFields: Field[] = [
       },
       { name: 'announcementText', type: 'text' },
       {
+        name: 'announcementCountdown',
+        type: 'select',
+        defaultValue: 'off',
+        label: 'Countdown',
+        options: [
+          { label: 'No timer', value: 'off' },
+          { label: 'Counts down to a fixed date and time', value: 'date' },
+          { label: 'Rolling — 24 hours', value: '24' },
+          { label: 'Rolling — 48 hours', value: '48' },
+          { label: 'Rolling — 72 hours', value: '72' },
+        ],
+        admin: {
+          description:
+            'A rolling timer starts when a visitor first arrives and runs for that long; once it reaches zero their next visit starts a fresh one. A fixed date runs out for everyone at the same moment and then stays at zero.',
+        },
+      },
+      {
         name: 'announcementEndsAt',
         type: 'date',
+        label: 'Counts down to',
         admin: {
+          condition: (_, siblingData) => siblingData?.announcementCountdown === 'date',
           date: { pickerAppearance: 'dayAndTime' },
-          description: 'Countdown target. Leave empty to hide the timer.',
+          description: 'The moment the offer ends.',
         },
       },
     ],

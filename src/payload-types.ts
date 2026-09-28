@@ -4828,7 +4828,11 @@ export interface Header {
   announcementTitle?: string | null;
   announcementText?: string | null;
   /**
-   * Countdown target. Leave empty to hide the timer.
+   * A rolling timer starts when a visitor first arrives and runs for that long; once it reaches zero their next visit starts a fresh one. A fixed date runs out for everyone at the same moment and then stays at zero.
+   */
+  announcementCountdown?: ('off' | 'date' | '24' | '48' | '72') | null;
+  /**
+   * The moment the offer ends.
    */
   announcementEndsAt?: string | null;
   stickyEnabled?: boolean | null;
@@ -4993,6 +4997,7 @@ export interface HeaderSelect<T extends boolean = true> {
   announcementEnabled?: T;
   announcementTitle?: T;
   announcementText?: T;
+  announcementCountdown?: T;
   announcementEndsAt?: T;
   stickyEnabled?: T;
   stickyText?: T;

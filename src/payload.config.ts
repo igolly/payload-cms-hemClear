@@ -80,6 +80,20 @@ export default buildConfig({
       // existing sections — see the file for why it lives here.
       previewUrl: editorPreviewUrl,
     }),
+    /*
+     * The Puck plugin always adds its Templates collection. Nothing here saves or reuses a
+     * template, so it is hidden rather than removed: leaving the collection in place keeps
+     * the plugin's own routes intact, while the dashboard lists only what an editor works
+     * on.
+     */
+    (config) => ({
+      ...config,
+      collections: (config.collections ?? []).map((collection) =>
+        collection.slug === 'puck-templates'
+          ? { ...collection, admin: { ...collection.admin, hidden: true } }
+          : collection,
+      ),
+    }),
   ],
   secret: process.env.PAYLOAD_SECRET,
   sharp,

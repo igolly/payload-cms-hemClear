@@ -17,6 +17,7 @@ export const HeaderView: React.FC<{ data: HeaderType }> = ({ data }) => (
   <>
     {data?.announcementEnabled && (
       <AnnouncementBar
+        countdown={data.announcementCountdown}
         endsAt={data.announcementEndsAt}
         text={data.announcementText}
         title={data.announcementTitle}
