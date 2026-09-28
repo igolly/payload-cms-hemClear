@@ -31,6 +31,7 @@ import { IngredientExplorer } from '@/blocks/IngredientExplorer/config'
 import { MedicalReview } from '@/blocks/MedicalReview/config'
 import { Pairing } from '@/blocks/Pairing/config'
 import { PricingOffer } from '@/blocks/PricingOffer/config'
+import { RawHtml } from '@/blocks/RawHtml/config'
 import { ProductDetail } from '@/blocks/ProductDetail/config'
 import { ProductSystem } from '@/blocks/ProductSystem/config'
 import { SolutionSystem } from '@/blocks/SolutionSystem/config'
@@ -59,6 +60,7 @@ import { IngredientExplorerBlock } from '@/blocks/IngredientExplorer/Component'
 import { MedicalReviewBlock } from '@/blocks/MedicalReview/Component'
 import { PairingBlock } from '@/blocks/Pairing/Component'
 import { PricingOfferBlock } from '@/blocks/PricingOffer/Component'
+import { RawHtmlBlock } from '@/blocks/RawHtml/Component'
 import { ProductDetailBlockComponent } from '@/blocks/ProductDetail/Component'
 import { ProductSystemBlock } from '@/blocks/ProductSystem/Component'
 import { SolutionSystemBlockComponent } from '@/blocks/SolutionSystem/Component'
@@ -92,6 +94,7 @@ const generatedBlocks: [Block, AnyComponent][] = [
   [MedicalReview, MedicalReviewBlock as AnyComponent],
   [Pairing, PairingBlock as AnyComponent],
   [PricingOffer, PricingOfferBlock as AnyComponent],
+  [RawHtml, RawHtmlBlock as AnyComponent],
   [ProductDetail, ProductDetailBlockComponent as AnyComponent],
   [ProductSystem, ProductSystemBlock as AnyComponent],
   [SolutionSystem, SolutionSystemBlockComponent as AnyComponent],
@@ -227,6 +230,8 @@ export const puckConfig: Config = {
       components: ['pricingOffer', 'savingsCompare', 'closingCta', 'formBlock'],
     },
     support: { title: 'Support & FAQ', components: ['faq', 'supportTabs', 'benefitsCarousel'] },
+    // Terms, privacy and the like: prose that arrives already written.
+    legal: { title: 'Legal & Long-form', components: ['rawHtml'] },
   },
 }
 

@@ -18,6 +18,7 @@ import { SolutionSystemBlockComponent } from '@/blocks/SolutionSystem/Component'
 import { MedicalReviewBlock } from '@/blocks/MedicalReview/Component'
 import { PairingBlock } from '@/blocks/Pairing/Component'
 import { PricingOfferBlock } from '@/blocks/PricingOffer/Component'
+import { RawHtmlBlock } from '@/blocks/RawHtml/Component'
 import { SavingsCompareBlock } from '@/blocks/SavingsCompare/Component'
 import { ScienceStatsBlock } from '@/blocks/ScienceStats/Component'
 import { StatsBarBlock } from '@/blocks/StatsBar/Component'
@@ -31,6 +32,7 @@ import { ReviewsBlock } from '@/blocks/Reviews/Component'
 
 const blockComponents = {
   bannerHero: BannerHeroBlock,
+  rawHtml: RawHtmlBlock,
   benefitsCarousel: BenefitsCarouselBlock,
   causes: CausesBlock,
   closingCta: ClosingCtaBlock,

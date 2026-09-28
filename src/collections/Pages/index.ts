@@ -18,6 +18,7 @@ import { FAQ } from '../../blocks/FAQ/config'
 import { MedicalReview } from '../../blocks/MedicalReview/config'
 import { Guarantee } from '../../blocks/Guarantee/config'
 import { ProductDetail } from '../../blocks/ProductDetail/config'
+import { RawHtml } from '../../blocks/RawHtml/config'
 import { ProductSystem } from '../../blocks/ProductSystem/config'
 import { SolutionSystem } from '../../blocks/SolutionSystem/config'
 import { Pairing } from '../../blocks/Pairing/config'
@@ -108,6 +109,7 @@ export const Pages: CollectionConfig<'pages'> = {
               type: 'blocks',
               blocks: [
                 ProductDetail,
+                RawHtml,
                 FormBlock,
                 Reviews,
                 FAQ,
