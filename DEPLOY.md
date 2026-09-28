@@ -10,13 +10,13 @@ The production build passes locally — `pnpm build` prerenders every page.
 Set these in **Vercel → Project → Settings → Environment Variables** for
 **Production, Preview and Development**.
 
-| Variable | Value | Notes |
-| --- | --- | --- |
-| `DATABASE_URL` | your MongoDB connection string | Same one as `.env`, or a separate production cluster |
-| `PAYLOAD_SECRET` | a long random string | **Generate a new one for production** — do not reuse the local value |
-| `PREVIEW_SECRET` | a long random string | Guards the draft-preview route |
-| `CRON_SECRET` | a long random string | Guards scheduled publishing |
-| `BLOB_READ_WRITE_TOKEN` | added automatically | Appears once you connect a Blob store (step 2) |
+| Variable                | Value                          | Notes                                                                |
+| ----------------------- | ------------------------------ | -------------------------------------------------------------------- |
+| `DATABASE_URL`          | your MongoDB connection string | Same one as `.env`, or a separate production cluster                 |
+| `PAYLOAD_SECRET`        | a long random string           | **Generate a new one for production** — do not reuse the local value |
+| `PREVIEW_SECRET`        | a long random string           | Guards the draft-preview route                                       |
+| `CRON_SECRET`           | a long random string           | Guards scheduled publishing                                          |
+| `BLOB_READ_WRITE_TOKEN` | added automatically            | Appears once you connect a Blob store (step 2)                       |
 
 Generate secrets with:
 
@@ -55,13 +55,13 @@ Settings → Environment Variables. **Tick Production on every one** — this is
 step that is easy to miss, and a variable that isn't scoped to Production is
 invisible to the production build.
 
-| Variable | Example |
-| --- | --- |
-| `S3_BUCKET` | `media` |
-| `S3_ENDPOINT` | `https://abcdefgh.supabase.co/storage/v1/s3` |
-| `S3_REGION` | `us-east-1` (whatever your project reports) |
-| `S3_ACCESS_KEY_ID` | from the S3 access key |
-| `S3_SECRET_ACCESS_KEY` | from the S3 access key |
+| Variable               | Example                                      |
+| ---------------------- | -------------------------------------------- |
+| `S3_BUCKET`            | `media`                                      |
+| `S3_ENDPOINT`          | `https://abcdefgh.supabase.co/storage/v1/s3` |
+| `S3_REGION`            | `us-east-1` (whatever your project reports)  |
+| `S3_ACCESS_KEY_ID`     | from the S3 access key                       |
+| `S3_SECRET_ACCESS_KEY` | from the S3 access key                       |
 
 Then **redeploy** — environment variables are read at build start.
 
@@ -132,7 +132,7 @@ Work through these in order:
 3. **Did you redeploy after connecting?** Environment variables are read at build
    start; connecting a store does not retrigger a build.
 4. **Check the function logs** (Vercel → Logs) while uploading. `EROFS: read-only
-   file system` means the token is missing. `413` means the body limit — confirm
+file system` means the token is missing. `413` means the body limit — confirm
    `clientUploads: true` shipped.
 
 ## Build note
@@ -158,6 +158,78 @@ early Vercel build failures.
    ones. `tsc --noEmit` is clean and is the current type gate.
 5. **Placeholder images** — dashed boxes mark every unset upload field
    (product gallery, ingredient photos, doctor headshots, benefit photos).
+
+## Standing up another brand on this template
+
+The site's identity is data — a **Websites** record holds the brand name, domain,
+logo, contact details and palette, and `src/app/(frontend)/layout.tsx` writes that
+palette into the page head as a `:root` override. Tailwind compiles every brand
+utility to a custom property, so those eight colours re-skin the whole site with
+no code change.
+
+That is what makes a second brand cheap: **one repository, one Vercel project per
+site, one database per site.** The sites run the same commit and differ only by
+environment variables.
+
+### What each site needs
+
+| Resource         | Per site?  | Notes                                                                                     |
+| ---------------- | ---------- | ----------------------------------------------------------------------------------------- |
+| GitHub repo      | **shared** | Every site deploys the same `main`                                                        |
+| Vercel project   | one each   | A project can point at a repo another project already uses                                |
+| MongoDB database | one each   | One Atlas cluster holds many databases — change the name in the URI path, not the cluster |
+| Supabase bucket  | one each   | One Supabase project holds many buckets — only `S3_BUCKET` changes                        |
+| Domain           | one each   |                                                                                           |
+
+So a second brand costs a Vercel project, a database name and a bucket name. It
+does not cost another cluster, another Supabase project or another repository.
+
+### Adding a site
+
+1. **Vercel → Add New → Project**, import the same repository. Vercel allows
+   several projects from one repo.
+2. Copy the environment variables from the existing project and change:
+
+   | Variable                        | Change                                                                                         |
+   | ------------------------------- | ---------------------------------------------------------------------------------------------- |
+   | `DATABASE_URL`                  | the database name at the end of the URI — `…mongodb.net/brandb`                                |
+   | `S3_BUCKET`                     | a new bucket, created in the same Supabase project                                             |
+   | `PAYLOAD_SECRET`                | **a fresh one.** Sharing it across sites means a session cookie from one is valid on the other |
+   | `PREVIEW_SECRET`, `CRON_SECRET` | fresh, same reasoning                                                                          |
+   | `NEXT_PUBLIC_SERVER_URL`        | the new domain                                                                                 |
+
+   Everything else — `S3_ENDPOINT`, `S3_REGION`, the access keys — is shared,
+   because they identify the Supabase project rather than the bucket.
+
+3. Deploy, then open `/admin`, create the first user, and fill in **Settings →
+   Websites**: name, domain, and only the colours that differ from the palette in
+   `globals.css`. A blank colour falls through to the stylesheet.
+4. Attach the domain and set `NEXT_PUBLIC_SERVER_URL` to match.
+
+### Keeping the sites in step
+
+Because every site deploys the same branch, a fix to a block reaches all of them
+on the next deploy — which is the point, and also the risk. Merge to `main`
+through a pull request and let Vercel's preview build check it before it becomes
+every brand's production.
+
+A site that genuinely needs different code — a block no other brand has — should
+get its own branch, and that Vercel project should track that branch. Merge `main`
+into it to pick up template work. Do this only when a site needs different
+_markup_; different colours, copy and images are all data and need no branch.
+
+### What is not data yet
+
+- **Icon artwork.** The files under `public/icons/` are flat images drawn in
+  HemClear blue, so they do not follow a palette change. The ones that carry brand
+  colour want converting to inline SVG using `currentColor`.
+- **Fonts.** Loaded in the frontend layout, so a brand with a different typeface
+  needs a code change.
+- **Page content.** A new database starts with an empty Pages collection. Until
+  there is an export of this site's pages as an importable template, a new brand
+  starts from blank pages rather than from HemClear's structure.
+
+---
 
 ## Local development
 
