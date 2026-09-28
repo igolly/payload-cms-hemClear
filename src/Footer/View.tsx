@@ -80,7 +80,18 @@ const itemText = 'text-xs font-medium leading-3 text-white'
 export const FooterView: React.FC<{ data: FooterType }> = ({ data: footer }) => {
   const columns = footer?.columns || []
   const promiseItems = footer?.promiseItems || []
-  const socialItems = footer?.socialItems || []
+  /*
+   * Only the rows that actually go somewhere.
+   *
+   * A row without an address used to render as a link to `#`, which opens a blank tab on
+   * the page it was clicked from — so a platform nobody had filled in yet looked exactly
+   * like one that was. `#` counts as unfilled here as well as empty, because that is what
+   * an unfinished row holds. With none of them filled in the heading above goes too.
+   */
+  const socialItems = (footer?.socialItems || []).filter((item) => {
+    const url = item.url?.trim()
+    return Boolean(url) && url !== '#'
+  })
   const legalLinks = footer?.legalLinks || []
 
   return (
@@ -145,7 +156,7 @@ export const FooterView: React.FC<{ data: FooterType }> = ({ data: footer }) => 
                   <li key={item.id ?? i}>
                     <a
                       className={`flex items-center gap-[6.25px] whitespace-nowrap transition-opacity hover:opacity-80 ${itemText}`}
-                      href={item.url || '#'}
+                      href={item.url as string}
                       rel="noopener noreferrer"
                       target="_blank"
                     >
