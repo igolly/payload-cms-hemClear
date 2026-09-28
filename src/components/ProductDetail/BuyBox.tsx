@@ -166,7 +166,10 @@ export const BuyBox: React.FC<{
               </div>
             )}
 
-            {selected && Array.isArray(item.features) && item.features.length > 0 && (
+            {/* Every plan lists what it includes, chosen or not: the comp only draws the
+                list on the open card, but a plan an editor has written features for and
+                cannot see them on is indistinguishable from one that lost them. */}
+            {Array.isArray(item.features) && item.features.length > 0 && (
               <ul className="flex flex-col gap-1 border-y border-ash-300 py-2.5">
                 {item.features.map((feature, f) => (
                   <li className="flex items-center gap-2" key={feature.id ?? f}>
