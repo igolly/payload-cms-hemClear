@@ -296,7 +296,8 @@ export const ProductDetail: Block = {
         },
         // ---------------------------------------------------------------- Buy box
         {
-          label: 'Buy Box',
+          // The systems a buyer chooses between, each with its own prices and copy.
+          label: 'Variants',
           fields: [
             { name: 'variantsTitle', type: 'text', defaultValue: 'Select Your System:' },
             {
@@ -356,6 +357,12 @@ export const ProductDetail: Block = {
                 },
               ],
             },
+          ],
+        },
+        {
+          // What each variant costs, and the one-time line under the cards.
+          label: 'Plans',
+          fields: [
             {
               name: 'plans',
               type: 'array',
@@ -381,6 +388,12 @@ export const ProductDetail: Block = {
                 },
               ],
             },
+          ],
+        },
+        {
+          // The strips under the cart button: info banners, then the icon row.
+          label: 'Banners & Trust',
+          fields: [
             {
               name: 'notes',
               type: 'array',
@@ -441,7 +454,8 @@ export const ProductDetail: Block = {
         },
         // ---------------------------------------------------------------- Details
         {
-          label: 'Details',
+          // The two lists under the buy box: what it contains, and what it does not.
+          label: 'Composition',
           fields: [
             {
               type: 'collapsible',
@@ -474,6 +488,12 @@ export const ProductDetail: Block = {
                 notContainsField,
               ],
             },
+          ],
+        },
+        {
+          // The customer clips that run below the detail.
+          label: 'Videos',
+          fields: [
             {
               type: 'collapsible',
               label: 'Customer Videos',
@@ -520,6 +540,12 @@ export const ProductDetail: Block = {
                 },
               ],
             },
+          ],
+        },
+        {
+          // The accordions beneath the buy box — ingredients, quality, how to use.
+          label: 'Sections',
+          fields: [
             {
               name: 'sections',
               type: 'array',
