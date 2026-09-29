@@ -130,8 +130,15 @@ export const ProductDetailBlockComponent: React.FC<ProductDetailBlock> = (block)
         <div className="@container flex min-w-0 flex-col gap-2.5 [&_sup]:leading-[0] lg:border-l lg:border-ash-200 lg:px-5 lg:py-[30px]">
           {/* Intro — Figma 6207:2819 */}
           <div className="flex flex-col gap-2.5">
+            {/*
+             * Stars over the claim, as its own row rather than a wrapped one. The claim is too
+             * long to sit beside the stars at any width this column is ever given, so wrapping
+             * decided that already — but it decided it by measuring, and once the type below
+             * was sized to fit it came within a few pixels of sharing the line and was squeezed
+             * instead. Two rows, stated.
+             */}
             {(product.ratingLabel || ratingNotes.length > 0) && (
-              <div className="flex flex-wrap items-center gap-x-3.5 gap-y-1 border-y border-navy-600 py-1.5">
+              <div className="flex flex-col items-start gap-y-1 border-y border-navy-600 py-1.5">
                 <span
                   aria-label={`${stars} out of 5 stars`}
                   className="text-base leading-4 text-navy"
@@ -140,13 +147,25 @@ export const ProductDetailBlockComponent: React.FC<ProductDetailBlock> = (block)
                   {'★'.repeat(stars)}
                   {stars < 5 && <span className="text-steel-200">{'★'.repeat(5 - stars)}</span>}
                 </span>
-                <span className="text-xs font-medium leading-[14px] text-brand-600">
+                {/*
+                 * The whole claim reads as one line on any phone. Set at 12px it measures
+                 * 340px, against 343px of row on a 375px screen — so it held together there
+                 * by three pixels and broke "15 Years / Trusted" across two lines on anything
+                 * narrower. Sized against the column instead it keeps that proportion all the
+                 * way down, and the cap stops it growing past the drawing on a wide one. The
+                 * line measures a little over 28px of width per 1px of type, so it clears its
+                 * row at 3.5cqw; 3.3 leaves room for the font to land differently.
+                 *
+                 * Each claim is also unbreakable in itself, so an editor adding a fourth one
+                 * gets a clean break at a rule rather than a phrase split down the middle.
+                 */}
+                <span className="w-full text-[min(12px,3.3cqw)] font-medium leading-[14px] text-brand-600">
                   {[product.ratingLabel, ...ratingNotes.map((note) => note.text)]
                     .filter(Boolean)
                     .map((text, i) => (
                       <React.Fragment key={i}>
                         {i > 0 && ' | '}
-                        {marks(text)}
+                        <span className="whitespace-nowrap">{marks(text)}</span>
                       </React.Fragment>
                     ))}
                 </span>
