@@ -86,7 +86,29 @@ const withVariant = (block: ProductDetailBlock, index: number): ProductDetailBlo
 
 export const ProductDetailBlockComponent: React.FC<ProductDetailBlock> = (block) => {
   const [variant, setVariant] = useState(0)
+  /*
+   * The chosen package lives here, beside the chosen variant, because two things buy it: the
+   * card in the buy box and the strip along the bottom. Each used to keep its own idea of it
+   * — the strip started on whichever package was flagged best value and never heard about a
+   * click — so the strip offered the 90-day price while the reader had the 30-day card open.
+   */
+  const [plan, setPlan] = useState(0)
   const product = withVariant(block, variant)
+
+  /*
+   * A variant may price differently, and two variants need not offer the same number of
+   * packages, so the choice is clamped rather than left pointing past the end of a shorter
+   * list. Resolved once here so the buy box and the strip cannot disagree about it.
+   */
+  const activePlans = Array.isArray(product.plans) ? product.plans : []
+  const planIndex = Math.min(plan, Math.max(activePlans.length - 1, 0))
+
+  /*
+   * Where a buy button goes. The chosen package's own link is the only one that knows which
+   * product and package the reader settled on, so it wins; the block's sticky link is the
+   * fallback for a package nobody has given a link to yet.
+   */
+  const buyUrl = activePlans[planIndex]?.ctaUrl || product.stickyCtaUrl
 
   const gallery = Array.isArray(product.gallery) ? product.gallery : []
   const benefits = Array.isArray(product.benefits) ? product.benefits : []
@@ -108,10 +130,12 @@ export const ProductDetailBlockComponent: React.FC<ProductDetailBlock> = (block)
     <section className="w-full bg-white px-4 py-4 font-inter text-navy sm:px-6 lg:px-8 lg:py-2.5">
       {product.stickyEnabled && (
         <StickyBars
+          buyUrl={buyUrl}
           ctaLabel={product.ctaLabel}
           gallery={product.gallery}
-          plans={Array.isArray(product.plans) ? product.plans : []}
-          stickyCtaUrl={product.stickyCtaUrl}
+          onPlanChange={setPlan}
+          plan={planIndex}
+          plans={activePlans}
           title={product.title}
         />
       )}
@@ -261,10 +285,13 @@ export const ProductDetailBlockComponent: React.FC<ProductDetailBlock> = (block)
           )}
 
           <BuyBox
+            buyUrl={buyUrl}
             ctaLabel={product.ctaLabel}
             oneTimeLabel={product.oneTimeLabel}
-            plans={Array.isArray(product.plans) ? product.plans : []}
+            onPlanChange={setPlan}
             onVariantChange={setVariant}
+            plan={planIndex}
+            plans={activePlans}
             variant={variant}
             variants={Array.isArray(block.variants) ? block.variants : []}
             variantsTitle={product.variantsTitle}

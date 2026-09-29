@@ -567,6 +567,10 @@ export interface ProductDetailBlock {
                * e.g. "Save 30%"
                */
               saveLabel?: string | null;
+              /**
+               * Where both buy buttons go when this package is the chosen one — the checkout link for this exact product and package. Leave it empty and the buttons fall back to the link under Sticky Bars, which cannot know which package was picked.
+               */
+              ctaUrl?: string | null;
               price: string;
               /**
                * Struck through.
@@ -716,6 +720,10 @@ export interface ProductDetailBlock {
          * e.g. "Save 30%"
          */
         saveLabel?: string | null;
+        /**
+         * Where both buy buttons go when this package is the chosen one — the checkout link for this exact product and package. Leave it empty and the buttons fall back to the link under Sticky Bars, which cannot know which package was picked.
+         */
+        ctaUrl?: string | null;
         price: string;
         /**
          * Struck through.
@@ -3543,6 +3551,7 @@ export interface ProductDetailBlockSelect<T extends boolean = true> {
           | {
               name?: T;
               saveLabel?: T;
+              ctaUrl?: T;
               price?: T;
               comparePrice?: T;
               priceSuffix?: T;
@@ -3630,6 +3639,7 @@ export interface ProductDetailBlockSelect<T extends boolean = true> {
     | {
         name?: T;
         saveLabel?: T;
+        ctaUrl?: T;
         price?: T;
         comparePrice?: T;
         priceSuffix?: T;

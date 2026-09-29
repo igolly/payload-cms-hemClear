@@ -1,5 +1,5 @@
 'use client'
-import React, { useState } from 'react'
+import React from 'react'
 
 import type { ProductDetailBlock } from '@/payload-types'
 
@@ -16,30 +16,33 @@ type Plan = NonNullable<ProductDetailBlock['plans']>[number]
  * column's 10px rhythm, as the comp stacks them.
  */
 export const BuyBox: React.FC<{
+  /** Where the chosen package is bought; resolved by the block so both buttons agree. */
+  buyUrl?: null | string
   ctaLabel?: string | null
   oneTimeLabel?: string | null
+  /** The chosen package, held by the block so the bottom strip offers the same one. */
+  onPlanChange: (index: number) => void
   /** The chosen variant, held by the block so the gallery and the copy follow it too. */
   onVariantChange: (index: number) => void
+  plan: number
+  /** Already the chosen variant's packages, and already clamped, resolved by the block. */
   plans: Plan[]
   variant: number
   variants: Variant[]
   variantsTitle?: string | null
-}> = ({ ctaLabel, oneTimeLabel, onVariantChange, plans, variant, variants, variantsTitle }) => {
-  const [plan, setPlan] = useState(0)
-
-  /*
-   * A variant may price differently. When it carries plans of its own those are what the
-   * cards show; otherwise the block's shared plans stand for every variant, which is how
-   * this behaved before variants could be priced at all.
-   */
-  const variantPlans = variants[variant]?.plans
-  const activePlans = Array.isArray(variantPlans) && variantPlans.length > 0 ? variantPlans : plans
-
-  /*
-   * Plans are chosen by position, and two variants need not offer the same number of them,
-   * so the choice is clamped rather than left pointing past the end of a shorter list.
-   */
-  const planIndex = Math.min(plan, Math.max(activePlans.length - 1, 0))
+}> = ({
+  buyUrl,
+  ctaLabel,
+  oneTimeLabel,
+  onPlanChange,
+  onVariantChange,
+  plan,
+  plans: activePlans,
+  variant,
+  variants,
+  variantsTitle,
+}) => {
+  const planIndex = plan
 
   return (
     <>
@@ -118,7 +121,7 @@ export const BuyBox: React.FC<{
             <button
               aria-pressed={selected}
               className="flex w-full flex-wrap items-start justify-between gap-2.5 text-left"
-              onClick={() => setPlan(i)}
+              onClick={() => onPlanChange(i)}
               type="button"
             >
               <span className="flex flex-wrap items-center gap-2.5">
@@ -242,12 +245,18 @@ export const BuyBox: React.FC<{
         </p>
       )}
 
-      <button
+      {/*
+       * A link rather than a button: it carries the reader to the checkout for the package
+       * they have open, which is the whole of what "add to cart" means on a site with no
+       * cart of its own. It was a <button> with nothing bound to it, so it did nothing at
+       * all. The bottom strip points at the same place, so the two cannot disagree.
+       */}
+      <a
         className="flex h-10 w-full items-center justify-center rounded-[20px] bg-navy px-[18.75px] text-base font-extrabold uppercase leading-4 text-white transition-colors hover:bg-navy-900"
-        type="button"
+        href={buyUrl || '#'}
       >
         {ctaLabel || 'Add to Cart'}
-      </button>
+      </a>
     </>
   )
 }

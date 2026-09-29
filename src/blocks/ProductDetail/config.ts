@@ -40,6 +40,15 @@ const planFields: Field[] = [
     ],
   },
   {
+    name: 'ctaUrl',
+    type: 'text',
+    label: 'Buy link',
+    admin: {
+      description:
+        'Where both buy buttons go when this package is the chosen one — the checkout link for this exact product and package. Leave it empty and the buttons fall back to the link under Sticky Bars, which cannot know which package was picked.',
+    },
+  },
+  {
     type: 'row',
     fields: [
       { name: 'price', type: 'text', required: true, admin: { width: '33%' } },
