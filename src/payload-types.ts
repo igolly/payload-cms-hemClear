@@ -254,6 +254,7 @@ export interface Page {
     | (
         | ProductDetailBlock
         | RawHtmlBlock
+        | ResultsBannerBlock
         | FormBlock
         | ReviewsBlock
         | FAQBlock
@@ -935,6 +936,60 @@ export interface RawHtmlBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'rawHtml';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ResultsBannerBlock".
+ */
+export interface ResultsBannerBlock {
+  /**
+   * The asterisk points at the footnote below.
+   */
+  heading?: string | null;
+  /**
+   * One line under the title, e.g. what the reviewers reported.
+   */
+  intro?: string | null;
+  /**
+   * Up to four. They sit in one row on a wide screen and two on a phone.
+   */
+  results?:
+    | {
+        /**
+         * e.g. "Smaller Hemorrhoids"
+         */
+        label: string;
+        /**
+         * e.g. "91%"
+         */
+        value: string;
+        /**
+         * What the figure rests on, e.g. "29 of 32 reviewers reported reduced size or swelling." Leaving this out makes the figure harder to trust, not easier.
+         */
+        detail?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * The qualification under the figures — who was counted and how. Keep it: it is what the asterisk in the title promises.
+   */
+  footnote?: string | null;
+  /**
+   * Optional, shown beside the figures on a wide screen.
+   */
+  image?: (string | null) | Media;
+  /**
+   * Leave empty to keep this section's designed default.
+   */
+  bgColor?:
+    ('white' | 'offWhite' | 'paleBlue' | 'lightBlue' | 'skyBlue' | 'brand' | 'navy' | 'deepNavy' | 'custom') | null;
+  /**
+   * Any CSS colour, e.g. #051959.
+   */
+  bgColorCustom?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'resultsBanner';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -3443,6 +3498,7 @@ export interface PagesSelect<T extends boolean = true> {
     | {
         productDetail?: T | ProductDetailBlockSelect<T>;
         rawHtml?: T | RawHtmlBlockSelect<T>;
+        resultsBanner?: T | ResultsBannerBlockSelect<T>;
         formBlock?: T | FormBlockSelect<T>;
         reviews?: T | ReviewsBlockSelect<T>;
         faq?: T | FAQBlockSelect<T>;
@@ -3738,6 +3794,28 @@ export interface RawHtmlBlockSelect<T extends boolean = true> {
   heading?: T;
   html?: T;
   width?: T;
+  bgColor?: T;
+  bgColorCustom?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ResultsBannerBlock_select".
+ */
+export interface ResultsBannerBlockSelect<T extends boolean = true> {
+  heading?: T;
+  intro?: T;
+  results?:
+    | T
+    | {
+        label?: T;
+        value?: T;
+        detail?: T;
+        id?: T;
+      };
+  footnote?: T;
+  image?: T;
   bgColor?: T;
   bgColorCustom?: T;
   id?: T;

@@ -32,6 +32,7 @@ import { MedicalReview } from '@/blocks/MedicalReview/config'
 import { Pairing } from '@/blocks/Pairing/config'
 import { PricingOffer } from '@/blocks/PricingOffer/config'
 import { RawHtml } from '@/blocks/RawHtml/config'
+import { ResultsBanner } from '@/blocks/ResultsBanner/config'
 import { ProductDetail } from '@/blocks/ProductDetail/config'
 import { ProductSystem } from '@/blocks/ProductSystem/config'
 import { SolutionSystem } from '@/blocks/SolutionSystem/config'
@@ -61,6 +62,7 @@ import { MedicalReviewBlock } from '@/blocks/MedicalReview/Component'
 import { PairingBlock } from '@/blocks/Pairing/Component'
 import { PricingOfferBlock } from '@/blocks/PricingOffer/Component'
 import { RawHtmlBlock } from '@/blocks/RawHtml/Component'
+import { ResultsBannerBlock } from '@/blocks/ResultsBanner/Component'
 import { ProductDetailBlockComponent } from '@/blocks/ProductDetail/Component'
 import { ProductSystemBlock } from '@/blocks/ProductSystem/Component'
 import { SolutionSystemBlockComponent } from '@/blocks/SolutionSystem/Component'
@@ -95,6 +97,7 @@ const generatedBlocks: [Block, AnyComponent][] = [
   [Pairing, PairingBlock as AnyComponent],
   [PricingOffer, PricingOfferBlock as AnyComponent],
   [RawHtml, RawHtmlBlock as AnyComponent],
+  [ResultsBanner, ResultsBannerBlock as AnyComponent],
   [ProductDetail, ProductDetailBlockComponent as AnyComponent],
   [ProductSystem, ProductSystemBlock as AnyComponent],
   [SolutionSystem, SolutionSystemBlockComponent as AnyComponent],

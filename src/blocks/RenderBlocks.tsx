@@ -19,6 +19,7 @@ import { MedicalReviewBlock } from '@/blocks/MedicalReview/Component'
 import { PairingBlock } from '@/blocks/Pairing/Component'
 import { PricingOfferBlock } from '@/blocks/PricingOffer/Component'
 import { RawHtmlBlock } from '@/blocks/RawHtml/Component'
+import { ResultsBannerBlock } from '@/blocks/ResultsBanner/Component'
 import { SavingsCompareBlock } from '@/blocks/SavingsCompare/Component'
 import { ScienceStatsBlock } from '@/blocks/ScienceStats/Component'
 import { StatsBarBlock } from '@/blocks/StatsBar/Component'
@@ -57,6 +58,7 @@ const blockComponents = {
   waysGrid: WaysGridBlock,
   whyDays: WhyDaysBlock,
   formBlock: FormBlock,
+  resultsBanner: ResultsBannerBlock,
   reviews: ReviewsBlock,
 }
 
@@ -87,6 +89,7 @@ export const fullBleed = new Set([
   'faq',
   'productSystem',
   'solutionSystem',
+  'resultsBanner',
   'reviews',
   'statsBar',
   'videoStories',
