@@ -4980,9 +4980,13 @@ export interface Header {
   announcementTitle?: string | null;
   announcementText?: string | null;
   /**
-   * A rolling timer starts when a visitor first arrives and runs for that long; once it reaches zero their next visit starts a fresh one. A fixed date runs out for everyone at the same moment and then stays at zero.
+   * A rolling timer starts when a visitor first arrives and runs for that long, carrying on across pages and reloads; once it reaches zero their next visit starts a fresh one. A fixed date runs out for everyone at the same moment and then stays at zero.
    */
-  announcementCountdown?: ('off' | 'date' | '24' | '48' | '72') | null;
+  announcementCountdown?: ('off' | 'date' | 'rolling') | null;
+  /**
+   * How long each visitor gets, in hours. Changing this restarts everyone.
+   */
+  announcementCountdownHours?: number | null;
   /**
    * The moment the offer ends.
    */
@@ -5150,6 +5154,7 @@ export interface HeaderSelect<T extends boolean = true> {
   announcementTitle?: T;
   announcementText?: T;
   announcementCountdown?: T;
+  announcementCountdownHours?: T;
   announcementEndsAt?: T;
   stickyEnabled?: T;
   stickyText?: T;

@@ -27,13 +27,24 @@ export const headerFields: Field[] = [
         options: [
           { label: 'No timer', value: 'off' },
           { label: 'Counts down to a fixed date and time', value: 'date' },
-          { label: 'Rolling — 24 hours', value: '24' },
-          { label: 'Rolling — 48 hours', value: '48' },
-          { label: 'Rolling — 72 hours', value: '72' },
+          { label: 'Rolling — a set number of hours', value: 'rolling' },
         ],
         admin: {
           description:
-            'A rolling timer starts when a visitor first arrives and runs for that long; once it reaches zero their next visit starts a fresh one. A fixed date runs out for everyone at the same moment and then stays at zero.',
+            'A rolling timer starts when a visitor first arrives and runs for that long, carrying on across pages and reloads; once it reaches zero their next visit starts a fresh one. A fixed date runs out for everyone at the same moment and then stays at zero.',
+        },
+      },
+      {
+        name: 'announcementCountdownHours',
+        type: 'number',
+        defaultValue: 14,
+        label: 'Hours to count down',
+        max: 168,
+        min: 1,
+        admin: {
+          condition: (_, siblingData) => siblingData?.announcementCountdown === 'rolling',
+          description: 'How long each visitor gets, in hours. Changing this restarts everyone.',
+          step: 1,
         },
       },
       {

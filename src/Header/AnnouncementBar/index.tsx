@@ -23,7 +23,11 @@ const parts = (ms: number) => [
  * Storage can be unavailable (a private window, or blocked site data). The timer then runs
  * for the full stretch from this page view, which is the graceful version of the same thing.
  */
-const deadlineFor = (countdown?: null | string, endsAt?: null | string): null | number => {
+const deadlineFor = (
+  countdown?: null | string,
+  endsAt?: null | string,
+  configuredHours?: null | number,
+): null | number => {
   if (!countdown || countdown === 'off') return null
 
   if (countdown === 'date') {
@@ -32,7 +36,10 @@ const deadlineFor = (countdown?: null | string, endsAt?: null | string): null | 
     return Number.isNaN(target) ? null : target
   }
 
-  const hours = Number(countdown)
+  // `rolling` carries its length in its own field. The bare numbers are what the setting
+  // used to store ("24", "48", "72"); a global saved before the field changed still reads
+  // correctly rather than silently losing its timer.
+  const hours = countdown === 'rolling' ? Number(configuredHours) : Number(countdown)
   if (!Number.isFinite(hours) || hours <= 0) return null
 
   const key = `hemclear:countdown:${hours}`
@@ -58,21 +65,28 @@ const deadlineFor = (countdown?: null | string, endsAt?: null | string): null | 
  */
 export const AnnouncementBar: React.FC<{
   countdown?: string | null
+  countdownHours?: null | number
   endsAt?: string | null
   text?: string | null
   title?: string | null
-}> = ({ countdown, endsAt, text, title }) => {
+}> = ({ countdown, countdownHours, endsAt, text, title }) => {
   const [remaining, setRemaining] = useState<null | number>(null)
 
   useEffect(() => {
-    const target = deadlineFor(countdown, endsAt)
+    const target = deadlineFor(countdown, endsAt, countdownHours)
     if (target === null) return
 
-    const tick = () => setRemaining(Math.max(0, target - Date.now()))
+    // Stop the interval at zero rather than leaving it running on a number that cannot
+    // change again.
+    const tick = () => {
+      const left = Math.max(0, target - Date.now())
+      setRemaining(left)
+      if (left === 0) clearInterval(id)
+    }
     tick()
     const id = setInterval(tick, 1000)
     return () => clearInterval(id)
-  }, [countdown, endsAt])
+  }, [countdown, countdownHours, endsAt])
 
   return (
     <div className="w-full bg-navy px-1 font-inter text-white sm:px-4">

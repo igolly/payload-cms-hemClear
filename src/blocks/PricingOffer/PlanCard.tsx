@@ -24,8 +24,15 @@ const planName = (name: React.ReactNode): React.ReactNode => {
 }
 
 /**
- * One plan. `selected` switches the card to the selectable layout: no per-card button or
- * footnote (the section has one shared button), shorter fixed heights, and the white
+ * The buy button and its footnote, together, in the selectable layout. Every card gives up
+ * the same height for it whether or not it is the chosen one, so moving the selection along
+ * the row does not change any card's height and nothing below the section jumps.
+ */
+const CTA_BLOCK = 'h-[67px]'
+
+/**
+ * One plan. `selected` switches the card to the selectable layout: the buy button belongs to
+ * whichever card is chosen, the fixed heights are the comp's selectable ones, and the white
  * "chosen" treatment follows the selection rather than the popular flag.
  */
 export const PlanCard: React.FC<{ index: number; plan: Plan; selected?: boolean }> = ({
@@ -53,17 +60,45 @@ export const PlanCard: React.FC<{ index: number; plan: Plan; selected?: boolean 
               selectable ? 'max-xl:bg-tint-50' : 'max-xl:bg-white',
             ),
         // Below xl every card shares the comp's mobile height, so the carousel's cards line up.
-        selectable ? 'max-xl:min-h-[480px]' : 'max-xl:min-h-[542.5px]',
+        // The selectable heights carry the 67px the buy button now occupies inside the card.
+        selectable ? 'max-xl:min-h-[547px]' : 'max-xl:min-h-[542.5px]',
         selectable
           ? popular
-            ? 'xl:h-[525px]'
-            : 'xl:h-[494px]'
+            ? 'xl:h-[592px]'
+            : 'xl:h-[561px]'
           : popular
             ? 'xl:h-[543px]'
             : 'xl:h-[522px]',
       )}
       data-payload-subpath={`plans.${index}.name`}
     >
+      {/*
+       * A radio mark, so "which one is chosen" is not carried by background colour alone —
+       * the unchosen cards differ from the chosen one only by a pale tint, which is the kind
+       * of difference that disappears in bright light or for a colour-blind reader.
+       */}
+      {selectable && (
+        <span
+          aria-hidden="true"
+          className={cn(
+            'flex size-[22px] shrink-0 items-center justify-center rounded-full border-2 transition-colors',
+            selected ? 'border-brand-600 bg-brand-600' : 'border-steel-300 bg-white',
+          )}
+        >
+          {selected && (
+            <svg className="size-3 text-white" fill="none" viewBox="0 0 12 12">
+              <path
+                d="M2.5 6.2 4.8 8.5 9.5 3.8"
+                stroke="currentColor"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+              />
+            </svg>
+          )}
+        </span>
+      )}
+
       <p
         className={cn(
           'text-center font-playfair font-bold leading-normal text-heading',
@@ -151,6 +186,32 @@ export const PlanCard: React.FC<{ index: number; plan: Plan; selected?: boolean 
               {marks(plan.footnote)}
             </p>
           </>
+        )}
+
+        {/*
+         * The buy button sits on the chosen card, so what the button will buy is never in
+         * doubt. The unchosen cards hold the same space empty rather than collapsing it,
+         * which is what stops the row resizing every time the reader changes their mind.
+         */}
+        {selectable && (
+          <div className={cn('flex w-full flex-col items-center', CTA_BLOCK)}>
+            {selected && (
+              <>
+                <a
+                  className="cta-gleam [--cta-glow:var(--color-success-bright)] flex h-[38.75px] w-full items-center justify-center rounded-[15.625px] bg-success-bright p-[6.25px] text-lg font-bold uppercase text-white transition-colors hover:bg-success-deep"
+                  href={plan.ctaUrl || '#'}
+                >
+                  {plan.ctaLabel || 'Buy Now'}
+                </a>
+                <p
+                  aria-live="polite"
+                  className="flex h-[28.125px] items-center justify-center text-center text-xs font-medium text-brand-600"
+                >
+                  {marks(plan.footnote)}
+                </p>
+              </>
+            )}
+          </div>
         )}
       </div>
     </div>

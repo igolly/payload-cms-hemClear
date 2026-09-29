@@ -79,13 +79,19 @@ export const StickyOfferBar: React.FC<{
             )}
           </p>
 
+          {/*
+           * Shown at every width. It used to start at `sm`, which took the only buy button on
+           * the strip off every phone — the readers most likely to be scrolling past the
+           * header. On a narrow screen it tightens its padding and drops the arrow instead of
+           * disappearing, which leaves the offer text enough room to stay on one line.
+           */}
           {ctaLabel && (
             <a
-              className="cta-gleam [--cta-gleam-color:color-mix(in_oklab,currentcolor_10%,transparent)] hidden shrink-0 items-center gap-2 rounded-full bg-white px-5 py-2.5 text-xs font-bold uppercase tracking-wide text-heading transition-colors hover:bg-white/90 sm:inline-flex"
+              className="cta-gleam [--cta-gleam-color:color-mix(in_oklab,currentcolor_10%,transparent)] inline-flex shrink-0 items-center gap-2 rounded-full bg-white px-3 py-2 text-[11px] font-bold uppercase tracking-wide text-heading transition-colors hover:bg-white/90 sm:px-5 sm:py-2.5 sm:text-xs"
               href={ctaUrl || '#'}
             >
               {marks(ctaLabel)}
-              <ArrowRight aria-hidden="true" className="size-4" />
+              <ArrowRight aria-hidden="true" className="hidden size-4 sm:block" />
             </a>
           )}
         </div>

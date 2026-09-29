@@ -2,14 +2,14 @@
 import React, { useState } from 'react'
 
 import { cn } from '@/utilities/ui'
-import { marks } from '@/utilities/marks'
 
 import { type Plan, PlanCard, PopularFrame } from './PlanCard'
 import { PlanCarousel } from './PlanCarousel'
 
 /**
- * The "select a plan" layout: the cards act as radio options and one shared button buys
- * the chosen plan, with that plan's footnote under it. The most popular plan starts selected.
+ * The "select a plan" layout: the cards act as radio options, and the buy button belongs to
+ * whichever card is chosen rather than sitting below the row — so the thing you press is
+ * attached to the thing you are buying. The most popular plan starts selected.
  */
 export const SelectablePlans: React.FC<{ plans: Plan[] }> = ({ plans }) => {
   const initial = Math.max(
@@ -53,6 +53,10 @@ export const SelectablePlans: React.FC<{ plans: Plan[] }> = ({ plans }) => {
                 }
               }}
               onKeyDown={(event) => {
+                // The buy button lives inside this card. Enter on it must follow the link,
+                // not be swallowed by the card's own "choose me" handling.
+                if (event.target !== event.currentTarget) return
+
                 const step = { ArrowDown: 1, ArrowLeft: -1, ArrowRight: 1, ArrowUp: -1 }[event.key]
                 if (event.key === ' ' || event.key === 'Enter') {
                   event.preventDefault()
@@ -81,24 +85,10 @@ export const SelectablePlans: React.FC<{ plans: Plan[] }> = ({ plans }) => {
         })}
       </PlanCarousel>
 
-      {chosen && (
-        <>
-          <a
-            className="cta-gleam [--cta-glow:var(--color-success-bright)] flex h-[38.75px] w-full items-center justify-center rounded-[15.625px] bg-success-bright p-[6.25px] text-lg font-medium uppercase sm:h-[38px] sm:max-w-[504px] sm:font-bold text-white transition-colors hover:bg-success-deep"
-            href={chosen.ctaUrl || '#'}
-          >
-            {chosen.ctaLabel || 'Buy Now'}
-          </a>
-          {/* Reserved even when the chosen plan has no footnote, so the trust strip doesn't jump.
-              White rather than the comp's #0329b2, which disappears against the navy band. */}
-          <p
-            aria-live="polite"
-            className="hidden h-[34px] items-center justify-center text-center sm:flex text-xs font-medium text-white [&_sup]:leading-[0]"
-          >
-            {marks(chosen.footnote)}
-          </p>
-        </>
-      )}
+      {/* Said once, for a reader who cannot see which card is highlighted. */}
+      <p aria-live="polite" className="sr-only">
+        {chosen ? `${chosen.name} selected` : ''}
+      </p>
     </>
   )
 }

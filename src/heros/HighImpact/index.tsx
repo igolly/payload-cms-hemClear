@@ -201,15 +201,33 @@ const SplitHero: React.FC<Page['hero']> = ({
                 // against nothing.
                 className="h-full w-full"
                 /*
-                 * Stacked, the photo is framed tighter than it was shot: it is a wide
-                 * kitchen scene, and at a phone's width the woman and the two products were
-                 * a small group in the middle of it. Half again the size, held a little up
-                 * and to the left, shows the middle two thirds — source 9-75% across and
-                 * 11-78% down — and the column's `overflow-hidden` takes the rest. The
-                 * source is 1320px wide, so 880 of them still land on a 390px screen and
-                 * nothing is upscaled. Side by side from `xl` it is covered as before.
+                 * The photo is framed tighter than it was shot: it is a wide kitchen scene
+                 * and the woman with the two products is a small group in the middle of it.
+                 * Scaling crops, it never stretches — the aspect ratio is the file's
+                 * throughout.
+                 *
+                 * The subject runs 430-890 across and 185-845 down a 1320x1024 source, so its
+                 * centre is the picture's own centre (50%, 50.3%) and the group is 460x660.
+                 * Stacked, half again the size about that centre shows 220-1100 by 174-857,
+                 * which holds the whole group with a little air. It was anchored at 26%/34%
+                 * before, which spent a third of the frame on the window and sink and cut the
+                 * bottom off the jar and the capsules.
+                 *
+                 * Side by side from `xl` the column is wider than it is tall, so `cover` is
+                 * already trimming the top and bottom before any zoom. A fifth closer holds
+                 * the group until the column reaches about 1080px — the photo column is half
+                 * the window from 1400px up, so that is a 2000px window, beyond which the
+                 * zoom comes off rather than clipping her head. Past about 2600px the layout
+                 * crops into the group whatever we do here; the fix for that is a taller
+                 * source, not a smaller number.
+                 *
+                 * Both scales are written as `min-[…]` rather than one of them as `xl`: the
+                 * two rules carry the same weight, so the winner is whichever Tailwind emits
+                 * last, and it sorts the arbitrary widths against each other but not against
+                 * the named breakpoints. As `xl`, the 1.2 landed after the 2000px rule and
+                 * beat the guard it was supposed to lose to.
                  */
-                imgClassName="h-full w-full origin-[26%_34%] scale-150 object-contain object-center xl:origin-center xl:scale-100 xl:object-cover"
+                imgClassName="h-full w-full origin-[50%_51%] scale-150 object-contain object-center xl:origin-center xl:object-cover min-[1280px]:scale-[1.2] min-[2000px]:scale-100"
                 pictureClassName="block h-full w-full"
                 priority
                 resource={media}
