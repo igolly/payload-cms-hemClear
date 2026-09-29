@@ -20,7 +20,7 @@ const Tick = () => (
 const Cross = () => (
   <span
     aria-hidden="true"
-    className="w-[15px] shrink-0 text-center text-[22px] font-bold leading-5 text-danger-bright"
+    className="w-[15px] shrink-0 text-center text-[22px] font-bold leading-5 text-danger-muted"
   >
     ×
   </span>
@@ -85,13 +85,19 @@ export const Composition: React.FC<{
                 </p>
               )}
               <ul className="flex flex-wrap content-start gap-2 @min-[560px]:gap-2.5">
+                {/*
+                 * A quiet tint rather than the alarm red. What this list says is reassuring —
+                 * the things that are not in the product — so setting it in the brightest red
+                 * on the page read as a warning about the product rather than a point in its
+                 * favour. The wording is untouched; only the colour it is said in changed.
+                 */}
                 {notContains.map((item, i) => (
                   <li
-                    className="flex items-center gap-1.5 rounded-[50px] border border-danger-tint bg-white px-2 py-0.5 @min-[560px]:gap-2 @min-[560px]:px-2.5 @min-[560px]:py-1"
+                    className="flex items-center gap-1.5 rounded-[50px] border border-danger-tint bg-danger-wash px-2 py-0.5 @min-[560px]:gap-2 @min-[560px]:px-2.5 @min-[560px]:py-1"
                     key={item.id ?? i}
                   >
                     <Cross />
-                    <span className="text-[11px] leading-[14px] text-danger-bright @min-[560px]:text-sm @min-[560px]:leading-5">
+                    <span className="text-[11px] leading-[14px] text-danger-muted @min-[560px]:text-sm @min-[560px]:leading-5">
                       {marks(item.text)}
                     </span>
                   </li>

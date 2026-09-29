@@ -244,6 +244,25 @@ export const ProductDetailBlockComponent: React.FC<ProductDetailBlock> = (block)
             )}
           </div>
 
+          {/*
+           * The offer sits above the reported results, so the packages are the first thing
+           * under the product's own description rather than something to scroll past a wall
+           * of figures for. The results still read as the evidence for the price — they are
+           * simply on the other side of it.
+           */}
+          <BuyBox
+            buyUrl={buyUrl}
+            ctaLabel={product.ctaLabel}
+            oneTimeLabel={product.oneTimeLabel}
+            onPlanChange={setPlan}
+            onVariantChange={setVariant}
+            plan={planIndex}
+            plans={activePlans}
+            variant={variant}
+            variants={Array.isArray(block.variants) ? block.variants : []}
+            variantsTitle={product.variantsTitle}
+          />
+
           {/* Reported results — Figma 6207:2832. The frame sets the figures in Gentium Book
               Basic Bold; Google Fonts retired that name and ships the same face as Gentium
               Book Plus, which is what `font-gentium` loads. */}
@@ -283,19 +302,6 @@ export const ProductDetailBlockComponent: React.FC<ProductDetailBlock> = (block)
               )}
             </div>
           )}
-
-          <BuyBox
-            buyUrl={buyUrl}
-            ctaLabel={product.ctaLabel}
-            oneTimeLabel={product.oneTimeLabel}
-            onPlanChange={setPlan}
-            onVariantChange={setVariant}
-            plan={planIndex}
-            plans={activePlans}
-            variant={variant}
-            variants={Array.isArray(block.variants) ? block.variants : []}
-            variantsTitle={product.variantsTitle}
-          />
 
           {/* Info banners — Figma 6215:3048 / 6216:3051 */}
           {notes.map((note, i) => {

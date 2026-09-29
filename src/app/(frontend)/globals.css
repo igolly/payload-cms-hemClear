@@ -159,6 +159,9 @@
   --color-danger: #c0392b;
   --color-danger-bright: #d30000;
   --color-danger-tint: #f0cfcb;
+  /* For "what is not in it" — a fact in the product's favour, not a warning about it. */
+  --color-danger-muted: #8f3b32;
+  --color-danger-wash: #fdf6f5;
   --color-info: #006db0;
   --color-info-dark: #0057a0;
   --color-aqua: #6fd2f5;
