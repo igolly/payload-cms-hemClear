@@ -1,6 +1,6 @@
 'use client'
 /* eslint-disable @next/next/no-img-element -- static design-system artwork, nothing to optimise */
-import React, { useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 
 import type { ProductDetailBlock } from '@/payload-types'
 
@@ -23,6 +23,18 @@ export const Gallery: React.FC<{ badgeLabel?: string | null; slides: Slide[] }> 
   slides,
 }) => {
   const [active, setActive] = useState(0)
+  const thumbsRef = useRef<HTMLUListElement>(null)
+
+  /*
+   * Keep the chosen thumbnail in the strip's view. Now that the strip scrolls, stepping the
+   * photo along with the arrows or the dots could otherwise leave its thumbnail off the end
+   * — the gallery would look like it had stopped responding.
+   */
+  useEffect(() => {
+    const thumb = thumbsRef.current?.children[active] as HTMLElement | undefined
+    thumb?.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'nearest' })
+  }, [active])
+
   /** The phone-only arrows over the photo; from `lg` the thumbnails carry the gallery. */
   const arrow = (side: string) =>
     cn(
@@ -167,8 +179,20 @@ export const Gallery: React.FC<{ badgeLabel?: string | null; slides: Slide[] }> 
 
       {slides.length > 1 && (
         <>
-          {/* Figma 6220:3630: 100px thumbnails (14.81% of 675), 15px (2.22%) apart. */}
-          <ul className="flex gap-[2.222%] py-2.5">
+          {/*
+           * Figma 6220:3630: 100px thumbnails (14.81% of 675), 15px (2.22%) apart — six of
+           * them filling the width exactly. That arithmetic only holds at six: this gallery
+           * has nine, which came to about 151% and spilled the last three straight out of
+           * the column, because nothing here scrolled or clipped.
+           *
+           * The strip is a scroller now, so the thumbnails keep the size they were drawn at
+           * however many there are, and the extras are reachable instead of off the edge.
+           * At six or fewer there is nothing to scroll and it looks exactly as it did.
+           */}
+          <ul
+            className="flex gap-[2.222%] snap-x snap-mandatory overflow-x-auto scroll-smooth py-2.5 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+            ref={thumbsRef}
+          >
             {slides.map((slide, i) => {
               const thumb =
                 slide.thumbnail && typeof slide.thumbnail === 'object'
@@ -176,7 +200,7 @@ export const Gallery: React.FC<{ badgeLabel?: string | null; slides: Slide[] }> 
                   : slide.image
 
               return (
-                <li className="w-[14.815%] flex-none" key={slide.id ?? i}>
+                <li className="w-[14.815%] flex-none snap-start" key={slide.id ?? i}>
                   <button
                     aria-current={i === active}
                     aria-label={`Show image ${i + 1}`}
