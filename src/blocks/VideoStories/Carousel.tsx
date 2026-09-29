@@ -66,6 +66,15 @@ export const Carousel: React.FC<{
   }, [carouselId])
   const [atStart, setAtStart] = useState(true)
   const [atEnd, setAtEnd] = useState(false)
+  /*
+   * Whether the track actually has anywhere to go. With five stories in five card slots it
+   * does not, and the arrows and dots then sat there doing nothing — controls that cannot
+   * move anything read as broken ones. They appear when the stories outgrow the row, which
+   * is what happens the moment another clip is added.
+   */
+  const [scrollable, setScrollable] = useState(false)
+  /** The card the arrows last asked for, held until the scroll actually arrives there. */
+  const pending = useRef<null | number>(null)
 
   // Escape stops the clip, the same key that closes the mega menu and the mobile drawer.
   useEffect(() => {
@@ -113,12 +122,18 @@ export const Carousel: React.FC<{
         }
       })
       setActive(nearest)
+      // Arrived where the arrows were aiming — or the reader swiped somewhere else, which
+      // is just as good a reason to stop steering by the old target.
+      if (pending.current === nearest) pending.current = null
     } else {
-      setActive(Math.round(scrollLeft / step))
+      const nearest = Math.round(scrollLeft / step)
+      setActive(nearest)
+      if (pending.current === nearest) pending.current = null
     }
     setAtStart(scrollLeft <= 1)
     setAtEnd(scrollLeft + clientWidth >= scrollWidth - 1)
-  }, [])
+    setScrollable(scrollWidth > clientWidth + 1)
+  }, [centred])
 
   useEffect(() => {
     const track = trackRef.current
@@ -144,16 +159,25 @@ export const Carousel: React.FC<{
   const scrollToIndex = (index: number) => {
     const track = trackRef.current
     if (!track) return
+    const clamped = Math.max(0, Math.min(track.children.length - 1, index))
+    pending.current = clamped
+
     if (centred()) {
-      const clamped = Math.max(0, Math.min(track.children.length - 1, index))
       track.scrollTo({ behavior: 'smooth', left: centreOffset(track, clamped) })
       return
     }
     const step = track.firstElementChild?.clientWidth ?? 0
-    track.scrollTo({ behavior: 'smooth', left: step * index })
+    track.scrollTo({ behavior: 'smooth', left: step * clamped })
   }
 
-  const nudge = (direction: -1 | 1) => scrollToIndex(active + direction)
+  /*
+   * Step from where we are *going*, not from where we are. `active` is read back off the
+   * scroll position, so it only catches up once the smooth scroll has finished — and a
+   * reader pressing the arrow twice in quick succession got the same card twice, the second
+   * press apparently doing nothing. Remembering the requested card makes the second press
+   * land on the one after it.
+   */
+  const nudge = (direction: -1 | 1) => scrollToIndex((pending.current ?? active) + direction)
 
   const light = tone === 'light'
 
@@ -188,7 +212,7 @@ export const Carousel: React.FC<{
           ))}
         </ul>
 
-        {arrows && (
+        {arrows && scrollable && (
           <>
             <button
               aria-label="Previous stories"
@@ -227,7 +251,7 @@ export const Carousel: React.FC<{
           </>
         )}
 
-        {stories.length > 1 && (
+        {stories.length > 1 && scrollable && (
           <div className="flex items-center justify-center gap-2.5 py-2.5">
             {stories.map((story, i) => (
               <button
@@ -259,13 +283,19 @@ export const Carousel: React.FC<{
   return (
     <div>
       <div className="relative flex items-center justify-between gap-3 xl:px-[50px]">
-        {/* Mobile (6517:2035): 32px arrows at 60% on the content edges, 187.25px down the cards. */}
+        {/*
+         * Mobile (6517:2035): 32px arrows at 60% on the content edges, 187.25px down the
+         * cards. They run to `md` rather than `sm`, where the 64px pair takes over: the
+         * small pair used to stop at 640 and the large pair start at 768, leaving tablets
+         * between the two with no arrows at all on a track that does scroll there.
+         */}
         {arrows &&
+          scrollable &&
           ([-1, 1] as const).map((direction) => (
             <button
               aria-label={direction < 0 ? 'Previous stories' : 'Next stories'}
               className={cn(
-                'absolute top-[187.25px] z-30 size-8 opacity-60 transition-opacity hover:opacity-80 disabled:opacity-25 sm:hidden',
+                'absolute top-[187.25px] z-30 size-8 opacity-60 transition-opacity hover:opacity-80 disabled:opacity-25 md:hidden',
                 direction < 0 ? 'left-0' : 'right-0',
               )}
               disabled={direction < 0 ? atStart : atEnd}
@@ -287,7 +317,7 @@ export const Carousel: React.FC<{
 
         <button
           aria-label="Previous stories"
-          className={cn(arrowClass, arrows ? 'hidden md:block' : 'hidden')}
+          className={cn(arrowClass, arrows && scrollable ? 'hidden md:block' : 'hidden')}
           disabled={atStart}
           onClick={() => nudge(-1)}
           type="button"
@@ -330,7 +360,7 @@ export const Carousel: React.FC<{
 
         <button
           aria-label="Next stories"
-          className={cn(arrowClass, arrows ? 'hidden md:block' : 'hidden')}
+          className={cn(arrowClass, arrows && scrollable ? 'hidden md:block' : 'hidden')}
           disabled={atEnd}
           onClick={() => nudge(1)}
           type="button"
@@ -347,7 +377,7 @@ export const Carousel: React.FC<{
         </button>
       </div>
 
-      {stories.length > 1 && (
+      {stories.length > 1 && scrollable && (
         /* Figma 61:913: a 48.75px strip, 25px white pill + 8.75px brand-300 dots, 6.25px apart. */
         <div className="mt-[12.5px] flex h-[48.75px] items-center justify-center gap-[6.25px]">
           {stories.map((story, i) => (
