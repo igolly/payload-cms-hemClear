@@ -159,7 +159,9 @@ export const ProductDetailBlockComponent: React.FC<ProductDetailBlock> = (block)
               </p>
             )}
 
-            <h1 className="font-marcellus text-[32px] leading-[1.1] text-navy sm:text-[38px] sm:leading-[38px]">
+            {/* 38px on a phone too: the mobile frame sets the product name at the same size
+                as the wider one, and at 32px it sat a line shorter than the frame draws it. */}
+            <h1 className="text-balance font-marcellus text-[38px] leading-[38px] text-navy">
               {marks(product.title)}
             </h1>
 
