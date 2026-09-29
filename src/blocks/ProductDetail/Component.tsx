@@ -154,19 +154,28 @@ export const ProductDetailBlockComponent: React.FC<ProductDetailBlock> = (block)
             )}
 
             {product.eyebrow && (
-              <p className="text-[16.25px] font-bold uppercase leading-5 text-brand-600">
+              <p className="text-[min(16.25px,3.98cqw)] font-bold uppercase leading-[1.23] text-brand-600">
                 {marks(product.eyebrow)}
               </p>
             )}
 
-            {/* 38px on a phone too: the mobile frame sets the product name at the same size
-                as the wider one, and at 32px it sat a line shorter than the frame draws it. */}
-            <h1 className="text-balance font-marcellus text-[38px] leading-[38px] text-navy">
+            {/*
+             * The intro is set against the width of the buy column rather than the
+             * viewport, which is why these are `cqw` and why the column is a container.
+             * The frame draws this name, its eyebrow and the copy beneath on one, one and
+             * four lines in a 408px column; held at fixed sizes they each took a line more
+             * as the column narrowed, so a 375px phone read as a different design rather
+             * than the same one smaller. Each is capped at the size the frame gives it, so
+             * nothing grows past the drawing on a wide column.
+             */}
+            <h1 className="text-balance font-marcellus text-[min(38px,9.31cqw)] leading-[1] text-navy">
               {marks(product.title)}
             </h1>
 
             {product.description && (
-              <p className="text-lg leading-[22px] text-navy">{marks(product.description)}</p>
+              <p className="text-[min(18px,4.41cqw)] leading-[1.22] text-navy">
+                {marks(product.description)}
+              </p>
             )}
 
             {benefits.length > 0 && (
@@ -209,10 +218,12 @@ export const ProductDetailBlockComponent: React.FC<ProductDetailBlock> = (block)
                     className="flex flex-col gap-[5px] text-center @min-[600px]:h-[141px]"
                     key={result.id ?? i}
                   >
-                    <p className="font-gentium text-[36px] font-bold leading-9 @min-[600px]:text-[50px] @min-[600px]:leading-[50px]">
+                    <p className="font-gentium text-[min(36px,8.82cqw)] font-bold leading-[1] @min-[600px]:text-[50px] @min-[600px]:leading-[50px]">
                       {marks(result.value)}
                     </p>
-                    <p className="text-[13px] font-bold leading-4">{marks(result.label)}</p>
+                    <p className="text-[min(13px,3.19cqw)] font-bold leading-[1.23]">
+                      {marks(result.label)}
+                    </p>
                     {result.detail && (
                       <p className="hidden text-xs font-medium leading-[14px] text-brand-300 @min-[600px]:block">
                         {marks(result.detail)}
