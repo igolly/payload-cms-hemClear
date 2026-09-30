@@ -51,52 +51,59 @@ export const FAQBlock: React.FC<Props> = ({
   if (headerStyle === 'split') {
     return (
       <section
-        className="grid w-full grid-cols-1 lg:grid-cols-[minmax(340px,38%)_1fr]"
+        className="w-full px-4 py-10 sm:px-6 lg:px-8"
         style={backgroundStyle(bgColor, bgColorCustom)}
       >
-        <div className="bg-navy-900 px-6 py-10 sm:px-10 lg:px-12 lg:py-14">
-          {heading && (
-            <h2
-              className="font-marcellus text-[32px] leading-[1.1] text-white sm:text-[38px]"
-              data-payload-subpath="heading"
-            >
-              {multiline(heading)}
-            </h2>
-          )}
+        {/*
+         * Held to the same column as the sections above and below it rather than running to
+         * the window's edges — the band is a section of the page, not a full-width break in
+         * it. `overflow-hidden` is what keeps the photo inside the rounded corner.
+         */}
+        <div className="mx-auto grid max-w-[1400px] grid-cols-1 overflow-hidden rounded-2xl lg:grid-cols-[minmax(320px,38%)_1fr]">
+          <div className="bg-navy-900 px-6 py-10 sm:px-10 lg:px-12 lg:py-14">
+            {heading && (
+              <h2
+                className="font-marcellus text-[32px] leading-[1.1] text-white sm:text-[38px]"
+                data-payload-subpath="heading"
+              >
+                {multiline(heading)}
+              </h2>
+            )}
 
-          {description && (
-            <p
-              className="mt-3 max-w-md whitespace-pre-line text-[13px] leading-relaxed text-white/70"
-              data-payload-subpath="description"
-            >
-              {marks(description)}
-            </p>
-          )}
+            {description && (
+              <p
+                className="mt-3 max-w-md whitespace-pre-line text-[13px] leading-relaxed text-white/70"
+                data-payload-subpath="description"
+              >
+                {marks(description)}
+              </p>
+            )}
 
-          {questions.length > 0 && (
-            <div className="mt-8">
-              <FaqAccordion defaultState={defaultState} items={questions} tone="panel" />
+            {questions.length > 0 && (
+              <div className="mt-8">
+                <FaqAccordion defaultState={defaultState} items={questions} tone="panel" />
+              </div>
+            )}
+          </div>
+
+          {/*
+           * The photo holds the band's height on a wide screen and takes a fixed slice of it
+           * on a narrow one, where the two are stacked and it would otherwise either collapse
+           * to nothing or run the length of the questions.
+           */}
+          {hasPanel ? (
+            <div className="relative h-56 sm:h-72 lg:h-auto" data-payload-subpath="image">
+              <Media
+                fill
+                imgClassName="object-cover"
+                resource={image}
+                size="(min-width: 1024px) 860px, 100vw"
+              />
             </div>
+          ) : (
+            <div aria-hidden="true" className="hidden bg-mist-100 lg:block" />
           )}
         </div>
-
-        {/*
-         * The photo holds the band's height on a wide screen and takes a fixed slice of it
-         * on a narrow one, where the two are stacked and it would otherwise either collapse
-         * to nothing or run the length of the questions.
-         */}
-        {hasPanel ? (
-          <div className="relative h-56 sm:h-72 lg:h-auto" data-payload-subpath="image">
-            <Media
-              fill
-              imgClassName="object-cover"
-              resource={image}
-              size="(min-width: 1024px) 62vw, 100vw"
-            />
-          </div>
-        ) : (
-          <div aria-hidden="true" className="hidden bg-mist-100 lg:block" />
-        )}
       </section>
     )
   }
