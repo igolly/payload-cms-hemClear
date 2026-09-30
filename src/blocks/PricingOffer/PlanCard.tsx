@@ -218,7 +218,15 @@ export const PlanCard: React.FC<{ index: number; plan: Plan; selected?: boolean 
   )
 }
 
-/** The blue frame and ribbon that sit behind the most-popular plan. */
+/**
+ * The blue frame and ribbon that sit behind the most-popular plan.
+ *
+ * The frame's height has to clear the card inside it plus the ribbon and the gap above it.
+ * When the buy button moved onto the chosen card the selectable card grew by 67px and this
+ * did not, so the card was squeezed and the ribbon pushed clean out of the top of the frame
+ * — which is what "Most Popular" sitting too close to the card was. The selectable heights
+ * carry that 67px now, and keep the ~15px of blue the comp leaves under the card.
+ */
 export const PopularFrame: React.FC<{
   children: React.ReactNode
   label?: string | null
@@ -227,7 +235,7 @@ export const PopularFrame: React.FC<{
   <div
     className={cn(
       'flex w-full flex-col items-center justify-end gap-[6.25px] rounded-[18.75px] border-2 border-ash-200 bg-brand-600 max-xl:border-0',
-      selectable ? 'max-xl:min-h-[515px] xl:h-[561px]' : 'max-xl:min-h-[575px] xl:h-[576px]',
+      selectable ? 'max-xl:min-h-[582px] xl:h-[628px]' : 'max-xl:min-h-[575px] xl:h-[576px]',
     )}
   >
     {label && (
