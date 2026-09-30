@@ -90,6 +90,7 @@ const BODY_GAP: Record<string, string> = {
 }
 
 export const FeatureStripAbout: React.FC<Props> = ({
+  anchor,
   background,
   bgColor,
   bgColorCustom,
@@ -380,7 +381,11 @@ export const FeatureStripAbout: React.FC<Props> = ({
         trustBar ? 'bg-white lg:px-5' : 'py-5 sm:py-10 lg:px-8',
         !trustBar && (background === 'light' ? 'bg-mist-100' : 'bg-white'),
         SECTION_PADDING[style],
+        // Held clear of the strip that parks at the top of the window, which a browser
+        // jumping to an anchor would otherwise put the heading underneath.
+        anchor && 'scroll-mt-28',
       )}
+      id={anchor || undefined}
       style={backgroundStyle(bgColor, bgColorCustom)}
     >
       <div className="mx-auto max-w-[1400px]">

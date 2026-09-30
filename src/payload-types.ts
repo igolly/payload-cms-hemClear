@@ -2612,6 +2612,10 @@ export interface FeatureStripBlock {
    */
   footnote?: string | null;
   /**
+   * Optional. Lets a link jump straight to this section — enter a short name with no spaces, e.g. "everyday-habits", then link to /page-slug#everyday-habits.
+   */
+  anchor?: string | null;
+  /**
    * Leave empty to keep this section's designed default.
    */
   bgColor?:
@@ -4387,6 +4391,7 @@ export interface FeatureStripBlockSelect<T extends boolean = true> {
         id?: T;
       };
   footnote?: T;
+  anchor?: T;
   bgColor?: T;
   bgColorCustom?: T;
   id?: T;

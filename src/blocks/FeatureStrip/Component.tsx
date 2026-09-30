@@ -61,6 +61,7 @@ export const FeatureStripBlock: React.FC<Props> = (props) => {
 }
 
 const FeatureStripDivided: React.FC<Props> = ({
+  anchor,
   bgColor,
   bgColorCustom,
   align,
@@ -97,7 +98,9 @@ const FeatureStripDivided: React.FC<Props> = ({
         'w-full px-4 py-12 sm:px-6 lg:px-8',
         background === 'light' ? 'bg-mist-100' : 'bg-white',
         hasArtwork && 'relative isolate',
+        anchor && 'scroll-mt-28',
       )}
+      id={anchor || undefined}
       style={backgroundStyle(bgColor, bgColorCustom)}
     >
       {/* Optional full-bleed artwork behind the section, as the comp's symptoms band has. */}

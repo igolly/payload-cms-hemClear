@@ -3,6 +3,7 @@ import type { Block } from 'payload'
 import { brandIconOptions } from '@/components/BrandIcons'
 import { linkGroup } from '@/fields/linkGroup'
 
+import { anchorField } from '@/fields/anchor'
 import { backgroundField } from '@/fields/background'
 
 export const FeatureStrip: Block = {
@@ -174,6 +175,7 @@ export const FeatureStrip: Block = {
           'Fine print below the row. In the Checklist variant it renders as a highlighted callout instead.',
       },
     },
+    anchorField(),
     backgroundField(),
   ],
 }
