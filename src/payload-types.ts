@@ -1344,9 +1344,9 @@ export interface FAQBlock {
    */
   defaultState?: ('allClosed' | 'firstOpen') | null;
   /**
-   * Compact drops the image panel and centres the heading, for pages where the FAQ is one section among many rather than the whole page.
+   * Compact drops the image panel and centres the heading, for pages where the FAQ is one section among many rather than the whole page. Split puts the questions in a navy column with the Product image filling the rest of the band — it needs that image set.
    */
-  headerStyle?: ('banner' | 'compact') | null;
+  headerStyle?: ('banner' | 'compact' | 'split') | null;
   supportTitle?: string | null;
   supportText?: string | null;
   /**

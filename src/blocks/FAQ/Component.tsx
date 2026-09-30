@@ -42,6 +42,65 @@ export const FAQBlock: React.FC<Props> = ({
   const hasPanel = Boolean(image && typeof image === 'object')
   const hasHeader = Boolean(heading || description || (!compact && (image || backgroundImage)))
 
+  /*
+   * The split band: the questions in a navy column with the product photo filling the rest.
+   * It is its own return rather than another branch threaded through the banner markup —
+   * the two share no structure beyond the accordion, and the questions live *inside* the
+   * panel here instead of below the header.
+   */
+  if (headerStyle === 'split') {
+    return (
+      <section
+        className="grid w-full grid-cols-1 lg:grid-cols-[minmax(340px,38%)_1fr]"
+        style={backgroundStyle(bgColor, bgColorCustom)}
+      >
+        <div className="bg-navy-900 px-6 py-10 sm:px-10 lg:px-12 lg:py-14">
+          {heading && (
+            <h2
+              className="font-marcellus text-[32px] leading-[1.1] text-white sm:text-[38px]"
+              data-payload-subpath="heading"
+            >
+              {multiline(heading)}
+            </h2>
+          )}
+
+          {description && (
+            <p
+              className="mt-3 max-w-md whitespace-pre-line text-[13px] leading-relaxed text-white/70"
+              data-payload-subpath="description"
+            >
+              {marks(description)}
+            </p>
+          )}
+
+          {questions.length > 0 && (
+            <div className="mt-8">
+              <FaqAccordion defaultState={defaultState} items={questions} tone="panel" />
+            </div>
+          )}
+        </div>
+
+        {/*
+         * The photo holds the band's height on a wide screen and takes a fixed slice of it
+         * on a narrow one, where the two are stacked and it would otherwise either collapse
+         * to nothing or run the length of the questions.
+         */}
+        {hasPanel ? (
+          <div className="relative h-56 sm:h-72 lg:h-auto" data-payload-subpath="image">
+            <Media
+              fill
+              imgClassName="object-cover"
+              resource={image}
+              size="(min-width: 1024px) 62vw, 100vw"
+            />
+          </div>
+        ) : (
+          <div aria-hidden="true" className="hidden bg-mist-100 lg:block" />
+        )}
+      </section>
+    )
+  }
+
   return (
     <section className="w-full" style={backgroundStyle(bgColor, bgColorCustom)}>
       {hasHeader && compact && (

@@ -112,10 +112,11 @@ export const FAQ: Block = {
       options: [
         { label: 'Banner with product image', value: 'banner' },
         { label: 'Compact — heading only', value: 'compact' },
+        { label: 'Split — questions on a navy panel beside a photo', value: 'split' },
       ],
       admin: {
         description:
-          'Compact drops the image panel and centres the heading, for pages where the FAQ is one section among many rather than the whole page.',
+          'Compact drops the image panel and centres the heading, for pages where the FAQ is one section among many rather than the whole page. Split puts the questions in a navy column with the Product image filling the rest of the band — it needs that image set.',
       },
     },
     {

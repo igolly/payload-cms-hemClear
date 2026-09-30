@@ -16,12 +16,76 @@ type Item = NonNullable<FAQBlock['items']>[number]
 export const FaqAccordion: React.FC<{
   defaultState: FAQBlock['defaultState']
   items: Item[]
-}> = ({ defaultState, items }) => {
+  /**
+   * `card` is the site's own treatment: a white rounded card per question with a numbered
+   * badge. `panel` is the ruled list that sits in the navy column of the split layout,
+   * where a stack of white cards on navy would be a second surface inside the panel.
+   */
+  tone?: 'card' | 'panel'
+}> = ({ defaultState, items, tone = 'card' }) => {
   const [openIndex, setOpenIndex] = useState<null | number>(() =>
     defaultState === 'firstOpen' && items.length > 0 ? 0 : null,
   )
 
   const toggle = (index: number) => setOpenIndex((current) => (current === index ? null : index))
+
+  if (tone === 'panel') {
+    return (
+      <ul className="flex flex-col">
+        {items.map((item, i) => {
+          const isOpen = openIndex === i
+          const panelId = `faq-panel-${item.id ?? i}`
+          const buttonId = `faq-button-${item.id ?? i}`
+
+          return (
+            <li
+              className="border-b border-white/25"
+              data-payload-subpath={`items.${i}.question`}
+              key={item.id ?? i}
+            >
+              <h3>
+                <button
+                  aria-controls={panelId}
+                  aria-expanded={isOpen}
+                  className="flex w-full items-center gap-4 py-3 text-left text-white/90 transition-colors hover:text-white"
+                  id={buttonId}
+                  onClick={() => toggle(i)}
+                  type="button"
+                >
+                  <span className="grow text-[13px] font-semibold leading-[1.35] [&_sup]:leading-[0]">
+                    {marks(item.question)}
+                  </span>
+                  <span aria-hidden="true" className="shrink-0 text-white/70">
+                    {isOpen ? <Minus className="size-4" strokeWidth={2.5} /> : <PlusIcon className="size-3.5" />}
+                  </span>
+                </button>
+              </h3>
+
+              {isOpen && (
+                <div
+                  aria-labelledby={buttonId}
+                  className="pb-4 pr-8 text-[12.5px] leading-[1.6] text-white/75"
+                  data-payload-subpath={`items.${i}.answer`}
+                  id={panelId}
+                  role="region"
+                >
+                  {typeof item.answer === 'string' ? (
+                    item.answer.split('\n\n').map((paragraph, p) => (
+                      <p className={p > 0 ? 'mt-3' : undefined} key={p}>
+                        {marks(paragraph)}
+                      </p>
+                    ))
+                  ) : (
+                    <p>{item.answer}</p>
+                  )}
+                </div>
+              )}
+            </li>
+          )
+        })}
+      </ul>
+    )
+  }
 
   return (
     <ul className="flex flex-col gap-2.5">
