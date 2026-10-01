@@ -16,6 +16,8 @@ type Plan = NonNullable<ProductDetailBlock['plans']>[number]
  * column's 10px rhythm, as the comp stacks them.
  */
 export const BuyBox: React.FC<{
+  /** Puts the chosen product and package in the cart and opens the panel. */
+  addToCart?: () => void
   /** Where the chosen package is bought; resolved by the block so both buttons agree. */
   buyUrl?: null | string
   ctaLabel?: string | null
@@ -31,6 +33,7 @@ export const BuyBox: React.FC<{
   variants: Variant[]
   variantsTitle?: string | null
 }> = ({
+  addToCart,
   buyUrl,
   ctaLabel,
   oneTimeLabel,
@@ -246,17 +249,27 @@ export const BuyBox: React.FC<{
       )}
 
       {/*
-       * A link rather than a button: it carries the reader to the checkout for the package
-       * they have open, which is the whole of what "add to cart" means on a site with no
-       * cart of its own. It was a <button> with nothing bound to it, so it did nothing at
-       * all. The bottom strip points at the same place, so the two cannot disagree.
+       * Adds the chosen product and package to the cart and slides the panel out, which is
+       * what the label has always said it does. Where there is no cart above it — the Puck
+       * canvas renders this block on its own — it falls back to the package's buy link, so
+       * the button is never inert.
        */}
-      <a
-        className="flex h-10 w-full items-center justify-center rounded-[20px] bg-navy px-[18.75px] text-base font-extrabold uppercase leading-4 text-white transition-colors hover:bg-navy-900"
-        href={buyUrl || '#'}
-      >
-        {ctaLabel || 'Add to Cart'}
-      </a>
+      {addToCart ? (
+        <button
+          className="flex h-10 w-full items-center justify-center rounded-[20px] bg-navy px-[18.75px] text-base font-extrabold uppercase leading-4 text-white transition-colors hover:bg-navy-900"
+          onClick={addToCart}
+          type="button"
+        >
+          {ctaLabel || 'Add to Cart'}
+        </button>
+      ) : (
+        <a
+          className="flex h-10 w-full items-center justify-center rounded-[20px] bg-navy px-[18.75px] text-base font-extrabold uppercase leading-4 text-white transition-colors hover:bg-navy-900"
+          href={buyUrl || '#'}
+        >
+          {ctaLabel || 'Add to Cart'}
+        </a>
+      )}
     </>
   )
 }

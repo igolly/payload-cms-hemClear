@@ -29,6 +29,8 @@ type Plan = NonNullable<ProductDetailBlock['plans']>[number]
  * of them on this one.
  */
 export const StickyBars: React.FC<{
+  /** Puts the chosen product and package in the cart and opens the panel. */
+  addToCart?: () => void
   /** Where the chosen package is bought; resolved by the block so both buttons agree. */
   buyUrl?: null | string
   ctaLabel?: string | null
@@ -38,7 +40,16 @@ export const StickyBars: React.FC<{
   plan?: number
   plans?: Plan[]
   title?: string | null
-}> = ({ buyUrl, ctaLabel, gallery, onPlanChange, plan: planIndex = 0, plans = [], title }) => {
+}> = ({
+  addToCart,
+  buyUrl,
+  ctaLabel,
+  gallery,
+  onPlanChange,
+  plan: planIndex = 0,
+  plans = [],
+  title,
+}) => {
   const bar = useRef<HTMLDivElement>(null)
 
   /*
@@ -109,18 +120,36 @@ export const StickyBars: React.FC<{
             </label>
           )}
 
-          <a
-            className="cta-gleam [--cta-glow:var(--color-brand)] flex flex-1 shrink-0 items-center justify-center gap-2 rounded-xl bg-brand px-6 py-3 text-sm font-bold uppercase tracking-wide text-white transition-colors hover:bg-brand-dark sm:flex-none"
-            href={buyUrl || '#'}
-          >
-            {marks(ctaLabel || 'Add to cart')}
-            {plan?.price && (
-              <span className="font-normal normal-case">
-                — {marks(plan.price)}
-                {plan.priceSuffix ? marks(plan.priceSuffix) : ''}
-              </span>
-            )}
-          </a>
+          {/* The same action as the button in the buy box, so the strip is not a second,
+              quieter way of doing something slightly different. */}
+          {addToCart ? (
+            <button
+              className="cta-gleam [--cta-glow:var(--color-brand)] flex flex-1 shrink-0 items-center justify-center gap-2 rounded-xl bg-brand px-6 py-3 text-sm font-bold uppercase tracking-wide text-white transition-colors hover:bg-brand-dark sm:flex-none"
+              onClick={addToCart}
+              type="button"
+            >
+              {marks(ctaLabel || 'Add to cart')}
+              {plan?.price && (
+                <span className="font-normal normal-case">
+                  — {marks(plan.price)}
+                  {plan.priceSuffix ? marks(plan.priceSuffix) : ''}
+                </span>
+              )}
+            </button>
+          ) : (
+            <a
+              className="cta-gleam [--cta-glow:var(--color-brand)] flex flex-1 shrink-0 items-center justify-center gap-2 rounded-xl bg-brand px-6 py-3 text-sm font-bold uppercase tracking-wide text-white transition-colors hover:bg-brand-dark sm:flex-none"
+              href={buyUrl || '#'}
+            >
+              {marks(ctaLabel || 'Add to cart')}
+              {plan?.price && (
+                <span className="font-normal normal-case">
+                  — {marks(plan.price)}
+                  {plan.priceSuffix ? marks(plan.priceSuffix) : ''}
+                </span>
+              )}
+            </a>
+          )}
         </div>
       </div>
     </>

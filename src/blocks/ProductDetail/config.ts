@@ -579,6 +579,68 @@ export const ProductDetail: Block = {
           ],
         },
         {
+          // ------------------------------------------------------------------ Cart
+          label: 'Cart',
+          fields: [
+            {
+              name: 'cartFreeShippingThreshold',
+              type: 'number',
+              label: 'Free shipping from',
+              min: 0,
+              admin: {
+                description:
+                  'Order subtotal at which shipping becomes free, in dollars. The cart shows how much more is needed below it and "You unlocked FREE shipping!" at or above it. Leave empty to show no shipping line at all — better than stating a rule that is not the real one.',
+                step: 1,
+              },
+            },
+            {
+              name: 'cartPaymentMethods',
+              type: 'select',
+              hasMany: true,
+              label: 'Payment methods accepted',
+              options: [
+                { label: 'Visa', value: 'visa' },
+                { label: 'Mastercard', value: 'mastercard' },
+                { label: 'American Express', value: 'amex' },
+                { label: 'PayPal', value: 'paypal' },
+                { label: 'Apple Pay', value: 'applePay' },
+                { label: 'Google Pay', value: 'googlePay' },
+              ],
+              admin: {
+                description:
+                  'Only the ones checkout actually takes. Nothing is shown until you pick some — a payment badge the shop cannot honour is a promise broken at the worst moment.',
+              },
+            },
+            {
+              name: 'cartCrossSell',
+              type: 'array',
+              label: 'Customers also bought',
+              labels: { singular: 'Extra', plural: 'Extras' },
+              admin: {
+                description:
+                  'Offered inside the cart. Nothing is added until the reader presses Add, and the total updates when they do.',
+                initCollapsed: true,
+              },
+              fields: [
+                {
+                  type: 'row',
+                  fields: [
+                    { name: 'name', type: 'text', required: true, admin: { width: '60%' } },
+                    {
+                      name: 'price',
+                      type: 'text',
+                      required: true,
+                      admin: { description: 'e.g. "$49.95"', width: '40%' },
+                    },
+                  ],
+                },
+                { name: 'description', type: 'text' },
+                { name: 'image', type: 'upload', relationTo: 'media' },
+              ],
+            },
+          ],
+        },
+        {
           label: 'Sticky Bars',
           fields: [
             {

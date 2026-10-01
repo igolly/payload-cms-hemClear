@@ -7,6 +7,8 @@ import type { ProductDetailBlock } from '@/payload-types'
 import { BrandIcon } from '@/components/BrandIcons'
 import { Carousel } from '@/blocks/VideoStories/Carousel'
 import { BuyBox } from '@/components/ProductDetail/BuyBox'
+import { CartPanel } from '@/components/Cart/CartPanel'
+import { CartProvider, useCart } from '@/components/Cart/CartProvider'
 import { Composition } from '@/components/ProductDetail/Composition'
 import { DetailSections } from '@/components/ProductDetail/DetailSections'
 import { Gallery } from '@/components/ProductDetail/Gallery'
@@ -84,7 +86,30 @@ const withVariant = (block: ProductDetailBlock, index: number): ProductDetailBlo
   return filled.length > 0 ? { ...block, ...Object.fromEntries(filled) } : block
 }
 
-export const ProductDetailBlockComponent: React.FC<ProductDetailBlock> = (block) => {
+/**
+ * The cart lives above this block so the buy box, the bottom strip and the panel itself all
+ * read the same state. It is scoped to the block rather than the whole site because this is
+ * the only page that can put anything in it.
+ */
+export const ProductDetailBlockComponent: React.FC<ProductDetailBlock> = (block) => (
+  <CartProvider>
+    <ProductDetail {...block} />
+    <CartPanel
+      crossSell={(Array.isArray(block.cartCrossSell) ? block.cartCrossSell : []).map((item) => ({
+        description: item.description,
+        id: item.id,
+        image: item.image,
+        name: item.name,
+        price: item.price,
+      }))}
+      freeShippingThreshold={block.cartFreeShippingThreshold}
+      paymentMethods={block.cartPaymentMethods}
+    />
+  </CartProvider>
+)
+
+const ProductDetail: React.FC<ProductDetailBlock> = (block) => {
+  const cart = useCart()
   const [variant, setVariant] = useState(0)
   /*
    * The chosen package lives here, beside the chosen variant, because two things buy it: the
@@ -110,6 +135,31 @@ export const ProductDetailBlockComponent: React.FC<ProductDetailBlock> = (block)
    */
   const buyUrl = activePlans[planIndex]?.ctaUrl || product.stickyCtaUrl
 
+  /*
+   * What goes in the cart: the chosen variant and the chosen package, keyed by both so
+   * picking a different package adds a line rather than quietly increasing the wrong one.
+   * The prices, the struck price and the billing terms are the package's own — the cart
+   * states what the card above it states, or it is lying about one of the two.
+   */
+  const chosen = activePlans[planIndex]
+  const variantName = Array.isArray(block.variants) ? block.variants[variant]?.name : undefined
+  const addToCart = cart
+    ? () =>
+        cart.add({
+          billingNote: chosen?.billingNote,
+          bonusLabel: [chosen?.bonusHighlight, chosen?.bonusTitle].filter(Boolean).join(' ') || null,
+          checkoutUrl: buyUrl,
+          comparePrice: chosen?.comparePrice,
+          id: `${variant}-${planIndex}`,
+          image: Array.isArray(block.variants) ? block.variants[variant]?.image : undefined,
+          name: variantName || product.title || 'Product',
+          packageName: chosen?.name,
+          price: chosen?.price ?? '',
+          priceSuffix: chosen?.priceSuffix,
+          saveLabel: chosen?.saveLabel,
+        })
+    : undefined
+
   const gallery = Array.isArray(product.gallery) ? product.gallery : []
   const benefits = Array.isArray(product.benefits) ? product.benefits : []
   const results = Array.isArray(product.results) ? product.results : []
@@ -130,6 +180,7 @@ export const ProductDetailBlockComponent: React.FC<ProductDetailBlock> = (block)
     <section className="w-full bg-white px-4 py-4 font-inter text-navy sm:px-6 lg:px-8 lg:py-2.5">
       {product.stickyEnabled && (
         <StickyBars
+          addToCart={addToCart}
           buyUrl={buyUrl}
           ctaLabel={product.ctaLabel}
           gallery={product.gallery}
@@ -251,6 +302,7 @@ export const ProductDetailBlockComponent: React.FC<ProductDetailBlock> = (block)
            * simply on the other side of it.
            */}
           <BuyBox
+            addToCart={addToCart}
             buyUrl={buyUrl}
             ctaLabel={product.ctaLabel}
             oneTimeLabel={product.oneTimeLabel}

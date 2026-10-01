@@ -892,6 +892,29 @@ export interface ProductDetailBlock {
         id?: string | null;
       }[]
     | null;
+  /**
+   * Order subtotal at which shipping becomes free, in dollars. The cart shows how much more is needed below it and "You unlocked FREE shipping!" at or above it. Leave empty to show no shipping line at all — better than stating a rule that is not the real one.
+   */
+  cartFreeShippingThreshold?: number | null;
+  /**
+   * Only the ones checkout actually takes. Nothing is shown until you pick some — a payment badge the shop cannot honour is a promise broken at the worst moment.
+   */
+  cartPaymentMethods?: ('visa' | 'mastercard' | 'amex' | 'paypal' | 'applePay' | 'googlePay')[] | null;
+  /**
+   * Offered inside the cart. Nothing is added until the reader presses Add, and the total updates when they do.
+   */
+  cartCrossSell?:
+    | {
+        name: string;
+        /**
+         * e.g. "$49.95"
+         */
+        price: string;
+        description?: string | null;
+        image?: (string | null) | Media;
+        id?: string | null;
+      }[]
+    | null;
   stickyEnabled?: boolean | null;
   /**
    * e.g. "Save 50% + Free HemCream®".
@@ -3780,6 +3803,17 @@ export interface ProductDetailBlockSelect<T extends boolean = true> {
               text?: T;
               id?: T;
             };
+        id?: T;
+      };
+  cartFreeShippingThreshold?: T;
+  cartPaymentMethods?: T;
+  cartCrossSell?:
+    | T
+    | {
+        name?: T;
+        price?: T;
+        description?: T;
+        image?: T;
         id?: T;
       };
   stickyEnabled?: T;
