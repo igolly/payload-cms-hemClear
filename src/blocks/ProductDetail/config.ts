@@ -178,6 +178,16 @@ const resultsField: Field = {
       ],
     },
     { name: 'detail', type: 'textarea' },
+    {
+      name: 'showInCart',
+      type: 'checkbox',
+      label: 'Show in the cart',
+      defaultValue: true,
+      admin: {
+        description:
+          'The cart has room for three across. Its reviewer count is read from the detail ("29 of 32 reviewers").',
+      },
+    },
   ],
 }
 
@@ -610,6 +620,40 @@ export const ProductDetail: Block = {
                 description:
                   'Only the ones checkout actually takes. Nothing is shown until you pick some — a payment badge the shop cannot honour is a promise broken at the worst moment.',
               },
+            },
+            {
+              name: 'cartTrustItems',
+              type: 'array',
+              label: 'Reassurance under the checkout button',
+              labels: { singular: 'Item', plural: 'Items' },
+              maxRows: 4,
+              defaultValue: [
+                { icon: 'lock', label: 'Secure checkout' },
+                { icon: 'package', label: 'Discreet shipping' },
+                { icon: 'shield', label: '90-day money-back guarantee' },
+              ],
+              admin: { initCollapsed: true },
+              fields: [
+                {
+                  type: 'row',
+                  fields: [
+                    {
+                      name: 'icon',
+                      type: 'select',
+                      defaultValue: 'lock',
+                      options: [
+                        { label: 'Lock', value: 'lock' },
+                        { label: 'Package', value: 'package' },
+                        { label: 'Shield', value: 'shield' },
+                        { label: 'Truck', value: 'truck' },
+                        { label: 'Return arrow', value: 'rotate' },
+                      ],
+                      admin: { width: '35%' },
+                    },
+                    { name: 'label', type: 'text', required: true, admin: { width: '65%' } },
+                  ],
+                },
+              ],
             },
             {
               name: 'cartCrossSell',

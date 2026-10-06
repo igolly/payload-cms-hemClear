@@ -1,9 +1,21 @@
 'use client'
 
 import React, { useEffect, useRef } from 'react'
-import { Check, Minus, Plus, Trash2, Truck, X } from 'lucide-react'
+import {
+  Check,
+  Lock,
+  type LucideIcon,
+  Minus,
+  Package,
+  Plus,
+  RotateCcw,
+  ShieldCheck,
+  Trash2,
+  Truck,
+  X,
+} from 'lucide-react'
 
-import type { Media as MediaDoc } from '@/payload-types'
+import type { Media as MediaDoc, ProductDetailBlock } from '@/payload-types'
 
 import { Media } from '@/components/Media'
 import { cn } from '@/utilities/ui'
@@ -19,15 +31,30 @@ export type CrossSellItem = {
   price: string
 }
 
-/** Only the methods an editor has confirmed the shop actually takes. */
-const PAYMENT_LABELS: Record<string, string> = {
-  amex: 'American Express',
-  applePay: 'Apple Pay',
-  googlePay: 'Google Pay',
-  mastercard: 'Mastercard',
-  paypal: 'PayPal',
-  visa: 'Visa',
+type Result = NonNullable<ProductDetailBlock['results']>[number]
+type TrustItem = NonNullable<ProductDetailBlock['cartTrustItems']>[number]
+
+/** Only the methods an editor has confirmed the shop actually takes, as their own marks. */
+const PAYMENT_METHODS: Record<string, { file: string; label: string }> = {
+  amex: { file: 'amex', label: 'American Express' },
+  applePay: { file: 'apple-pay', label: 'Apple Pay' },
+  googlePay: { file: 'google-pay', label: 'Google Pay' },
+  mastercard: { file: 'mastercard', label: 'Mastercard' },
+  paypal: { file: 'paypal', label: 'PayPal' },
+  visa: { file: 'visa', label: 'Visa' },
 }
+
+const TRUST_ICONS: Record<string, LucideIcon> = {
+  lock: Lock,
+  package: Package,
+  rotate: RotateCcw,
+  shield: ShieldCheck,
+  truck: Truck,
+}
+
+/** "29 of 32 reviewers" out of a result's longer detail line, when it has one. */
+const reviewerCount = (detail: unknown) =>
+  typeof detail === 'string' ? detail.match(/\d+\s+of\s+\d+\s+reviewers/i)?.[0] : undefined
 
 const Row: React.FC<{ children: React.ReactNode; className?: string }> = ({
   children,
@@ -47,7 +74,19 @@ export const CartPanel: React.FC<{
   /** Order subtotal at or above which shipping is free. Zero or unset: no shipping line. */
   freeShippingThreshold?: null | number
   paymentMethods?: null | string[]
-}> = ({ crossSell = [], freeShippingThreshold, paymentMethods }) => {
+  results?: Result[]
+  resultsFootnote?: null | string
+  resultsTitle?: null | string
+  trustItems?: TrustItem[]
+}> = ({
+  crossSell = [],
+  freeShippingThreshold,
+  paymentMethods,
+  results = [],
+  resultsFootnote,
+  resultsTitle,
+  trustItems = [],
+}) => {
   const cart = useCart()
   const panelRef = useRef<HTMLDivElement>(null)
   const closeRef = useRef<HTMLButtonElement>(null)
@@ -80,7 +119,7 @@ export const CartPanel: React.FC<{
   const { close, lines, savings, setQuantity, subtotal } = cart
   const threshold = freeShippingThreshold ?? 0
   const hasFreeShipping = threshold > 0 && subtotal >= threshold
-  const methods = (paymentMethods ?? []).filter((m) => PAYMENT_LABELS[m])
+  const methods = (paymentMethods ?? []).filter((m) => PAYMENT_METHODS[m])
 
   // The checkout the chosen package points at. Mixed carts take the first line that has one.
   const checkoutUrl = lines.find((l) => l.checkoutUrl)?.checkoutUrl
@@ -150,6 +189,10 @@ export const CartPanel: React.FC<{
                 ))}
               </ul>
 
+              {results.length > 0 && (
+                <Results footnote={resultsFootnote} results={results} title={resultsTitle} />
+              )}
+
               {crossSell.length > 0 && <CrossSell items={crossSell} />}
             </>
           )}
@@ -201,15 +244,40 @@ export const CartPanel: React.FC<{
             )}
 
             {methods.length > 0 && (
-              <ul className="mt-3 flex flex-wrap items-center justify-center gap-2">
+              <ul
+                aria-label="Payment methods"
+                className="mt-3 flex flex-wrap items-center justify-center gap-2"
+              >
                 {methods.map((method) => (
-                  <li
-                    className="rounded border border-ash-200 px-2 py-1 text-[10px] font-semibold uppercase tracking-wide text-steel-400"
-                    key={method}
-                  >
-                    {PAYMENT_LABELS[method]}
+                  <li key={method}>
+                    {/* eslint-disable-next-line @next/next/no-img-element -- static SVG mark */}
+                    <img
+                      alt={PAYMENT_METHODS[method].label}
+                      className="h-7 w-[46px]"
+                      height={32}
+                      src={`/icons/payment/${PAYMENT_METHODS[method].file}.svg`}
+                      width={52}
+                    />
                   </li>
                 ))}
+              </ul>
+            )}
+
+            {/* The reassurance the reference sets under the button: three short promises. */}
+            {trustItems.length > 0 && (
+              <ul className="mt-3 grid grid-flow-col auto-cols-fr gap-2">
+                {trustItems.map((item, i) => {
+                  const Icon = TRUST_ICONS[item.icon ?? ''] ?? ShieldCheck
+                  return (
+                    <li
+                      className="flex items-center justify-center gap-1.5 text-center text-[10.5px] font-medium leading-tight text-navy"
+                      key={item.id ?? i}
+                    >
+                      <Icon aria-hidden="true" className="size-4 shrink-0 text-heading" />
+                      <span>{marks(item.label)}</span>
+                    </li>
+                  )
+                })}
               </ul>
             )}
           </div>
@@ -218,6 +286,43 @@ export const CartPanel: React.FC<{
     </>
   )
 }
+
+/**
+ * "Customer-reported results" under the product — the evidence beside the price, as on the
+ * page. Three across with rules between, each figure over its outcome and reviewer count.
+ */
+const Results: React.FC<{
+  footnote?: null | string
+  results: Result[]
+  title?: null | string
+}> = ({ footnote, results, title }) => (
+  <section className="mt-4 border-t border-ash-200 pt-3">
+    {title && (
+      <h3 className="mb-2 flex items-center gap-2 text-center text-[11px] font-bold uppercase tracking-wide text-brand-600 before:h-px before:grow before:bg-brand-600/40 after:h-px after:grow after:bg-brand-600/40">
+        {marks(title)}
+      </h3>
+    )}
+    <ul className="grid grid-flow-col auto-cols-fr divide-x divide-ash-200">
+      {results.slice(0, 3).map((result, i) => {
+        const count = reviewerCount(result.detail)
+        return (
+          <li className="flex flex-col items-center px-1 text-center" key={result.id ?? i}>
+            <span className="font-gentium text-[30px] font-bold leading-none text-heading">
+              {marks(result.value)}
+            </span>
+            <span className="mt-1 text-[11px] font-bold leading-tight text-brand-600">
+              {marks(result.label)}
+            </span>
+            {count && <span className="text-[10.5px] text-brand-400">{count}</span>}
+          </li>
+        )
+      })}
+    </ul>
+    {footnote && (
+      <p className="mt-2 text-center text-[10px] leading-snug text-steel-500">{marks(footnote)}</p>
+    )}
+  </section>
+)
 
 const CartRow: React.FC<{
   line: CartLine

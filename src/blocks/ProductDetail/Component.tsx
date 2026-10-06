@@ -104,6 +104,14 @@ export const ProductDetailBlockComponent: React.FC<ProductDetailBlock> = (block)
       }))}
       freeShippingThreshold={block.cartFreeShippingThreshold}
       paymentMethods={block.cartPaymentMethods}
+      // The product's own results: the cart can hold more than one variant, so it shows the
+      // claims that hold for the product as a whole rather than one variant's.
+      results={(Array.isArray(block.results) ? block.results : []).filter(
+        (r) => r.showInCart !== false,
+      )}
+      resultsFootnote={block.resultsFootnote}
+      resultsTitle={block.resultsTitle}
+      trustItems={Array.isArray(block.cartTrustItems) ? block.cartTrustItems : []}
     />
   </CartProvider>
 )
@@ -147,7 +155,8 @@ const ProductDetail: React.FC<ProductDetailBlock> = (block) => {
     ? () =>
         cart.add({
           billingNote: chosen?.billingNote,
-          bonusLabel: [chosen?.bonusHighlight, chosen?.bonusTitle].filter(Boolean).join(' ') || null,
+          bonusLabel:
+            [chosen?.bonusHighlight, chosen?.bonusTitle].filter(Boolean).join(' ') || null,
           checkoutUrl: buyUrl,
           comparePrice: chosen?.comparePrice,
           id: `${variant}-${planIndex}`,
