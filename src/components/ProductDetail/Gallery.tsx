@@ -58,6 +58,12 @@ export const Gallery: React.FC<{ badgeLabel?: string | null; slides: Slide[] }> 
             fill
             imgClassName="object-cover"
             priority
+            /*
+             * Full quality: the slides are mostly graphics with the copy baked in — tables,
+             * stats, small print — and at the default 75 that text came out visibly soft.
+             * It is the one image the page is built around, so it is worth the bytes.
+             */
+            quality={100}
             resource={current.image}
             size="(min-width: 1024px) 675px, 100vw"
           />

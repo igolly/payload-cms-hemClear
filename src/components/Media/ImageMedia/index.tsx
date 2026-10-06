@@ -45,6 +45,7 @@ export const ImageMedia: React.FC<MediaProps> = (props) => {
     pictureClassName,
     imgClassName,
     priority,
+    quality = 75,
     resource,
     size: sizeFromProps,
     src: srcFromProps,
@@ -68,7 +69,12 @@ export const ImageMedia: React.FC<MediaProps> = (props) => {
     src = getMediaUrl(url, cacheTag)
   }
 
-  const loading = loadingFromProps || (!priority ? 'lazy' : undefined)
+  /*
+   * Next 16 deprecated `priority` (it no longer marks the image as urgent), so a priority
+   * image is loaded eagerly and fetched ahead of the rest of the page's images instead —
+   * what the docs recommend in its place.
+   */
+  const loading = loadingFromProps || (priority ? 'eager' : 'lazy')
 
   /*
    * `sizes` tells the browser how wide the image will be laid out, so it can pick a
@@ -99,8 +105,8 @@ export const ImageMedia: React.FC<MediaProps> = (props) => {
         className={cn(imgClassName)}
         fill={fill}
         height={!fill ? height : undefined}
-        priority={priority}
-        quality={75}
+        fetchPriority={priority ? 'high' : undefined}
+        quality={quality}
         loading={loading}
         sizes={sizes}
         src={src}
