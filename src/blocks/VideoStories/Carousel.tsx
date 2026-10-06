@@ -1,5 +1,5 @@
 'use client'
-import React, { useCallback, useEffect, useId, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useId, useLayoutEffect, useRef, useState } from 'react'
 /* eslint-disable @next/next/no-img-element */
 
 import type { VideoStoriesBlock } from '@/payload-types'
@@ -18,36 +18,51 @@ type Story = NonNullable<VideoStoriesBlock['stories']>[number]
  */
 const PLAY_EVENT = 'videostories:play'
 
+/*
+ * Card width and gap per tone, in px. The cards are fixed widths so that one set of
+ * stories is exactly `stories × (card + gap)` wide — the distance the loop jumps by.
+ *   dark  — Figma 58:842: 208.75px cards, 17.5px apart.
+ *   light — Figma 6219:3272: 114px cards, 9.43px apart.
+ */
+const CARD = { dark: 208.75, light: 114 } as const
+const GAP = { dark: 17.5, light: 9.43 } as const
+
 /**
- * Scroll-snap carousel — no carousel library. The track is a native horizontal scroller,
- * so touch swipe and keyboard scrolling work for free; the arrows and dots just drive
- * `scrollTo`, and the active dot is derived from scroll position.
+ * An endless scroll-snap carousel — no carousel library, and no autoplay: it moves only
+ * when the visitor swipes, scrolls or presses an arrow. The track is a native horizontal
+ * scroller carrying several copies of the stories; whenever a scroll comes to rest it is
+ * jumped, without animation, back into the middle copy by a whole number of sets. The
+ * jump lands on an identical frame, so the row never reaches an end in either direction.
  */
 export const Carousel: React.FC<{
-  /** Show the prev/next buttons. Off in a narrow column, where their gutters cost more
-      than they are worth and the dots carry the paging on their own. */
-  arrows?: boolean
-  /** Card width classes. Override when the carousel sits in a narrow column. */
-  itemClassName?: string
   /** The posters already carry the phone status bar, badge and duration. */
   posterIncludesChrome?: boolean
   stories: Story[]
-  /**
-   * Which background the controls sit on. The arrows and dots were written in white for
-   * the navy `videoStories` band; on a white section they were invisible while still
-   * taking up their gutter, which pushed the track out of line with the heading above it.
-   */
+  /** Which background it sits on: the navy `videoStories` band or the product page's white
+      buy column. Sets the card style, size and the arrows. */
   tone?: 'dark' | 'light'
-}> = ({ arrows = true, itemClassName, posterIncludesChrome, stories, tone = 'dark' }) => {
+}> = ({ posterIncludesChrome, stories, tone = 'dark' }) => {
   const trackRef = useRef<HTMLUListElement>(null)
   /*
-   * One story plays at a time, so which one is the carousel's business rather than each
-   * card's. Starting a second swaps the index, which unmounts the first card's <video> or
-   * <iframe> — stopping it dead and putting its still and play button back.
+   * Which rendered card is playing — an index into the repeated list, so pressing play on
+   * a copy plays that copy rather than one somewhere off-screen. Starting a second swaps
+   * the index, which unmounts the first card's <video> or <iframe>.
    */
   const [playingIndex, setPlayingIndex] = useState<null | number>(null)
   const carouselId = useId()
-  const [active, setActive] = useState(0)
+  /*
+   * How many copies of the stories the track carries: an odd number, with at least two
+   * viewports of cards either side of the middle copy so a hard fling cannot reach the end
+   * before the scroll comes to rest. One copy when the stories fit the row anyway — there
+   * is nowhere to go, and repeating them would only show the same faces side by side.
+   */
+  const [copies, setCopies] = useState(1)
+  /** The scroll position the arrows last asked for, held until the scroll comes to rest. */
+  const pending = useRef<null | number>(null)
+
+  const step = CARD[tone] + GAP[tone]
+  const setWidth = stories.length * step
+  const loops = copies > 1
 
   const play = useCallback(
     (index: null | number) => {
@@ -64,17 +79,6 @@ export const Carousel: React.FC<{
     window.addEventListener(PLAY_EVENT, onOtherPlay)
     return () => window.removeEventListener(PLAY_EVENT, onOtherPlay)
   }, [carouselId])
-  const [atStart, setAtStart] = useState(true)
-  const [atEnd, setAtEnd] = useState(false)
-  /*
-   * Whether the track actually has anywhere to go. With five stories in five card slots it
-   * does not, and the arrows and dots then sat there doing nothing — controls that cannot
-   * move anything read as broken ones. They appear when the stories outgrow the row, which
-   * is what happens the moment another clip is added.
-   */
-  const [scrollable, setScrollable] = useState(false)
-  /** The card the arrows last asked for, held until the scroll actually arrives there. */
-  const pending = useRef<null | number>(null)
 
   // Escape stops the clip, the same key that closes the mega menu and the mobile drawer.
   useEffect(() => {
@@ -86,314 +90,221 @@ export const Carousel: React.FC<{
     return () => window.removeEventListener('keydown', onKey)
   }, [playingIndex])
 
-  /** Phone widths (dark tone): cards snap to the centre of the track, as Figma 6246:3126 does. */
-  const centred = useCallback(
-    () => tone === 'dark' && window.matchMedia('(max-width: 639.98px)').matches,
-    [tone],
-  )
-
-  /** How far the track must scroll to put card `index` in its middle. */
-  const centreOffset = (track: HTMLUListElement, index: number) => {
-    const card = track.children[index] as HTMLElement | undefined
-    if (!card) return 0
-    const c = card.getBoundingClientRect()
-    const t = track.getBoundingClientRect()
-    return track.scrollLeft + c.left + c.width / 2 - (t.left + t.width / 2)
-  }
-
-  const sync = useCallback(() => {
+  useEffect(() => {
     const track = trackRef.current
-    if (!track) return
-
-    const { clientWidth, scrollLeft, scrollWidth } = track
-    const step = track.firstElementChild?.clientWidth ?? 1
-
-    if (centred()) {
-      const mid = track.getBoundingClientRect()
-      const centre = mid.left + mid.width / 2
-      let nearest = 0
-      let best = Infinity
-      Array.from(track.children).forEach((child, i) => {
-        const r = child.getBoundingClientRect()
-        const d = Math.abs(r.left + r.width / 2 - centre)
-        if (d < best) {
-          best = d
-          nearest = i
-        }
-      })
-      setActive(nearest)
-      // Arrived where the arrows were aiming — or the reader swiped somewhere else, which
-      // is just as good a reason to stop steering by the old target.
-      if (pending.current === nearest) pending.current = null
-    } else {
-      const nearest = Math.round(scrollLeft / step)
-      setActive(nearest)
-      if (pending.current === nearest) pending.current = null
+    if (!track || setWidth <= 0) return
+    const fit = () => {
+      const width = track.clientWidth
+      if (setWidth <= width + 1) return setCopies(1)
+      const side = Math.max(2, Math.ceil((2 * width) / setWidth))
+      setCopies(side * 2 + 1)
     }
-    setAtStart(scrollLeft <= 1)
-    setAtEnd(scrollLeft + clientWidth >= scrollWidth - 1)
-    setScrollable(scrollWidth > clientWidth + 1)
-  }, [centred])
+    fit()
+    const observer = new ResizeObserver(fit)
+    observer.observe(track)
+    return () => observer.disconnect()
+  }, [setWidth])
+
+  /** Move the scroll position into the middle copy, onto the same card it shows now. */
+  const recentre = useCallback(() => {
+    const track = trackRef.current
+    if (!track || !loops) return
+    const base = Math.floor(copies / 2) * setWidth
+    const offset = (((track.scrollLeft - base) % setWidth) + setWidth) % setWidth
+    const target = base + offset
+    if (Math.abs(target - track.scrollLeft) > 1) {
+      track.scrollTo({ behavior: 'instant', left: target })
+    }
+  }, [copies, loops, setWidth])
+
+  /*
+   * Each change in the number of copies moves the middle one; put the reader back in it.
+   * The first jump, from the far left, is invisible: every copy opens on the same story.
+   */
+  useLayoutEffect(() => {
+    recentre()
+  }, [recentre])
 
   useEffect(() => {
     const track = trackRef.current
     if (!track) return
-
-    // The mobile comp opens on the middle story with its neighbours peeking either side.
-    if (centred() && track.children.length > 2) {
-      track.scrollTo({
-        behavior: 'instant',
-        left: centreOffset(track, Math.floor((track.children.length - 1) / 2)),
-      })
+    /*
+     * The jump waits for the scroll to come to rest: moving a scroller mid-swipe stalls the
+     * gesture on iOS. A playing clip is never jumped away from — its copy would scroll off
+     * with it, still talking — so the row simply waits until it is closed.
+     */
+    const settle = () => {
+      pending.current = null
+      if (playingIndex === null) recentre()
     }
-
-    sync()
-    track.addEventListener('scroll', sync, { passive: true })
-    window.addEventListener('resize', sync)
+    if ('onscrollend' in window) {
+      track.addEventListener('scrollend', settle)
+      return () => track.removeEventListener('scrollend', settle)
+    }
+    let timer: ReturnType<typeof setTimeout> | undefined
+    const onScroll = () => {
+      clearTimeout(timer)
+      timer = setTimeout(settle, 150)
+    }
+    track.addEventListener('scroll', onScroll, { passive: true })
     return () => {
-      track.removeEventListener('scroll', sync)
-      window.removeEventListener('resize', sync)
+      clearTimeout(timer)
+      track.removeEventListener('scroll', onScroll)
     }
-  }, [centred, sync])
+  }, [playingIndex, recentre])
 
-  const scrollToIndex = (index: number) => {
-    const track = trackRef.current
-    if (!track) return
-    const clamped = Math.max(0, Math.min(track.children.length - 1, index))
-    pending.current = clamped
-
-    if (centred()) {
-      track.scrollTo({ behavior: 'smooth', left: centreOffset(track, clamped) })
-      return
-    }
-    const step = track.firstElementChild?.clientWidth ?? 0
-    track.scrollTo({ behavior: 'smooth', left: step * clamped })
-  }
+  // Closing a clip is a scroll coming to rest as far as the loop is concerned.
+  useEffect(() => {
+    if (playingIndex === null) recentre()
+  }, [playingIndex, recentre])
 
   /*
-   * Step from where we are *going*, not from where we are. `active` is read back off the
-   * scroll position, so it only catches up once the smooth scroll has finished — and a
-   * reader pressing the arrow twice in quick succession got the same card twice, the second
-   * press apparently doing nothing. Remembering the requested card makes the second press
-   * land on the one after it.
+   * Step from where we are *going*, not from where we are: a reader pressing the arrow
+   * twice in quick succession otherwise gets the same card twice, the second press landing
+   * while the first smooth scroll is still on its way.
    */
-  const nudge = (direction: -1 | 1) => scrollToIndex((pending.current ?? active) + direction)
-
-  const light = tone === 'light'
-
-  if (light) {
-    /* Light tone — the product page's buy column (Figma 6216:3157). Five 114x214 cards
-       9.43px apart on a 607.72px track centred in the column (4px of padding each side,
-       cancelled by negative margin, keeps the card shadows from being clipped), 32px arrows
-       at 60% over the column edges with their centres 105px down, then 12px dots 10px apart. */
-    const arrowClass =
-      'absolute top-[89px] z-30 size-8 opacity-60 transition-opacity hover:opacity-80 disabled:opacity-25 disabled:hover:opacity-25'
-
-    return (
-      <div className="relative flex flex-col items-center gap-2.5 pb-4">
-        <ul
-          className="-my-1 flex w-full max-w-[615.72px] snap-x snap-mandatory gap-[9.43px] overflow-x-auto scroll-smooth scroll-px-1 p-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
-          ref={trackRef}
-        >
-          {stories.map((story, i) => (
-            <li
-              className={cn('flex flex-none snap-start', itemClassName ?? 'w-[114px]')}
-              key={story.id ?? i}
-            >
-              <StoryCard
-                index={i}
-                onPlayChange={(next) => play(next ? i : null)}
-                playing={playingIndex === i}
-                posterIncludesChrome={posterIncludesChrome}
-                story={story}
-                tone="light"
-              />
-            </li>
-          ))}
-        </ul>
-
-        {arrows && scrollable && (
-          <>
-            <button
-              aria-label="Previous stories"
-              className={cn(arrowClass, 'left-0')}
-              disabled={atStart}
-              onClick={() => nudge(-1)}
-              type="button"
-            >
-              <img
-                alt=""
-                className="size-8"
-                decoding="async"
-                height={32}
-                loading="lazy"
-                src="/icons/product-detail/carousel-left.svg"
-                width={32}
-              />
-            </button>
-            <button
-              aria-label="Next stories"
-              className={cn(arrowClass, 'right-0')}
-              disabled={atEnd}
-              onClick={() => nudge(1)}
-              type="button"
-            >
-              <img
-                alt=""
-                className="size-8"
-                decoding="async"
-                height={32}
-                loading="lazy"
-                src="/icons/product-detail/carousel-right.svg"
-                width={32}
-              />
-            </button>
-          </>
-        )}
-
-        {stories.length > 1 && scrollable && (
-          <div className="flex items-center justify-center gap-2.5 py-2.5">
-            {stories.map((story, i) => (
-              <button
-                aria-label={`Go to story ${i + 1}`}
-                className={cn(
-                  'size-3 rounded-full transition-colors',
-                  i === active ? 'bg-brand-600' : 'bg-ash-250 hover:bg-steel-300',
-                )}
-                key={story.id ?? i}
-                onClick={() => scrollToIndex(i)}
-                type="button"
-              />
-            ))}
-          </div>
-        )}
-      </div>
-    )
+  const nudge = (direction: -1 | 1) => {
+    const track = trackRef.current
+    if (!track) return
+    const from = pending.current ?? Math.round(track.scrollLeft / step) * step
+    pending.current = from + direction * step
+    track.scrollTo({ behavior: 'smooth', left: pending.current })
   }
 
-  /* Dark tone — the navy `videoStories` band (Figma 58:841 + carousel 6517:2023). The
-     track caps at the comp's 1113.75px (five 208.75px cards, 17.5px gaps) and the 64px
-     arrows sit 50px in from the 1400px container edges, `justify-between` taking up the
-     slack. The track pads 8px vertically (cancelled by a negative margin) so the cards'
-     soft shadow is not clipped by the horizontal scroller; 4px side padding does the same
-     horizontally, which is why the cap is 1121.75px. */
-  const arrowClass =
-    'h-16 w-16 shrink-0 opacity-60 transition-opacity hover:opacity-80 disabled:opacity-25 disabled:hover:opacity-25'
+  const light = tone === 'light'
+  const items = Array.from({ length: copies }, () => stories).flat()
 
-  return (
-    <div>
-      <div className="relative flex items-center justify-between gap-3 xl:px-[50px]">
-        {/*
-         * Mobile (6517:2035): 32px arrows at 60% on the content edges, 187.25px down the
-         * cards. They run to `md` rather than `sm`, where the 64px pair takes over: the
-         * small pair used to stop at 640 and the large pair start at 768, leaving tablets
-         * between the two with no arrows at all on a track that does scroll there.
-         */}
-        {arrows &&
-          scrollable &&
+  const track = (
+    <ul
+      className={cn(
+        'flex min-w-0 snap-x snap-mandatory overflow-x-auto [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden',
+        // Room for the cards' soft shadow, which the scroller would otherwise clip.
+        light ? '-my-1 w-full max-w-[615.72px] py-1' : '-my-2 max-w-[1121.75px] grow py-2',
+      )}
+      ref={trackRef}
+    >
+      {items.map((story, i) => (
+        <li
+          className={cn('flex flex-none snap-start', !light && 'max-sm:snap-center')}
+          // Padding rather than a flex gap, so each set ends with its gap and a jump of one
+          // set lands exactly on a card.
+          key={`${Math.floor(i / stories.length)}-${story.id ?? i}`}
+          style={{ paddingRight: GAP[tone], width: step }}
+        >
+          <StoryCard
+            index={i % stories.length}
+            onPlayChange={(next) => play(next ? i : null)}
+            playing={playingIndex === i}
+            posterIncludesChrome={posterIncludesChrome}
+            story={story}
+            tone={tone}
+          />
+        </li>
+      ))}
+    </ul>
+  )
+
+  if (light) {
+    /* Light tone — the product page's buy column (Figma 6216:3157): 32px arrows at 60%
+       over the column edges, their centres 105px down the 214px cards. */
+    const arrowClass =
+      'absolute top-[89px] z-30 size-8 opacity-60 transition-opacity hover:opacity-80'
+
+    return (
+      <div className="relative flex flex-col items-center pb-4">
+        {track}
+        {loops &&
           ([-1, 1] as const).map((direction) => (
             <button
               aria-label={direction < 0 ? 'Previous stories' : 'Next stories'}
-              className={cn(
-                'absolute top-[187.25px] z-30 size-8 opacity-60 transition-opacity hover:opacity-80 disabled:opacity-25 md:hidden',
-                direction < 0 ? 'left-0' : 'right-0',
-              )}
-              disabled={direction < 0 ? atStart : atEnd}
+              className={cn(arrowClass, direction < 0 ? 'left-0' : 'right-0')}
               key={direction}
               onClick={() => nudge(direction)}
               type="button"
             >
               <img
                 alt=""
-                className="block size-8"
+                className="size-8"
                 decoding="async"
                 height={32}
                 loading="lazy"
-                src={`/icons/video-stories/carousel-${direction < 0 ? 'left' : 'right'}.svg`}
+                src={`/icons/product-detail/carousel-${direction < 0 ? 'left' : 'right'}.svg`}
                 width={32}
               />
             </button>
           ))}
-
-        <button
-          aria-label="Previous stories"
-          className={cn(arrowClass, arrows && scrollable ? 'hidden md:block' : 'hidden')}
-          disabled={atStart}
-          onClick={() => nudge(-1)}
-          type="button"
-        >
-          <img
-            alt=""
-            className="h-16 w-16"
-            decoding="async"
-            height={64}
-            loading="lazy"
-            src="/icons/video-stories/arrow-left.svg"
-            width={64}
-          />
-        </button>
-
-        <ul
-          className="-my-2 flex min-w-0 max-w-[1121.75px] grow snap-x snap-mandatory gap-[17.5px] overflow-x-auto scroll-smooth scroll-px-1 px-1 py-2 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
-          ref={trackRef}
-        >
-          {stories.map((story, i) => (
-            <li
-              className={cn(
-                'flex flex-none snap-start max-sm:snap-center',
-                itemClassName ??
-                  'w-[208.75px] sm:w-[42%] md:w-[calc((100%-35px)/3)] lg:w-[calc((100%-70px)/5)]',
-              )}
-              key={story.id ?? i}
-            >
-              <StoryCard
-                index={i}
-                onPlayChange={(next) => play(next ? i : null)}
-                playing={playingIndex === i}
-                posterIncludesChrome={posterIncludesChrome}
-                story={story}
-                tone="dark"
-              />
-            </li>
-          ))}
-        </ul>
-
-        <button
-          aria-label="Next stories"
-          className={cn(arrowClass, arrows && scrollable ? 'hidden md:block' : 'hidden')}
-          disabled={atEnd}
-          onClick={() => nudge(1)}
-          type="button"
-        >
-          <img
-            alt=""
-            className="h-16 w-16"
-            decoding="async"
-            height={64}
-            loading="lazy"
-            src="/icons/video-stories/arrow-right.svg"
-            width={64}
-          />
-        </button>
       </div>
+    )
+  }
 
-      {stories.length > 1 && scrollable && (
-        /* Figma 61:913: a 48.75px strip, 25px white pill + 8.75px brand-300 dots, 6.25px apart. */
-        <div className="mt-[12.5px] flex h-[48.75px] items-center justify-center gap-[6.25px]">
-          {stories.map((story, i) => (
-            <button
-              aria-label={`Go to story ${i + 1}`}
-              className={cn(
-                'h-[8.75px] rounded-full transition-all',
-                i === active ? 'w-[25px] bg-white' : 'w-[8.75px] bg-brand-300 hover:bg-brand-200',
-              )}
-              key={story.id ?? i}
-              onClick={() => scrollToIndex(i)}
-              type="button"
+  /* Dark tone — the navy `videoStories` band (Figma 58:841 + carousel 6517:2023). The track
+     caps at the comp's five cards and the 64px arrows sit 50px in from the 1400px container
+     edges, `justify-between` taking up the slack. */
+  const arrowClass = 'h-16 w-16 shrink-0 opacity-60 transition-opacity hover:opacity-80'
+
+  return (
+    <div className="relative flex items-center justify-between gap-3 xl:px-[50px]">
+      {/* Mobile (6517:2035): 32px arrows at 60% on the content edges, 187.25px down the
+          cards, up to `md` where the 64px pair takes over. */}
+      {loops &&
+        ([-1, 1] as const).map((direction) => (
+          <button
+            aria-label={direction < 0 ? 'Previous stories' : 'Next stories'}
+            className={cn(
+              'absolute top-[187.25px] z-30 size-8 opacity-60 transition-opacity hover:opacity-80 md:hidden',
+              direction < 0 ? 'left-0' : 'right-0',
+            )}
+            key={direction}
+            onClick={() => nudge(direction)}
+            type="button"
+          >
+            <img
+              alt=""
+              className="block size-8"
+              decoding="async"
+              height={32}
+              loading="lazy"
+              src={`/icons/video-stories/carousel-${direction < 0 ? 'left' : 'right'}.svg`}
+              width={32}
             />
-          ))}
-        </div>
-      )}
+          </button>
+        ))}
+
+      <button
+        aria-label="Previous stories"
+        className={cn(arrowClass, loops ? 'hidden md:block' : 'hidden')}
+        onClick={() => nudge(-1)}
+        type="button"
+      >
+        <img
+          alt=""
+          className="h-16 w-16"
+          decoding="async"
+          height={64}
+          loading="lazy"
+          src="/icons/video-stories/arrow-left.svg"
+          width={64}
+        />
+      </button>
+
+      {track}
+
+      <button
+        aria-label="Next stories"
+        className={cn(arrowClass, loops ? 'hidden md:block' : 'hidden')}
+        onClick={() => nudge(1)}
+        type="button"
+      >
+        <img
+          alt=""
+          className="h-16 w-16"
+          decoding="async"
+          height={64}
+          loading="lazy"
+          src="/icons/video-stories/arrow-right.svg"
+          width={64}
+        />
+      </button>
     </div>
   )
 }

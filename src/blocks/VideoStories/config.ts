@@ -42,7 +42,7 @@ export const VideoStories: Block = {
       minRows: 1,
       admin: {
         description:
-          'Shown in a swipeable carousel — five at a time on desktop, one on mobile. Add as many as you like.',
+          'Shown in an endless swipeable row — it loops back to the first story after the last. Add as many as you like.',
         initCollapsed: true,
         components: { RowLabel: '@/blocks/VideoStories/RowLabel#StoryRowLabel' },
       },
