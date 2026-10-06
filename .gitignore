@@ -32,3 +32,4 @@ tsconfig.tsbuildinfo
 
 # Puck editor stylesheet — built from globals.css by `pnpm build:puck-css`.
 /public/puck-editor-styles.css
+.env.local

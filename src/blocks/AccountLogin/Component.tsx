@@ -19,6 +19,7 @@ export const AccountLoginBlock: React.FC<Props> = ({
   emailPlaceholder,
   heading,
   helpText,
+  redirectUrl,
   subheading,
   unavailableMessage,
 }) => {
@@ -52,6 +53,7 @@ export const AccountLoginBlock: React.FC<Props> = ({
           buttonLabel={buttonLabel}
           emailLabel={emailLabel}
           emailPlaceholder={typeof emailPlaceholder === 'string' ? emailPlaceholder : undefined}
+          redirectUrl={typeof redirectUrl === 'string' ? redirectUrl : undefined}
           unavailableMessage={unavailableMessage}
         />
 

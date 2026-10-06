@@ -31,8 +31,10 @@ import { WhyDaysBlock } from '@/blocks/WhyDays/Component'
 import { FormBlock } from '@/blocks/Form/Component'
 import { ReviewsBlock } from '@/blocks/Reviews/Component'
 import { AccountLoginBlock } from '@/blocks/AccountLogin/Component'
+import { AccountDashboardBlock } from '@/blocks/AccountDashboard/Component'
 
 const blockComponents = {
+  accountDashboard: AccountDashboardBlock,
   accountLogin: AccountLoginBlock,
   bannerHero: BannerHeroBlock,
   rawHtml: RawHtmlBlock,
@@ -70,6 +72,7 @@ const blockComponents = {
  * would render a stripe of page background between every section if wrapped the same way.
  */
 export const fullBleed = new Set([
+  'accountDashboard',
   'accountLogin',
   'bannerHero',
   'productDetail',

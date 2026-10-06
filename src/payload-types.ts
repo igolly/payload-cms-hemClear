@@ -254,6 +254,7 @@ export interface Page {
     | (
         | ProductDetailBlock
         | AccountLoginBlock
+        | AccountDashboardBlock
         | RawHtmlBlock
         | ResultsBannerBlock
         | FormBlock
@@ -942,7 +943,11 @@ export interface AccountLoginBlock {
   emailPlaceholder?: string | null;
   buttonLabel?: string | null;
   /**
-   * Shown when the button is pressed while login is not yet connected to an account provider.
+   * The account page a customer lands on once the code is accepted.
+   */
+  redirectUrl?: string | null;
+  /**
+   * Shown when the button is pressed while customer login is not yet switched on (no Supabase keys set).
    */
   unavailableMessage?: string | null;
   helpText?: string | null;
@@ -954,6 +959,94 @@ export interface AccountLoginBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'accountLogin';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "AccountDashboardBlock".
+ */
+export interface AccountDashboardBlock {
+  ordersLabel?: string | null;
+  accountLabel?: string | null;
+  logoutLabel?: string | null;
+  /**
+   * Where a signed-out visitor, or one who logs out, is sent.
+   */
+  loginUrl?: string | null;
+  referHeading?: string | null;
+  referText?: string | null;
+  referButtonLabel?: string | null;
+  /**
+   * The button is hidden until this is set.
+   */
+  referButtonUrl?: string | null;
+  /**
+   * Shown in a strip beside the offer, five at most.
+   */
+  referPhotos?:
+    | {
+        image: string | Media;
+        id?: string | null;
+      }[]
+    | null;
+  resultsLabel?: string | null;
+  results?:
+    | {
+        value: string;
+        label: string;
+        note?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  resultsBadge?: string | null;
+  resultsFootnote?: string | null;
+  cashbackLabel?: string | null;
+  balanceLabel?: string | null;
+  redeemLabel?: string | null;
+  redeemUrl?: string | null;
+  giftingTitle?: string | null;
+  giftingSteps?:
+    | {
+        image?: (string | null) | Media;
+        order: string;
+        title: string;
+        value?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  giftingNote?: string | null;
+  shareHeading?: string | null;
+  shareText?: string | null;
+  shareButtonLabel?: string | null;
+  /**
+   * The link the button shares or copies. Hidden until set.
+   */
+  shareUrl?: string | null;
+  upsellTitle?: string | null;
+  upsellProducts?:
+    | {
+        image?: (string | null) | Media;
+        name: string;
+        option?: string | null;
+        price?: string | null;
+        /**
+         * The product page the "Add" button opens.
+         */
+        url?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  addLabel?: string | null;
+  productsTitle?: string | null;
+  shippingTitle?: string | null;
+  summaryTitle?: string | null;
+  billingTitle?: string | null;
+  emptyHeading?: string | null;
+  emptyText?: string | null;
+  emptyButtonLabel?: string | null;
+  emptyButtonUrl?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'accountDashboard';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -3550,6 +3643,7 @@ export interface PagesSelect<T extends boolean = true> {
     | {
         productDetail?: T | ProductDetailBlockSelect<T>;
         accountLogin?: T | AccountLoginBlockSelect<T>;
+        accountDashboard?: T | AccountDashboardBlockSelect<T>;
         rawHtml?: T | RawHtmlBlockSelect<T>;
         resultsBanner?: T | ResultsBannerBlockSelect<T>;
         formBlock?: T | FormBlockSelect<T>;
@@ -3860,10 +3954,83 @@ export interface AccountLoginBlockSelect<T extends boolean = true> {
   emailLabel?: T;
   emailPlaceholder?: T;
   buttonLabel?: T;
+  redirectUrl?: T;
   unavailableMessage?: T;
   helpText?: T;
   alternateLabel?: T;
   alternateUrl?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "AccountDashboardBlock_select".
+ */
+export interface AccountDashboardBlockSelect<T extends boolean = true> {
+  ordersLabel?: T;
+  accountLabel?: T;
+  logoutLabel?: T;
+  loginUrl?: T;
+  referHeading?: T;
+  referText?: T;
+  referButtonLabel?: T;
+  referButtonUrl?: T;
+  referPhotos?:
+    | T
+    | {
+        image?: T;
+        id?: T;
+      };
+  resultsLabel?: T;
+  results?:
+    | T
+    | {
+        value?: T;
+        label?: T;
+        note?: T;
+        id?: T;
+      };
+  resultsBadge?: T;
+  resultsFootnote?: T;
+  cashbackLabel?: T;
+  balanceLabel?: T;
+  redeemLabel?: T;
+  redeemUrl?: T;
+  giftingTitle?: T;
+  giftingSteps?:
+    | T
+    | {
+        image?: T;
+        order?: T;
+        title?: T;
+        value?: T;
+        id?: T;
+      };
+  giftingNote?: T;
+  shareHeading?: T;
+  shareText?: T;
+  shareButtonLabel?: T;
+  shareUrl?: T;
+  upsellTitle?: T;
+  upsellProducts?:
+    | T
+    | {
+        image?: T;
+        name?: T;
+        option?: T;
+        price?: T;
+        url?: T;
+        id?: T;
+      };
+  addLabel?: T;
+  productsTitle?: T;
+  shippingTitle?: T;
+  summaryTitle?: T;
+  billingTitle?: T;
+  emptyHeading?: T;
+  emptyText?: T;
+  emptyButtonLabel?: T;
+  emptyButtonUrl?: T;
   id?: T;
   blockName?: T;
 }

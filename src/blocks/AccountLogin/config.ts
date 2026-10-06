@@ -41,7 +41,14 @@ export const AccountLogin: Block = {
         {
           name: 'buttonLabel',
           type: 'text',
-          defaultValue: 'Get login code (sends SMS and email)',
+          defaultValue: 'Email me a login link',
+        },
+        {
+          name: 'redirectUrl',
+          type: 'text',
+          label: 'After login, go to',
+          defaultValue: '/account',
+          admin: { description: 'The account page a customer lands on once the code is accepted.' },
         },
         {
           name: 'unavailableMessage',
@@ -50,7 +57,7 @@ export const AccountLogin: Block = {
             'Account login is coming soon. For help with an order in the meantime, please contact our support team.',
           admin: {
             description:
-              'Shown when the button is pressed while login is not yet connected to an account provider.',
+              'Shown when the button is pressed while customer login is not yet switched on (no Supabase keys set).',
           },
         },
       ],
@@ -62,7 +69,7 @@ export const AccountLogin: Block = {
         {
           name: 'helpText',
           type: 'text',
-          defaultValue: 'Having trouble getting your login code?',
+          defaultValue: 'Having trouble getting your login email?',
         },
         {
           type: 'row',
