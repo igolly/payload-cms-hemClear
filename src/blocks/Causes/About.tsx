@@ -119,10 +119,16 @@ export const CausesAbout: React.FC<Props> = ({
   if (variant === 'aboutOffer') {
     return (
       <section
-        className="w-full bg-ash-50 px-4 py-8 font-inter sm:px-6 xl:px-5 xl:py-0 [&_sup]:leading-[0]"
+        className="relative isolate w-full bg-ash-50 px-4 py-8 font-inter sm:px-6 xl:px-5 xl:py-0 [&_sup]:leading-[0]"
         style={backgroundStyle(bgColor, bgColorCustom)}
       >
-        <div className="relative isolate mx-auto flex max-w-[1400px] flex-col gap-20 sm:gap-6 xl:h-[635px] xl:justify-center xl:pb-3 xl:pl-[50px]">
+        {/*
+         * `xl:static` hands the photo's positioning up to the section, so it can sit against
+         * the window's right edge. Pinned to this 1400px column it stopped 20px short of the
+         * edge at 1440 — the artwork ending in a hard line — and sat in a box with grey bars
+         * either side on a wider screen.
+         */}
+        <div className="relative mx-auto flex max-w-[1400px] flex-col gap-20 sm:gap-6 xl:static xl:h-[635px] xl:justify-center xl:pb-3 xl:pl-[50px]">
           <div className="flex w-full max-w-[500px] flex-col items-center text-center sm:items-start sm:text-left">
             {eyebrow && (
               <p
@@ -166,7 +172,17 @@ export const CausesAbout: React.FC<Props> = ({
 
           {!noImage && (
             <div
-              className="relative -order-1 -mx-4 h-[350px] sm:order-none sm:mx-0 sm:aspect-[1920/1016] sm:h-auto sm:w-full xl:absolute xl:inset-0 xl:-z-10 xl:aspect-auto"
+              /*
+               * From `xl` the band is a fixed 635px tall, and the photo is shown whole at
+               * that height — 1200px wide, its own 1920 × 1016 shape — with its right edge
+               * on the right edge of the 1400px content column. Stretched across the full
+               * width instead, a 1920px window had to crop a third of its height and cut
+               * the jar off at the bottom; pinned to the window's edge, the products ran
+               * off towards the corner of a wide screen. Both edges are near enough the
+               * band's own off-white (#fbfbfb against `ash-50`) that the band carries on
+               * beyond them, and both are faded so even that shade apart leaves no seam.
+               */
+              className="relative -order-1 -mx-4 h-[350px] sm:order-none sm:mx-0 sm:aspect-[1920/1016] sm:h-auto sm:w-full xl:absolute xl:inset-y-0 xl:right-[max(0px,calc((100%-1400px)/2))] xl:-z-10 xl:h-full xl:w-[1200px] xl:max-w-full xl:[mask-image:linear-gradient(to_right,transparent,black_20%,black_92%,transparent)]"
               data-payload-subpath="image"
             >
               <ImageSlot
