@@ -30,8 +30,10 @@ import { WaysGridBlock } from '@/blocks/WaysGrid/Component'
 import { WhyDaysBlock } from '@/blocks/WhyDays/Component'
 import { FormBlock } from '@/blocks/Form/Component'
 import { ReviewsBlock } from '@/blocks/Reviews/Component'
+import { AccountLoginBlock } from '@/blocks/AccountLogin/Component'
 
 const blockComponents = {
+  accountLogin: AccountLoginBlock,
   bannerHero: BannerHeroBlock,
   rawHtml: RawHtmlBlock,
   benefitsCarousel: BenefitsCarouselBlock,
@@ -68,6 +70,7 @@ const blockComponents = {
  * would render a stripe of page background between every section if wrapped the same way.
  */
 export const fullBleed = new Set([
+  'accountLogin',
   'bannerHero',
   'productDetail',
   'benefitsCarousel',

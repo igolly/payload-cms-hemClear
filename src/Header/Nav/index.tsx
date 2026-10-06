@@ -7,6 +7,7 @@ import type { Header as HeaderType } from '@/payload-types'
 import { CMSLink } from '@/components/Link'
 import Link from 'next/link'
 import { cn } from '@/utilities/ui'
+import { marks } from '@/utilities/marks'
 
 type NavItem = NonNullable<HeaderType['navItems']>[number]
 
@@ -15,17 +16,21 @@ export const hasMenu = (item: NavItem) => Array.isArray(item.megaMenu) && item.m
 
 /* eslint-disable @next/next/no-img-element */
 
-/** Figma `sign in` (2002:62): 25px user glyph, 5px gap, 6.25px padding. */
-export const SignInLink: React.FC<{ className?: string; onClick?: () => void }> = ({
-  className,
-  onClick,
-}) => (
+/**
+ * Figma `sign in` (2002:62): 25px user glyph, 5px gap, 6.25px padding. Falls back to the
+ * Account Login page, so a header saved before these fields existed still links somewhere.
+ */
+export const SignInLink: React.FC<{
+  className?: string
+  data?: HeaderType
+  onClick?: () => void
+}> = ({ className, data, onClick }) => (
   <Link
     className={cn(
       'flex items-center gap-[5px] p-[6.25px] font-inter text-base font-semibold leading-[normal] text-navy-900 transition-colors hover:text-info-dark',
       className,
     )}
-    href="#"
+    href={(typeof data?.signInUrl === 'string' && data.signInUrl) || '/login'}
     onClick={onClick}
   >
     <img
@@ -35,7 +40,7 @@ export const SignInLink: React.FC<{ className?: string; onClick?: () => void }> 
       src="/icons/header/user.svg"
       width={25}
     />
-    Sign In
+    {marks(data?.signInLabel || 'Sign In')}
   </Link>
 )
 
@@ -107,7 +112,7 @@ export const HeaderNav: React.FC<{
         )
       })}
 
-      <SignInLink />
+      <SignInLink data={data} />
 
       {/* Figma `Line` (2002:69): a 31.25px hairline rule. */}
       <div aria-hidden="true" className="h-[31.25px] w-[0.625px] bg-steel-300" />

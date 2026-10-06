@@ -88,6 +88,32 @@ export const headerFields: Field[] = [
     ],
   },
   {
+    type: 'collapsible',
+    label: 'Sign In',
+    admin: {
+      description: 'The account link beside the menu, and at the foot of the mobile menu.',
+    },
+    fields: [
+      {
+        type: 'row',
+        fields: [
+          {
+            name: 'signInLabel',
+            type: 'text',
+            defaultValue: 'Sign In',
+            admin: { width: '50%' },
+          },
+          {
+            name: 'signInUrl',
+            type: 'text',
+            defaultValue: '/login',
+            admin: { description: 'The Account Login page.', width: '50%' },
+          },
+        ],
+      },
+    ],
+  },
+  {
     name: 'navItems',
     type: 'array',
     fields: [

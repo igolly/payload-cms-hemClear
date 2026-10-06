@@ -18,6 +18,7 @@ import { convertFields, defaultsFor } from './fields'
 // Block configs (field definitions). `Form/config.ts` is deliberately absent: it imports
 // the Lexical editor at runtime, which must not reach the browser bundle. Its three fields
 // are declared inline below instead.
+import { AccountLogin } from '@/blocks/AccountLogin/config'
 import { BannerHero } from '@/blocks/BannerHero/config'
 import { BenefitsCarousel } from '@/blocks/BenefitsCarousel/config'
 import { Causes } from '@/blocks/Causes/config'
@@ -47,6 +48,7 @@ import { WaysGrid } from '@/blocks/WaysGrid/config'
 import { WhyDays } from '@/blocks/WhyDays/config'
 
 // Renderers — the same components `RenderBlocks` uses for legacy pages.
+import { AccountLoginBlock } from '@/blocks/AccountLogin/Component'
 import { BannerHeroBlock } from '@/blocks/BannerHero/Component'
 import { BenefitsCarouselBlock } from '@/blocks/BenefitsCarousel/Component'
 import { CausesBlock } from '@/blocks/Causes/Component'
@@ -83,6 +85,7 @@ type AnyComponent = React.ComponentType<any>
 
 /** Every block that can be generated straight from its Payload config. */
 const generatedBlocks: [Block, AnyComponent][] = [
+  [AccountLogin, AccountLoginBlock as AnyComponent],
   [BannerHero, BannerHeroBlock as AnyComponent],
   [BenefitsCarousel, BenefitsCarouselBlock as AnyComponent],
   [Causes, CausesBlock as AnyComponent],
@@ -232,6 +235,7 @@ export const puckConfig: Config = {
       title: 'Conversion',
       components: ['pricingOffer', 'savingsCompare', 'closingCta', 'formBlock'],
     },
+    account: { title: 'Account', components: ['accountLogin'] },
     support: { title: 'Support & FAQ', components: ['faq', 'supportTabs', 'benefitsCarousel'] },
     // Terms, privacy and the like: prose that arrives already written.
     legal: { title: 'Legal & Long-form', components: ['rawHtml'] },

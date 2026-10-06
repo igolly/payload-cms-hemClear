@@ -120,7 +120,7 @@ export const MobileNav: React.FC<{
       </ul>
 
       <div className="flex items-center justify-between py-4">
-        <SignInLink className="-ml-[6.25px]" onClick={onClose} />
+        <SignInLink className="-ml-[6.25px]" data={data} onClick={onClose} />
         <CartLink onClick={onClose} />
       </div>
     </div>

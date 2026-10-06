@@ -30,6 +30,7 @@ import { WhyDays } from '../../blocks/WhyDays/config'
 import { VideoStories } from '../../blocks/VideoStories/config'
 import { WaysGrid } from '../../blocks/WaysGrid/config'
 import { Reviews } from '../../blocks/Reviews/config'
+import { AccountLogin } from '../../blocks/AccountLogin/config'
 import { hero } from '@/heros/config'
 import { puckEditorVersion } from '@/fields/puckEditorVersion'
 import { puckData } from '@/fields/puckData'
@@ -110,6 +111,7 @@ export const Pages: CollectionConfig<'pages'> = {
               type: 'blocks',
               blocks: [
                 ProductDetail,
+                AccountLogin,
                 RawHtml,
                 ResultsBanner,
                 FormBlock,

@@ -204,6 +204,7 @@ const itemSummary = (item: Record<string, unknown>, index = 0): string => {
 const NEVER_INLINE = new Set([
   'bgColorCustom', // parsed by `backgroundStyle`
   'category', // `ingredientExplorer` derives its filter pills from this
+  'emailPlaceholder', // `accountLogin` sets it as the input's placeholder attribute
 ])
 
 /** Names that read as an attribute value rather than as copy on the page. */

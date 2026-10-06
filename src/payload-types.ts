@@ -253,6 +253,7 @@ export interface Page {
   layout?:
     | (
         | ProductDetailBlock
+        | AccountLoginBlock
         | RawHtmlBlock
         | ResultsBannerBlock
         | FormBlock
@@ -929,6 +930,30 @@ export interface ProductDetailBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'productDetail';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "AccountLoginBlock".
+ */
+export interface AccountLoginBlock {
+  heading?: string | null;
+  subheading?: string | null;
+  emailLabel?: string | null;
+  emailPlaceholder?: string | null;
+  buttonLabel?: string | null;
+  /**
+   * Shown when the button is pressed while login is not yet connected to an account provider.
+   */
+  unavailableMessage?: string | null;
+  helpText?: string | null;
+  alternateLabel?: string | null;
+  /**
+   * The link is hidden until this is filled in.
+   */
+  alternateUrl?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'accountLogin';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1722,7 +1747,7 @@ export interface VideoStoriesBlock {
    */
   posterIncludesChrome?: boolean | null;
   /**
-   * Shown in a swipeable carousel — five at a time on desktop, one on mobile. Add as many as you like.
+   * Shown in an endless swipeable row — it loops back to the first story after the last. Add as many as you like.
    */
   stories?:
     | {
@@ -3524,6 +3549,7 @@ export interface PagesSelect<T extends boolean = true> {
     | T
     | {
         productDetail?: T | ProductDetailBlockSelect<T>;
+        accountLogin?: T | AccountLoginBlockSelect<T>;
         rawHtml?: T | RawHtmlBlockSelect<T>;
         resultsBanner?: T | ResultsBannerBlockSelect<T>;
         formBlock?: T | FormBlockSelect<T>;
@@ -3821,6 +3847,23 @@ export interface ProductDetailBlockSelect<T extends boolean = true> {
   stickyOfferNote?: T;
   stickyCtaLabel?: T;
   stickyCtaUrl?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "AccountLoginBlock_select".
+ */
+export interface AccountLoginBlockSelect<T extends boolean = true> {
+  heading?: T;
+  subheading?: T;
+  emailLabel?: T;
+  emailPlaceholder?: T;
+  buttonLabel?: T;
+  unavailableMessage?: T;
+  helpText?: T;
+  alternateLabel?: T;
+  alternateUrl?: T;
   id?: T;
   blockName?: T;
 }
@@ -5129,6 +5172,11 @@ export interface Header {
   stickyNote?: string | null;
   stickyCtaLabel?: string | null;
   stickyCtaUrl?: string | null;
+  signInLabel?: string | null;
+  /**
+   * The Account Login page.
+   */
+  signInUrl?: string | null;
   navItems?:
     | {
         link: {
@@ -5288,6 +5336,8 @@ export interface HeaderSelect<T extends boolean = true> {
   stickyNote?: T;
   stickyCtaLabel?: T;
   stickyCtaUrl?: T;
+  signInLabel?: T;
+  signInUrl?: T;
   navItems?:
     | T
     | {
