@@ -27,6 +27,19 @@ const PLAY_EVENT = 'videostories:play'
 const CARD = { dark: 208.75, light: 114 } as const
 const GAP = { dark: 17.5, light: 9.43 } as const
 
+/*
+ * The navy band on a wide screen: three large cards in full across the middle, with a
+ * slice of the next card showing at either edge — the hint that the row goes on. The width
+ * is solved for that from the track's width (three cards, two slices of `PEEK` of a card,
+ * four gaps), capped so a card is never taller than a laptop screen can show.
+ */
+const PEEK = 0.3
+const MAX_FEATURE_CARD = 310
+/** Wider than this the row stops growing and centres, so the edge slices stay slices. */
+const MAX_FEATURE_ROW = Math.round((3 + 2 * PEEK) * MAX_FEATURE_CARD + 4 * GAP.dark)
+const featureCardWidth = (trackWidth: number) =>
+  Math.round(Math.min(MAX_FEATURE_CARD, (trackWidth - 4 * GAP.dark) / (3 + 2 * PEEK)))
+
 /**
  * An endless scroll-snap carousel — no carousel library, and no autoplay: it moves only
  * when the visitor swipes, scrolls or presses an arrow. The track is a native horizontal
@@ -59,8 +72,13 @@ export const Carousel: React.FC<{
   const [copies, setCopies] = useState(1)
   /** The scroll position the arrows last asked for, held until the scroll comes to rest. */
   const pending = useRef<null | number>(null)
+  /** The dark band's card width, which grows to the three-across size on a wide screen. */
+  const [cardWidth, setCardWidth] = useState<number>(CARD[tone])
+  /** Whether the row has been opened on its first three stories yet. */
+  const opened = useRef(false)
 
-  const step = CARD[tone] + GAP[tone]
+  const light = tone === 'light'
+  const step = cardWidth + GAP[tone]
   const setWidth = stories.length * step
   const loops = copies > 1
 
@@ -95,6 +113,10 @@ export const Carousel: React.FC<{
     if (!track || setWidth <= 0) return
     const fit = () => {
       const width = track.clientWidth
+      if (!light) {
+        const wide = window.matchMedia('(min-width: 1024px)').matches
+        setCardWidth(wide ? featureCardWidth(width) : CARD.dark)
+      }
       if (setWidth <= width + 1) return setCopies(1)
       const side = Math.max(2, Math.ceil((2 * width) / setWidth))
       setCopies(side * 2 + 1)
@@ -103,7 +125,7 @@ export const Carousel: React.FC<{
     const observer = new ResizeObserver(fit)
     observer.observe(track)
     return () => observer.disconnect()
-  }, [setWidth])
+  }, [light, setWidth])
 
   /** Move the scroll position into the middle copy, onto the same card it shows now. */
   const recentre = useCallback(() => {
@@ -122,8 +144,19 @@ export const Carousel: React.FC<{
    * The first jump, from the far left, is invisible: every copy opens on the same story.
    */
   useLayoutEffect(() => {
+    const track = trackRef.current
+    /*
+     * The navy band snaps cards to its centre, so it opens with the second story there: the
+     * first three in full, the last story and the fourth peeking in at the edges.
+     */
+    if (track && loops && !light && !opened.current) {
+      opened.current = true
+      const base = Math.floor(copies / 2) * setWidth
+      track.scrollTo({ behavior: 'instant', left: base + 1.5 * step - track.clientWidth / 2 })
+      return
+    }
     recentre()
-  }, [recentre])
+  }, [copies, light, loops, recentre, setWidth, step])
 
   useEffect(() => {
     const track = trackRef.current
@@ -166,12 +199,11 @@ export const Carousel: React.FC<{
   const nudge = (direction: -1 | 1) => {
     const track = trackRef.current
     if (!track) return
-    const from = pending.current ?? Math.round(track.scrollLeft / step) * step
+    const from = pending.current ?? track.scrollLeft
     pending.current = from + direction * step
     track.scrollTo({ behavior: 'smooth', left: pending.current })
   }
 
-  const light = tone === 'light'
   const items = Array.from({ length: copies }, () => stories).flat()
 
   const track = (
@@ -179,17 +211,22 @@ export const Carousel: React.FC<{
       className={cn(
         'flex min-w-0 snap-x snap-mandatory overflow-x-auto [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden',
         // Room for the cards' soft shadow, which the scroller would otherwise clip.
-        light ? '-my-1 w-full max-w-[615.72px] py-1' : '-my-2 max-w-[1121.75px] grow py-2',
+        light ? '-my-1 w-full max-w-[615.72px] py-1' : '-my-2 w-full py-2',
       )}
       ref={trackRef}
     >
       {items.map((story, i) => (
         <li
-          className={cn('flex flex-none snap-start', !light && 'max-sm:snap-center')}
+          className={cn('flex flex-none', light ? 'snap-start' : 'snap-center')}
           // Padding rather than a flex gap, so each set ends with its gap and a jump of one
-          // set lands exactly on a card.
+          // set lands exactly on a card. The navy band splits it either side, so a card's
+          // centre is its slot's centre and centre-snapping lines the three up evenly.
           key={`${Math.floor(i / stories.length)}-${story.id ?? i}`}
-          style={{ paddingRight: GAP[tone], width: step }}
+          style={
+            light
+              ? { paddingRight: GAP.light, width: step }
+              : { paddingInline: GAP.dark / 2, width: step }
+          }
         >
           <StoryCard
             index={i % stories.length}
@@ -237,22 +274,19 @@ export const Carousel: React.FC<{
     )
   }
 
-  /* Dark tone — the navy `videoStories` band (Figma 58:841 + carousel 6517:2023). The track
-     caps at the comp's five cards and the 64px arrows sit 50px in from the 1400px container
-     edges, `justify-between` taking up the slack. */
-  const arrowClass = 'h-16 w-16 shrink-0 opacity-60 transition-opacity hover:opacity-80'
-
+  /* Dark tone — the navy `videoStories` band. The track runs the band's full width, three
+     large cards centred with the next showing at each edge, and the arrows sit over those
+     edge slices, half-way down the cards. */
   return (
-    <div className="relative flex items-center justify-between gap-3 xl:px-[50px]">
-      {/* Mobile (6517:2035): 32px arrows at 60% on the content edges, 187.25px down the
-          cards, up to `md` where the 64px pair takes over. */}
+    <div className="relative mx-auto" style={{ maxWidth: MAX_FEATURE_ROW }}>
+      {track}
       {loops &&
         ([-1, 1] as const).map((direction) => (
           <button
             aria-label={direction < 0 ? 'Previous stories' : 'Next stories'}
             className={cn(
-              'absolute top-[187.25px] z-30 size-8 opacity-60 transition-opacity hover:opacity-80 md:hidden',
-              direction < 0 ? 'left-0' : 'right-0',
+              'absolute top-1/2 z-30 -translate-y-1/2 opacity-70 transition-opacity hover:opacity-100',
+              direction < 0 ? 'left-1 md:left-3' : 'right-1 md:right-3',
             )}
             key={direction}
             onClick={() => nudge(direction)}
@@ -260,51 +294,24 @@ export const Carousel: React.FC<{
           >
             <img
               alt=""
-              className="block size-8"
+              className="block size-8 md:hidden"
               decoding="async"
               height={32}
               loading="lazy"
               src={`/icons/video-stories/carousel-${direction < 0 ? 'left' : 'right'}.svg`}
               width={32}
             />
+            <img
+              alt=""
+              className="hidden size-14 md:block"
+              decoding="async"
+              height={64}
+              loading="lazy"
+              src={`/icons/video-stories/arrow-${direction < 0 ? 'left' : 'right'}.svg`}
+              width={64}
+            />
           </button>
         ))}
-
-      <button
-        aria-label="Previous stories"
-        className={cn(arrowClass, loops ? 'hidden md:block' : 'hidden')}
-        onClick={() => nudge(-1)}
-        type="button"
-      >
-        <img
-          alt=""
-          className="h-16 w-16"
-          decoding="async"
-          height={64}
-          loading="lazy"
-          src="/icons/video-stories/arrow-left.svg"
-          width={64}
-        />
-      </button>
-
-      {track}
-
-      <button
-        aria-label="Next stories"
-        className={cn(arrowClass, loops ? 'hidden md:block' : 'hidden')}
-        onClick={() => nudge(1)}
-        type="button"
-      >
-        <img
-          alt=""
-          className="h-16 w-16"
-          decoding="async"
-          height={64}
-          loading="lazy"
-          src="/icons/video-stories/arrow-right.svg"
-          width={64}
-        />
-      </button>
     </div>
   )
 }
