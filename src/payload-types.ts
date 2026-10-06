@@ -504,6 +504,10 @@ export interface ProductDetailBlock {
         value: string;
         label: string;
         detail?: string | null;
+        /**
+         * The cart has room for three across. Its reviewer count is read from the detail ("29 of 32 reviewers").
+         */
+        showInCart?: boolean | null;
         id?: string | null;
       }[]
     | null;
@@ -642,6 +646,10 @@ export interface ProductDetailBlock {
               value: string;
               label: string;
               detail?: string | null;
+              /**
+               * The cart has room for three across. Its reviewer count is read from the detail ("29 of 32 reviewers").
+               */
+              showInCart?: boolean | null;
               id?: string | null;
             }[]
           | null;
@@ -902,6 +910,13 @@ export interface ProductDetailBlock {
    * Only the ones checkout actually takes. Nothing is shown until you pick some — a payment badge the shop cannot honour is a promise broken at the worst moment.
    */
   cartPaymentMethods?: ('visa' | 'mastercard' | 'amex' | 'paypal' | 'applePay' | 'googlePay')[] | null;
+  cartTrustItems?:
+    | {
+        icon?: ('lock' | 'package' | 'shield' | 'truck' | 'rotate') | null;
+        label: string;
+        id?: string | null;
+      }[]
+    | null;
   /**
    * Offered inside the cart. Nothing is added until the reader presses Add, and the total updates when they do.
    */
@@ -1488,6 +1503,10 @@ export interface FAQBlock {
    * Compact drops the image panel and centres the heading, for pages where the FAQ is one section among many rather than the whole page. Split puts the questions in a navy column with the Product image filling the rest of the band — it needs that image set.
    */
   headerStyle?: ('banner' | 'compact' | 'split') | null;
+  /**
+   * Split only. Ticked, the navy panel and photo fill the window as two halves; unticked, they sit in the page column as a rounded card.
+   */
+  fullWidth?: boolean | null;
   supportTitle?: string | null;
   supportText?: string | null;
   /**
@@ -3729,6 +3748,7 @@ export interface ProductDetailBlockSelect<T extends boolean = true> {
         value?: T;
         label?: T;
         detail?: T;
+        showInCart?: T;
         id?: T;
       };
   resultsFootnote?: T;
@@ -3805,6 +3825,7 @@ export interface ProductDetailBlockSelect<T extends boolean = true> {
               value?: T;
               label?: T;
               detail?: T;
+              showInCart?: T;
               id?: T;
             };
         resultsFootnote?: T;
@@ -3927,6 +3948,13 @@ export interface ProductDetailBlockSelect<T extends boolean = true> {
       };
   cartFreeShippingThreshold?: T;
   cartPaymentMethods?: T;
+  cartTrustItems?:
+    | T
+    | {
+        icon?: T;
+        label?: T;
+        id?: T;
+      };
   cartCrossSell?:
     | T
     | {
@@ -4153,6 +4181,7 @@ export interface FAQBlockSelect<T extends boolean = true> {
       };
   defaultState?: T;
   headerStyle?: T;
+  fullWidth?: T;
   supportTitle?: T;
   supportText?: T;
   supportIcon?: T;

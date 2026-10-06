@@ -22,6 +22,7 @@ export const FAQBlock: React.FC<Props> = ({
   supportTitle,
   defaultState,
   description,
+  fullWidth,
   heading,
   image,
   items,
@@ -51,19 +52,42 @@ export const FAQBlock: React.FC<Props> = ({
   if (headerStyle === 'split') {
     return (
       <section
-        className="w-full px-4 py-10 sm:px-6 lg:px-8"
+        className={cn('w-full', !fullWidth && 'px-4 py-10 sm:px-6 lg:px-8')}
         style={backgroundStyle(bgColor, bgColorCustom)}
       >
         {/*
-         * Held to the same column as the sections above and below it rather than running to
-         * the window's edges — the band is a section of the page, not a full-width break in
-         * it. `overflow-hidden` is what keeps the photo inside the rounded corner.
+         * Two halves: the questions on a navy panel, the product photo filling the other. Edge
+         * to edge on the home page (its reference, FAQ.png, runs the band across the window);
+         * otherwise held to the page column as a rounded card, as the product page wants.
+         * `overflow-hidden` keeps the photo inside the rounded corner.
          */}
-        <div className="mx-auto grid max-w-[1400px] grid-cols-1 overflow-hidden rounded-2xl lg:grid-cols-[minmax(320px,38%)_1fr]">
-          <div className="bg-navy-900 px-6 py-10 sm:px-10 lg:px-12 lg:py-14">
+        {/*
+         * The photo is square and fills its half at the band's height, so the band is kept
+         * near that half's width: tight padding where the questions set the height, and a
+         * floor of 45vw (90% of the half) where a wide screen would otherwise make it a
+         * letterbox. Between the two, close to all of the photo shows at every width.
+         */}
+        <div
+          className={cn(
+            'grid grid-cols-1 overflow-hidden lg:grid-cols-2',
+            !fullWidth && 'mx-auto max-w-[1400px] rounded-2xl',
+          )}
+        >
+          <div className="relative isolate overflow-hidden bg-steel-800 px-6 py-12 sm:px-10 lg:flex lg:min-h-[45vw] lg:flex-col lg:justify-center lg:py-[clamp(36px,4.5vw,96px)] lg:pl-[9%] lg:pr-[7%] xl:pl-[14%] xl:pr-[11%]">
+            {/* The reference's two soft shapes: a lighter diagonal falling from the top
+                right, and a large circle half off the panel's top edge. */}
+            <div
+              aria-hidden="true"
+              className="absolute inset-0 -z-10 bg-info-dark/35 [clip-path:polygon(58%_0,100%_0,100%_100%,90%_100%)]"
+            />
+            <div
+              aria-hidden="true"
+              className="absolute -right-[22%] -top-[38%] -z-10 aspect-square w-[78%] rounded-full bg-info/20"
+            />
+
             {heading && (
               <h2
-                className="font-marcellus text-[32px] leading-[1.1] text-white sm:text-[38px]"
+                className="font-marcellus text-[40px] leading-[1.1] text-white sm:text-[48px] lg:text-[clamp(40px,3.4vw,64px)]"
                 data-payload-subpath="heading"
               >
                 {multiline(heading)}
@@ -72,7 +96,7 @@ export const FAQBlock: React.FC<Props> = ({
 
             {description && (
               <p
-                className="mt-3 max-w-md whitespace-pre-line text-[13px] leading-relaxed text-white/70"
+                className="mt-3 max-w-md whitespace-pre-line text-sm leading-relaxed text-white/75"
                 data-payload-subpath="description"
               >
                 {marks(description)}
@@ -80,24 +104,25 @@ export const FAQBlock: React.FC<Props> = ({
             )}
 
             {questions.length > 0 && (
-              <div className="mt-8">
+              <div className="mt-6 lg:mt-[clamp(20px,2.5vw,48px)]">
                 <FaqAccordion defaultState={defaultState} items={questions} tone="panel" />
               </div>
             )}
           </div>
 
           {/*
-           * The photo holds the band's height on a wide screen and takes a fixed slice of it
-           * on a narrow one, where the two are stacked and it would otherwise either collapse
-           * to nothing or run the length of the questions.
+           * The photo fills its half at whatever height the band is. That height no longer
+           * moves when a question opens — the accordion reserves room for its longest answer
+           * up front — so the photo is the same size and crop through every click. Stacked on
+           * a narrow screen it takes a fixed slice instead of running the list's length.
            */}
           {hasPanel ? (
-            <div className="relative h-56 sm:h-72 lg:h-auto" data-payload-subpath="image">
+            <div className="relative h-64 sm:h-96 lg:h-auto" data-payload-subpath="image">
               <Media
                 fill
                 imgClassName="object-cover"
                 resource={image}
-                size="(min-width: 1024px) 860px, 100vw"
+                size="(min-width: 1024px) 50vw, 100vw"
               />
             </div>
           ) : (

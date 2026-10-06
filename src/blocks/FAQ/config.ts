@@ -120,6 +120,17 @@ export const FAQ: Block = {
       },
     },
     {
+      name: 'fullWidth',
+      type: 'checkbox',
+      label: 'Run edge to edge',
+      defaultValue: false,
+      admin: {
+        condition: (_, siblingData) => siblingData?.headerStyle === 'split',
+        description:
+          'Split only. Ticked, the navy panel and photo fill the window as two halves; unticked, they sit in the page column as a rounded card.',
+      },
+    },
+    {
       type: 'collapsible',
       label: 'Support Callout (optional)',
       admin: { initCollapsed: true },
