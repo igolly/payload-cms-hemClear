@@ -255,6 +255,7 @@ export interface Page {
         | ProductDetailBlock
         | AccountLoginBlock
         | AccountDashboardBlock
+        | CheckoutBlock
         | RawHtmlBlock
         | ResultsBannerBlock
         | FormBlock
@@ -1065,6 +1066,96 @@ export interface AccountDashboardBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CheckoutBlock".
+ */
+export interface CheckoutBlock {
+  expressTitle?: string | null;
+  /**
+   * The buttons above the form, in this order. None: no express row.
+   */
+  expressMethods?: ('shopPay' | 'paypal' | 'googlePay' | 'applePay')[] | null;
+  expressNote?: string | null;
+  contactTitle?: string | null;
+  /**
+   * The login page. The customer comes back here afterwards.
+   */
+  signInUrl?: string | null;
+  newsletterLabel?: string | null;
+  deliveryTitle?: string | null;
+  shippingTitle?: string | null;
+  shippingLabel?: string | null;
+  shippingNote?: string | null;
+  /**
+   * Also shown as the Shipping line.
+   */
+  shippingPrice?: string | null;
+  paymentTitle?: string | null;
+  paymentNote?: string | null;
+  /**
+   * Card marks beside "Credit card" — only ones the shop takes.
+   */
+  cardBrands?: ('visa' | 'mastercard' | 'amex')[] | null;
+  offerPaypal?: boolean | null;
+  /**
+   * Shown only when a package in the cart bills on a schedule, listing its billing line.
+   */
+  subscriptionTitle?: string | null;
+  subscriptionNote?: string | null;
+  /**
+   * {total} is replaced with the order total.
+   */
+  payLabel?: string | null;
+  /**
+   * Shown when Pay or an express button is pressed while no payment provider is connected. The card fields stay locked until then.
+   */
+  unavailableMessage?: string | null;
+  legalLead?: string | null;
+  legalLinks?:
+    | {
+        label: string;
+        url: string;
+        id?: string | null;
+      }[]
+    | null;
+  orderTitle?: string | null;
+  showDiscount?: boolean | null;
+  taxNote?: string | null;
+  emptyMessage?: string | null;
+  emptyLinkUrl?: string | null;
+  guaranteeTitle?: string | null;
+  guaranteeText?: string | null;
+  guaranteeLinkLabel?: string | null;
+  /**
+   * The link is hidden until this is set.
+   */
+  guaranteeUrl?: string | null;
+  trustItems?:
+    | {
+        icon?: ('package' | 'lock' | 'repeat' | 'truck' | 'shield') | null;
+        title: string;
+        text?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  testimonialsTitle?: string | null;
+  /**
+   * Use real, published customer reviews only.
+   */
+  testimonials?:
+    | {
+        quote: string;
+        name: string;
+        role?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  testimonialsFootnote?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'checkout';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "RawHtmlBlock".
  */
 export interface RawHtmlBlock {
@@ -1859,7 +1950,7 @@ export interface VideoStoriesBlock {
    */
   posterIncludesChrome?: boolean | null;
   /**
-   * Shown in an endless swipeable row — it loops back to the first story after the last. Add as many as you like.
+   * Shown in an endless row that steps on by itself every few seconds and loops back to the first story after the last. Add as many as you like.
    */
   stories?:
     | {
@@ -3663,6 +3754,7 @@ export interface PagesSelect<T extends boolean = true> {
         productDetail?: T | ProductDetailBlockSelect<T>;
         accountLogin?: T | AccountLoginBlockSelect<T>;
         accountDashboard?: T | AccountDashboardBlockSelect<T>;
+        checkout?: T | CheckoutBlockSelect<T>;
         rawHtml?: T | RawHtmlBlockSelect<T>;
         resultsBanner?: T | ResultsBannerBlockSelect<T>;
         formBlock?: T | FormBlockSelect<T>;
@@ -4059,6 +4151,68 @@ export interface AccountDashboardBlockSelect<T extends boolean = true> {
   emptyText?: T;
   emptyButtonLabel?: T;
   emptyButtonUrl?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CheckoutBlock_select".
+ */
+export interface CheckoutBlockSelect<T extends boolean = true> {
+  expressTitle?: T;
+  expressMethods?: T;
+  expressNote?: T;
+  contactTitle?: T;
+  signInUrl?: T;
+  newsletterLabel?: T;
+  deliveryTitle?: T;
+  shippingTitle?: T;
+  shippingLabel?: T;
+  shippingNote?: T;
+  shippingPrice?: T;
+  paymentTitle?: T;
+  paymentNote?: T;
+  cardBrands?: T;
+  offerPaypal?: T;
+  subscriptionTitle?: T;
+  subscriptionNote?: T;
+  payLabel?: T;
+  unavailableMessage?: T;
+  legalLead?: T;
+  legalLinks?:
+    | T
+    | {
+        label?: T;
+        url?: T;
+        id?: T;
+      };
+  orderTitle?: T;
+  showDiscount?: T;
+  taxNote?: T;
+  emptyMessage?: T;
+  emptyLinkUrl?: T;
+  guaranteeTitle?: T;
+  guaranteeText?: T;
+  guaranteeLinkLabel?: T;
+  guaranteeUrl?: T;
+  trustItems?:
+    | T
+    | {
+        icon?: T;
+        title?: T;
+        text?: T;
+        id?: T;
+      };
+  testimonialsTitle?: T;
+  testimonials?:
+    | T
+    | {
+        quote?: T;
+        name?: T;
+        role?: T;
+        id?: T;
+      };
+  testimonialsFootnote?: T;
   id?: T;
   blockName?: T;
 }

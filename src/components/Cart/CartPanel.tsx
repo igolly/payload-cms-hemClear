@@ -121,9 +121,6 @@ export const CartPanel: React.FC<{
   const hasFreeShipping = threshold > 0 && subtotal >= threshold
   const methods = (paymentMethods ?? []).filter((m) => PAYMENT_METHODS[m])
 
-  // The checkout the chosen package points at. Mixed carts take the first line that has one.
-  const checkoutUrl = lines.find((l) => l.checkoutUrl)?.checkoutUrl
-
   return (
     <>
       {/* The page stays visible behind this, as the reference draws it. */}
@@ -224,24 +221,13 @@ export const CartPanel: React.FC<{
               <span>Calculated at checkout</span>
             </Row>
 
-            {/*
-             * The only way out of the cart. It points at the chosen package's own checkout
-             * link; with none set there is nowhere to send anyone, so it says so rather than
-             * pretending to be a button.
-             */}
-            {checkoutUrl ? (
-              <a
-                className="cta-gleam [--cta-glow:var(--color-brand)] mt-3 flex h-12 w-full items-center justify-center rounded-xl bg-brand px-5 text-sm font-bold uppercase tracking-wide text-white transition-colors hover:bg-brand-dark"
-                href={checkoutUrl}
-              >
-                Checkout • {formatAmount(subtotal)}
-              </a>
-            ) : (
-              <p className="mt-3 rounded-xl border border-dashed border-ash-300 px-4 py-3 text-center text-xs text-steel-400">
-                No checkout link is set for this package yet. Add one in the CMS under the
-                package&rsquo;s &ldquo;Buy link&rdquo;.
-              </p>
-            )}
+            {/* The only way out of the cart: the site's own checkout page, which reads this cart. */}
+            <a
+              className="cta-gleam [--cta-glow:var(--color-brand)] mt-3 flex h-12 w-full items-center justify-center rounded-xl bg-brand px-5 text-sm font-bold uppercase tracking-wide text-white transition-colors hover:bg-brand-dark"
+              href="/checkout"
+            >
+              Checkout • {formatAmount(subtotal)}
+            </a>
 
             {methods.length > 0 && (
               <ul

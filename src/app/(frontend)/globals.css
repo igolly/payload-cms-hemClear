@@ -168,6 +168,12 @@
   --color-aqua-200: #9cf0ff;
   --color-highlight: #f7ff05; /* on-navy text highlight */
 
+  /* Third-party payment brands, as their own guidelines colour their buttons (checkout). */
+  --color-shoppay: #5a31f4;
+  --color-paypal-gold: #ffc439;
+  --color-paypal-navy: #003087;
+  --color-paypal-blue: #009cde;
+
   /* Type aliases. These name the job rather than the colour, so a heading reads as
      `text-heading` and stays correct if the palette shifts underneath it. */
   --color-heading: #192f7c; /* = navy */

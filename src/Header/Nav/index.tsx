@@ -44,14 +44,19 @@ export const SignInLink: React.FC<{
   </Link>
 )
 
-/** Figma `action cart` (2002:70): a 43.75 x 36.25 box, 25px cart glyph, 18.75px badge. */
-export const CartLink: React.FC<{ className?: string; onClick?: () => void }> = ({
-  className,
-  onClick,
-}) => (
+/**
+ * Figma `action cart` (2002:70): a 43.75 x 36.25 box, 25px cart glyph, 18.75px badge.
+ * It goes to the same sign-up / login page as Sign In — the header has no cart of its own
+ * to open; the cart panel lives with the buy box on the product pages.
+ */
+export const CartLink: React.FC<{
+  className?: string
+  data?: HeaderType
+  onClick?: () => void
+}> = ({ className, data, onClick }) => (
   <Link
     className={cn('relative block h-[36.25px] w-[43.75px] shrink-0', className)}
-    href="#"
+    href={(typeof data?.signInUrl === 'string' && data.signInUrl) || '/login'}
     onClick={onClick}
   >
     <span className="sr-only">Cart</span>
@@ -117,7 +122,7 @@ export const HeaderNav: React.FC<{
       {/* Figma `Line` (2002:69): a 31.25px hairline rule. */}
       <div aria-hidden="true" className="h-[31.25px] w-[0.625px] bg-steel-300" />
 
-      <CartLink />
+      <CartLink data={data} />
     </nav>
   )
 }

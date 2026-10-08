@@ -32,6 +32,7 @@ import { FormBlock } from '@/blocks/Form/Component'
 import { ReviewsBlock } from '@/blocks/Reviews/Component'
 import { AccountLoginBlock } from '@/blocks/AccountLogin/Component'
 import { AccountDashboardBlock } from '@/blocks/AccountDashboard/Component'
+import { CheckoutBlock } from '@/blocks/Checkout/Component'
 
 const blockComponents = {
   accountDashboard: AccountDashboardBlock,
@@ -40,6 +41,7 @@ const blockComponents = {
   rawHtml: RawHtmlBlock,
   benefitsCarousel: BenefitsCarouselBlock,
   causes: CausesBlock,
+  checkout: CheckoutBlock,
   closingCta: ClosingCtaBlock,
   comparison: ComparisonBlock,
   faq: FAQBlock,
@@ -78,6 +80,7 @@ export const fullBleed = new Set([
   'productDetail',
   'benefitsCarousel',
   'causes',
+  'checkout',
   'closingCta',
   'comparison',
   'featureStrip',

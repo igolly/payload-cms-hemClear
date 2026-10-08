@@ -32,6 +32,7 @@ import { WaysGrid } from '../../blocks/WaysGrid/config'
 import { Reviews } from '../../blocks/Reviews/config'
 import { AccountLogin } from '../../blocks/AccountLogin/config'
 import { AccountDashboard } from '../../blocks/AccountDashboard/config'
+import { Checkout } from '../../blocks/Checkout/config'
 import { hero } from '@/heros/config'
 import { puckEditorVersion } from '@/fields/puckEditorVersion'
 import { puckData } from '@/fields/puckData'
@@ -114,6 +115,7 @@ export const Pages: CollectionConfig<'pages'> = {
                 ProductDetail,
                 AccountLogin,
                 AccountDashboard,
+                Checkout,
                 RawHtml,
                 ResultsBanner,
                 FormBlock,

@@ -42,6 +42,8 @@ type CartContextValue = {
   isOpen: boolean
   lines: CartLine[]
   open: () => void
+  /** Whether the stored cart has been read, so an empty cart really is empty. */
+  ready: boolean
   remove: (id: string) => void
   savings: number
   setQuantity: (id: string, quantity: number) => void
@@ -70,6 +72,8 @@ export const formatAmount = (amount: number): string =>
 export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [lines, setLines] = useState<CartLine[]>([])
   const [isOpen, setIsOpen] = useState(false)
+  /** Whether the stored cart has been read yet. Nothing is written back until it has. */
+  const [loaded, setLoaded] = useState(false)
 
   // Read once on mount rather than in the initial state, so the server and the first client
   // render agree and hydration does not trip over a cart the server never saw.
@@ -80,15 +84,21 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     } catch {
       // A cart that cannot be restored is an empty one, not a broken page.
     }
+    setLoaded(true)
   }, [])
 
+  /*
+   * Writing before the read would replace the stored cart with the empty one this starts
+   * with — and in development, where effects run twice, the second read then finds it gone.
+   */
   useEffect(() => {
+    if (!loaded) return
     try {
       window.localStorage.setItem(STORAGE_KEY, JSON.stringify(lines))
     } catch {
       // Storage can be unavailable; the cart then lasts for this page view only.
     }
-  }, [lines])
+  }, [lines, loaded])
 
   const add = useCallback<CartContextValue['add']>((line, quantity = 1) => {
     setLines((current) => {
@@ -138,12 +148,13 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
       isOpen,
       lines,
       open: () => setIsOpen(true),
+      ready: loaded,
       remove,
       savings,
       setQuantity,
       subtotal,
     }),
-    [add, count, isOpen, lines, remove, savings, setQuantity, subtotal],
+    [add, count, isOpen, lines, loaded, remove, savings, setQuantity, subtotal],
   )
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>

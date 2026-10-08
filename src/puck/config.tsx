@@ -22,6 +22,7 @@ import { AccountDashboard } from '@/blocks/AccountDashboard/config'
 import { AccountLogin } from '@/blocks/AccountLogin/config'
 import { BannerHero } from '@/blocks/BannerHero/config'
 import { BenefitsCarousel } from '@/blocks/BenefitsCarousel/config'
+import { Checkout } from '@/blocks/Checkout/config'
 import { Causes } from '@/blocks/Causes/config'
 import { ClosingCta } from '@/blocks/ClosingCta/config'
 import { Comparison } from '@/blocks/Comparison/config'
@@ -53,6 +54,7 @@ import { AccountDashboardBlock } from '@/blocks/AccountDashboard/Component'
 import { AccountLoginBlock } from '@/blocks/AccountLogin/Component'
 import { BannerHeroBlock } from '@/blocks/BannerHero/Component'
 import { BenefitsCarouselBlock } from '@/blocks/BenefitsCarousel/Component'
+import { CheckoutBlock } from '@/blocks/Checkout/Component'
 import { CausesBlock } from '@/blocks/Causes/Component'
 import { ClosingCtaBlock } from '@/blocks/ClosingCta/Component'
 import { ComparisonBlock } from '@/blocks/Comparison/Component'
@@ -92,6 +94,7 @@ const generatedBlocks: [Block, AnyComponent][] = [
   [BannerHero, BannerHeroBlock as AnyComponent],
   [BenefitsCarousel, BenefitsCarouselBlock as AnyComponent],
   [Causes, CausesBlock as AnyComponent],
+  [Checkout, CheckoutBlock as AnyComponent],
   [ClosingCta, ClosingCtaBlock as AnyComponent],
   [Comparison, ComparisonBlock as AnyComponent],
   [FAQ, FAQBlock as AnyComponent],
@@ -238,7 +241,7 @@ export const puckConfig: Config = {
       title: 'Conversion',
       components: ['pricingOffer', 'savingsCompare', 'closingCta', 'formBlock'],
     },
-    account: { title: 'Account', components: ['accountLogin', 'accountDashboard'] },
+    account: { title: 'Account', components: ['accountLogin', 'accountDashboard', 'checkout'] },
     support: { title: 'Support & FAQ', components: ['faq', 'supportTabs', 'benefitsCarousel'] },
     // Terms, privacy and the like: prose that arrives already written.
     legal: { title: 'Legal & Long-form', components: ['rawHtml'] },

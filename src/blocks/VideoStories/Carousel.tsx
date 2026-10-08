@@ -40,12 +40,23 @@ const MAX_FEATURE_ROW = Math.round((3 + 2 * PEEK) * MAX_FEATURE_CARD + 4 * GAP.d
 const featureCardWidth = (trackWidth: number) =>
   Math.round(Math.min(MAX_FEATURE_CARD, (trackWidth - 4 * GAP.dark) / (3 + 2 * PEEK)))
 
+/** How long each card holds before the row steps on by itself, in ms. */
+const AUTO_STEP_MS = 3500
+/** How long the row stays still after the visitor swipes, scrolls or presses an arrow. */
+const IDLE_AFTER_TOUCH_MS = 6000
+/** How long an arrow's target is trusted before stepping from the real position again. */
+const PENDING_MS = 900
+
 /**
- * An endless scroll-snap carousel — no carousel library, and no autoplay: it moves only
- * when the visitor swipes, scrolls or presses an arrow. The track is a native horizontal
- * scroller carrying several copies of the stories; whenever a scroll comes to rest it is
- * jumped, without animation, back into the middle copy by a whole number of sets. The
- * jump lands on an identical frame, so the row never reaches an end in either direction.
+ * An endless, self-advancing scroll-snap carousel — no carousel library. The track is a
+ * native horizontal scroller carrying several copies of the stories; whenever a scroll
+ * comes to rest it is jumped, without animation, back into the middle copy by a whole
+ * number of sets. The jump lands on an identical frame, so the row never reaches an end
+ * in either direction.
+ *
+ * It steps on one card every few seconds by itself, and holds still while the pointer is
+ * over it, for a while after the visitor moves it, while a clip plays, while it is off
+ * screen, and for anyone who has asked their system for reduced motion.
  */
 export const Carousel: React.FC<{
   /** The posters already carry the phone status bar, badge and duration. */
@@ -66,12 +77,19 @@ export const Carousel: React.FC<{
   /*
    * How many copies of the stories the track carries: an odd number, with at least two
    * viewports of cards either side of the middle copy so a hard fling cannot reach the end
-   * before the scroll comes to rest. One copy when the stories fit the row anyway — there
-   * is nowhere to go, and repeating them would only show the same faces side by side.
+   * before the scroll comes to rest. It loops even when the stories would fit the row, so
+   * the row always has somewhere to go; only a single story stays put.
    */
   const [copies, setCopies] = useState(1)
-  /** The scroll position the arrows last asked for, held until the scroll comes to rest. */
-  const pending = useRef<null | number>(null)
+  /**
+   * The scroll position the arrows last asked for, held until the scroll comes to rest —
+   * and only briefly: a scroll that never moved fires no `scrollend`, and a target left
+   * standing would make every later press step from somewhere the row is not.
+   */
+  const pending = useRef<null | { at: number; left: number }>(null)
+  /** When the visitor last moved the row themselves; the auto-step waits after it. */
+  const touchedAt = useRef(0)
+  const [hovered, setHovered] = useState(false)
   /** The dark band's card width, which grows to the three-across size on a wide screen. */
   const [cardWidth, setCardWidth] = useState<number>(CARD[tone])
   /** Whether the row has been opened on its first three stories yet. */
@@ -117,7 +135,7 @@ export const Carousel: React.FC<{
         const wide = window.matchMedia('(min-width: 1024px)').matches
         setCardWidth(wide ? featureCardWidth(width) : CARD.dark)
       }
-      if (setWidth <= width + 1) return setCopies(1)
+      if (stories.length < 2) return setCopies(1)
       const side = Math.max(2, Math.ceil((2 * width) / setWidth))
       setCopies(side * 2 + 1)
     }
@@ -125,7 +143,7 @@ export const Carousel: React.FC<{
     const observer = new ResizeObserver(fit)
     observer.observe(track)
     return () => observer.disconnect()
-  }, [light, setWidth])
+  }, [light, setWidth, stories.length])
 
   /** Move the scroll position into the middle copy, onto the same card it shows now. */
   const recentre = useCallback(() => {
@@ -168,7 +186,12 @@ export const Carousel: React.FC<{
      */
     const settle = () => {
       pending.current = null
-      if (playingIndex === null) recentre()
+      if (playingIndex === null) return recentre()
+      // A clip scrolled out of sight stops, so the row is free to loop again.
+      const left = playingIndex * step
+      if (left + step < track.scrollLeft || left > track.scrollLeft + track.clientWidth) {
+        setPlayingIndex(null)
+      }
     }
     if ('onscrollend' in window) {
       track.addEventListener('scrollend', settle)
@@ -184,7 +207,7 @@ export const Carousel: React.FC<{
       clearTimeout(timer)
       track.removeEventListener('scroll', onScroll)
     }
-  }, [playingIndex, recentre])
+  }, [playingIndex, recentre, step])
 
   // Closing a clip is a scroll coming to rest as far as the loop is concerned.
   useEffect(() => {
@@ -196,13 +219,77 @@ export const Carousel: React.FC<{
    * twice in quick succession otherwise gets the same card twice, the second press landing
    * while the first smooth scroll is still on its way.
    */
-  const nudge = (direction: -1 | 1) => {
+  const nudge = useCallback(
+    (direction: -1 | 1) => {
+      const track = trackRef.current
+      if (!track) return
+      const now = Date.now()
+      const fresh = pending.current && now - pending.current.at < PENDING_MS
+      const from = fresh && pending.current ? pending.current.left : track.scrollLeft
+      let left = from + direction * step
+      /*
+       * Rapid presses can outrun the copies before any scroll comes to rest to recentre.
+       * Near either end, jump back by whole sets first — an identical frame — then go on.
+       */
+      const max = track.scrollWidth - track.clientWidth
+      if (loops && (left > max - step || left < step)) {
+        const middle = Math.floor(copies / 2) * setWidth + setWidth / 2
+        const shift = -Math.round((left - middle) / setWidth) * setWidth
+        track.scrollTo({ behavior: 'instant', left: track.scrollLeft + shift })
+        left += shift
+      }
+      pending.current = { at: now, left }
+      track.scrollTo({ behavior: 'smooth', left })
+    },
+    [copies, loops, setWidth, step],
+  )
+
+  /** An arrow press: the visitor's own move, which also ends any clip it carries away. */
+  const press = (direction: -1 | 1) => {
+    touchedAt.current = Date.now()
+    if (playingIndex !== null) setPlayingIndex(null)
+    nudge(direction)
+  }
+
+  // Swipes, wheel and keyboard scrolling count as the visitor's own moves too.
+  useEffect(() => {
     const track = trackRef.current
     if (!track) return
-    const from = pending.current ?? track.scrollLeft
-    pending.current = from + direction * step
-    track.scrollTo({ behavior: 'smooth', left: pending.current })
-  }
+    const touched = () => {
+      touchedAt.current = Date.now()
+    }
+    const events = ['pointerdown', 'touchstart', 'wheel', 'keydown'] as const
+    events.forEach((e) => track.addEventListener(e, touched, { passive: true }))
+    return () => events.forEach((e) => track.removeEventListener(e, touched))
+  }, [])
+
+  /*
+   * The auto-step. A timer rather than a continuous drift, so every stop is a card snapped
+   * into place and the snap points keep working for the visitor's own swipes.
+   */
+  useEffect(() => {
+    if (!loops || hovered || playingIndex !== null) return
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+    const track = trackRef.current
+    if (!track) return
+
+    let visible = true
+    const observer = new IntersectionObserver(([entry]) => {
+      visible = entry.isIntersecting
+    })
+    observer.observe(track)
+
+    const timer = setInterval(() => {
+      if (!visible || document.hidden) return
+      if (Date.now() - touchedAt.current < IDLE_AFTER_TOUCH_MS) return
+      nudge(1)
+    }, AUTO_STEP_MS)
+
+    return () => {
+      clearInterval(timer)
+      observer.disconnect()
+    }
+  }, [hovered, loops, nudge, playingIndex])
 
   const items = Array.from({ length: copies }, () => stories).flat()
 
@@ -248,7 +335,11 @@ export const Carousel: React.FC<{
       'absolute top-[89px] z-30 size-8 opacity-60 transition-opacity hover:opacity-80'
 
     return (
-      <div className="relative flex flex-col items-center pb-4">
+      <div
+        className="relative flex flex-col items-center pb-4"
+        onPointerEnter={(e) => e.pointerType === 'mouse' && setHovered(true)}
+        onPointerLeave={() => setHovered(false)}
+      >
         {track}
         {loops &&
           ([-1, 1] as const).map((direction) => (
@@ -256,7 +347,7 @@ export const Carousel: React.FC<{
               aria-label={direction < 0 ? 'Previous stories' : 'Next stories'}
               className={cn(arrowClass, direction < 0 ? 'left-0' : 'right-0')}
               key={direction}
-              onClick={() => nudge(direction)}
+              onClick={() => press(direction)}
               type="button"
             >
               <img
@@ -278,7 +369,12 @@ export const Carousel: React.FC<{
      large cards centred with the next showing at each edge, and the arrows sit over those
      edge slices, half-way down the cards. */
   return (
-    <div className="relative mx-auto" style={{ maxWidth: MAX_FEATURE_ROW }}>
+    <div
+      className="relative mx-auto"
+      onPointerEnter={(e) => e.pointerType === 'mouse' && setHovered(true)}
+      onPointerLeave={() => setHovered(false)}
+      style={{ maxWidth: MAX_FEATURE_ROW }}
+    >
       {track}
       {loops &&
         ([-1, 1] as const).map((direction) => (
@@ -289,7 +385,7 @@ export const Carousel: React.FC<{
               direction < 0 ? 'left-1 md:left-3' : 'right-1 md:right-3',
             )}
             key={direction}
-            onClick={() => nudge(direction)}
+            onClick={() => press(direction)}
             type="button"
           >
             <img

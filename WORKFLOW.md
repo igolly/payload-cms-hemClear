@@ -261,6 +261,7 @@ Two conventions worth copying from the current hero:
 | Benefits Carousel   | `benefitsCarousel`   | Photo cards with an icon and expandable detail                                                                                     |
 | Formula Table       | `formulaTable`       | Product toggle + ingredient/benefit table                                                                                          |
 | Savings Compare     | `savingsCompare`     | "Buying separately" vs the formula, with savings                                                                                   |
+| Checkout            | `checkout`           | Checkout form + order summary read from the browser cart; Pay validates, then says payment is not switched on (no provider yet)   |
 
 Plus the template's originals: `cta`, `content`, `mediaBlock`, `archive`, `formBlock`.
 
