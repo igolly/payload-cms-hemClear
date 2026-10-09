@@ -28,17 +28,20 @@ const CARD = { dark: 208.75, light: 114 } as const
 const GAP = { dark: 17.5, light: 9.43 } as const
 
 /*
- * The navy band on a wide screen: three large cards in full across the middle, with a
- * slice of the next card showing at either edge — the hint that the row goes on. The width
- * is solved for that from the track's width (three cards, two slices of `PEEK` of a card,
- * four gaps), capped so a card is never taller than a laptop screen can show.
+ * The navy band on a wide screen: five cards of one size, every one in full — no slices
+ * cut off at the edges. The width is solved for that from the track's width (five slots of
+ * card + gap), capped so a card never outgrows a laptop screen. The arrows sit in a gutter
+ * either side of the track rather than over the outer cards.
  */
-const PEEK = 0.3
-const MAX_FEATURE_CARD = 310
-/** Wider than this the row stops growing and centres, so the edge slices stay slices. */
-const MAX_FEATURE_ROW = Math.round((3 + 2 * PEEK) * MAX_FEATURE_CARD + 4 * GAP.dark)
+const VISIBLE = 5
+const MAX_FEATURE_CARD = 260
+/** Wider than this the row stops growing and centres. */
+const MAX_FEATURE_ROW = VISIBLE * (MAX_FEATURE_CARD + GAP.dark)
+/** The gutter each side of the track that holds an arrow, in px (`lg:px-16`). */
+const ARROW_GUTTER = 64
+// Floored to the hundredth so five slots never come out a hair wider than the track.
 const featureCardWidth = (trackWidth: number) =>
-  Math.round(Math.min(MAX_FEATURE_CARD, (trackWidth - 4 * GAP.dark) / (3 + 2 * PEEK)))
+  Math.floor(Math.min(MAX_FEATURE_CARD, trackWidth / VISIBLE - GAP.dark) * 100) / 100
 
 /** How long each card holds before the row steps on by itself, in ms. */
 const AUTO_STEP_MS = 3500
@@ -90,9 +93,9 @@ export const Carousel: React.FC<{
   /** When the visitor last moved the row themselves; the auto-step waits after it. */
   const touchedAt = useRef(0)
   const [hovered, setHovered] = useState(false)
-  /** The dark band's card width, which grows to the three-across size on a wide screen. */
+  /** The dark band's card width, which grows to the five-across size on a wide screen. */
   const [cardWidth, setCardWidth] = useState<number>(CARD[tone])
-  /** Whether the row has been opened on its first three stories yet. */
+  /** Whether the row has been opened on its first five stories yet. */
   const opened = useRef(false)
 
   const light = tone === 'light'
@@ -164,13 +167,13 @@ export const Carousel: React.FC<{
   useLayoutEffect(() => {
     const track = trackRef.current
     /*
-     * The navy band snaps cards to its centre, so it opens with the second story there: the
-     * first three in full, the last story and the fourth peeking in at the edges.
+     * The navy band snaps cards to its centre, so it opens with the third story there: the
+     * first five in full across a wide screen.
      */
     if (track && loops && !light && !opened.current) {
       opened.current = true
       const base = Math.floor(copies / 2) * setWidth
-      track.scrollTo({ behavior: 'instant', left: base + 1.5 * step - track.clientWidth / 2 })
+      track.scrollTo({ behavior: 'instant', left: base + 2.5 * step - track.clientWidth / 2 })
       return
     }
     recentre()
@@ -307,7 +310,7 @@ export const Carousel: React.FC<{
           className={cn('flex flex-none', light ? 'snap-start' : 'snap-center')}
           // Padding rather than a flex gap, so each set ends with its gap and a jump of one
           // set lands exactly on a card. The navy band splits it either side, so a card's
-          // centre is its slot's centre and centre-snapping lines the three up evenly.
+          // centre is its slot's centre and centre-snapping lines the row up evenly.
           key={`${Math.floor(i / stories.length)}-${story.id ?? i}`}
           style={
             light
@@ -365,15 +368,15 @@ export const Carousel: React.FC<{
     )
   }
 
-  /* Dark tone — the navy `videoStories` band. The track runs the band's full width, three
-     large cards centred with the next showing at each edge, and the arrows sit over those
-     edge slices, half-way down the cards. */
+  /* Dark tone — the navy `videoStories` band. On a wide screen five cards sit in full and
+     the arrows have a gutter of their own either side; narrower, the arrows sit over the
+     edges of the row, half-way down the cards. */
   return (
     <div
-      className="relative mx-auto"
+      className="relative mx-auto lg:px-16"
       onPointerEnter={(e) => e.pointerType === 'mouse' && setHovered(true)}
       onPointerLeave={() => setHovered(false)}
-      style={{ maxWidth: MAX_FEATURE_ROW }}
+      style={{ maxWidth: MAX_FEATURE_ROW + 2 * ARROW_GUTTER }}
     >
       {track}
       {loops &&
@@ -382,7 +385,7 @@ export const Carousel: React.FC<{
             aria-label={direction < 0 ? 'Previous stories' : 'Next stories'}
             className={cn(
               'absolute top-1/2 z-30 -translate-y-1/2 opacity-70 transition-opacity hover:opacity-100',
-              direction < 0 ? 'left-1 md:left-3' : 'right-1 md:right-3',
+              direction < 0 ? 'left-1 md:left-3 lg:left-0' : 'right-1 md:right-3 lg:right-0',
             )}
             key={direction}
             onClick={() => press(direction)}

@@ -54,6 +54,14 @@ export const VideoStories: Block = {
           admin: { description: 'Still frame shown before playback. Portrait crop works best.' },
         },
         {
+          name: 'kicker',
+          type: 'text',
+          admin: {
+            description:
+              'Small gold line above the name on the navy band, e.g. "Verified buyer · 6 weeks in". Optional.',
+          },
+        },
+        {
           type: 'row',
           fields: [
             {

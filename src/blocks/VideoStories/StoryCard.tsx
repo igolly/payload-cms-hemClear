@@ -92,8 +92,10 @@ export const StoryCard: React.FC<{
         light
           ? /* Figma 6219:3272: 114x214, 10px radius, soft 3.37px shadow. */
             'relative h-[214px] rounded-[10px] shadow-[0_0_3.37px_0_rgba(0,0,0,0.15)]'
-          : /* Figma 58:842: 208.75x395, 18.75px radius, 1px cyan rule, soft 6.25px shadow. */
-            'relative aspect-[208.75/395] rounded-[18.75px] border border-brand-300 shadow-[0_0_6.25px_0_rgba(0,0,0,0.15)]',
+          : /* Figma 58:842: 208.75x395, 18.75px radius, 1px cyan rule, soft 6.25px shadow.
+               A container, so the name plate's type scales with the card's width — five
+               across a 1024px screen are narrower than the phone card. */
+            'group @container relative aspect-[208.75/395] rounded-[18.75px] border border-brand-300 shadow-[0_0_6.25px_0_rgba(0,0,0,0.15)]',
       )}
       data-payload-subpath={`stories.${index}.name`}
     >
@@ -161,7 +163,11 @@ export const StoryCard: React.FC<{
           {/* Poster */}
           {story.poster && typeof story.poster === 'object' ? (
             <Media
-              className="absolute inset-0"
+              className={cn(
+                'absolute inset-0',
+                // A slow push-in behind the quote as it comes up.
+                !light && 'transition-transform duration-700 ease-out group-hover:scale-[1.04]',
+              )}
               fill
               imgClassName="object-cover"
               resource={story.poster}
@@ -256,35 +262,57 @@ export const StoryCard: React.FC<{
               name, however many lines that wraps to. */}
           {!light && (
             <>
-              {/* The plate's white text used to sit on a flat grey placeholder, which was
-                  legible by definition. Over a real still it needs its own darkness: a
-                  bright frame — a window, a white bathroom — otherwise swallows the name. */}
+              {/* The plate's white text needs its own darkness over a real still: a bright
+                  frame — a window, a white bathroom — otherwise swallows the name. A second,
+                  taller shade fades in on hover to carry the quote as it comes up. */}
               <div
                 aria-hidden="true"
-                className="pointer-events-none absolute inset-x-0 bottom-0 top-[68%] z-10 bg-gradient-to-t from-black/85 via-black/50 to-transparent"
+                className="pointer-events-none absolute inset-x-0 bottom-0 top-[58%] z-10 bg-gradient-to-t from-navy-950/95 via-navy-950/60 to-transparent"
+              />
+              <div
+                aria-hidden="true"
+                className="pointer-events-none absolute inset-x-0 bottom-0 top-[30%] z-10 bg-gradient-to-t from-navy-950 via-navy-950/80 to-transparent opacity-0 transition-opacity duration-500 group-focus-within:opacity-100 group-hover:opacity-100 [@media(hover:none)]:opacity-100"
               />
 
+              {/* Up top beside the badge, clear of the quote that rises from the foot. */}
               {drawChrome && story.duration && (
-                <span className="absolute bottom-[22%] right-3 z-20 rounded bg-black/70 px-1.5 py-0.5 text-[10px] font-medium text-white">
+                <span className="absolute right-3 top-9 z-20 rounded bg-black/70 px-1.5 py-0.5 text-[10px] font-medium text-white">
                   {marks(story.duration)}
                 </span>
               )}
 
-              {/* Figma 58:843: starts 322.5px down the 395px card, 12.5px side / 17.5px top
-                  padding, Playfair 24 name over an 8px Inter caption, 3.125px apart. */}
-              <div className="pointer-events-none absolute inset-x-0 top-[81.65%] z-20 flex flex-col gap-[3.125px] px-[12.5px] pt-[17.5px] font-semibold leading-[1.21] text-white [&_sup]:leading-[0]">
-                <p className="truncate font-playfair text-2xl leading-[1.33]">
+              {/*
+               * The name plate, after the reference card: a gold kicker, the name in
+               * Playfair, then the customer's words in italic. At rest only the kicker and
+               * name show; on hover (or focus) the quote's row opens and its words rise in
+               * one after another. A device that cannot hover shows the quote outright.
+               */}
+              <div className="pointer-events-none absolute inset-x-0 bottom-0 z-20 flex flex-col px-[7%] pb-[8%] text-white [&_sup]:leading-[0]">
+                {story.kicker && (
+                  <p className="mb-[1.5cqw] truncate font-inter text-[clamp(8px,4.2cqw,11px)] font-bold uppercase tracking-[0.18em] text-gold">
+                    {marks(story.kicker)}
+                  </p>
+                )}
+                <p className="truncate font-playfair text-[clamp(16px,10.5cqw,24px)] font-semibold italic leading-[1.3]">
                   {marks(story.name)}
                 </p>
                 {story.caption && (
-                  /* Two lines, not one truncated line, and no uppercase: the comp's caption
-                     was the label "HemClear® Customer Review", where a single line and caps
-                     read as a kicker. It now carries what the customer actually says, and a
-                     sentence in caps reads as shouting. Two lines is what the name plate has
-                     room for before it runs off the foot of the card. */
-                  <p className="line-clamp-2 font-inter text-[8px] leading-[1.21]">
-                    {marks(story.caption)}
-                  </p>
+                  <div className="grid grid-rows-[0fr] transition-[grid-template-rows] duration-500 ease-out group-focus-within:grid-rows-[1fr] group-hover:grid-rows-[1fr] [@media(hover:none)]:grid-rows-[1fr]">
+                    <p className="line-clamp-6 min-h-0 overflow-hidden pt-[4cqw] font-playfair text-[clamp(10px,5.8cqw,14px)] italic leading-[1.55] text-white/90">
+                      {story.caption.split(/\s+/).map((word, i) => (
+                        <React.Fragment key={i}>
+                          {i > 0 && ' '}
+                          {/* Delayed only on the way in, so the quote clears at once on leave. */}
+                          <span
+                            className="inline-block translate-y-2 opacity-0 blur-[3px] transition-[opacity,transform,filter] duration-500 ease-out group-focus-within:translate-y-0 group-focus-within:opacity-100 group-focus-within:blur-none group-focus-within:[transition-delay:var(--d)] group-hover:translate-y-0 group-hover:opacity-100 group-hover:blur-none group-hover:[transition-delay:var(--d)] [@media(hover:none)]:translate-y-0 [@media(hover:none)]:opacity-100 [@media(hover:none)]:blur-none motion-reduce:translate-y-0 motion-reduce:blur-none"
+                            style={{ '--d': `${150 + Math.min(i, 24) * 28}ms` } as React.CSSProperties}
+                          >
+                            {marks(word)}
+                          </span>
+                        </React.Fragment>
+                      ))}
+                    </p>
+                  </div>
                 )}
               </div>
             </>

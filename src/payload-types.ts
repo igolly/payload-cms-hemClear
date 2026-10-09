@@ -1959,6 +1959,10 @@ export interface VideoStoriesBlock {
          */
         poster?: (string | null) | Media;
         /**
+         * Small gold line above the name on the navy band, e.g. "Verified buyer · 6 weeks in". Optional.
+         */
+        kicker?: string | null;
+        /**
          * e.g. "Lisa K."
          */
         name: string;
@@ -4480,6 +4484,7 @@ export interface VideoStoriesBlockSelect<T extends boolean = true> {
     | T
     | {
         poster?: T;
+        kicker?: T;
         name?: T;
         caption?: T;
         badge?: T;
