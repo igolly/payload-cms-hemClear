@@ -166,6 +166,8 @@
   --color-info-dark: #0057a0;
   --color-aqua: #6fd2f5;
   --color-aqua-200: #9cf0ff;
+  --color-sky: #0ab4e6; /* footer sign-up button */
+  --color-sky-dark: #0899c4;
   --color-highlight: #f7ff05; /* on-navy text highlight */
 
   /* Third-party payment brands, as their own guidelines colour their buttons (checkout). */

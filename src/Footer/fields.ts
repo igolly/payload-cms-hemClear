@@ -120,4 +120,65 @@ export const footerFields: Field[] = [
       },
     ],
   },
+  {
+    type: 'collapsible',
+    label: 'Email Sign-up',
+    admin: {
+      description:
+        'The opt-in at the right of the footer. Each address is saved as a submission of the "Newsletter Sign-up" form.',
+    },
+    fields: [
+      {
+        name: 'newsletter',
+        type: 'group',
+        label: false,
+        fields: [
+          {
+            name: 'enabled',
+            type: 'checkbox',
+            defaultValue: true,
+            label: 'Show the sign-up',
+          },
+          {
+            name: 'heading',
+            type: 'text',
+            defaultValue: 'Join the HemClear community for exclusive tips & everyday comfort',
+          },
+          {
+            name: 'text',
+            type: 'text',
+            defaultValue: 'Get hemorrhoid care tips, product updates and exclusive offers.',
+          },
+          {
+            type: 'row',
+            fields: [
+              {
+                name: 'placeholder',
+                type: 'text',
+                defaultValue: 'Email address',
+                admin: { width: '50%' },
+              },
+              {
+                name: 'buttonLabel',
+                type: 'text',
+                defaultValue: 'Join now',
+                admin: { width: '50%' },
+              },
+            ],
+          },
+          {
+            name: 'consent',
+            type: 'textarea',
+            defaultValue:
+              'By signing up, you agree to receive HemClear tips and promotional emails. Unsubscribe anytime.',
+          },
+          {
+            name: 'successMessage',
+            type: 'text',
+            defaultValue: "You're in! Look out for your first email soon.",
+          },
+        ],
+      },
+    ],
+  },
 ]

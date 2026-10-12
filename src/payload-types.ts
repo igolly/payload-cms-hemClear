@@ -5672,6 +5672,15 @@ export interface Footer {
    * Fine print. Blank lines become separate paragraphs.
    */
   disclaimer?: string | null;
+  newsletter?: {
+    enabled?: boolean | null;
+    heading?: string | null;
+    text?: string | null;
+    placeholder?: string | null;
+    buttonLabel?: string | null;
+    consent?: string | null;
+    successMessage?: string | null;
+  };
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -5788,6 +5797,17 @@ export interface FooterSelect<T extends boolean = true> {
         id?: T;
       };
   disclaimer?: T;
+  newsletter?:
+    | T
+    | {
+        enabled?: T;
+        heading?: T;
+        text?: T;
+        placeholder?: T;
+        buttonLabel?: T;
+        consent?: T;
+        successMessage?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

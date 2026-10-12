@@ -7,6 +7,7 @@ import { BrandIcon, SocialIcon } from '@/components/BrandIcons'
 import { CMSLink } from '@/components/Link'
 import { Logo } from '@/components/Logo/Logo'
 import { marks } from '@/utilities/marks'
+import { Newsletter } from './Newsletter'
 
 /* eslint-disable @next/next/no-img-element */
 
@@ -19,6 +20,8 @@ import { marks } from '@/utilities/marks'
  *   those pairs still share a row at 390.
  * - Every link list hugs its longest label: the chevrons line up at that label's width
  *   plus 18.75px, which is why they sit at a different x in each column.
+ * - The email opt-in (reference `public/email.png`) sits at the right edge of the menus
+ *   row on desktop, the link columns taking the rest; on mobile it follows them.
  * - `footer bottom`: logo/tagline/copyright (346 x 195.75, copyright pinned to the bottom)
  *   beside a 592px legal column on desktop; stacked and centred on mobile.
  */
@@ -97,89 +100,99 @@ export const FooterView: React.FC<{ data: FooterType }> = ({ data: footer }) => 
   return (
     <footer className="mt-auto bg-navy-950 font-inter text-white [&_sup]:leading-[0]">
       <div className="mx-auto flex max-w-[1432px] flex-col gap-[12.5px] px-4 lg:py-[6.25px]">
-        <div className="flex flex-wrap items-start gap-x-[clamp(12px,calc(100vw-377.5px),62.5px)] gap-y-[62.5px] border-b-[0.625px] border-white py-[31.25px] lg:justify-center">
-          {/* Link columns */}
-          {columns.map((column, i) => (
-            <div className="flex flex-col gap-[9.375px]" key={column.id ?? i}>
-              <h2 className={headingClass}>{marks(column.title)}</h2>
-              <ul className="flex w-fit flex-col gap-[9.375px]">
-                {(column.items || []).map((item, j) => (
-                  <li key={item.id ?? j}>
-                    <CMSLink
-                      {...item.link}
-                      appearance="inline"
-                      className={`flex items-center justify-between gap-[18.75px] whitespace-nowrap transition-opacity hover:opacity-80 ${itemText}`}
-                    >
-                      <Chevron />
-                    </CMSLink>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
+        {/* Menus on the left, the email opt-in held to the right edge from `lg`; stacked below. */}
+        <div className="flex flex-col gap-y-[62.5px] border-b-[0.625px] border-white py-[31.25px] lg:flex-row lg:items-start lg:justify-between lg:gap-x-[62.5px]">
+          <div className="flex flex-wrap items-start gap-x-[clamp(12px,calc(100vw-377.5px),62.5px)] gap-y-[62.5px] lg:flex-1">
+            {/* Link columns */}
+            {columns.map((column, i) => (
+              <div className="flex flex-col gap-[9.375px]" key={column.id ?? i}>
+                <h2 className={headingClass}>{marks(column.title)}</h2>
+                <ul className="flex w-fit flex-col gap-[9.375px]">
+                  {(column.items || []).map((item, j) => (
+                    <li key={item.id ?? j}>
+                      <CMSLink
+                        {...item.link}
+                        appearance="inline"
+                        className={`flex items-center justify-between gap-[18.75px] whitespace-nowrap transition-opacity hover:opacity-80 ${itemText}`}
+                      >
+                        <Chevron />
+                      </CMSLink>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
 
-          {/* Our promise */}
-          {promiseItems.length > 0 && (
-            <div className="flex flex-col gap-[9.375px]">
-              <h2 className={headingClass}>{footer?.promiseTitle || 'Our Promise'}</h2>
-              <ul className="flex flex-col gap-[9.375px]">
-                {promiseItems.map((item, i) => (
-                  <li className="flex items-center gap-[12.5px]" key={item.id ?? i}>
-                    {promiseIcons[item.icon] ? (
-                      <img
-                        alt=""
-                        className="size-[25px] shrink-0"
-                        height={25}
-                        decoding="async"
-                        loading="lazy"
-                        src={promiseIcons[item.icon]}
-                        width={25}
-                      />
-                    ) : (
-                      <span className="flex size-[25px] shrink-0 items-center justify-center rounded-full border border-white/60 [&>span>svg]:size-3.5">
-                        <BrandIcon name={item.icon} />
-                      </span>
-                    )}
-                    <span className={`whitespace-nowrap ${itemText}`}>{marks(item.label)}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
-
-          {/* Social */}
-          {socialItems.length > 0 && (
-            <div className="flex flex-col gap-[9.375px]">
-              <h2 className={headingClass}>{footer?.socialTitle || 'Social Links'}</h2>
-              <ul className="flex flex-col gap-[9.375px]">
-                {socialItems.map((item, i) => (
-                  <li key={item.id ?? i}>
-                    <a
-                      className={`flex items-center gap-[6.25px] whitespace-nowrap transition-opacity hover:opacity-80 ${itemText}`}
-                      href={item.url as string}
-                      rel="noopener noreferrer"
-                      target="_blank"
-                    >
-                      {socialIcons[item.platform] ? (
-                        <span className="flex size-[15px] shrink-0 items-center justify-center">
-                          <img
-                            alt=""
-                            className="max-h-[15px] max-w-[15px]"
-                            decoding="async"
-                            loading="lazy"
-                            src={socialIcons[item.platform]}
-                          />
-                        </span>
+            {/* Our promise */}
+            {promiseItems.length > 0 && (
+              <div className="flex flex-col gap-[9.375px]">
+                <h2 className={headingClass}>{footer?.promiseTitle || 'Our Promise'}</h2>
+                <ul className="flex flex-col gap-[9.375px]">
+                  {promiseItems.map((item, i) => (
+                    <li className="flex items-center gap-[12.5px]" key={item.id ?? i}>
+                      {promiseIcons[item.icon] ? (
+                        <img
+                          alt=""
+                          className="size-[25px] shrink-0"
+                          height={25}
+                          decoding="async"
+                          loading="lazy"
+                          src={promiseIcons[item.icon]}
+                          width={25}
+                        />
                       ) : (
-                        <SocialIcon className="shrink-0 [&>svg]:size-[15px]" name={item.platform} />
+                        <span className="flex size-[25px] shrink-0 items-center justify-center rounded-full border border-white/60 [&>span>svg]:size-3.5">
+                          <BrandIcon name={item.icon} />
+                        </span>
                       )}
-                      {marks(item.label)}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
+                      <span className={`whitespace-nowrap ${itemText}`}>{marks(item.label)}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            {/* Social */}
+            {socialItems.length > 0 && (
+              <div className="flex flex-col gap-[9.375px]">
+                <h2 className={headingClass}>{footer?.socialTitle || 'Social Links'}</h2>
+                <ul className="flex flex-col gap-[9.375px]">
+                  {socialItems.map((item, i) => (
+                    <li key={item.id ?? i}>
+                      <a
+                        className={`flex items-center gap-[6.25px] whitespace-nowrap transition-opacity hover:opacity-80 ${itemText}`}
+                        href={item.url as string}
+                        rel="noopener noreferrer"
+                        target="_blank"
+                      >
+                        {socialIcons[item.platform] ? (
+                          <span className="flex size-[15px] shrink-0 items-center justify-center">
+                            <img
+                              alt=""
+                              className="max-h-[15px] max-w-[15px]"
+                              decoding="async"
+                              loading="lazy"
+                              src={socialIcons[item.platform]}
+                            />
+                          </span>
+                        ) : (
+                          <SocialIcon
+                            className="shrink-0 [&>svg]:size-[15px]"
+                            name={item.platform}
+                          />
+                        )}
+                        {marks(item.label)}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </div>
+
+          {/* Email opt-in. On by default: a footer saved before this existed has no
+              `enabled` value, which reads as on. */}
+          {footer?.newsletter?.enabled !== false && <Newsletter data={footer?.newsletter ?? {}} />}
         </div>
 
         <div className="flex flex-col items-center gap-[31.25px] py-[31.25px] lg:flex-row lg:items-stretch lg:justify-center">
