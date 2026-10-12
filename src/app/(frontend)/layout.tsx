@@ -10,6 +10,7 @@ import { AdminBar } from '@/components/AdminBar'
 import { Footer } from '@/Footer/Component'
 import { Header } from '@/Header/Component'
 import { Providers } from '@/providers'
+import { ScrollToTop } from '@/components/ScrollToTop'
 import { InitTheme } from '@/providers/Theme/InitTheme'
 import { brandCss } from '@/utilities/brandCss'
 import { getCachedWebsite } from '@/utilities/getWebsite'
@@ -70,6 +71,9 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         playfair.variable,
         gentium.variable,
       )}
+      /* Lets Next drop the stylesheet's smooth scrolling while it changes page, so a
+         navigation jumps instead of gliding. In-page anchors stay smooth. */
+      data-scroll-behavior="smooth"
       lang="en"
       suppressHydrationWarning
     >
@@ -87,6 +91,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       </head>
       <body>
         <Providers>
+          <ScrollToTop />
           <AdminBar
             adminBarProps={{
               preview: isEnabled,
