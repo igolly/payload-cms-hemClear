@@ -73,7 +73,7 @@ export const MegaMenu: React.FC<{ cards: Card[]; onClose: () => void; open: bool
                       default `<div>` wrapper is not valid inside a span. */}
                   <Media
                     htmlElement={null}
-                    imgClassName="h-20 w-20 object-cover transition-transform duration-300 group-hover:scale-105"
+                    imgClassName="h-20 w-20 object-contain mix-blend-multiply transition-transform duration-300 group-hover:scale-105"
                     resource={card.image}
                   />
                 </span>

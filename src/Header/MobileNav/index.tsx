@@ -85,7 +85,7 @@ const MobileItem: React.FC<{ item: NavItem; onNavigate: () => void }> = ({ item,
                         default `<div>` wrapper is not valid inside a span. */}
                     <Media
                       htmlElement={null}
-                      imgClassName="h-14 w-14 object-cover"
+                      imgClassName="h-14 w-14 object-contain mix-blend-multiply"
                       resource={card.image}
                     />
                   </span>
