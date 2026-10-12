@@ -35,6 +35,13 @@ export const Gallery: React.FC<{ badgeLabel?: string | null; slides: Slide[] }> 
     thumb?.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'nearest' })
   }, [active])
 
+  const prev = () => setActive((i) => Math.max(0, i - 1))
+  const next = () => setActive((i) => Math.min(slides.length - 1, i + 1))
+
+  /** Beside the thumbnail strip. Dimmed rather than hidden at the ends, so the strip holds still. */
+  const stripArrow =
+    'size-8 shrink-0 opacity-80 transition-opacity hover:opacity-100 disabled:pointer-events-none disabled:opacity-30'
+
   /** The phone-only arrows over the photo; from `lg` the thumbnails carry the gallery. */
   const arrow = (side: string) =>
     cn(
@@ -85,7 +92,7 @@ export const Gallery: React.FC<{ badgeLabel?: string | null; slides: Slide[] }> 
               aria-label="Previous image"
               className={arrow('left-2')}
               disabled={active === 0}
-              onClick={() => setActive((i) => Math.max(0, i - 1))}
+              onClick={prev}
               type="button"
             >
               {/* eslint-disable-next-line @next/next/no-img-element -- static SVG, nothing to optimise */}
@@ -103,7 +110,7 @@ export const Gallery: React.FC<{ badgeLabel?: string | null; slides: Slide[] }> 
               aria-label="Next image"
               className={arrow('right-2')}
               disabled={active === slides.length - 1}
-              onClick={() => setActive((i) => Math.min(slides.length - 1, i + 1))}
+              onClick={next}
               type="button"
             >
               {/* eslint-disable-next-line @next/next/no-img-element -- static SVG, nothing to optimise */}
@@ -195,43 +202,86 @@ export const Gallery: React.FC<{ badgeLabel?: string | null; slides: Slide[] }> 
            * however many there are, and the extras are reachable instead of off the edge.
            * At six or fewer there is nothing to scroll and it looks exactly as it did.
            */}
-          <ul
-            className="flex gap-[2.222%] snap-x snap-mandatory overflow-x-auto scroll-smooth py-2.5 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
-            ref={thumbsRef}
-          >
-            {slides.map((slide, i) => {
-              const thumb =
-                slide.thumbnail && typeof slide.thumbnail === 'object'
-                  ? slide.thumbnail
-                  : slide.image
+          {/*
+           * Arrows either side of the strip, at every width: with more thumbnails than fit,
+           * a swipe was the only way to the rest and nothing said there were any. They step
+           * the photo, and the effect above brings its thumbnail along.
+           */}
+          <div className="flex items-center gap-2">
+            <button
+              aria-label="Previous image"
+              className={stripArrow}
+              disabled={active === 0}
+              onClick={prev}
+              type="button"
+            >
+              <img
+                alt=""
+                className="size-8"
+                decoding="async"
+                height={32}
+                loading="lazy"
+                src="/icons/reviews/carousel-left.svg"
+                width={32}
+              />
+            </button>
 
-              return (
-                <li className="w-[14.815%] flex-none snap-start" key={slide.id ?? i}>
-                  <button
-                    aria-current={i === active}
-                    aria-label={`Show image ${i + 1}`}
-                    className={cn(
-                      'relative block aspect-square w-full overflow-hidden rounded-[5px] border bg-white',
-                      i === active ? 'border-danger-bright' : 'border-ash-100',
-                    )}
-                    onClick={() => setActive(i)}
-                    type="button"
-                  >
-                    {thumb && typeof thumb === 'object' && (
-                      <Media
-                        className="absolute inset-0"
-                        pictureClassName="absolute inset-0"
-                        fill
-                        imgClassName="object-cover"
-                        resource={thumb}
-                        size="100px"
-                      />
-                    )}
-                  </button>
-                </li>
-              )
-            })}
-          </ul>
+            <ul
+              className="flex min-w-0 flex-1 gap-[2.222%] snap-x snap-mandatory overflow-x-auto scroll-smooth py-2.5 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+              ref={thumbsRef}
+            >
+              {slides.map((slide, i) => {
+                const thumb =
+                  slide.thumbnail && typeof slide.thumbnail === 'object'
+                    ? slide.thumbnail
+                    : slide.image
+
+                return (
+                  <li className="w-[14.815%] flex-none snap-start" key={slide.id ?? i}>
+                    <button
+                      aria-current={i === active}
+                      aria-label={`Show image ${i + 1}`}
+                      className={cn(
+                        'relative block aspect-square w-full overflow-hidden rounded-[5px] border bg-white',
+                        i === active ? 'border-danger-bright' : 'border-ash-100',
+                      )}
+                      onClick={() => setActive(i)}
+                      type="button"
+                    >
+                      {thumb && typeof thumb === 'object' && (
+                        <Media
+                          className="absolute inset-0"
+                          pictureClassName="absolute inset-0"
+                          fill
+                          imgClassName="object-cover"
+                          resource={thumb}
+                          size="100px"
+                        />
+                      )}
+                    </button>
+                  </li>
+                )
+              })}
+            </ul>
+
+            <button
+              aria-label="Next image"
+              className={stripArrow}
+              disabled={active === slides.length - 1}
+              onClick={next}
+              type="button"
+            >
+              <img
+                alt=""
+                className="size-8"
+                decoding="async"
+                height={32}
+                loading="lazy"
+                src="/icons/reviews/carousel-right.svg"
+                width={32}
+              />
+            </button>
+          </div>
 
           <div className="flex items-center justify-center gap-2.5 py-2.5">
             {slides.map((slide, i) => (
