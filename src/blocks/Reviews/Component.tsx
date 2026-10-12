@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import React from 'react'
 
 import type { ReviewsBlock as Props } from '@/payload-types'
@@ -50,6 +51,29 @@ export const ReviewsBlock: React.FC<Props> = ({
 
   const slides = featuredItems.map((item, i) => {
     const logo = item.source ? SOURCE_LOGOS[item.source] : null
+    const logoImg = logo && (
+      // eslint-disable-next-line @next/next/no-img-element -- 2x crop of the Figma logo, nothing to optimise
+      <img
+        alt={logo.alt}
+        className="h-[31.25px] shrink-0"
+        data-payload-subpath={`featured.${i}.source`}
+        decoding="async"
+        height={31.25}
+        loading="lazy"
+        src={`/icons/reviews/logo-${item.source}.png`}
+        style={{ width: logo.width }}
+        width={logo.width}
+      />
+    )
+    // Our own mark goes home, as the logo does everywhere else on the site.
+    const sourceMark =
+      item.source === 'hemclear' ? (
+        <Link className="shrink-0" href="/">
+          {logoImg}
+        </Link>
+      ) : (
+        logoImg
+      )
     return (
       <li
         // Gradient stroke drawn as a border-box background so it can sit outside the Figma
@@ -106,20 +130,7 @@ export const ReviewsBlock: React.FC<Props> = ({
             />
           </div>
         ) : (
-          logo && (
-            // eslint-disable-next-line @next/next/no-img-element -- 2x crop of the Figma logo, nothing to optimise
-            <img
-              alt={logo.alt}
-              className="h-[31.25px] shrink-0"
-              data-payload-subpath={`featured.${i}.source`}
-              decoding="async"
-              height={31.25}
-              loading="lazy"
-              src={`/icons/reviews/logo-${item.source}.png`}
-              style={{ width: logo.width }}
-              width={logo.width}
-            />
-          )
+          sourceMark
         )}
       </li>
     )

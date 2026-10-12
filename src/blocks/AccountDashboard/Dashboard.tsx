@@ -241,7 +241,9 @@ const ReferBanner: React.FC<{ props: Props }> = ({ props }) => {
     <section className="overflow-hidden rounded-xl border border-tint-150 bg-tint-50">
       <div className="grid grid-cols-1 md:grid-cols-[minmax(0,300px)_1fr]">
         <div className="flex flex-col gap-3 bg-navy p-5 text-white sm:p-6">
-          <Logo className="h-9 w-auto self-start brightness-0 invert" />
+          <Link aria-label="HemClear home" className="self-start" href="/">
+            <Logo className="h-9 w-auto brightness-0 invert" />
+          </Link>
           {props.referHeading && (
             <h2
               className="text-[34px] font-black uppercase leading-none tracking-tight sm:text-[38px]"
@@ -340,7 +342,9 @@ const CashbackStrip: React.FC<{ balance: number; props: Props }> = ({ balance, p
   return (
     <section className="flex flex-wrap items-center justify-between gap-3 rounded-xl bg-navy px-5 py-3 text-white">
       <div className="flex items-center gap-3">
-        <Logo className="h-7 w-auto brightness-0 invert" />
+        <Link aria-label="HemClear home" href="/">
+          <Logo className="h-7 w-auto brightness-0 invert" />
+        </Link>
         <span className="text-sm font-semibold">{marks(props.cashbackLabel || 'Cashback')}</span>
       </div>
       <div className="flex items-center gap-3">

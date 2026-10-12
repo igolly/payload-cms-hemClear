@@ -1,5 +1,6 @@
 'use client'
 
+import Link from 'next/link'
 import React, { useEffect, useRef, useState } from 'react'
 import { ArrowRight } from 'lucide-react'
 
@@ -59,9 +60,14 @@ export const StickyOfferBar: React.FC<{
          * reading. Held to 32px it keeps its place and the offer keeps the room.
          */}
         <div className="container flex items-center justify-between gap-4 py-2.5">
-          <span className="hidden shrink-0 brightness-0 invert lg:block [&_img]:h-8 [&_img]:w-auto">
+          {/* The logo goes home here as it does in the header and footer. */}
+          <Link
+            aria-label="HemClear home"
+            className="hidden shrink-0 brightness-0 invert lg:block [&_img]:h-8 [&_img]:w-auto"
+            href="/"
+          >
             <Logo />
-          </span>
+          </Link>
 
           <p className="min-w-0 flex-1 text-center text-xs font-semibold text-balance sm:text-sm">
             {text && <span className="text-amber">{marks(text)}</span>}
