@@ -12,6 +12,29 @@ import { marks, multiline } from '@/utilities/marks'
 type Story = NonNullable<VideoStoriesBlock['stories']>[number]
 
 /**
+ * Coerces a CMS value to plain text. A caption saved as a plain string passes straight
+ * through; one saved as Lexical rich text (an object with `root.children`), an array of
+ * nodes, or anything unexpected is flattened or dropped instead of crashing the page.
+ */
+function toPlainText(value: unknown): string {
+  if (typeof value === 'string') return value
+  if (Array.isArray(value)) return value.map(toPlainText).join(' ')
+  if (!value || typeof value !== 'object') return ''
+
+  const node = value as { children?: unknown; root?: unknown; text?: unknown; type?: string }
+
+  if (typeof node.text === 'string') return node.text
+  if (node.root) return toPlainText(node.root)
+  if (Array.isArray(node.children)) {
+    // Paragraphs under the root are separated by a space; inline nodes are joined as-is
+    // so a bold word in the middle of a sentence does not gain stray spaces.
+    return node.children.map(toPlainText).join(node.type === 'root' ? ' ' : '')
+  }
+
+  return ''
+}
+
+/**
  * Decorative phone status bar — matches the design's device framing. `compact` scales it for
  * the narrow light-tone card, where the full-size notch is wide enough to sit on top of the
  * clock beside it.
@@ -84,6 +107,9 @@ export const StoryCard: React.FC<{
   const hasEmbed = Boolean(story.videoUrl)
   const canPlay = hasVideoFile || hasEmbed
   const drawChrome = !posterIncludesChrome
+
+  // Always a string, whatever shape the caption was saved in.
+  const caption = toPlainText(story.caption).trim()
 
   return (
     <div
@@ -296,10 +322,10 @@ export const StoryCard: React.FC<{
                 <p className="truncate font-playfair text-[clamp(16px,10.5cqw,24px)] font-semibold italic leading-[1.3]">
                   {marks(story.name)}
                 </p>
-                {story.caption && (
+                {caption && (
                   <div className="grid grid-rows-[0fr] transition-[grid-template-rows] duration-500 ease-out group-focus-within:grid-rows-[1fr] group-hover:grid-rows-[1fr] [@media(hover:none)]:grid-rows-[1fr]">
                     <p className="line-clamp-6 min-h-0 overflow-hidden pt-[4cqw] font-playfair text-[clamp(10px,5.8cqw,14px)] italic leading-[1.55] text-white/90">
-                      {story.caption.split(/\s+/).map((word, i) => (
+                      {caption.split(/\s+/).map((word, i) => (
                         <React.Fragment key={i}>
                           {i > 0 && ' '}
                           {/* Delayed only on the way in, so the quote clears at once on leave. */}
