@@ -372,6 +372,14 @@ React element before the component renders**. Therefore, in any block component:
 - A field whose value is _used_ rather than printed — a URL bound to `href`, a string the
   UI filters on — must opt out in `NEVER_INLINE` or via the `url|href|src|id|slug` name
   rule in `src/puck/fields.tsx`, or it will arrive as an element and break.
+- Fields inside an array that is itself inside an array (Product Detail's
+  `variants[].plans[]`, say) are **not** inline-editable and arrive as plain strings.
+  Puck rebuilds every inline element in a prop on each keystroke, so rows that deep made
+  typing lag by up to a second; they are edited in the sidebar (`MAX_INLINE_ARRAY_DEPTH`).
+
+Sidebar text inputs reach the canvas once typing pauses (~250ms) rather than per key, and
+the editor mounts Puck's phone-only Fields tab only on a phone — both for the same reason
+(`src/puck/deferredTyping.tsx`, `src/puck/fieldsOnMobile.tsx`).
 
 This transform is editor-only; the server renderer never applies it, so the live site
 always receives plain strings.

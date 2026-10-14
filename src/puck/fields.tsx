@@ -210,20 +210,33 @@ const NEVER_INLINE = new Set([
 /** Names that read as an attribute value rather than as copy on the page. */
 const ATTRIBUTE_LIKE = /(url|href|src|id|slug)$/i
 
-const isInlineEditable = (field: PayloadField): boolean => {
+/**
+ * How many arrays deep a field may sit and still be edited on the canvas.
+ *
+ * Puck pays for inline editing on every keystroke, not just once: whenever a prop changes it
+ * re-walks that whole top-level prop and builds a fresh `InlineTextField` element for every
+ * inline string in it — empty ones included. Inside an array of arrays that is every row of
+ * every row, so one character typed into `variants[1].plans[1].saveLabel` rebuilt every
+ * field of every plan of every variant, and blocked the editor for around a second. Rows
+ * that deep keep their sidebar input, which is where they were being edited anyway.
+ */
+const MAX_INLINE_ARRAY_DEPTH = 1
+
+const isInlineEditable = (field: PayloadField, arrayDepth: number): boolean => {
   const name = 'name' in field && typeof field.name === 'string' ? field.name : ''
   if (!name) return false
+  if (arrayDepth > MAX_INLINE_ARRAY_DEPTH) return false
   return !NEVER_INLINE.has(name) && !ATTRIBUTE_LIKE.test(name)
 }
 
-const convertField = (field: PayloadField): PuckField | null => {
+const convertField = (field: PayloadField, arrayDepth: number): PuckField | null => {
   const label = labelFor(field)
 
   switch (field.type) {
     case 'text':
-      return { type: 'text', label, contentEditable: isInlineEditable(field) }
+      return { type: 'text', label, contentEditable: isInlineEditable(field, arrayDepth) }
     case 'textarea':
-      return { type: 'textarea', label, contentEditable: isInlineEditable(field) }
+      return { type: 'textarea', label, contentEditable: isInlineEditable(field, arrayDepth) }
     case 'number':
       return { type: 'number', label }
     case 'email':
@@ -257,19 +270,23 @@ const convertField = (field: PayloadField): PuckField | null => {
       // Inline-editable like the text fields: Puck hands the component an element either
       // way (a static render when off, a tiptap editor when on), and `RichText` already
       // accepts Lexical JSON, an HTML string, or an element.
-      return { type: 'richtext', label, contentEditable: true }
+      return { type: 'richtext', label, contentEditable: arrayDepth <= MAX_INLINE_ARRAY_DEPTH }
     case 'array':
       return {
         type: 'array',
         label,
-        arrayFields: convertFields(field.fields) as never,
+        arrayFields: convertFields(field.fields, arrayDepth + 1) as never,
         defaultItemProps: defaultsFor(field.fields) as never,
         getItemSummary: (item, index) => itemSummary(item as Record<string, unknown>, index),
         ...(typeof field.maxRows === 'number' ? { max: field.maxRows } : {}),
         ...(typeof field.minRows === 'number' ? { min: field.minRows } : {}),
       }
     case 'group':
-      return { type: 'object', label, objectFields: convertFields(field.fields) as never }
+      return {
+        type: 'object',
+        label,
+        objectFields: convertFields(field.fields, arrayDepth) as never,
+      }
     default:
       return null
   }
@@ -278,25 +295,26 @@ const convertField = (field: PayloadField): PuckField | null => {
 /**
  * Converts a Payload field list into Puck fields. `row`, `collapsible` and unnamed `tabs`
  * are presentation-only containers in Payload, so their children are flattened up.
+ * `arrayDepth` counts the arrays the list sits inside; see `MAX_INLINE_ARRAY_DEPTH`.
  */
-export const convertFields = (fields: PayloadField[]): PuckFields => {
+export const convertFields = (fields: PayloadField[], arrayDepth = 0): PuckFields => {
   const out: Record<string, PuckField> = {}
 
   for (const field of fields) {
     if (field.type === 'row' || field.type === 'collapsible') {
-      Object.assign(out, convertFields(field.fields))
+      Object.assign(out, convertFields(field.fields, arrayDepth))
       continue
     }
     if (field.type === 'tabs') {
       for (const tab of field.tabs) {
         if ('fields' in tab && Array.isArray(tab.fields))
-          Object.assign(out, convertFields(tab.fields))
+          Object.assign(out, convertFields(tab.fields, arrayDepth))
       }
       continue
     }
     if (field.type === 'ui' || !('name' in field) || !field.name) continue
 
-    const converted = convertField(field)
+    const converted = convertField(field, arrayDepth)
     if (converted) out[field.name] = converted
   }
 

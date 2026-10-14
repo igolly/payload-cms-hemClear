@@ -12,6 +12,7 @@ import { PuckConfigProvider } from '@delmaredigital/payload-puck/client'
 import { blocksPlugin } from '@puckeditor/core'
 
 import { puckConfig } from '@/puck/config'
+import { fieldsOnMobilePlugin } from '@/puck/fieldsOnMobile'
 import { pageSwitcherPlugin } from '@/puck/pageSwitcher'
 import { pinnedSyncPlugin } from '@/puck/pinnedSync'
 import { seedFromBlocksPlugin } from '@/puck/seedFromBlocks'
@@ -30,7 +31,13 @@ export const PuckProvider: React.FC<{ children: React.ReactNode }> = ({ children
   // plugin then frames whatever ended up there with the header, hero and footer.
   <PuckConfigProvider
     config={puckConfig}
-    plugins={[blocksAfterOutline, seedFromBlocksPlugin, pinnedSyncPlugin, pageSwitcherPlugin]}
+    plugins={[
+      blocksAfterOutline,
+      fieldsOnMobilePlugin,
+      seedFromBlocksPlugin,
+      pinnedSyncPlugin,
+      pageSwitcherPlugin,
+    ]}
   >
     {children}
   </PuckConfigProvider>
